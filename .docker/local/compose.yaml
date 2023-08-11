@@ -1,3 +1,8 @@
+x-common-settings: &healthcheck-settings
+  interval: 1s
+  timeout: 30s
+  retries: 30
+
 services:
 
   postgresql:
@@ -25,9 +30,7 @@ services:
         "-p",
         "5432",
       ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      <<: *healthcheck-settings
 
   mysql:
     image: mysql:8.1
@@ -55,9 +58,7 @@ services:
         "-P",
         "3306",
       ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      <<: *healthcheck-settings
 
   redis:
     image: redis:7.0.12
@@ -73,9 +74,7 @@ services:
         "redis-cli",
         "ping"
       ]
-      interval: 1s
-      timeout: 30s
-      retries: 30
+      <<: *healthcheck-settings
 
   mailpit:
     image: axllent/mailpit:v1.8.1
@@ -88,9 +87,7 @@ services:
         "3",
         "mailpit.laravelorbstack.orb.local"
       ]
-      interval: 1s
-      timeout: 30s
-      retries: 5
+      <<: *healthcheck-settings
 
   minio:
     image: minio/minio:RELEASE.2023-08-09T23-30-22Z
@@ -113,9 +110,7 @@ services:
         "-I",
         "minio.laravelorbstack.orb.local:9000/minio/health/live"
       ]
-      interval: 1s
-      timeout: 30s
-      retries: 30
+      <<: *healthcheck-settings
 
   # minioにてbucketを作成する用のコンテナ `docker compose run --rm  minio-bucket ` と利用される想定
   minio-bucket:
@@ -145,9 +140,6 @@ services:
         "-c",
         "awslocal s3 ls"
       ]
-      interval: 5s
-      timeout: 10s
-      start_period: 10s
     volumes:
       - type: bind
         source: ./localstack
