@@ -3,7 +3,7 @@ APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=base64:zcGC9RB0cplYgwAIAJ1vnNVHsHN+FXqTB3g6WtTfZTU=
 APP_DEBUG=true
-APP_URL=http://php-app.laravelorbstack.orb.local/
+APP_URL=php-app.laravelorbstack.orb.local
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
@@ -12,8 +12,8 @@ LOG_LEVEL=debug
 DB_CONNECTION=pgsql
 # mysql
 
-DB_HOST=http://postgresql.laravelorbstack.orb.local/
-# or http://mysql.laravelorbstack.orb.local/
+DB_HOST=postgresql.laravelorbstack.orb.local
+# or mysql.laravelorbstack.orb.local
 
 DB_PORT=5432
 # or 3306
@@ -31,12 +31,12 @@ SESSION_LIFETIME=120
 
 MEMCACHED_HOST=127.0.0.1
 
-REDIS_HOST=http://redis.laravelorbstack.orb.local/
+REDIS_HOST=redis.laravelorbstack.orb.local
 REDIS_PASSWORD=null
 REDIS_PORT=6379
 
 MAIL_MAILER=smtp
-MAIL_HOST=http://mailpit.laravelorbstack.orb.local/
+MAIL_HOST=mailpit.laravelorbstack.orb.local
 
 MAIL_PORT=1025
 MAIL_USERNAME=null
@@ -51,11 +51,11 @@ AWS_DEFAULT_REGION=us-east-1
 AWS_BUCKET=sample-bucket
 AWS_USE_PATH_STYLE_ENDPOINT=true
 
-AWS_URL=http://localstack.laravelorbstack.orb.local:4566/
-# or http://minio.laravelorbstack.orb.local:9000/
+AWS_URL=localstack.laravelorbstack.orb.local:4566
+# or minio.laravelorbstack.orb.local:9000
 
-AWS_ENDPOINT=http://localstack.laravelorbstack.orb.local:4566/
-# or http://minio.laravelorbstack.orb.local:9000/
+AWS_ENDPOINT=localstack.laravelorbstack.orb.local:4566
+# or minio.laravelorbstack.orb.local:9000
 
 PUSHER_APP_ID=
 PUSHER_APP_KEY=
