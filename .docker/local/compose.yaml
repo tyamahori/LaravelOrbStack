@@ -16,10 +16,14 @@ services:
       test: [
         "CMD",
         "pg_isready",
+        "-h",
+        "postgresql.laravelorbstack.orb.local",
         "-U",
         "sample",
         "-d",
-        "sample"
+        "sample",
+        "-p",
+        "5432",
       ]
       interval: 10s
       timeout: 5s
@@ -47,7 +51,9 @@ services:
         "mysql.laravelorbstack.orb.local",
         "-u",
         "sample",
-        "-psample"
+        "-psample",
+        "-P",
+        "3306",
       ]
       interval: 10s
       timeout: 5s
