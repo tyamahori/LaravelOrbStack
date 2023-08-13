@@ -3,7 +3,7 @@ APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=base64:zcGC9RB0cplYgwAIAJ1vnNVHsHN+FXqTB3g6WtTfZTU=
 APP_DEBUG=true
-APP_URL=php-app.laravelorbstack.orb.local
+APP_URL=http://php-app.laravelorbstack.orb.local
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
