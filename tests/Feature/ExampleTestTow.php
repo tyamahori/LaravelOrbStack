@@ -6,7 +6,7 @@ namespace Tests\Feature;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class ExampleTestTow extends TestCase
 {
     /**
      * A basic test example.
@@ -14,7 +14,7 @@ class ExampleTest extends TestCase
     public function test_the_application_returns_a_successful_response(): void
     {
         $response = $this->get('/');
-        Config::get('database');
+        $item = Config::get('database');
 
         $response->assertStatus(200);
 
