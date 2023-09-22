@@ -8,17 +8,28 @@
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "10.10.0",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "league/flysystem-aws-s3-v3": "^3.16"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.13",
         "brianium/paratest": "^7.2",
         "fakerphp/faker": "^1.9.1",
-        "mockery/mockery": "^1.4.4",
+        "friendsofphp/php-cs-fixer": "^3.27",
         "nunomaduro/collision": "^7.0",
-        "phpunit/phpunit": "^10.0"
+        "nunomaduro/larastan": "^2.0",
+        "phpstan/extension-installer": "^1.3",
+        "phpstan/phpstan-doctrine": "^1.3",
+        "phpstan/phpstan-nette": "^1.2",
+        "phpstan/phpstan-phpunit": "^1.3",
+        "phpstan/phpstan-strict-rules": "^1.5",
+        "phpunit/phpunit": "^10.0",
+        "qossmic/deptrac-shim": "^1.0",
+        "rector/rector": "^0.18.3"
     },
     "autoload": {
         "psr-4": {
+            "LaravelOrbStack\\": "packages/",
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
@@ -55,7 +66,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true
         }
     },
     "minimum-stability": "stable",

@@ -1,4 +1,4 @@
-FROM php:8.2.8-apache
+FROM php:8.2.10-apache
 
 ENV COMPOSER_HOME=/root/composer \
     PATH=$COMPOSER_HOME/vendor/bin:$PATH \
@@ -58,4 +58,4 @@ RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /var/www/html
 
 # マルチステージビルドにてcomposerを導入する
-COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer

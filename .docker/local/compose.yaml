@@ -6,7 +6,7 @@ x-common-settings: &healthcheck-settings
 services:
 
   postgresql:
-    image: postgres:15.3-bullseye
+    image: postgres:16.0-bullseye
     container_name: laravelorbstack-postgresql
     environment:
       POSTGRES_DB: sample
@@ -61,7 +61,7 @@ services:
       <<: *healthcheck-settings
 
   redis:
-    image: redis:7.0.12
+    image: redis:7.2
     container_name: laravelorbstack-redis
     command: redis-server --appendonly yes
     volumes:
@@ -77,7 +77,7 @@ services:
       <<: *healthcheck-settings
 
   mailpit:
-    image: axllent/mailpit:v1.8.1
+    image: axllent/mailpit:v1.8.4
     container_name: laravelorbstack-mailpit
     healthcheck:
       test: [
@@ -90,7 +90,7 @@ services:
       <<: *healthcheck-settings
 
   minio:
-    image: minio/minio:RELEASE.2023-08-09T23-30-22Z
+    image: minio/minio:RELEASE.2023-09-20T22-49-55Z
     container_name: laravelorbstack-minio
     command: server /export --console-address ":9001"
     volumes:
@@ -112,9 +112,9 @@ services:
       ]
       <<: *healthcheck-settings
 
-  # minioにてbucketを作成する用のコンテナ `docker compose run --rm  minio-bucket ` と利用される想定
+  # minioにてbucketを作成する用のコンテナ `docker compose run --rm  minio-bucket` と利用される想定
   minio-bucket:
-    image: minio/mc:RELEASE.2023-02-28T00-12-59Z
+    image: minio/mc:RELEASE.2023-09-20T15-22-31Z
     container_name: laravelorbstack-minio-bucket
     entrypoint: >
       sh -c "

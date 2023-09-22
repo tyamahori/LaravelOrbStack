@@ -1,0 +1,21 @@
+includes:
+ - baseline.php
+parameters:
+  level: max
+  paths:
+    - ./packages
+    - ./app
+    - ./config
+    - ./database
+    - ./public
+    - ./resources
+    - ./tests
+    - ./routes
+  excludePaths:
+    - ./vendor
+  tmpDir: .stan
+#  ignoreErrors:
+#    - '#Dynamic call to static method Illuminate.#'
+#    - '#Dynamic call to static method PHPUnit\\Framework\\.*#'
+  strictRules:
+    allRules: true

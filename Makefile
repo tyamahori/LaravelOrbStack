@@ -11,7 +11,29 @@ COMPOSE_BASE_COMMAND := \
   USER_ID=$(USER_ID) \
   GROUP_ID=$(GROUP_ID) \
   USER_NAME=$(USER_NAME) \
-  docker compose -f ./.docker/local/compose.yaml
+  docker compose -f .docker/local/compose.yaml
+
+COMPOSER_JSON = composer.json
+COMPOSER_INSTALLED := ./vendor/composer/installed.json
+COMPOSER_AUTOLOAD_CLASSMAP := ./vendor/composer/autoload_classmap.php
+RECTOR_CACHE := .rector
+FIXER_CACHE := .php-cs-fixer.cache
+STAN_CACHE := .stan/stan.info
+PHP_DIFF_FILES := $(shell find app config database packages public resources routes tests -name "*.php" -type f)
+
+$(COMPOSER_AUTOLOAD_CLASSMAP): $(COMPOSER_INSTALLED) $(COMPOSER_JSON)
+	$(COMPOSE_BASE_COMMAND) exec -it php-app composer install
+	$(COMPOSE_BASE_COMMAND) exec -it php-app touch $(COMPOSER_AUTOLOAD_CLASSMAP)
+
+$(FIXER_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
+	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
+
+$(STAN_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
+	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/phpstan analyse -c phpstan.neon
+	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(STAN_CACHE) > $@;
+
+$(RECTOR_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
+	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/rector
 
 .PHONY: help
 help: # @see https://postd.cc/auto-documented-makefile/
@@ -98,3 +120,18 @@ exec-php-batch-as-user: ## BATCH PHPのコンテナに通常ユーザーとし�
 .PHONY: exec-php-batch-as-root
 exec-php-batch-as-root: ## BATCH PHPのコンテナにrootユーザーとして入る
 	$(COMPOSE_BASE_COMMAND) exec -u root -it php-batch bash
+
+.PHONY: composer-install
+composer-install: $(COMPOSER_AUTOLOAD_CLASSMAP) ## APP PHPのコンテナに通常ユーザーとしてcomposer install
+
+.PHONY: cs-fixer
+cs-fixer: $(FIXER_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
+
+.PHONY: stan
+stan: $(STAN_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
+
+.PHONY: rector
+rector: $(RECTOR_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
+
+.PHONY: lint
+lint: rector stan cs-fixer

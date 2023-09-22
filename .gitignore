@@ -17,3 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+.deptrac.cache
+.stan
+.php-cs-fixer.cache
+.rector
