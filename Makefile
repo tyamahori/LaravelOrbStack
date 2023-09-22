@@ -22,23 +22,23 @@ STAN_CACHE := .stan/stan.info
 IDE_HELPER_CACHE := ./vendor/ide-helper.info
 PHP_DIFF_FILES := $(shell find app config database packages public resources routes tests -name "*.php" -type f)
 
-$(COMPOSER_AUTOLOAD_CLASSMAP): $(PHP_DIFF_FILES)
+$(COMPOSER_AUTOLOAD_CLASSMAP): $(PHP_DIFF_FILES) composer.json composer.lock
 	$(COMPOSE_BASE_COMMAND) exec -it php-app composer install
 	$(COMPOSE_BASE_COMMAND) exec -it php-app touch $(COMPOSER_AUTOLOAD_CLASSMAP)
 
-$(FIXER_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
+$(FIXER_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
 	$(COMPOSE_BASE_COMMAND) exec -it php-app touch $(FIXER_CACHE) > $@;
 
-$(STAN_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
+$(STAN_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/phpstan analyse -c phpstan.neon
 	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(STAN_CACHE) > $@;
 
-$(RECTOR_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
+$(RECTOR_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/rector
 	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(RECTOR_CACHE) > $@;
 
-$(IDE_HELPER_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
+$(IDE_HELPER_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app composer ide-helper
 	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(IDE_HELPER_CACHE) > $@;
 
