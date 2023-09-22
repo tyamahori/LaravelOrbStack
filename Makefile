@@ -145,4 +145,4 @@ rector: $(RECTOR_CACHE)
 ide-helper: $(IDE_HELPER_CACHE)
 
 .PHONY: lint
-lint: rector stan fixer
+lint: $(RECTOR_CACHE) $(STAN_CACHE) $(FIXER_CACHE)
