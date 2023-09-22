@@ -16,17 +16,18 @@ COMPOSE_BASE_COMMAND := \
 COMPOSER_JSON = composer.json
 COMPOSER_INSTALLED := ./vendor/composer/installed.json
 COMPOSER_AUTOLOAD_CLASSMAP := ./vendor/composer/autoload_classmap.php
-RECTOR_CACHE := .rector
+RECTOR_CACHE := .rector/rector.info
 FIXER_CACHE := .php-cs-fixer.cache
 STAN_CACHE := .stan/stan.info
 PHP_DIFF_FILES := $(shell find app config database packages public resources routes tests -name "*.php" -type f)
 
-$(COMPOSER_AUTOLOAD_CLASSMAP): $(COMPOSER_INSTALLED) $(COMPOSER_JSON)
+$(COMPOSER_AUTOLOAD_CLASSMAP): $(PHP_DIFF_FILES)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app composer install
 	$(COMPOSE_BASE_COMMAND) exec -it php-app touch $(COMPOSER_AUTOLOAD_CLASSMAP)
 
 $(FIXER_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
+	$(COMPOSE_BASE_COMMAND) exec -it php-app touch $(FIXER_CACHE) > $@;
 
 $(STAN_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/phpstan analyse -c phpstan.neon
@@ -34,6 +35,7 @@ $(STAN_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
 
 $(RECTOR_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/rector
+	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(RECTOR_CACHE) > $@;
 
 .PHONY: help
 help: # @see https://postd.cc/auto-documented-makefile/
@@ -127,8 +129,8 @@ exec-php-batch-as-root: ## BATCH PHPのコンテナにrootユーザーとして�
 .PHONY: composer-install
 composer-install: $(COMPOSER_AUTOLOAD_CLASSMAP) ## APP PHPのコンテナに通常ユーザーとしてcomposer install
 
-.PHONY: cs-fixer
-cs-fixer: $(FIXER_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
+.PHONY: fixer
+fixer: $(FIXER_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
 
 .PHONY: stan
 stan: $(STAN_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
@@ -140,7 +142,7 @@ rector: $(RECTOR_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
 lint: rector stan cs-fixer
 
 .PHONY: ide-helper
-ide-helper:
+ide-helper: $(COMPOSER_AUTOLOAD_CLASSMAP)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:generate
 	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:models --nowrite
 	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:meta
