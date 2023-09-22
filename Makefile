@@ -13,6 +13,8 @@ COMPOSE_BASE_COMMAND := \
   USER_NAME=$(USER_NAME) \
   docker compose -f .docker/local/compose.yaml
 
+APP_CONTAINER_COMMAND = $(COMPOSE_BASE_COMMAND) exec -it php-app
+
 COMPOSER_JSON = composer.json
 COMPOSER_INSTALLED := ./vendor/composer/installed.json
 COMPOSER_AUTOLOAD_CLASSMAP := ./vendor/composer/autoload_classmap.php
@@ -23,24 +25,24 @@ IDE_HELPER_CACHE := ./vendor/ide-helper.info
 PHP_DIFF_FILES := $(shell find app config database packages public resources routes tests -name "*.php" -type f)
 
 $(COMPOSER_AUTOLOAD_CLASSMAP): $(PHP_DIFF_FILES) composer.json composer.lock
-	$(COMPOSE_BASE_COMMAND) exec -it php-app composer install
-	$(COMPOSE_BASE_COMMAND) exec -it php-app touch $(COMPOSER_AUTOLOAD_CLASSMAP)
+	$(APP_CONTAINER_COMMAND) composer install
+	$(APP_CONTAINER_COMMAND) touch $(COMPOSER_AUTOLOAD_CLASSMAP)
 
 $(FIXER_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
-	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
-	$(COMPOSE_BASE_COMMAND) exec -it php-app touch $(FIXER_CACHE) > $@;
+	$(APP_CONTAINER_COMMAND) vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
+	$(APP_CONTAINER_COMMAND) touch $(FIXER_CACHE) > $@;
 
 $(STAN_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
-	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/phpstan analyse -c phpstan.neon
-	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(STAN_CACHE) > $@;
+	$(APP_CONTAINER_COMMAND) vendor/bin/phpstan analyse -c phpstan.neon
+	$(APP_CONTAINER_COMMAND) echo $(STAN_CACHE) > $@;
 
 $(RECTOR_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
-	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/rector
-	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(RECTOR_CACHE) > $@;
+	$(APP_CONTAINER_COMMAND) vendor/bin/rector
+	$(APP_CONTAINER_COMMAND) echo $(RECTOR_CACHE) > $@;
 
 $(IDE_HELPER_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
-	$(COMPOSE_BASE_COMMAND) exec -it php-app composer ide-helper
-	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(IDE_HELPER_CACHE) > $@;
+	$(APP_CONTAINER_COMMAND) composer ide-helper
+	$(APP_CONTAINER_COMMAND) echo $(IDE_HELPER_CACHE) > $@;
 
 .PHONY: help
 help: # @see https://postd.cc/auto-documented-makefile/
@@ -50,10 +52,10 @@ help: # @see https://postd.cc/auto-documented-makefile/
 init: delete-all rm-vendor ## プロジェクトのすべてを削除してから、セットアップする
 	$(COMPOSE_BASE_COMMAND) up -d
 	$(COMPOSE_BASE_COMMAND) run --rm minio-bucket
-	$(COMPOSE_BASE_COMMAND) exec -it php-app composer install
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan optimize:clear
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan migrate:refresh --seed
-	$(COMPOSE_BASE_COMMAND) exec -it php-app composer ide-helper
+	$(APP_CONTAINER_COMMAND) composer install
+	$(APP_CONTAINER_COMMAND) php artisan optimize:clear
+	$(APP_CONTAINER_COMMAND) php artisan migrate:refresh --seed
+	$(APP_CONTAINER_COMMAND) composer ide-helper
 
 .PHONY: up
 up: down ## docker compose up
@@ -107,7 +109,7 @@ minio-bucket: ## create bucket for minio
 
 .PHONY: exec-php-app-as-user
 exec-php-app-as-user: ## APP PHPのコンテナに通常ユーザーとして入る
-	$(COMPOSE_BASE_COMMAND) exec -it php-app bash
+	$(APP_CONTAINER_COMMAND) bash
 
 .PHONY: exec-php-app-as-root
 exec-php-app-as-root: ## APP PHPのコンテナにrootユーザーとして入る
