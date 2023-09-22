@@ -46,6 +46,9 @@ init: delete-all rm-vendor ## プロジェクトのすべてを削除してか�
 	$(COMPOSE_BASE_COMMAND) exec -it php-app composer install
 	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan optimize:clear
 	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan migrate:refresh --seed
+	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:generate
+	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:models --nowrite
+	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:meta
 
 .PHONY: up
 up: down ## docker compose up
@@ -135,3 +138,9 @@ rector: $(RECTOR_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
 
 .PHONY: lint
 lint: rector stan cs-fixer
+
+.PHONY: ide-helper
+ide-helper:
+	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:generate
+	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:models --nowrite
+	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:meta
