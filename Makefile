@@ -19,6 +19,7 @@ COMPOSER_AUTOLOAD_CLASSMAP := ./vendor/composer/autoload_classmap.php
 RECTOR_CACHE := .rector/rector.info
 FIXER_CACHE := .php-cs-fixer.cache
 STAN_CACHE := .stan/stan.info
+IDE_HELPER_CACHE := ./vendor/ide-helper.info
 PHP_DIFF_FILES := $(shell find app config database packages public resources routes tests -name "*.php" -type f)
 
 $(COMPOSER_AUTOLOAD_CLASSMAP): $(PHP_DIFF_FILES)
@@ -37,6 +38,10 @@ $(RECTOR_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
 	$(COMPOSE_BASE_COMMAND) exec -it php-app vendor/bin/rector
 	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(RECTOR_CACHE) > $@;
 
+$(IDE_HELPER_CACHE): $(PHP_DIFF_FILES) $(COMPOSER_AUTOLOAD_CLASSMAP)
+	$(COMPOSE_BASE_COMMAND) exec -it php-app composer ide-helper
+	$(COMPOSE_BASE_COMMAND) exec -it php-app echo $(IDE_HELPER_CACHE) > $@;
+
 .PHONY: help
 help: # @see https://postd.cc/auto-documented-makefile/
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -48,9 +53,7 @@ init: delete-all rm-vendor ## プロジェクトのすべてを削除してか�
 	$(COMPOSE_BASE_COMMAND) exec -it php-app composer install
 	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan optimize:clear
 	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan migrate:refresh --seed
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:generate
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:models --nowrite
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:meta
+	$(COMPOSE_BASE_COMMAND) exec -it php-app composer ide-helper
 
 .PHONY: up
 up: down ## docker compose up
@@ -130,19 +133,16 @@ exec-php-batch-as-root: ## BATCH PHPのコンテナにrootユーザーとして�
 composer-install: $(COMPOSER_AUTOLOAD_CLASSMAP) ## APP PHPのコンテナに通常ユーザーとしてcomposer install
 
 .PHONY: fixer
-fixer: $(FIXER_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
+fixer: $(FIXER_CACHE)
 
 .PHONY: stan
-stan: $(STAN_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
+stan: $(STAN_CACHE)
 
 .PHONY: rector
-rector: $(RECTOR_CACHE) $(COMPOSER_AUTOLOAD_CLASSMAP)
-
-.PHONY: lint
-lint: rector stan cs-fixer
+rector: $(RECTOR_CACHE)
 
 .PHONY: ide-helper
-ide-helper: $(COMPOSER_AUTOLOAD_CLASSMAP)
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:generate
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:models --nowrite
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan ide-helper:meta
+ide-helper: $(IDE_HELPER_CACHE)
+
+.PHONY: lint
+lint: rector stan fixer
