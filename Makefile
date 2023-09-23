@@ -132,6 +132,14 @@ exec-php-batch-as-user: ## BATCH PHPのコンテナに通常ユーザーとし�
 exec-php-batch-as-root: ## BATCH PHPのコンテナにrootユーザーとして入る
 	$(COMPOSE_BASE_COMMAND) exec -u root -it php-batch bash
 
+.PHONY: exec-php-franken-as-user
+exec-php-franken-as-user: ## Franken PHPのコンテナに通常ユーザーとして入る
+	$(COMPOSE_BASE_COMMAND) exec -it php-franken bash
+
+.PHONY: exec-php-franken-as-root
+exec-php-franken-as-root: ## Franken PHPのコンテナにrootユーザーとして入る
+	$(COMPOSE_BASE_COMMAND) exec -u root -it php-franken bash
+
 .PHONY: composer-install
 composer-install: $(COMPOSER_AUTOLOAD_CLASSMAP) ## APP PHPのコンテナに通常ユーザーとしてcomposer install
 
