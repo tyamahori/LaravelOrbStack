@@ -15,7 +15,6 @@ COMPOSE_BASE_COMMAND := \
 
 APP_CONTAINER_COMMAND = $(COMPOSE_BASE_COMMAND) exec -it php-app
 
-
 COMPOSER_JSON = composer.json
 COMPOSER_INSTALLED := ./vendor/composer/installed.json
 COMPOSER_AUTOLOAD_CLASSMAP := ./vendor/composer/autoload_classmap.php
