@@ -15,6 +15,7 @@ COMPOSE_BASE_COMMAND := \
 
 APP_CONTAINER_COMMAND = $(COMPOSE_BASE_COMMAND) exec -it php-app
 
+
 COMPOSER_JSON = composer.json
 COMPOSER_INSTALLED := ./vendor/composer/installed.json
 COMPOSER_AUTOLOAD_CLASSMAP := ./vendor/composer/autoload_classmap.php
@@ -29,15 +30,15 @@ $(COMPOSER_AUTOLOAD_CLASSMAP): $(PHP_DIFF_FILES) composer.json composer.lock
 	$(APP_CONTAINER_COMMAND) touch $(COMPOSER_AUTOLOAD_CLASSMAP)
 
 $(FIXER_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
-	$(APP_CONTAINER_COMMAND) vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
+	$(APP_CONTAINER_COMMAND) ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
 	$(APP_CONTAINER_COMMAND) touch $(FIXER_CACHE) > $@;
 
 $(STAN_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
-	$(APP_CONTAINER_COMMAND) vendor/bin/phpstan analyse -c phpstan.neon
+	$(APP_CONTAINER_COMMAND) ./vendor/bin/phpstan analyse -c phpstan.neon
 	$(APP_CONTAINER_COMMAND) echo $(STAN_CACHE) > $@;
 
 $(RECTOR_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
-	$(APP_CONTAINER_COMMAND) vendor/bin/rector
+	$(APP_CONTAINER_COMMAND) ./vendor/bin/rector
 	$(APP_CONTAINER_COMMAND) echo $(RECTOR_CACHE) > $@;
 
 $(IDE_HELPER_CACHE): $(COMPOSER_AUTOLOAD_CLASSMAP)
