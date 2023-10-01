@@ -14,7 +14,7 @@ case "$1" in
      USER_NAME="$USER_NAME" \
      USER_ID="$USER_ID" \
      GROUP_ID="$GROUP_ID" \
-     docker compose -f .docker/local/compose.yaml exec -i php-app ./vendor/bin/phpstan analyse -c phpstan.neon "${@:2}"
+     docker compose -f .docker/local/compose.yaml exec -i php-app ./vendor/bin/phpstan analyse -c phpstan.neon "${@:2}" --memory-limit=1G
     ;;
 
 "fixer")
