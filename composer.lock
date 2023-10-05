@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b676da2f0ad4eff3cd0994ebd75e3ff4",
+    "content-hash": "0dcedad8e6c6452ce62b59da45ddf888",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -9652,6 +9652,63 @@
                 }
             ],
             "time": "2023-02-07T11:34:05+00:00"
+        },
+        {
+            "name": "shipmonk/phpstan-rules",
+            "version": "2.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shipmonk-rnd/phpstan-rules.git",
+                "reference": "dd0c725b00dfdf7786925edd0bbbd39c0cc187be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shipmonk-rnd/phpstan-rules/zipball/dd0c725b00dfdf7786925edd0bbbd39c0cc187be",
+                "reference": "dd0c725b00dfdf7786925edd0bbbd39c0cc187be",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^4.14.0",
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^1.10.30"
+            },
+            "require-dev": {
+                "editorconfig-checker/editorconfig-checker": "^10.3.0",
+                "ergebnis/composer-normalize": "^2.28",
+                "nette/neon": "^3.3.1",
+                "phpstan/phpstan-phpunit": "^1.1.1",
+                "phpstan/phpstan-strict-rules": "^1.2.3",
+                "phpunit/phpunit": "^9.5.20",
+                "shipmonk/name-collision-detector": "^2.0.0",
+                "slevomat/coding-standard": "^8.0.1"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "rules.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ShipMonk\\PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Various extra strict PHPStan rules we found useful in ShipMonk.",
+            "keywords": [
+                "PHPStan",
+                "static analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/shipmonk-rnd/phpstan-rules/issues",
+                "source": "https://github.com/shipmonk-rnd/phpstan-rules/tree/2.9.2"
+            },
+            "time": "2023-10-04T13:45:59+00:00"
         },
         {
             "name": "symfony/filesystem",
