@@ -282,9 +282,9 @@ services:
     container_name: laravelorbstack-php-franken
     user: ${USER_ID}:${GROUP_ID}
     working_dir: /app
-    ports:
-      - 80:80
-      - 443:443
+#    ports:
+#      - 80:80
+#      - 443:443
     volumes:
       - type: bind
         source: ../..
