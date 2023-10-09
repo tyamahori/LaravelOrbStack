@@ -37,7 +37,7 @@ class ExampleTest extends TestCase
     public function the_application_returns_a_successful_response1(): void
     {
         $response = $this->get('/');
-        $item = Config::get('database');
+        Config::get('database');
 
         $response->assertStatus(200);
 

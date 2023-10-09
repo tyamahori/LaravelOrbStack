@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
+use Rector\Set\ValueObject\SetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheDirectory('./.rector');
     $rectorConfig->skip([
-        'vendor'
+        'vendor',
     ]);
     $rectorConfig->paths([
         'packages',
@@ -18,12 +19,17 @@ return static function (RectorConfig $rectorConfig): void {
         'public',
         'resources',
         'tests',
-        'routes'
+        'routes',
     ]);
     $rectorConfig->cacheClass(FileCacheStorage::class);
-    $rectorConfig->rules([
-        Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector::class,
-        Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector::class,
-        Rector\Php74\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector::class,
+    $rectorConfig->sets([
+        SetList::PHP_82,
+        SetList::CODE_QUALITY,
+        SetList::CODING_STYLE,
+        SetList::DEAD_CODE,
+        SetList::EARLY_RETURN,
+        SetList::TYPE_DECLARATION,
+        SetList::INSTANCEOF,
+        SetList::STRICT_BOOLEANS,
     ]);
 };
