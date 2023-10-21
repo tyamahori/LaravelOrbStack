@@ -213,4 +213,5 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'model_should_be_strict' => env('MODEL_SHOULD_BE_STRICT', false),
 ];
