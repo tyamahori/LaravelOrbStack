@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+$env = env('PUSHER_APP_CLUSTER', 'mt1');
+assert(is_string($env), 'PUSHER_APP_CLUSTER must be a string');
+
 return [
 
     /*
@@ -37,7 +40,7 @@ return [
             'secret' => env('PUSHER_APP_SECRET'),
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
-                'host' => env('PUSHER_HOST') ? null : ('api-' . env('PUSHER_APP_CLUSTER', 'mt1') . '.pusher.com'),
+                'host' => env('PUSHER_HOST') === null ? null : "api-{$env}.pusher.com",
                 'port' => env('PUSHER_PORT', 443),
                 'scheme' => env('PUSHER_SCHEME', 'https'),
                 'encrypted' => true,

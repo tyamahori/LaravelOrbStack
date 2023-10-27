@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 use Illuminate\Support\Str;
 
+$appName = env('APP_NAME', 'laravel');
+assert(is_string($appName), 'APP_NAME must be a string');
+
 return [
 
     /*
@@ -129,7 +132,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
+        Str::slug($appName, '_').'_session'
     ),
 
     /*
