@@ -4,10 +4,8 @@ SHELL=/bin/bash -euxo pipefail
 USER_NAME := $(shell whoami)
 USER_ID := $(shell id -u)
 GROUP_ID := $(shell id -g)
-PROJECT_NAME := laravelorbstack
 
 COMPOSE_BASE_COMMAND := \
-  COMPOSE_PROJECT_NAME=$(PROJECT_NAME) \
   USER_ID=$(USER_ID) \
   GROUP_ID=$(GROUP_ID) \
   USER_NAME=$(USER_NAME) \
