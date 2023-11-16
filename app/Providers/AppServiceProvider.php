@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App;
 use Illuminate\Config\Repository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use URL;
 use function assert;
 use function is_bool;
 
@@ -26,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (App::isLocal()) {
+            URL::forceScheme('https');
+        }
+
         Model::shouldBeStrict($this->isModelShouldBeStrict());
     }
 
