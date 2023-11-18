@@ -1,0 +1,11 @@
+{
+    "name": "Existing Docker Compose (Extend)",
+    "dockerComposeFile": [
+        "../.docker/local/compose.yaml"
+    ],
+    "service": "laravelOrbStack.test",
+    "workspaceFolder": "/var/www/html",
+    "settings": {},
+    "extensions": [],
+    "remoteUser": "orb"
+}
