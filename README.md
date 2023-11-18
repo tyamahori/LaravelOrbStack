@@ -9,10 +9,6 @@ LaravelをOrbStackで動かすサンプルです。環境を立ち上げたあ�
 # 用途
 - OrbStackでLaravelを動かすとどうなるかを確認します
 
-# メモ
-- Docker Composeにおけるプロジェクト名は、`laravelorbstack`
-- Makefileにて記載しています。
-
 # 行ったこと
 
 - `.docker`ディレクトリにて自作のdocker環境の設定ファイルを格納しました。
@@ -32,7 +28,7 @@ LaravelをOrbStackで動かすサンプルです。環境を立ち上げたあ�
 ## 初回、もしくはすべてをやり直す場合
 
 - `$ make init`
-- http://php-app.laravelorbstack.orb.local/ へアクセス
+- https://php-app.laravelorbstack.orb.local/ へアクセスするとLaravelのデフォルトページが表示されます。
 
 ## 普段の対応
 
@@ -46,8 +42,7 @@ LaravelをOrbStackで動かすサンプルです。環境を立ち上げたあ�
 
 
 # できること
-- http://orb.local へアクセスできる
-- プロジェクトのDocker環境が立ち上がっている場合、http://orb.local にてコンテナにアクセスするためのリンクが表示されている
+- OrbStackが起動していると、https://orb.local にアクセスできます。
 
 # 行っていないこと、想定していないこと
 
