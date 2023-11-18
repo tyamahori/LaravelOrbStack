@@ -23,6 +23,7 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
     $rectorConfig->cacheClass(FileCacheStorage::class);
     $rectorConfig->sets([
+        SetList::PHP_83,
         SetList::PHP_82,
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,

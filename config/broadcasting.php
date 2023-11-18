@@ -40,7 +40,7 @@ return [
             'secret' => env('PUSHER_APP_SECRET'),
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
-                'host' => env('PUSHER_HOST') === null ? null : "api-{$env}.pusher.com",
+                'host' => env('PUSHER_HOST') === null ? null : sprintf('api-%s.pusher.com', $env),
                 'port' => env('PUSHER_PORT', 443),
                 'scheme' => env('PUSHER_SCHEME', 'https'),
                 'encrypted' => true,

@@ -44,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
 
             return false;
         }
+
         assert($config instanceof Repository, 'Should be ' . Repository::class);
 
         try {
@@ -53,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
 
             return false;
         }
+
         assert(is_bool($isModelShouldBeStrict), 'Must be a boolean value');
 
         return $isModelShouldBeStrict;
