@@ -1,7 +1,7 @@
 {
     "name": "Existing Docker Compose (Extend)",
     "dockerComposeFile": [
-        ".docker/local/compose.yaml"
+        "../.docker/local/compose.yaml"
     ],
     "service": "laravelOrbStack.test",
     "workspaceFolder": "/var/www/html",
