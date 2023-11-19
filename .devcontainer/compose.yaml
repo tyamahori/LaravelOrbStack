@@ -128,29 +128,6 @@ services:
 #    profiles:
 #      - minio-bucket
 
-  localstack:
-    image: localstack/localstack:2.2.0
-    container_name: laravelorbstack-localstack
-    environment:
-      SERVICES: s3
-    healthcheck:
-      test: [
-        "CMD",
-        "bash",
-        "-c",
-        "awslocal s3 ls"
-      ]
-    volumes:
-      - type: bind
-        source: ../.docker/local/localstack/s3.sh
-        target: /etc/localstack/init/ready.d/s3.sh
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-      - type: volume
-        source: localstack
-        target: /var/lib/localstack
-
   php-app:
     image: laravelorbstack-php-app
     build:
@@ -182,8 +159,6 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-      localstack:
-        condition: service_healthy
 
 volumes:
   postgresql:
@@ -196,5 +171,3 @@ volumes:
     name: laravelorbstack-minio
   minio-config:
     name: laravelorbstack-minio-config
-  localstack:
-    name: laravelorbstack-locakstack
