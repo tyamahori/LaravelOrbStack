@@ -171,7 +171,6 @@ services:
         target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
     # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: ../.docker/local/php/.env.app
     depends_on:
       postgresql:
         condition: service_healthy

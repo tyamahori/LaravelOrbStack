@@ -6,4 +6,7 @@
     "service": "php-app",
     "workspaceFolder": "/var/www/html",
     "settings": {},
+    "runArgs": [
+        "--env-file", "../.docker/local/php/.env.app"
+    ]
 }
