@@ -151,94 +151,10 @@ services:
         source: localstack
         target: /var/lib/localstack
 
-  php-worker:
-    image: laravelorbstack-php-worker
-    build:
-      dockerfile: ../.docker/local/php/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - USER_NAME=${USER_NAME}
-    container_name: laravelorbstack-php-worker
-    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
-    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: ../.docker/local/php/.env.app
-    user: ${USER_ID}:${GROUP_ID}
-    volumes:
-      - type: bind
-        source: ..
-        target: /var/www/html
-      - type: bind
-        source: ../.docker/local/php/000-default.conf
-        target: /etc/apache2/sites-available/000-default.conf
-      - type: bind
-        source: ../.docker/local/php/php.ini
-        target: /usr/local/etc/php/php.ini
-      - type: bind
-        source: ../.docker/local/php/docker-php-ext-xdebug.ini
-        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    depends_on:
-      postgresql:
-        condition: service_healthy
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      mailpit:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-      localstack:
-        condition: service_healthy
-
-  php-batch:
-    image: laravelorbstack-php-batch
-    build:
-      dockerfile: ../.docker/local/php/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - USER_NAME=${USER_NAME}
-    container_name: laravelorbstack-php-batch
-    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
-    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: ../.docker/local/php/.env.app
-    user: ${USER_ID}:${GROUP_ID}
-    volumes:
-      - type: bind
-        source: ..
-        target: /var/www/html
-      - type: bind
-        source: ../.docker/local/php/000-default.conf
-        target: /etc/apache2/sites-available/000-default.conf
-      - type: bind
-        source: ../.docker/local/php/php.ini
-        target: /usr/local/etc/php/php.ini
-      - type: bind
-        source: ../.docker/local/php/docker-php-ext-xdebug.ini
-        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    depends_on:
-      postgresql:
-        condition: service_healthy
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      mailpit:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-      localstack:
-        condition: service_healthy
-
   php-app:
     image: laravelorbstack-php-app
     build:
       dockerfile: ../.docker/local/php/Dockerfile
-#      args:
-#        - USER_ID=${USER_ID}
-#        - GROUP_ID=${GROUP_ID}
-#        - USER_NAME=${USER_NAME}
     container_name: laravelorbstack-php-app
     user: ${USER_ID}:${GROUP_ID}
     volumes:
@@ -270,47 +186,6 @@ services:
         condition: service_healthy
       localstack:
         condition: service_healthy
-
-#  php-franken:
-#    image: laravelorbstack-php-franken
-#    build:
-#      dockerfile: ./php/Dockerfile.franken
-#      args:
-#        - USER_ID=${USER_ID}
-#        - GROUP_ID=${GROUP_ID}
-#        - USER_NAME=${USER_NAME}
-#    container_name: laravelorbstack-php-franken
-#    user: ${USER_ID}:${GROUP_ID}
-#    working_dir: /app
-#    ports:
-#      - 80:80
-#      - 443:443
-#    volumes:
-#      - type: bind
-#        source: ../..
-#        target: /app
-#      - type: bind
-#        source: ./php/php.ini
-#        target: /usr/local/etc/php/php.ini
-#      - type: bind
-#        source: ./php/docker-php-ext-xdebug.ini
-#        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
-    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-#    env_file: ./php/.env.app
-#    depends_on:
-#      postgresql:
-#        condition: service_healthy
-#      mysql:
-#        condition: service_healthy
-#      redis:
-#        condition: service_healthy
-#      mailpit:
-#        condition: service_healthy
-#      minio:
-#        condition: service_healthy
-#      localstack:
-#        condition: service_healthy
 
 volumes:
   postgresql:
