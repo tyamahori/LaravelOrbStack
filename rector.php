@@ -20,6 +20,7 @@ return static function (RectorConfig $rectorConfig): void {
         'resources',
         'tests',
         'routes',
+        '*.php',
     ]);
     $rectorConfig->cacheClass(FileCacheStorage::class);
     $rectorConfig->sets([
@@ -33,4 +34,6 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::INSTANCEOF,
         SetList::STRICT_BOOLEANS,
     ]);
+    $rectorConfig->importNames();
+    $rectorConfig->parallel();
 };
