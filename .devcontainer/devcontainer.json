@@ -1,0 +1,9 @@
+{
+    "name": "Existing Docker Compose (Extend)",
+    "dockerComposeFile": [
+        "../.docker/local/compose.yaml"
+    ],
+    "service": "php-app",
+    "workspaceFolder": "/var/www/html",
+    "settings": {},
+}
