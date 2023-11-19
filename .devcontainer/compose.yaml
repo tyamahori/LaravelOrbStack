@@ -142,8 +142,8 @@ services:
       ]
     volumes:
       - type: bind
-        source: ../.docker/local/localstack
-        target: /etc/localstack/init/ready.d
+        source: ../.docker/local/localstack/s3.sh
+        target: /etc/localstack/init/ready.d/s3.sh
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
