@@ -156,7 +156,6 @@ services:
     build:
       dockerfile: ../.docker/local/php/Dockerfile
     container_name: laravelorbstack-php-app
-    user: ${USER_ID}:${GROUP_ID}
     volumes:
       - type: bind
         source: ..
