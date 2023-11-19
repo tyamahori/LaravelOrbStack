@@ -113,20 +113,20 @@ services:
       <<: *healthcheck-settings
 
   # minioにてbucketを作成する用のコンテナ `docker compose run --rm  minio-bucket` と利用される想定
-  minio-bucket:
-    image: minio/mc:RELEASE.2023-09-20T15-22-31Z
-    container_name: laravelorbstack-minio-bucket
-    entrypoint: >
-      sh -c "
-      until (mc config host add myminio http://minio.laravelorbstack.orb.local:9000 samplesample samplesample) do echo '...waiting...' && sleep 1; done;
-      mc mb myminio/sample-bucket;
-      mc anonymous set public myminio/sample-bucket;
-      "
-    depends_on:
-      minio:
-        condition: service_healthy
-    profiles:
-      - minio-bucket
+#  minio-bucket:
+#    image: minio/mc:RELEASE.2023-09-20T15-22-31Z
+#    container_name: laravelorbstack-minio-bucket
+#    entrypoint: >
+#      sh -c "
+#      until (mc config host add myminio http://minio.laravelorbstack.orb.local:9000 samplesample samplesample) do echo '...waiting...' && sleep 1; done;
+#      mc mb myminio/sample-bucket;
+#      mc anonymous set public myminio/sample-bucket;
+#      "
+#    depends_on:
+#      minio:
+#        condition: service_healthy
+#    profiles:
+#      - minio-bucket
 
   localstack:
     image: localstack/localstack:2.2.0
