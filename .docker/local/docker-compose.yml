@@ -1,0 +1,327 @@
+name: laravelorbstack
+x-common-settings: &healthcheck-settings
+  interval: 1s
+  timeout: 30s
+  retries: 30
+
+services:
+  postgresql:
+    image: postgres:16.0-bullseye
+    container_name: laravelorbstack-postgresql
+    environment:
+      POSTGRES_DB: sample
+      POSTGRES_USER: sample
+      POSTGRES_PASSWORD: sample
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
+    volumes:
+      - type: volume
+        source: postgresql
+        target: /var/lib/postgresql/data
+    healthcheck:
+      test: [
+        "CMD",
+        "pg_isready",
+        "-h",
+        "postgresql.laravelorbstack.orb.local",
+        "-U",
+        "sample",
+        "-d",
+        "sample",
+        "-p",
+        "5432",
+      ]
+      <<: *healthcheck-settings
+
+  mysql:
+    image: mysql:8.1
+    container_name: laravelorbstack-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: sample
+      MYSQL_DATABASE: sample
+      MYSQL_USER: sample
+      MYSQL_PASSWORD: sample
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - type: volume
+        source: mysql
+        target: /var/lib/mysql
+    healthcheck:
+      test: [
+        "CMD",
+        "mysqladmin",
+        "ping",
+        "-h",
+        "mysql.laravelorbstack.orb.local",
+        "-u",
+        "sample",
+        "-psample",
+        "-P",
+        "3306",
+      ]
+      <<: *healthcheck-settings
+
+  redis:
+    image: redis:7.2
+    container_name: laravelorbstack-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - type: volume
+        source: redis
+        target: /data
+    healthcheck:
+      test: [
+        "CMD",
+        "redis-cli",
+        "ping"
+      ]
+      <<: *healthcheck-settings
+
+  mailpit:
+    image: axllent/mailpit:v1.8.4
+    container_name: laravelorbstack-mailpit
+    healthcheck:
+      test: [
+        "CMD",
+        "ping",
+        "-c",
+        "3",
+        "mailpit.laravelorbstack.orb.local"
+      ]
+      <<: *healthcheck-settings
+
+  minio:
+    image: minio/minio:RELEASE.2023-09-20T22-49-55Z
+    container_name: laravelorbstack-minio
+    command: server /export --console-address ":80"
+    volumes:
+      - type: volume
+        source: minio
+        target: /export
+      - type: volume
+        source: minio-config
+        target: /root/.minio
+    environment:
+      MINIO_ROOT_USER: samplesample
+      MINIO_ROOT_PASSWORD: samplesample
+    healthcheck:
+      test: [
+        "CMD",
+        "curl",
+        "-I",
+        "minio.laravelorbstack.orb.local:9000/minio/health/live"
+      ]
+      <<: *healthcheck-settings
+
+  # minioにてbucketを作成する用のコンテナ `docker compose run --rm  minio-bucket` と利用される想定
+  minio-bucket:
+    image: minio/mc:RELEASE.2023-09-20T15-22-31Z
+    container_name: laravelorbstack-minio-bucket
+    entrypoint: >
+      sh -c "
+      until (mc config host add myminio http://minio.laravelorbstack.orb.local:9000 samplesample samplesample) do echo '...waiting...' && sleep 1; done;
+      mc mb myminio/sample-bucket;
+      mc anonymous set public myminio/sample-bucket;
+      "
+    depends_on:
+      minio:
+        condition: service_healthy
+    profiles:
+      - minio-bucket
+
+  localstack:
+    image: localstack/localstack:2.2.0
+    container_name: laravelorbstack-localstack
+    environment:
+      SERVICES: s3
+    healthcheck:
+      test: [
+        "CMD",
+        "bash",
+        "-c",
+        "awslocal s3 ls"
+      ]
+    volumes:
+      - type: bind
+        source: ./localstack
+        target: /etc/localstack/init/ready.d
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: volume
+        source: localstack
+        target: /var/lib/localstack
+
+  php-worker:
+    image: laravelorbstack-php-worker
+    build:
+      dockerfile: ./php/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - USER_NAME=${USER_NAME}
+    container_name: laravelorbstack-php-worker
+    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
+    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
+    env_file: ./php/.env.app
+    user: ${USER_ID}:${GROUP_ID}
+    volumes:
+      - type: bind
+        source: ../..
+        target: /var/www/html
+      - type: bind
+        source: ./php/000-default.conf
+        target: /etc/apache2/sites-available/000-default.conf
+      - type: bind
+        source: ./php/php.ini
+        target: /usr/local/etc/php/php.ini
+      - type: bind
+        source: ./php/docker-php-ext-xdebug.ini
+        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+  php-batch:
+    image: laravelorbstack-php-batch
+    build:
+      dockerfile: ./php/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - USER_NAME=${USER_NAME}
+    container_name: laravelorbstack-php-batch
+    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
+    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
+    env_file: ./php/.env.app
+    user: ${USER_ID}:${GROUP_ID}
+    volumes:
+      - type: bind
+        source: ../..
+        target: /var/www/html
+      - type: bind
+        source: ./php/000-default.conf
+        target: /etc/apache2/sites-available/000-default.conf
+      - type: bind
+        source: ./php/php.ini
+        target: /usr/local/etc/php/php.ini
+      - type: bind
+        source: ./php/docker-php-ext-xdebug.ini
+        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+  php-app:
+    image: laravelorbstack-php-app
+    build:
+      dockerfile: ./php/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - USER_NAME=${USER_NAME}
+    container_name: laravelorbstack-php-app
+    user: ${USER_ID}:${GROUP_ID}
+    volumes:
+      - type: bind
+        source: ../..
+        target: /var/www/html
+      - type: bind
+        source: ./php/000-default.conf
+        target: /etc/apache2/sites-available/000-default.conf
+      - type: bind
+        source: ./php/php.ini
+        target: /usr/local/etc/php/php.ini
+      - type: bind
+        source: ./php/docker-php-ext-xdebug.ini
+        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
+    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
+    env_file: ./php/.env.app
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+#  php-franken:
+#    image: laravelorbstack-php-franken
+#    build:
+#      dockerfile: ./php/Dockerfile.franken
+#      args:
+#        - USER_ID=${USER_ID}
+#        - GROUP_ID=${GROUP_ID}
+#        - USER_NAME=${USER_NAME}
+#    container_name: laravelorbstack-php-franken
+#    user: ${USER_ID}:${GROUP_ID}
+#    working_dir: /app
+#    ports:
+#      - 80:80
+#      - 443:443
+#    volumes:
+#      - type: bind
+#        source: ../..
+#        target: /app
+#      - type: bind
+#        source: ./php/php.ini
+#        target: /usr/local/etc/php/php.ini
+#      - type: bind
+#        source: ./php/docker-php-ext-xdebug.ini
+#        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
+    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
+#    env_file: ./php/.env.app
+#    depends_on:
+#      postgresql:
+#        condition: service_healthy
+#      mysql:
+#        condition: service_healthy
+#      redis:
+#        condition: service_healthy
+#      mailpit:
+#        condition: service_healthy
+#      minio:
+#        condition: service_healthy
+#      localstack:
+#        condition: service_healthy
+
+volumes:
+  postgresql:
+    name: laravelorbstack-postgresql
+  mysql:
+    name: laravelorbstack-mysql
+  redis:
+    name: laravelorbstack-redis
+  minio:
+    name: laravelorbstack-minio
+  minio-config:
+    name: laravelorbstack-minio-config
+  localstack:
+    name: laravelorbstack-locakstack
