@@ -162,7 +162,7 @@ services:
     container_name: laravelorbstack-php-worker
     # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
     # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: ./php/.env.app
+    env_file: ../.docker/local/php/.env.app
     user: ${USER_ID}:${GROUP_ID}
     volumes:
       - type: bind
@@ -202,7 +202,7 @@ services:
     container_name: laravelorbstack-php-batch
     # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
     # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: ./php/.env.app
+    env_file: ../.docker/local/php/.env.app
     user: ${USER_ID}:${GROUP_ID}
     volumes:
       - type: bind
@@ -234,11 +234,11 @@ services:
   php-app:
     image: laravelorbstack-php-app
     build:
-      dockerfile: ./php/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - USER_NAME=${USER_NAME}
+      dockerfile: ../.docker/local/php/Dockerfile
+#      args:
+#        - USER_ID=${USER_ID}
+#        - GROUP_ID=${GROUP_ID}
+#        - USER_NAME=${USER_NAME}
     container_name: laravelorbstack-php-app
     user: ${USER_ID}:${GROUP_ID}
     volumes:
@@ -256,7 +256,7 @@ services:
         target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
     # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: ./php/.env.app
+    env_file: ../.docker/local/php/.env.app
     depends_on:
       postgresql:
         condition: service_healthy
