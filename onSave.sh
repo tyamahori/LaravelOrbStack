@@ -20,7 +20,7 @@ case "$1" in
      USER_NAME="$USER_NAME" \
      USER_ID="$USER_ID" \
      GROUP_ID="$GROUP_ID" \
-     docker compose -f .docker/local/compose.yaml exec -i php-app ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php "${@:2}"
+     docker compose -f .docker/local/compose.yaml exec -i php-app ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --path-mode=intersection "${@:2}"
     ;;
 
 esac

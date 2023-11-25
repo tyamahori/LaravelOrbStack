@@ -13,9 +13,8 @@ parameters:
     - ./routes
   excludePaths:
     - ./vendor
+    - _ide_*.php
+    - .phpstorm.meta.php
   tmpDir: .stan
-#  ignoreErrors:
-#    - '#Dynamic call to static method Illuminate.#'
-#    - '#Dynamic call to static method PHPUnit\\Framework\\.*#'
   strictRules:
     allRules: true

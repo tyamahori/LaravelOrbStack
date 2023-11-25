@@ -10,6 +10,8 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheDirectory('./.rector');
     $rectorConfig->skip([
         'vendor',
+        '_ide_*.php',
+        '.phpstorm.meta.php',
     ]);
     $rectorConfig->paths([
         'packages',
@@ -20,7 +22,6 @@ return static function (RectorConfig $rectorConfig): void {
         'resources',
         'tests',
         'routes',
-        '*.php',
     ]);
     $rectorConfig->cacheClass(FileCacheStorage::class);
     $rectorConfig->sets([
