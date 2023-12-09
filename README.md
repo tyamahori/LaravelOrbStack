@@ -56,3 +56,6 @@ Laravelの環境構築のサンプルのため細かなチューニングや設�
 
 # Makefile警察の方へ
 申し訳ありません。Task( https://taskfile.dev/ )を利用するなりしてください。。。後で対応します。。
+
+# Memo
+- https://caddy.community/t/caddy-trust-in-docker-for-local-certificates/18122

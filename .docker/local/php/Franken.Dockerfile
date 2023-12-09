@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:sha-5ad98f7-builder-php8.2-bookworm
+FROM dunglas/frankenphp:1.0.0-builder-php8.3-bookworm
 
 ENV COMPOSER_HOME=/root/composer \
     PATH=$COMPOSER_HOME/vendor/bin:$PATH \
