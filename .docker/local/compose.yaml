@@ -17,6 +17,9 @@ services:
       - type: volume
         source: postgresql
         target: /var/lib/postgresql/data
+      - type: bind
+        source: ./db/script.sql
+        target: /docker-entrypoint-initdb.d/script.sql
     healthcheck:
       test: [
         "CMD",

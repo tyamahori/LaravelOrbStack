@@ -21,6 +21,7 @@
         <server name="SESSION_DRIVER" value="redis"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
         <server name="MODEL_SHOULD_BE_STRICT" value="true"/>
+        <server name="DB_SCHEMA" value="test"/>
     </php>
     <source>
         <include>
