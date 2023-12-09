@@ -1,4 +1,4 @@
-FROM php:8.2.12-apache
+FROM php:8.3-apache
 
 ENV COMPOSER_HOME=/root/composer \
     PATH=$COMPOSER_HOME/vendor/bin:$PATH \
