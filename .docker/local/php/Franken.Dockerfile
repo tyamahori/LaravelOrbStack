@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:1.0.0-builder-php8.3-bookworm
+FROM dunglas/frankenphp:sha-b845670-php8.3
 
 ENV COMPOSER_HOME=/root/composer \
     PATH=$COMPOSER_HOME/vendor/bin:$PATH \
@@ -53,7 +53,7 @@ ARG USER_NAME
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /app \
-    && mkdir /data/caddy/pki && chmod -R 777 /data/caddy
+    && chown ${USER_NAME}:${USER_NAME} /data/caddy
 
 # マルチステージビルドにてcomposerを導入する
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
