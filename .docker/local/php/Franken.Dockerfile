@@ -53,7 +53,9 @@ ARG USER_NAME
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /app \
-    && chown ${USER_NAME}:${USER_NAME} /data/caddy
+    && chown ${USER_NAME}:${USER_NAME} /data/caddy \
+    && chown ${USER_NAME}:${USER_NAME} /config/caddy \
+    && chown ${USER_NAME}:${USER_NAME} /etc/caddy
 
 # マルチステージビルドにてcomposerを導入する
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer

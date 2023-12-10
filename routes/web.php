@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\HomeController;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', static fn (): Renderable => HomeController::home())->name('welcome');
+Route::get('/', [HomeController::class, 'home'])->name('welcome');
