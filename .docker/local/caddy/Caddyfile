@@ -1,4 +1,0 @@
-laravelorbstack.dev
-
-tls internal
-reverse_proxy http://php-app.laravelorbstack.orb.local
