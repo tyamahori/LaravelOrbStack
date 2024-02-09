@@ -6,7 +6,7 @@ ENV COMPOSER_HOME=/root/composer \
     DEBCONF_NOWARNINGS=yes
 
 # マルチステージビルドにてcomposerを導入する
-COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer --version=2.7.0
 COPY --from=mlocati/php-extension-installer:2.2 /usr/bin/install-php-extensions /usr/local/bin/
 
 # パッケージインストール

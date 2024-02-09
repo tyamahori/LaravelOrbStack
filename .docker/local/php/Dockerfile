@@ -6,8 +6,8 @@ ENV COMPOSER_HOME=/root/composer \
     DEBCONF_NOWARNINGS=yes \
     APACHE_LOG_DIR=/var/log/apache2
 
-COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 COPY --from=mlocati/php-extension-installer:2.2 /usr/bin/install-php-extensions /usr/local/bin/
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer --version=2.7.0
 
 # パッケージインストール
 RUN apt-get update \
