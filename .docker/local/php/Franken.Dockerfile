@@ -7,7 +7,6 @@ ENV COMPOSER_HOME=/root/composer \
 
 # マルチステージビルドにてcomposerを導入する
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer --version=2.7.0
-COPY --from=mlocati/php-extension-installer:2.2 /usr/bin/install-php-extensions /usr/local/bin/
 
 # パッケージインストール
 RUN apt-get update \
