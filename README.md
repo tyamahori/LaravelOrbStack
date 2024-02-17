@@ -13,7 +13,7 @@ LaravelをOrbStackで動かすサンプルです。環境を立ち上げたあ�
 
 - `.docker`ディレクトリにて自作のdocker環境の設定ファイルを格納しました。
 - `compose.yaml` にて必要なコンテナ周りの設定を定義しました。
-- プロジェクト直下に`makefile`を作成し、ラッパーコマンドを使うようにしました。
+- プロジェクト直下に`Taskfile.yml`を作成し、ラッパーコマンドを使うようにしました。
 
 ### PHP
 
@@ -27,18 +27,16 @@ LaravelをOrbStackで動かすサンプルです。環境を立ち上げたあ�
 
 ## 初回、もしくはすべてをやり直す場合
 
-- `$ make init`
+- `$ task init`
 - https://php-app.laravelorbstack.orb.local/ へアクセスするとLaravelのデフォルトページが表示されます。
 
 ## 普段の対応
 
-| コマンド                        | 用途         |
-|:----------------------------|:-----------|
-| `make up`                   | コンテナを立ち上げる |
-| `make down`                 | コンテナを落とす   |
-| `make exec-php-app-as-user` | PHPコンテナに入る |
-
-その他コマンドは`Makefile`を確認してください
+| コマンド                          | 用途         |
+|:------------------------------|:-----------|
+| `$ task up`                   | コンテナを立ち上げる |
+| `$ task down`                 | コンテナを落とす   |
+| `$ task exec-php-app-as-user` | PHPコンテナに入る |
 
 
 # できること
@@ -53,9 +51,6 @@ Laravelの環境構築のサンプルのため細かなチューニングや設�
 - composer.jsonの設定最適化
 
 上記のような対応は行っていません。
-
-# Makefile警察の方へ
-申し訳ありません。Task( https://taskfile.dev/ )を利用するなりしてください。。。後で対応します。。
 
 # Memo
 - https://caddy.community/t/caddy-trust-in-docker-for-local-certificates/18122
