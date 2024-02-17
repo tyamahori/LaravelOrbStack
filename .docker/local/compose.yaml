@@ -6,7 +6,7 @@ x-common-settings: &healthcheck-settings
 
 services:
   postgresql:
-    image: postgres:16.0-bullseye
+    image: postgres:16.2-bullseye
     container_name: laravelorbstack-postgresql
     environment:
       POSTGRES_DB: sample
@@ -273,6 +273,26 @@ services:
         condition: service_healthy
       localstack:
         condition: service_healthy
+
+  php-cli:
+    env_file: ./php/.env.app
+    image: laravelorbstack-php-cli
+    build:
+      dockerfile: ./php/Franken.Dockerfile
+    container_name: laravelorbstack-php-franken
+    working_dir: /app
+    volumes:
+      - type: bind
+        source: ../..
+        target: /app
+      - type: bind
+        source: ./php/php.ini
+        target: /usr/local/etc/php/php.ini
+      - type: bind
+        source: ./php/docker-php-ext-xdebug.ini
+        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    profiles:
+      - cli
 
   php-franken:
     image: laravelorbstack-php-franken
