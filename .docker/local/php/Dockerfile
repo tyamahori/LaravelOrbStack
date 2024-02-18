@@ -31,3 +31,5 @@ RUN apt-get update \
 RUN install-php-extensions xdebug && touch /tmp/xdebug.log && chmod 777 /tmp/xdebug.log
 
 RUN a2enmod rewrite headers
+
+USER ${USER_NAME}

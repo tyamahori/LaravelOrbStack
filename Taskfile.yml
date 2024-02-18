@@ -7,7 +7,9 @@ vars:
   GROUP_ID:
     sh: id -g
   BASE_COMMAND:
-    USER_ID={{ .USER_ID }} GROUP_ID={{ .GROUP_ID }} USER_NAME={{ .USER_NAME }} docker compose -f .docker/local/compose.yaml
+    docker compose -f .docker/local/compose.yaml
+  BUILD_BASE_COMMAND:
+    USER_ID={{ .USER_ID }} GROUP_ID={{ .GROUP_ID }} USER_NAME={{ .USER_NAME }} docker compose -f .docker/local/compose.build.yaml
 silent: true
 
 tasks:
@@ -21,37 +23,43 @@ tasks:
     cmd: rm -rf ./vendor
   cleanUp:
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} --profile '*' down -v --rmi all --remove-orphans"
+      - cmd: "{{ .BASE_COMMAND }} --profile '*' down -v --remove-orphans"
+      - cmd: "{{ .BUILD_BASE_COMMAND }} --profile 'build' down --rmi all"
+      - cmd: "docker images laravelorbstack"
   build:
-    cmd: "{{ .BASE_COMMAND }} build"
-  init:
     silent: false
-    deps:
+    cmds:
       - task: cleanUp
-      - task: build
-      - task: up
-    cmds:
-      - "{{ .BASE_COMMAND }} run --rm minio-bucket"
-      - "{{ .BASE_COMMAND }} exec -it php-cli composer install"
-      - "{{ .BASE_COMMAND }} exec -it php-cli php artisan optimize:clear"
-      - "{{ .BASE_COMMAND }} exec -it php-cli php artisan migrate:refresh --seed"
-      - "{{ .BASE_COMMAND }} exec -it php-cli composer ide-helper"
-  up:
-    deps:
-      - down
-    cmds:
-      - "{{ .BASE_COMMAND }} up -d"
-      - task: ps
-  down:
-    cmds:
-      - "{{ .BASE_COMMAND }} down"
-      - task: ps
-  logs:
-    cmds:
-      - "{{ .BASE_COMMAND }} logs -f"
+      - cmd: "{{ .BUILD_BASE_COMMAND }} --profile 'build' build"
+      - cmd: "{{ .BASE_COMMAND }} --profile 'minio-bucket' --profile '' pull"
+      - cmd: "docker images laravelorbstack"
   ps:
     cmds:
       - "{{ .BASE_COMMAND }} ps -a"
+  init:
+    silent: false
+    deps:
+      - task: build
+    cmds:
+      - task: up
+      - "{{ .BASE_COMMAND }} run --rm minio-bucket"
+      - "{{ .BASE_COMMAND }} exec -it php-app composer install"
+      - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
+      - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
+      - "{{ .BASE_COMMAND }} exec -it php-app composer ide-helper"
+      - "{{ .BASE_COMMAND }} exec -it php-app ./artisan -V"
+      - "{{ .BASE_COMMAND }} exec -it php-app whoami"
+  down:
+    cmds:
+      - "{{ .BASE_COMMAND }} --profile '*' down --remove-orphans"
+  up:
+    deps:
+      - task: down
+    cmds:
+      - "{{ .BASE_COMMAND }} --profile 'app' --profile '' up -d"
+  logs:
+    cmds:
+      - "{{ .BASE_COMMAND }} --profile '*' logs -f"
   deleteVolume:
     cmds:
       - "{{ .BASE_COMMAND }} down -v"

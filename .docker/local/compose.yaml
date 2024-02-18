@@ -154,96 +154,9 @@ services:
         source: localstack
         target: /var/lib/localstack
 
-  php-worker:
-    image: laravelorbstack-php-worker
-    build:
-      dockerfile: ./php/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - USER_NAME=${USER_NAME}
-    container_name: laravelorbstack-php-worker
-    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
-    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: ./php/.env.app
-    user: ${USER_ID}:${GROUP_ID}
-    volumes:
-      - type: bind
-        source: ../..
-        target: /var/www/html
-      - type: bind
-        source: ./php/000-default.conf
-        target: /etc/apache2/sites-available/000-default.conf
-      - type: bind
-        source: ./php/php.ini
-        target: /usr/local/etc/php/php.ini
-      - type: bind
-        source: ./php/docker-php-ext-xdebug.ini
-        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    depends_on:
-      postgresql:
-        condition: service_healthy
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      mailpit:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-      localstack:
-        condition: service_healthy
-
-  php-batch:
-    image: laravelorbstack-php-batch
-    build:
-      dockerfile: ./php/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - USER_NAME=${USER_NAME}
-    container_name: laravelorbstack-php-batch
-    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
-    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: ./php/.env.app
-    user: ${USER_ID}:${GROUP_ID}
-    volumes:
-      - type: bind
-        source: ../..
-        target: /var/www/html
-      - type: bind
-        source: ./php/000-default.conf
-        target: /etc/apache2/sites-available/000-default.conf
-      - type: bind
-        source: ./php/php.ini
-        target: /usr/local/etc/php/php.ini
-      - type: bind
-        source: ./php/docker-php-ext-xdebug.ini
-        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    depends_on:
-      postgresql:
-        condition: service_healthy
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      mailpit:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-      localstack:
-        condition: service_healthy
-
   php-app:
-    image: laravelorbstack-php-app
-    build:
-      dockerfile: ./php/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - USER_NAME=${USER_NAME}
+    image: laravelorbstack:php-apache
     container_name: laravelorbstack-php-app
-    user: ${USER_ID}:${GROUP_ID}
     volumes:
       - type: bind
         source: ../..
@@ -273,13 +186,13 @@ services:
         condition: service_healthy
       localstack:
         condition: service_healthy
+    profiles:
+      - customImage
+      - app
 
   php-cli:
-    env_file: ./php/.env.app
-    image: laravelorbstack-php-cli
-    build:
-      dockerfile: ./php/Franken.Dockerfile
-    container_name: laravelorbstack-php-franken
+    env_file: ./php/.env.franken
+    image: laravelorbstack:php-franken
     working_dir: /app
     volumes:
       - type: bind
@@ -292,18 +205,12 @@ services:
         source: ./php/docker-php-ext-xdebug.ini
         target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     profiles:
+      - customImage
       - cli
 
   php-franken:
-    image: laravelorbstack-php-franken
-    build:
-      dockerfile: ./php/Franken.Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - USER_NAME=${USER_NAME}
+    image: laravelorbstack:php-franken
     container_name: laravelorbstack-php-franken
-    user: ${USER_ID}:${GROUP_ID}
     working_dir: /app
     volumes:
       - type: bind
@@ -337,6 +244,9 @@ services:
         condition: service_healthy
       localstack:
         condition: service_healthy
+    profiles:
+      - customImage
+      - app
 
 volumes:
   postgresql:
