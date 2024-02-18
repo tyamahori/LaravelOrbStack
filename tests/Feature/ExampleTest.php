@@ -3,12 +3,21 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Override;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+    use DatabaseTransactions;
+
+    #[Override]
+    public static function setUpBeforeClass(): void
+    {
+        echo shell_exec('php artisan -V');
+    }
+
     /**
      * A basic test example.
      *
@@ -18,11 +27,7 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
         Config::get('database');
-
         $response->assertStatus(200);
-
-        echo getenv('UNIQUE_TEST_TOKEN');
-
         $this->assertDatabaseMissing(
             'users',
             ['name' => '99']
@@ -37,12 +42,7 @@ class ExampleTest extends TestCase
     public function the_application_returns_a_successful_response1(): void
     {
         $response = $this->get('/');
-        Config::get('database');
-
         $response->assertStatus(200);
-
-        echo getenv('UNIQUE_TEST_TOKEN') . 'hohoge';
-
         $this->assertDatabaseMissing(
             'users',
             ['name' => '200']

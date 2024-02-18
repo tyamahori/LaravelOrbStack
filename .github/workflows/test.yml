@@ -1,0 +1,48 @@
+name: test
+
+on: push
+
+jobs:
+  build:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3
+      - name: Checkout
+        uses: actions/checkout@v4
+#      - uses: dorny/paths-filter@v3
+#        id: changes
+#        with:
+#          filters:
+      - name: Check Docker Image Cache
+        uses: ScribeMD/docker-cache@0.3.7
+        id: docker-cache
+        with:
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/local/compose.build.yaml') }}-${{ hashFiles('./.docker/local/php/Dockerfile') }}-${{ hashFiles('./.docker/local/php/Franken.Dockerfile') }}
+      - if: steps.docker-cache.outputs.cache-hit != 'true'
+        name: Cache Docker Image
+        run: task buildOnCI
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cache Docker images
+        uses: ScribeMD/docker-cache@0.3.7
+        with:
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/local/compose.build.yaml') }}-${{ hashFiles('./.docker/local/php/Dockerfile') }}-${{ hashFiles('./.docker/local/php/Franken.Dockerfile') }}
+      - name: Setup
+        run: task upOnCI
+      - name: test
+        run: task test
