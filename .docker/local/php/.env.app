@@ -3,7 +3,7 @@ APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=base64:zcGC9RB0cplYgwAIAJ1vnNVHsHN+FXqTB3g6WtTfZTU=
 APP_DEBUG=true
-APP_URL=http://php-app.laravelorbstack.orb.local
+APP_URL=http://php-app
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
@@ -12,8 +12,8 @@ LOG_LEVEL=debug
 DB_CONNECTION=pgsql
 # mysql
 
-DB_HOST=postgresql.laravelorbstack.orb.local
-# or mysql.laravelorbstack.orb.local
+DB_HOST=postgresql
+# or mysql
 
 DB_PORT=5432
 # or 3306
@@ -32,12 +32,12 @@ SESSION_LIFETIME=120
 
 MEMCACHED_HOST=127.0.0.1
 
-REDIS_HOST=redis.laravelorbstack.orb.local
+REDIS_HOST=redis
 REDIS_PASSWORD=null
 REDIS_PORT=6379
 
 MAIL_MAILER=smtp
-MAIL_HOST=mailpit.laravelorbstack.orb.local
+MAIL_HOST=mailpit
 
 MAIL_PORT=1025
 MAIL_USERNAME=null

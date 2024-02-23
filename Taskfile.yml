@@ -33,6 +33,11 @@ tasks:
       - cmd: "{{ .BUILD_BASE_COMMAND }} --profile 'build' build"
       - cmd: "{{ .BASE_COMMAND }} --profile 'minio-bucket' --profile '' pull"
       - cmd: "docker images laravelorbstack"
+  buildOnCI:
+    cmds:
+      - cmd: "{{ .BUILD_BASE_COMMAND }} --profile 'build' build"
+      - cmd: "{{ .BASE_COMMAND }} --profile 'minio-bucket' --profile '' pull"
+      - cmd: "docker images laravelorbstack"
   ps:
     cmds:
       - "{{ .BASE_COMMAND }} ps -a"
@@ -40,6 +45,21 @@ tasks:
     silent: false
     deps:
       - task: build
+    cmds:
+      - task: up
+      - "{{ .BASE_COMMAND }} run --rm minio-bucket"
+      - "{{ .BASE_COMMAND }} exec -it php-app composer install"
+      - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
+      - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
+      - "{{ .BASE_COMMAND }} exec -it php-app composer ide-helper"
+      - "{{ .BASE_COMMAND }} exec -it php-app ./artisan -V"
+      - "{{ .BASE_COMMAND }} exec -it php-app whoami"
+  images:
+    silent: false
+    cmds:
+      - "{{ .BASE_COMMAND }} images"
+  upOnCI:
+    silent: false
     cmds:
       - task: up
       - "{{ .BASE_COMMAND }} run --rm minio-bucket"
@@ -101,6 +121,14 @@ tasks:
       - exclude: .php-cs.fixer.cache
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan"
+  phpunit:
+    sources:
+      - ./**/*.php
+      - exclude: .rector
+      - exclude: .stan
+      - exclude: .php-cs.fixer.cache
+    cmds:
+      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpunit"
   rector:
     sources:
       - ./**/*.php
@@ -132,12 +160,19 @@ tasks:
       vars: [ CLI_ARGS ]
     cmds:
       - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan analyse -c phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G"
+  rectorOnSave:
+    silent: false
+    requires:
+      vars: [ CLI_ARGS ]
+    cmds:
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process {{ .CLI_ARGS }}"
   onSavePHP:
     silent: false
     deps:
       - fixerOnSave
       - stanOnSave
-  lint:
+      - rectorOnSave
+  test:
     silent: false
     sources:
       - ./**/*.php
@@ -145,3 +180,4 @@ tasks:
       - fixer
       - rector
       - stan
+      - phpunit

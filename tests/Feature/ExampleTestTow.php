@@ -17,11 +17,7 @@ class ExampleTestTow extends TestCase
     public function the_application_returns_a_successful_response(): void
     {
         $response = $this->get('/');
-        Config::get('database');
-
         $response->assertStatus(200);
-
-        echo getenv('UNIQUE_TEST_TOKEN');
 
         $this->assertDatabaseMissing(
             'users',
@@ -41,11 +37,6 @@ class ExampleTestTow extends TestCase
 
         $response->assertStatus(200);
 
-        echo getenv('UNIQUE_TEST_TOKEN') . 'hohoge';
-
-        $this->assertDatabaseMissing(
-            'users',
-            ['name' => '200']
-        );
+        $this->assertDatabaseEmpty('users');
     }
 }

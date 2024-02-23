@@ -4,15 +4,16 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Random\RandomException;
 
 class ExampleTest extends TestCase
 {
     /**
-     * A basic test example.
-     *
      * @test
+     * @throws RandomException
      */
-    public function that_true_is_true(): void
+    public function someHoge(): void
     {
+        self::assertTrue((bool)random_int(0, 1));
     }
 }

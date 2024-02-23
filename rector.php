@@ -12,6 +12,7 @@ return static function (RectorConfig $rectorConfig): void {
         'vendor',
         '_ide_*.php',
         '.phpstorm.meta.php',
+        'routes'
     ]);
     $rectorConfig->paths([
         'packages',

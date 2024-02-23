@@ -25,7 +25,7 @@ services:
         "CMD",
         "pg_isready",
         "-h",
-        "postgresql.laravelorbstack.orb.local",
+        "postgresql", # service名
         "-U",
         "sample",
         "-d",
@@ -54,7 +54,7 @@ services:
         "mysqladmin",
         "ping",
         "-h",
-        "mysql.laravelorbstack.orb.local",
+        "mysql",
         "-u",
         "sample",
         "-psample",
@@ -88,7 +88,7 @@ services:
         "ping",
         "-c",
         "3",
-        "mailpit.laravelorbstack.orb.local"
+        "mailpit"
       ]
       <<: *healthcheck-settings
 
@@ -111,7 +111,7 @@ services:
         "CMD",
         "curl",
         "-I",
-        "minio.laravelorbstack.orb.local:9000/minio/health/live"
+        "minio:9000/minio/health/live"
       ]
       <<: *healthcheck-settings
 
@@ -121,7 +121,7 @@ services:
     container_name: laravelorbstack-minio-bucket
     entrypoint: >
       sh -c "
-      until (mc config host add myminio http://minio.laravelorbstack.orb.local:9000 samplesample samplesample) do echo '...waiting...' && sleep 1; done;
+      until (mc config host add myminio http://minio:9000 samplesample samplesample) do echo '...waiting...' && sleep 1; done;
       mc mb myminio/sample-bucket;
       mc anonymous set public myminio/sample-bucket;
       "
@@ -191,8 +191,10 @@ services:
       - app
 
   php-cli:
-    env_file: ./php/.env.franken
+    env_file: ./php/.env.app
     image: laravelorbstack:php-franken
+    environment:
+      SERVER_NAME: http://php-franken
     working_dir: /app
     volumes:
       - type: bind
@@ -230,7 +232,9 @@ services:
         target: /config
 #     .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
 #     設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: ./php/.env.franken
+    env_file: ./php/.env.app
+    environment:
+      SERVER_NAME: http://php-franken
     depends_on:
       postgresql:
         condition: service_healthy
