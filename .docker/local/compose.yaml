@@ -162,6 +162,9 @@ services:
         source: ../..
         target: /var/www/html
       - type: bind
+        source: ./php/mpm_prefork.conf
+        target: /etc/apache2/mods-available/mpm_prefork.conf
+      - type: bind
         source: ./php/000-default.conf
         target: /etc/apache2/sites-available/000-default.conf
       - type: bind
@@ -200,6 +203,9 @@ services:
       - type: bind
         source: ./php/000-default.conf
         target: /etc/apache2/sites-available/000-default.conf
+      - type: bind
+        source: ./php/mpm_prefork.conf
+        target: /etc/apache2/mods-available/mpm_prefork.conf
       - type: bind
         source: ./php/php.ini
         target: /usr/local/etc/php/php.ini
