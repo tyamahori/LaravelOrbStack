@@ -31,7 +31,7 @@ RUN apt-get update \
 
 # Xdebugを使えるようにしている
 # 不要な場合は削除して良い
-RUN install-php-extensions xdebug && touch /tmp/xdebug.log && chmod 777 /tmp/xdebug.log
+RUN install-php-extensions xdebug
 
 RUN a2enmod rewrite headers
 
