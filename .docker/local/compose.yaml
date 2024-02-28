@@ -192,14 +192,14 @@ services:
 
   php-cli:
     env_file: ./php/.env.app
-    image: laravelorbstack:php-franken
-    environment:
-      SERVER_NAME: http://php-franken
-    working_dir: /app
+    image: laravelorbstack:php-apache
     volumes:
       - type: bind
         source: ../..
-        target: /app
+        target: /var/www/html
+      - type: bind
+        source: ./php/000-default.conf
+        target: /etc/apache2/sites-available/000-default.conf
       - type: bind
         source: ./php/php.ini
         target: /usr/local/etc/php/php.ini

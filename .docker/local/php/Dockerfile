@@ -4,14 +4,17 @@ ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
 
+ENV APACHE_RUN_USER=${USER_NAME} \
+    APACHE_RUN_GROUP=${USER_NAME}
+
 # ローカルユーザーをベースに新しくユーザー作成する
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /var/www/html \
-    && mkdir -p /${USER_NAME}/composer \
-    && chown ${USER_NAME}:${USER_NAME} /${USER_NAME}/composer
+    && mkdir -p /project/composer \
+    && chown ${USER_NAME}:${USER_NAME} /project/composer
 
-ENV COMPOSER_HOME=/${USER_NAME}/composer \
+ENV COMPOSER_HOME=/project/composer \
     PATH=$COMPOSER_HOME/vendor/bin:$PATH \
     COMPOSER_ALLOW_SUPERUSER=1 \
     DEBCONF_NOWARNINGS=yes \
