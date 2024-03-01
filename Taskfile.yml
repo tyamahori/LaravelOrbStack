@@ -11,6 +11,7 @@ vars:
   BUILD_BASE_COMMAND:
     USER_ID={{ .USER_ID }} GROUP_ID={{ .GROUP_ID }} USER_NAME={{ .USER_NAME }} docker compose -f .docker/local/compose.build.yaml
 silent: true
+method: timestamp
 
 tasks:
   default:
@@ -93,59 +94,110 @@ tasks:
     cmd: "{{ .BASE_COMMAND }} exec -u root -it php-franken bash"
   composer:
     sources:
-      - ./**/*.php
       - ./composer.json
       - ./composer.lock
-      - exclude: ./.rector
-      - exclude: ./.stan
-      - exclude: ./.php-cs.fixer.cache
-      - exclude: ./vendor
+    generates:
+      - ./vendor/composer/installed.json
+      - ./vendor/autoload.php
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli composer install"
+    status:
+      - test -d ./vendor
   composerUpdate:
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli composer update"
-  fixer:
+  composerDump:
+    deps:
+      - task: composer
     sources:
-      - ./**/*.php
-      - exclude: .rector
-      - exclude: .stan
-      - exclude: .php-cs.fixer.cache
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
+    cmds:
+      - "{{ .BASE_COMMAND }} run --rm php-cli composer dump-autoload"
+  fixer:
+    deps:
+      - task: composer
+    sources:
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
+    generates:
+      - ./php-cs-fixer.cache
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php"
   stan:
+    deps:
+      - task: composer
     sources:
-      - ./**/*.php
-      - exclude: .rector
-      - exclude: .stan
-      - exclude: .php-cs.fixer.cache
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
+    generates:
+      - ./.stan
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan"
   phpunit:
+    deps:
+      - task: composer
     sources:
-      - ./**/*.php
-      - exclude: .rector
-      - exclude: .stan
-      - exclude: .php-cs.fixer.cache
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpunit"
   rector:
+    deps:
+      - task: composer
     sources:
-      - ./**/*.php
-      - exclude: ./.rector
-      - exclude: ./.stan
-      - exclude: ./.php-cs.fixer.cache
-      - exclude: ./vendor
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
     cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector"
+  lint:
+    deps:
+      - rector
+      - stan
+      - fixer
   ide-helper:
     deps:
       - task: composer
     sources:
-      - ./**/*.php
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
     cmd: "{{ .BASE_COMMAND }} run --rm php-cli composer ide-helper"
   bucket:
-    sources:
-      - '**/*.*'
     cmds:
       - "{{ .BASE_COMMAND }} run --rm minio-bucket"
   fixerOnSave:
@@ -153,7 +205,7 @@ tasks:
     requires:
       vars: [ CLI_ARGS ]
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --path-mode=intersection {{ .CLI_ARGS }}"
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/php-cs-fixer fix --using-cache=no --config=.php-cs-fixer.dist.php --path-mode=intersection {{ .CLI_ARGS }}"
   stanOnSave:
     silent: false
     requires:
@@ -172,12 +224,3 @@ tasks:
       - fixerOnSave
       - stanOnSave
       - rectorOnSave
-  test:
-    silent: false
-    sources:
-      - ./**/*.php
-    deps:
-      - fixer
-      - rector
-      - stan
-      - phpunit
