@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravelsss",
+    "name": "tyamahori/laravelorbstack",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Laravel and OrbStack by tyamahori!!",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
