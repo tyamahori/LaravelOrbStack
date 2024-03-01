@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
-use Override;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Override;
 use Throwable;
 
 class Handler extends ExceptionHandler

@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-$finder = PhpCsFixer\Finder::create()
+use PhpCsFixer\Finder;
+use PhpCsFixer\Config;
+
+$finder = Finder::create()
     ->exclude([
         __DIR__ . '/bootstrap',
     ])
@@ -17,7 +20,7 @@ $finder = PhpCsFixer\Finder::create()
         __DIR__ . '/tests',
     ]);
 
-return (new PhpCsFixer\Config())
+return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,

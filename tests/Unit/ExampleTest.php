@@ -3,17 +3,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Random\RandomException;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * @test
-     * @throws RandomException
-     */
+    #[Test]
     public function someHoge(): void
     {
-        self::assertTrue((bool)random_int(0, 1));
+        self::assertSame(1, true);
     }
 }

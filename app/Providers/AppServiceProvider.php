@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Override;
 use App;
 use Illuminate\Config\Repository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Override;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use URL;
