@@ -36,6 +36,7 @@ tasks:
   buildOnCI:
     cmds:
       - cmd: "{{ .BUILD_BASE_COMMAND }} --profile 'build' build"
+      - cmd: "{{ .BASE_COMMAND }} pull redis localstack mailpit mysql postgresql"
       - cmd: "docker images laravelorbstack"
   ps:
     cmds:
