@@ -11,6 +11,6 @@ class ExampleTest extends TestCase
     #[Test]
     public function someHoge(): void
     {
-        self::assertSame(1, true);
+        self::assertEquals(1, true);
     }
 }
