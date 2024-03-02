@@ -11,7 +11,6 @@ vars:
   BUILD_BASE_COMMAND:
     USER_ID={{ .USER_ID }} GROUP_ID={{ .GROUP_ID }} USER_NAME={{ .USER_NAME }} docker compose -f .docker/local/compose.build.yaml
 silent: true
-method: timestamp
 
 tasks:
   default:
@@ -131,8 +130,6 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
-    generates:
-      - ./php-cs-fixer.cache
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php"
   stan:
@@ -147,8 +144,6 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
-    generates:
-      - ./.stan
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan"
   phpunit:
