@@ -32,12 +32,10 @@ tasks:
     cmds:
       - task: cleanUp
       - cmd: "{{ .BUILD_BASE_COMMAND }} --profile 'build' build"
-      - cmd: "{{ .BASE_COMMAND }} --profile 'minio-bucket' --profile '' pull"
       - cmd: "docker images laravelorbstack"
   buildOnCI:
     cmds:
       - cmd: "{{ .BUILD_BASE_COMMAND }} --profile 'build' build"
-      - cmd: "{{ .BASE_COMMAND }} --profile 'minio-bucket' --profile '' pull"
       - cmd: "docker images laravelorbstack"
   ps:
     cmds:
@@ -48,7 +46,7 @@ tasks:
       - task: build
     cmds:
       - task: up
-      - "{{ .BASE_COMMAND }} run --rm minio-bucket"
+      - task: bucket
       - "{{ .BASE_COMMAND }} exec -it php-app composer install"
       - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
       - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
@@ -63,7 +61,7 @@ tasks:
     silent: false
     cmds:
       - task: up
-      - "{{ .BASE_COMMAND }} run --rm minio-bucket"
+      - task: bucket
       - "{{ .BASE_COMMAND }} exec -it php-app composer install"
       - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
       - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
@@ -199,7 +197,12 @@ tasks:
     cmd: "{{ .BASE_COMMAND }} run --rm php-cli composer ide-helper"
   bucket:
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm minio-bucket"
+      - "{{ .BASE_COMMAND }} exec minio bash -c
+      'mc config host add myminio http://minio:9000 samplesample samplesample &&
+       mc mb myminio/sample-bucket &&
+       mc anonymous set public myminio/sample-bucket
+       '
+      "
   fixerOnSave:
     silent: false
     requires:

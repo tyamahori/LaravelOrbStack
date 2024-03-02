@@ -19,3 +19,9 @@ services:
         - USER_NAME=${USER_NAME}
     profiles:
       - build
+  bucket:
+    image: laravelorbstack:s3
+    build:
+      dockerfile: s3/Dockerfile
+    profiles:
+      - build
