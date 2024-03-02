@@ -1,3 +1,7 @@
+FROM golang:alpine as build
+
+RUN go install github.com/go-task/task/v3/cmd/task@latest
+
 FROM php:8.3-apache
 
 ARG USER_ID
@@ -21,6 +25,7 @@ ENV COMPOSER_HOME=/project/composer \
 
 COPY --from=mlocati/php-extension-installer:2.2 /usr/bin/install-php-extensions /usr/local/bin/
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+COPY --from=build /go/bin/task /usr/bin/task
 
 # パッケージインストール
 RUN apt-get update \
