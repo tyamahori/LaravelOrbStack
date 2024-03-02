@@ -45,4 +45,4 @@ jobs:
       - name: Setup
         run: task upOnCI
       - name: test
-        run: task test
+        run: task phpunit
