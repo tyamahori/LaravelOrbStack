@@ -30,7 +30,7 @@ tasks:
     silent: false
     cmds:
       - task: cleanUp
-      - cmd: "{{ .BUILD_BASE_COMMAND }} --profile 'build' build"
+      - cmd: "{{ .BUILD_BASE_COMMAND }} --profile 'build' build --no-cache"
       - cmd: "docker images laravelorbstack"
   buildOnCI:
     cmds:
