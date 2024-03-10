@@ -9,16 +9,16 @@ services:
         - USER_NAME=${USER_NAME}
     profiles:
       - build
-  franken:
-    image: laravelorbstack:php-franken
-    build:
-      dockerfile: ./php/Franken.Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - USER_NAME=${USER_NAME}
-    profiles:
-      - build
+#  franken:
+#    image: laravelorbstack:php-franken
+#    build:
+#      dockerfile: ./php/Franken.Dockerfile
+#      args:
+#        - USER_ID=${USER_ID}
+#        - GROUP_ID=${GROUP_ID}
+#        - USER_NAME=${USER_NAME}
+#    profiles:
+#      - build
   bucket:
     image: laravelorbstack:s3
     build:
