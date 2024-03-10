@@ -19,7 +19,7 @@ ENV COMPOSER_HOME=/project/composer \
     PATH=$COMPOSER_HOME/vendor/bin:$PATH \
     COMPOSER_ALLOW_SUPERUSER=1 \
     DEBCONF_NOWARNINGS=yes \
-    APACHE_LOG_DIR=/var/log/apache2 \
+    APACHE_LOG_DIR=/var/www/html/storage/logs \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
 
