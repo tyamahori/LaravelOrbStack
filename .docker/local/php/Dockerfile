@@ -29,7 +29,7 @@ COPY --from=build /go/bin/task /usr/bin/task
 # パッケージインストール
 RUN apt-get update \
     && apt-get install -yq git vim dnsutils iputils-ping iproute2 default-mysql-client unzip \
-    && install-php-extensions redis gd opcache intl zip bcmath pdo_mysql pdo_pgsql pgsql @composer-2 \
+    && install-php-extensions redis gd opcache intl zip bcmath pdo_mysql pdo_pgsql pgsql imagick @composer-2 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Xdebugを使えるようにしている
