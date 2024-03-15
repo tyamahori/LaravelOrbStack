@@ -4,7 +4,8 @@ LaravelをOrbStackで動かすサンプルです。環境を立ち上げたあ�
 
 # 前提
 - macOS
-- OrbStack v0.16.0以降がインストールされていること
+- [OrbStack](https://orbstack.dev/) がインストールされていること
+- [Task](https://taskfile.dev/) がインストールされていること
 
 # 用途
 - OrbStackでLaravelを動かすとどうなるかを確認します
