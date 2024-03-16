@@ -45,6 +45,9 @@ jobs:
       - name: Setup
         run: task upOnCI
       - name: lint
-        run: task lint
+        run: |
+          task rector
+          task stan
+          task fixer
       - name: test
         run: task phpunit
