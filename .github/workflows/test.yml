@@ -46,7 +46,7 @@ jobs:
         run: task upOnCI
       - name: lint
         run: |
-          task rector
+          task rectorDryRun
           task stan
           task fixer
       - name: test
