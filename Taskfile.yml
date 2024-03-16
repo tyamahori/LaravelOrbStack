@@ -173,6 +173,19 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector"
+  rectorDryRun:
+    deps:
+      - task: composer
+    sources:
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
+    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector --dry-run"
   lint:
     deps:
       - rector
