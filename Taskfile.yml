@@ -118,7 +118,7 @@ tasks:
       - ./tests/**/*.php
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli composer dump-autoload"
-  fixer:
+  ecs:
     deps:
       - task: composer
     sources:
@@ -131,7 +131,7 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php"
+      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs"
   stan:
     deps:
       - task: composer
@@ -190,7 +190,7 @@ tasks:
     deps:
       - rector
       - stan
-      - fixer
+      - ecs
   ide-helper:
     deps:
       - task: composer
@@ -212,12 +212,12 @@ tasks:
        mc anonymous set public myminio/sample-bucket
        '
       "
-  fixerOnSave:
+  ecsOnSave:
     silent: false
     requires:
       vars: [ CLI_ARGS ]
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/php-cs-fixer fix --using-cache=no --config=.php-cs-fixer.dist.php --path-mode=intersection {{ .CLI_ARGS }}"
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check --fix {{ .CLI_ARGS }}"
   stanOnSave:
     silent: false
     requires:
@@ -233,7 +233,7 @@ tasks:
   onSavePHP:
     silent: false
     deps:
-      - fixerOnSave
+      - ecsOnSave
       - stanOnSave
       - rectorOnSave
   cli:
