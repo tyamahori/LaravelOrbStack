@@ -236,3 +236,9 @@ tasks:
       - fixerOnSave
       - stanOnSave
       - rectorOnSave
+  cli:
+    silent: false
+    requires:
+      vars: [ CLI_ARGS ]
+    cmds:
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli {{ .CLI_ARGS }}"
