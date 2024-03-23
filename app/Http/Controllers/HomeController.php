@@ -8,6 +8,7 @@ use Illuminate\Config\Repository;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Routing\UrlGenerator;
 use Psr\Log\LoggerInterface;
+
 use function assert;
 use function is_string;
 

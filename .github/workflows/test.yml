@@ -48,6 +48,6 @@ jobs:
         run: |
           task rectorDryRun
           task stan
-          task fixer
+          task ecs
       - name: test
         run: task phpunit
