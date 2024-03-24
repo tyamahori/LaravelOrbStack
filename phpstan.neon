@@ -15,6 +15,7 @@ parameters:
     - ./vendor
     - _ide_*.php
     - .phpstorm.meta.php
+    - ecs.php
   tmpDir: .stan
   strictRules:
     allRules: true

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
@@ -69,6 +70,9 @@ return ECSConfig::configure()
         __DIR__ . '/routes',
         __DIR__ . '/tests',
     ])
+    ->withCache(
+        __DIR__ . '/.ecs'
+    )
     ->withPhpCsFixerSets(
         php80MigrationRisky: true,
         php81Migration: true,
