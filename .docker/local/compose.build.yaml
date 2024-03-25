@@ -2,11 +2,13 @@ services:
   apache:
     image: laravelorbstack:php-apache
     build:
-      dockerfile: ./php/Dockerfile
+      context: ../..
+      dockerfile: .docker/local/php/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
         - USER_NAME=${USER_NAME}
+      target: local
     profiles:
       - build
   bucket:
