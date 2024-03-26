@@ -19,7 +19,6 @@ ENV COMPOSER_HOME=/composer \
     PATH=$COMPOSER_HOME/vendor/bin:$PATH \
     COMPOSER_ALLOW_SUPERUSER=1 \
     DEBCONF_NOWARNINGS=yes \
-    APACHE_LOG_DIR=/var/www/html/storage/logs \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
 
@@ -34,15 +33,23 @@ RUN apt-get update \
     && a2enmod rewrite headers
 
 FROM base as local
+ENV APACHE_LOG_DIR=/var/www/html/storage/logs
 RUN install-php-extensions xdebug
 USER ${USER_NAME}
 
-FROM base as ci
+FROM base as develop
 USER ${USER_NAME}
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 RUN composer install
 
 FROM base as prod
+ENV APACHE_LOG_DIR=/var/log/apache2
 USER ${USER_NAME}
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
-RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist
+COPY --chown=${USER_NAME}:${USER_NAME} .docker/local/php/000-default.conf  /etc/apache2/sites-available/000-default.conf
+COPY --chown=${USER_NAME}:${USER_NAME} .docker/local/php/mpm_prefork.conf  /etc/apache2/mods-available/mpm_prefork.conf
+COPY --chown=${USER_NAME}:${USER_NAME} .docker/local/php/php.ini  /usr/local/etc/php/php.ini
+RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
+    composer dump-autoload && \
+    php artisan clear-compiled && \
+    php artisan optimize:clear

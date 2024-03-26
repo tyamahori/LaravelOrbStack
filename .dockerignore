@@ -5,7 +5,6 @@
 .task
 .rector
 .idea
-.docker
 .dockerignore
 .gitignore
 .gitattributes
