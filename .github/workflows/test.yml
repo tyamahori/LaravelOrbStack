@@ -23,7 +23,7 @@ jobs:
         uses: ScribeMD/docker-cache@0.3.7
         id: docker-cache
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/local/compose.build.yaml') }}-${{ hashFiles('./.docker/local/php/Dockerfile') }}-${{ hashFiles('./.docker/local/php/Franken.Dockerfile')}}-${{ hashFiles('./.docker/local/s3/Dockerfile') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/local/compose.build.yaml') }}-${{ hashFiles('./.docker/php/Dockerfile') }}-${{ hashFiles('./.docker/local/php/Franken.Dockerfile')}}-${{ hashFiles('./.docker/local/s3/Dockerfile') }}
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
         run: task buildOnCI
