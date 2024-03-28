@@ -11,7 +11,9 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.8",
-        "league/flysystem-aws-s3-v3": "^3.16"
+        "league/flysystem-aws-s3-v3": "^3.16",
+        "open-telemetry/opentelemetry": "^1.0",
+        "php-http/httplug": "^2.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",
