@@ -5,13 +5,14 @@ namespace Tests;
 
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
+use Override;
 
 trait CreatesApplication
 {
     /**
      * Creates the application.
      */
-    public function createApplication(): Application
+    #[Override] final public function createApplication(): Application
     {
         $app = require __DIR__.'/../bootstrap/app.php';
 
