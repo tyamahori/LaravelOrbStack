@@ -3,7 +3,7 @@ services:
     image: laravelorbstack:php-apache
     build:
       context: ../..
-      dockerfile: .docker/local/php/Dockerfile
+      dockerfile: .docker/php/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
