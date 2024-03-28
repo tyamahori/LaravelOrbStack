@@ -93,7 +93,7 @@ services:
       <<: *healthcheck-settings
 
   minio:
-    image: laravelorbstack:s3
+    image: laravelorbstack/s3:20240328
     container_name: laravelorbstack-minio
     command: server /export --console-address ":80"
     volumes:
@@ -139,8 +139,8 @@ services:
         target: /var/lib/localstack
 
   php-app:
-    image: laravelorbstack:php-apache
-    container_name: laravelorbstack-php-app
+    image: laravelorbstack/php-apache:8.3
+    container_name: laravelorbstack-php
     volumes:
       - type: bind
         source: ../..
@@ -179,7 +179,7 @@ services:
 
   php-cli:
     env_file: ./php/.env.app
-    image: laravelorbstack:php-apache
+    image: laravelorbstack/php-apache:8.3
     volumes:
       - type: bind
         source: ../..

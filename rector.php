@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
+use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\SetList;
 
 return static function (RectorConfig $rectorConfig): void {
@@ -12,7 +13,7 @@ return static function (RectorConfig $rectorConfig): void {
         'vendor',
         '_ide_*.php',
         '.phpstorm.meta.php',
-        'routes'
+        'routes',
     ]);
     $rectorConfig->paths([
         'packages',
@@ -35,6 +36,8 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::TYPE_DECLARATION,
         SetList::INSTANCEOF,
         SetList::STRICT_BOOLEANS,
+        PHPUnitSetList::PHPUNIT_100,
+        PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
     ]);
     $rectorConfig->importNames();
     $rectorConfig->parallel();
