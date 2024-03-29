@@ -62,7 +62,7 @@ tasks:
       - "{{ .BASE_COMMAND }} exec -it php-app whoami"
   images:
     cmds:
-      - "{{ .BASE_COMMAND }} images"
+      - "docker images"
   upOnCI:
     cmds:
       - task: up
@@ -138,8 +138,6 @@ tasks:
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs"
   stan:
-    deps:
-      - task: composer
     sources:
       - ./packages/**/*.php
       - ./app/**/*.php
@@ -165,9 +163,7 @@ tasks:
       - ./tests/**/*.php
     cmds:
       - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpunit"
-  rector:
-    deps:
-      - task: composer
+  runRector:
     sources:
       - ./packages/**/*.php
       - ./app/**/*.php
@@ -178,6 +174,20 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector"
+  runEcs:
+    sources:
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
+    requires:
+      vars: [ CLI_ARGS ]
+    cmds:
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check --fix"
   rectorDryRun:
     deps:
       - task: composer
@@ -190,12 +200,18 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
-    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector --dry-run"
-  lint:
+    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process --dry-run"
+  runLint:
+    internal: true
     deps:
-      - rector
       - stan
-      - ecs
+      - runRector
+      - runEcs
+  lintCode:
+    deps:
+      - task: composer
+    cmds:
+      - task: runLint
   ide-helper:
     deps:
       - task: composer
