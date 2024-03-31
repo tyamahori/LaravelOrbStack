@@ -37,7 +37,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: build
+    needs: buildAndLint
     steps:
       - name: Install Task
         uses: arduino/setup-task@v2
