@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Config\Repository;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\ServiceProvider;
 use Override;
 use Psr\Container\ContainerExceptionInterface;
@@ -21,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     #[Override]
     public function register(): void
     {
-
+        Date::use(CarbonImmutable::class);
     }
 
     /**

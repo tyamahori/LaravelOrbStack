@@ -57,6 +57,7 @@ use PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer;
 use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
 use PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
+use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return ECSConfig::configure()
@@ -88,7 +89,7 @@ return ECSConfig::configure()
     )
     ->withConfiguredRule(
         MethodArgumentSpaceFixer::class,
-        ['keep_multiple_spaces_after_comma' => false],
+        ['keep_multiple_spaces_after_comma' => true],
     )
     ->withConfiguredRule(
         NoExtraBlankLinesFixer::class,
@@ -233,4 +234,5 @@ return ECSConfig::configure()
         SingleTraitInsertPerStatementFixer::class,
         PhpUnitDataProviderNameFixer::class,
         PhpUnitDataProviderReturnTypeFixer::class,
+        StatementIndentationFixer::class,
     ]);

@@ -31,7 +31,6 @@ final class SetUpTest implements PhpunitExtension
             public function notify(Started $event): void
             {
                 echo shell_exec('DB_SCHEMA=test php artisan db:wipe');
-                echo shell_exec('DB_SCHEMA=test php artisan migrate');
             }
         };
     }

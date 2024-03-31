@@ -29,9 +29,23 @@ tasks:
   buildPhpImage:
     requires:
       vars: [ CLI_ARGS ]
-    cmd: docker build -t {{ .PHP_TAG }} -f {{ .PHP_DOCKERFILE_PATH }} --target={{ .CLI_ARGS | default "local" }} --no-cache --build-arg USER_ID={{ .USER_ID }} --build-arg GROUP_ID={{ .GROUP_ID }} --build-arg USER_NAME={{ .USER_NAME }} .
+    cmd: |
+      docker build \
+        -t {{ .PHP_TAG }} \
+        -f {{ .PHP_DOCKERFILE_PATH }} \
+        --target={{ .CLI_ARGS | default "local" }} \
+        --no-cache \
+        --build-arg USER_ID={{ .USER_ID }} \
+        --build-arg GROUP_ID={{ .GROUP_ID }} \
+        --build-arg USER_NAME={{ .USER_NAME }} \
+        .
   buildS3Image:
-    cmd: docker build -t {{ .S3_TAG }} -f {{ .S3_DOCKERFILE_PATH }} --no-cache .
+    cmd: |
+      docker build \
+        -t {{ .S3_TAG }} \
+        -f {{ .S3_DOCKERFILE_PATH }} \
+        --no-cache \
+        .
   pullImages:
     cmd: "{{ .BASE_COMMAND }} pull redis localstack mailpit mysql postgresql"
   cleanUp:

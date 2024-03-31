@@ -3,7 +3,7 @@ name: test
 on: push
 
 jobs:
-  build:
+  buildAndLint:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -27,6 +27,13 @@ jobs:
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
         run: task buildImages
+      - name: Setup
+        run: task upOnCI
+      - name: lint
+        run: |
+          task rectorDryRun
+          task stan
+          task ecs
 
   test:
     runs-on: ubuntu-latest
@@ -44,10 +51,5 @@ jobs:
           key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php/Dockerfile') }}-${{ hashFiles('./.docker/local/php/Franken.Dockerfile')}}-${{ hashFiles('./.docker/local/s3/Dockerfile') }}
       - name: Setup
         run: task upOnCI
-      - name: lint
-        run: |
-          task rectorDryRun
-          task stan
-          task ecs
       - name: test
         run: task phpunit
