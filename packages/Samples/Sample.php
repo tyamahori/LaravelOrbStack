@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LaravelOrbStack;
+namespace LaravelOrbStack\Samples;
 
 class Sample
 {

@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace LaravelOrbStack\Samples;
 
+use App\Http\Controllers\Controller;
 use Carbon\CarbonImmutable;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Support\Renderable;
