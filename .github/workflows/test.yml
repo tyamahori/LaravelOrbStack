@@ -27,8 +27,6 @@ jobs:
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
         run: task buildImages
-      - name: Setup
-        run: task upOnCI
       - name: lint
         run: |
           task rectorDryRun
