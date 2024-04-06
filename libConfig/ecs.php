@@ -60,19 +60,20 @@ use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
+$dirname = dirname(__FILE__, 2);
 return ECSConfig::configure()
     ->withPaths([
-        __DIR__ . '/app',
-        __DIR__ . '/bootstrap/app.php',
-        __DIR__ . '/config',
-        __DIR__ . '/packages',
-        __DIR__ . '/public',
-        __DIR__ . '/resources',
-        __DIR__ . '/routes',
-        __DIR__ . '/tests',
+        "{$dirname}/app",
+        "{$dirname}/bootstrap/app.php",
+        "{$dirname}/config",
+        "{$dirname}/packages",
+        "{$dirname}/public",
+        "{$dirname}/resources",
+        "{$dirname}/routes",
+        "{$dirname}/tests",
     ])
     ->withCache(
-        __DIR__ . '/.ecs'
+        "{$dirname}/.tempCache/.ecs"
     )
     ->withPhpCsFixerSets(
         php80MigrationRisky: true,

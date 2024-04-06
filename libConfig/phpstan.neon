@@ -1,0 +1,19 @@
+includes:
+ - baseline.php
+parameters:
+  level: max
+  paths:
+    - ../packages
+    - ../app
+    - ../config
+    - ../database
+    - ../public
+    - ../resources
+    - ../tests
+    - ../routes
+  excludePaths:
+    - ../vendor
+    - ../.tempCache
+  tmpDir: ../.tempCache/.stan
+  strictRules:
+    allRules: true

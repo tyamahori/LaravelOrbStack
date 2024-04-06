@@ -150,7 +150,7 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs"
+      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check -c ./libConfig/ecs.php"
   stan:
     sources:
       - ./packages/**/*.php
@@ -162,7 +162,7 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan"
+      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan analyze -c libConfig/phpstan.neon"
   phpunit:
     deps:
       - task: composer
@@ -176,7 +176,7 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpunit"
+      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpunit -c ./libConfig/phpunit.xml {{ .CLI_ARGS }}"
   runRector:
     sources:
       - ./packages/**/*.php
@@ -187,7 +187,7 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
-    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector"
+    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector -c ./libConfig/rector.php"
   runEcs:
     sources:
       - ./packages/**/*.php
@@ -201,7 +201,7 @@ tasks:
     requires:
       vars: [ CLI_ARGS ]
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check --fix"
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix"
   rectorDryRun:
     deps:
       - task: composer
@@ -214,7 +214,7 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
-    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process --dry-run"
+    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process --dry-run ./libConfig/rector.php"
   runLint:
     internal: true
     deps:
@@ -251,17 +251,17 @@ tasks:
     requires:
       vars: [ CLI_ARGS ]
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check --fix {{ .CLI_ARGS }}"
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix {{ .CLI_ARGS }}"
   stanOnSave:
     requires:
       vars: [ CLI_ARGS ]
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan analyse -c phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G"
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G"
   rectorOnSave:
     requires:
       vars: [ CLI_ARGS ]
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process {{ .CLI_ARGS }}"
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }}"
   onSavePHP:
     deps:
       - ecsOnSave

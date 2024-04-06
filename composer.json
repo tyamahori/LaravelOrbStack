@@ -61,9 +61,9 @@
             "@php artisan key:generate --ansi"
         ],
         "ide-helper": [
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:models --nowrite",
-            "@php artisan ide-helper:meta"
+            "@php artisan ide-helper:generate .tempCache/.ide_helper.php",
+            "@php artisan ide-helper:models --nowrite --dir=./packages --dir=./app -F .tempCache/.model.php",
+            "@php artisan ide-helper:meta -F .tempCache/.meta.php"
         ]
 
     },

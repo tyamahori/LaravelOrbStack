@@ -8,11 +8,9 @@ use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\SetList;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->cacheDirectory('./.rector');
+    $rectorConfig->cacheDirectory('./.tempCache/.rector');
     $rectorConfig->skip([
         'vendor',
-        '_ide_*.php',
-        '.phpstorm.meta.php',
         'routes',
     ]);
     $rectorConfig->paths([

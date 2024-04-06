@@ -17,13 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-.deptrac.cache
-.stan
-.php-cs-fixer.cache
-.rector
-_ide_helper.php
-_ide_helper_models.php
-.phpstorm.meta.php
 .task
 xdebug.log
-.ecs
+.tempCache
+libConfig
