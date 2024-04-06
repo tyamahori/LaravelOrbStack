@@ -19,5 +19,4 @@ yarn-error.log
 /.vscode
 .task
 xdebug.log
-.tempCache
 libConfig
