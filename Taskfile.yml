@@ -16,6 +16,7 @@ vars:
     sh: id -u
   GROUP_ID:
     sh: id -g
+  SSH_PATH: .ssh
 
 tasks:
   default:
@@ -50,8 +51,8 @@ tasks:
     cmd: "{{ .BASE_COMMAND }} pull redis localstack mailpit mysql postgresql"
   cleanUp:
     cmds:
+      - task: removeVendor
       - cmd: "{{ .BASE_COMMAND }} --profile '*' down -v --remove-orphans --rmi all"
-      - cmd: "{{ .BASE_COMMAND }} images"
   buildImages:
     deps:
       - task: buildPhpImage
@@ -63,8 +64,9 @@ tasks:
     cmds:
       - "{{ .BASE_COMMAND }} ps -a"
   init:
-    cmds:
+    deps:
       - task: cleanUp
+    cmds:
       - task: buildImages
       - task: up
       - task: bucket
@@ -271,3 +273,7 @@ tasks:
     requires:
       vars: [ CLI_ARGS ]
     cmd: '{{ .BASE_COMMAND }} run --rm php-cli sh -c "{{ .CLI_ARGS | default "php -v && php artisan -V" }}"'
+
+  composerRefresh:
+    cmds:
+      - "{{ .BASE_COMMAND }} run -v ~/{{ .SSH_PATH }}:/home/{{ .USER_NAME }}/{{ .SSH_PATH }} --rm php-cli sh -c 'rm -rf ./vendor && composer clear-cache && composer install'"
