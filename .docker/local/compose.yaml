@@ -201,18 +201,8 @@ services:
       - cli
 volumes:
   postgresql:
-    name: laravelorbstack-postgresql
   mysql:
-    name: laravelorbstack-mysql
   redis:
-    name: laravelorbstack-redis
   minio:
-    name: laravelorbstack-minio
   minio-config:
-    name: laravelorbstack-minio-config
   localstack:
-    name: laravelorbstack-locakstack
-  caddy-data:
-    name: laravelorbstack-caddy-data
-  caddy-config:
-    name: laravelorbstack-caddy-config

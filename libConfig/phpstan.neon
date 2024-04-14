@@ -14,6 +14,7 @@ parameters:
   excludePaths:
     - ../vendor
     - ../.tempCache
+    - ../libConfig
   tmpDir: ../.tempCache/.stan
   strictRules:
     allRules: true
