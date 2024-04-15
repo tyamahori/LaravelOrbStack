@@ -1,6 +1,8 @@
-FROM golang:alpine as build
+FROM golang:1.22.2 as build
 
 RUN go install github.com/go-task/task/v3/cmd/task@latest
+RUN go install github.com/catatsuy/purl@latest
+RUN go install github.com/k1LoW/runn/cmd/runn@latest
 
 FROM php:8.3-apache as base
 
@@ -23,7 +25,6 @@ ENV COMPOSER_HOME=/composer \
     APACHE_RUN_GROUP=${USER_NAME}
 
 COPY --from=mlocati/php-extension-installer:2.2 /usr/bin/install-php-extensions /usr/local/bin/
-COPY --from=build /go/bin/task /usr/bin/task
 
 # パッケージインストール
 RUN apt-get update \
@@ -33,6 +34,11 @@ RUN apt-get update \
     && a2enmod rewrite headers
 
 FROM base as local
+
+COPY --from=build /go/bin/task /usr/bin/task
+COPY --from=build /go/bin/purl /usr/bin/purl
+COPY --from=build /go/bin/runn /usr/bin/runn
+
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
 RUN install-php-extensions xdebug
 USER ${USER_NAME}
