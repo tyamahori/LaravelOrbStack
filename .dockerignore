@@ -1,5 +1,4 @@
 .idea
-.docker
 .git
 .github
 .task
@@ -11,3 +10,4 @@ vendor
 README.md
 Taskfile.yml
 libConfig
+.editorconfig
