@@ -216,7 +216,7 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
-    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process --dry-run ./libConfig/rector.php"
+    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
   runLint:
     internal: true
     deps:
