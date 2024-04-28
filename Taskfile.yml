@@ -277,3 +277,9 @@ tasks:
   composerRefresh:
     cmds:
       - "{{ .BASE_COMMAND }} run -v ~/{{ .SSH_PATH }}:/home/{{ .USER_NAME }}/{{ .SSH_PATH }} --rm php-cli sh -c 'rm -rf ./vendor && composer clear-cache && composer install'"
+
+  flyIoDeploy:
+    cmd: fly deploy --app html2 --dockerfile .docker/php/Dockerfile --build-target flyio
+
+  flyIoSsh:
+    cmd: fly ssh console
