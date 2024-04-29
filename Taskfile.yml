@@ -2,7 +2,7 @@ version: '3'
 silent: false
 vars:
   COMPOSE_FILE_PATH: .docker/local/compose.yaml
-  PHP_DOCKERFILE_PATH: .docker/php/Dockerfile
+  PHP_DOCKERFILE_PATH: .docker/php.Dockerfile
   S3_DOCKERFILE_PATH: .docker/local/s3/Dockerfile
 
   PHP_TAG: laravelorbstack/php-apache:8.3
@@ -105,12 +105,8 @@ tasks:
       - "{{ .BASE_COMMAND }} down -v"
   exec-php-app-as-user:
     cmd: "{{ .BASE_COMMAND }} exec -it php-app bash"
-  exec-php-franken-as-user:
-    cmd: "{{ .BASE_COMMAND }} exec -it php-franken bash"
   exec-php-app-as-root:
     cmd: "{{ .BASE_COMMAND }} exec -u root -it php-app bash"
-  exec-php-franken-as-root:
-    cmd: "{{ .BASE_COMMAND }} exec -u root -it php-franken bash"
   composer:
     sources:
       - ./composer.json
@@ -278,8 +274,15 @@ tasks:
     cmds:
       - "{{ .BASE_COMMAND }} run -v ~/{{ .SSH_PATH }}:/home/{{ .USER_NAME }}/{{ .SSH_PATH }} --rm php-cli sh -c 'rm -rf ./vendor && composer clear-cache && composer install'"
 
-  flyIoDeploy:
-    cmd: fly deploy --app html2 --dockerfile .docker/php/Dockerfile --build-target flyio
+  deployFlyIo:
+    cmd: |
+      fly deploy \
+        --app html2 \
+        --dockerfile {{ .PHP_DOCKERFILE_PATH }} \
+        --build-target flyio \
+        --build-arg USER_ID={{ .USER_ID }} \
+        --build-arg GROUP_ID={{ .GROUP_ID }} \
+        --build-arg USER_NAME={{ .USER_NAME }}
 
-  flyIoSsh:
+  sshFlyIo:
     cmd: fly ssh console
