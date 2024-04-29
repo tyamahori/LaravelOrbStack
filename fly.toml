@@ -7,11 +7,6 @@ app = 'html2'
 primary_region = 'nrt'
 console_command = 'php /var/www/html/artisan tinker'
 
-[build]
-  [build.args]
-    NODE_VERSION = '18'
-    PHP_VERSION = '8.3'
-
 [env]
   APP_ENV = 'production'
   LOG_CHANNEL = 'stderr'
