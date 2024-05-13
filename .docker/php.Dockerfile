@@ -47,10 +47,10 @@ USER ${USER_NAME}
 
 FROM base as develop
 USER ${USER_NAME}
-COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/php.ini /usr/local/etc/php/php.ini
+COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 RUN composer install && \
     composer dump-autoload && \
     php artisan clear-compiled && \
@@ -59,10 +59,10 @@ RUN composer install && \
 FROM base as prod
 ENV APACHE_LOG_DIR=/var/log/apache2
 USER ${USER_NAME}
-COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/php.ini /usr/local/etc/php/php.ini
+COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
     php artisan clear-compiled && \
@@ -71,11 +71,11 @@ RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefe
 FROM base as flyio
 ENV APACHE_LOG_DIR=/var/log/apache2
 USER ${USER_NAME}
-COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/ports.conf /etc/apache2/ports.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
+COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
     php artisan clear-compiled && \
