@@ -1,4 +1,4 @@
-FROM golang:1.22.2 as build
+FROM golang:1.22.3 as build
 
 RUN go install github.com/go-task/task/v3/cmd/task@latest && \
     go install github.com/catatsuy/purl@latest && \
