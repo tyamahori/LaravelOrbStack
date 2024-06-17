@@ -27,7 +27,7 @@ tasks:
       - echo {{ .USER_NAME }}
   removeVendor:
     cmd: rm -rf ./vendor
-  buildPhpImage:
+  buildPhpImageNoCache:
     requires:
       vars: [ CLI_ARGS ]
     cmd: |
@@ -36,6 +36,18 @@ tasks:
         -f {{ .PHP_DOCKERFILE_PATH }} \
         --target={{ .CLI_ARGS | default "local" }} \
         --no-cache \
+        --build-arg USER_ID={{ .USER_ID }} \
+        --build-arg GROUP_ID={{ .GROUP_ID }} \
+        --build-arg USER_NAME={{ .USER_NAME }} \
+        .
+  buildPhpImage:
+    requires:
+      vars: [ CLI_ARGS ]
+    cmd: |
+      docker build \
+        -t {{ .PHP_TAG }} \
+        -f {{ .PHP_DOCKERFILE_PATH }} \
+        --target={{ .CLI_ARGS | default "local" }} \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }} \
