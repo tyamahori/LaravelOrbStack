@@ -24,7 +24,7 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 # パッケージインストール
 RUN apt-get update \
     && apt-get install -yq git vim dnsutils iputils-ping iproute2 default-mysql-client postgresql unzip \
-    && install-php-extensions redis gd opcache intl zip bcmath pdo_mysql pdo_pgsql pgsql @composer-2 \
+    && install-php-extensions redis gd opcache intl zip bcmath pdo_mysql pdo_pgsql pgsql \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite headers
 
@@ -42,7 +42,7 @@ COPY --from=build /go/bin/runn /usr/bin/runn
 COPY --from=build /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=build /go/bin/psqldef /usr/bin/psqldef
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
-RUN install-php-extensions xdebug
+RUN install-php-extensions xdebug @composer-2.7.7
 USER ${USER_NAME}
 
 FROM base AS develop
@@ -56,7 +56,8 @@ COPY --from=build /go/bin/purl /usr/bin/purl
 COPY --from=build /go/bin/runn /usr/bin/runn
 COPY --from=build /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=build /go/bin/psqldef /usr/bin/psqldef
-RUN composer install && \
+RUN install-php-extensions @composer-2.7.7 && \
+    composer install && \
     composer dump-autoload && \
     php artisan clear-compiled && \
     php artisan optimize:clear
@@ -70,7 +71,8 @@ COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/php.ini /usr/local/etc/p
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --from=build /go/bin/task /usr/bin/task
 COPY --from=build /go/bin/psqldef /usr/bin/psqldef
-RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
+RUN install-php-extensions @composer-2.7.7 && \
+    composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
     php artisan clear-compiled && \
     php artisan optimize:clear
@@ -85,7 +87,8 @@ COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --from=build /go/bin/task /usr/bin/task
 COPY --from=build /go/bin/psqldef /usr/bin/psqldef
-RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
+RUN install-php-extensions @composer-2.7.7 && \
+    composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
     php artisan clear-compiled && \
     php artisan optimize:clear
