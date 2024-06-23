@@ -25,7 +25,7 @@
         {
             "groupName": "PHP libraries for minor",
             "groupSlug": "php-libraries",
-            "matchUpdateTypes": ["minor"],
+            "matchUpdateTypes": ["minor", "patch"],
             "excludePackageNames": [
                 "laravel/framework"
             ]
