@@ -3,8 +3,9 @@ FROM php:8.3-apache AS base
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
+ARG PHP_EXTTENSION_INSTALLER_VERSION=2.2.16
 
-# ローカルユーザーをベースに新しくユーザー作成する
+# ユーザーを作成する
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /var/www/html \
@@ -18,7 +19,7 @@ ENV COMPOSER_HOME=/composer \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
 
-COPY --from=mlocati/php-extension-installer:2.2 /usr/bin/install-php-extensions /usr/local/bin/
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${PHP_EXTTENSION_INSTALLER_VERSION}/install-php-extensions /usr/local/bin/
 
 # パッケージインストール
 RUN apt-get update \
