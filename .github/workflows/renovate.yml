@@ -14,4 +14,4 @@ jobs:
         uses: renovatebot/github-action@v40.1.12
         with:
           configurationFile: .github/renovate.json
-          token: 'x-access-token:${{ steps.get_token.outputs.token }}'
+          token: 'x-access-token:${{ steps.generate-token.outputs.token }}'
