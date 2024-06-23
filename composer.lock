@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44527349bb60c39d261f882aa5c6dccd",
+    "content-hash": "5e801ed13bbf12cbf1c429f4a1a846e2",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5883,16 +5883,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.29.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec"
+                "reference": "fd22ab50000ef01661e2a31d850ebaa297f8e03c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
-                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/fd22ab50000ef01661e2a31d850ebaa297f8e03c",
+                "reference": "fd22ab50000ef01661e2a31d850ebaa297f8e03c",
                 "shasum": ""
             },
             "require": {
@@ -5943,7 +5943,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.30.0"
             },
             "funding": [
                 {
@@ -5959,7 +5959,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-29T20:11:03+00:00"
+            "time": "2024-06-19T12:30:46+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
@@ -6036,16 +6036,16 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.29.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b"
+                "reference": "77fa7995ac1b21ab60769b7323d600a991a90433"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
-                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/77fa7995ac1b21ab60769b7323d600a991a90433",
+                "reference": "77fa7995ac1b21ab60769b7323d600a991a90433",
                 "shasum": ""
             },
             "require": {
@@ -6096,7 +6096,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.30.0"
             },
             "funding": [
                 {
@@ -6112,7 +6112,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-29T20:11:03+00:00"
+            "time": "2024-05-31T15:07:36+00:00"
         },
         {
             "name": "symfony/polyfill-php81",
@@ -7890,16 +7890,16 @@
         },
         {
             "name": "larastan/larastan",
-            "version": "v2.9.6",
+            "version": "v2.9.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larastan/larastan.git",
-                "reference": "93d5b95d2e29cdb8203363d44abfdbc0bc7ef57f"
+                "reference": "5c805f636095cc2e0b659e3954775cf8f1dad1bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larastan/larastan/zipball/93d5b95d2e29cdb8203363d44abfdbc0bc7ef57f",
-                "reference": "93d5b95d2e29cdb8203363d44abfdbc0bc7ef57f",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/5c805f636095cc2e0b659e3954775cf8f1dad1bb",
+                "reference": "5c805f636095cc2e0b659e3954775cf8f1dad1bb",
                 "shasum": ""
             },
             "require": {
@@ -7913,7 +7913,7 @@
                 "illuminate/support": "^9.52.16 || ^10.28.0 || ^11.0",
                 "php": "^8.0.2",
                 "phpmyadmin/sql-parser": "^5.9.0",
-                "phpstan/phpstan": "^1.10.66"
+                "phpstan/phpstan": "^1.11.1"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^12.0",
@@ -7968,7 +7968,7 @@
             ],
             "support": {
                 "issues": "https://github.com/larastan/larastan/issues",
-                "source": "https://github.com/larastan/larastan/tree/v2.9.6"
+                "source": "https://github.com/larastan/larastan/tree/v2.9.7"
             },
             "funding": [
                 {
@@ -7988,7 +7988,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-05-09T11:53:26+00:00"
+            "time": "2024-05-27T18:33:26+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -8677,16 +8677,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.11.0",
+            "version": "1.11.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "666cb1703742cea9cc80fee631f0940e1592fa6e"
+                "reference": "490f0ae1c92b082f154681d7849aee776a7c1443"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/666cb1703742cea9cc80fee631f0940e1592fa6e",
-                "reference": "666cb1703742cea9cc80fee631f0940e1592fa6e",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/490f0ae1c92b082f154681d7849aee776a7c1443",
+                "reference": "490f0ae1c92b082f154681d7849aee776a7c1443",
                 "shasum": ""
             },
             "require": {
@@ -8731,25 +8731,25 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-13T06:02:22+00:00"
+            "time": "2024-06-17T15:10:54+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "1.4.0",
+            "version": "1.3.69",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "4b66f5c996865a6085983cc90b5c8a242d1959e7"
+                "reference": "ac567407e750b94e2133dace33b19082ad9ed751"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/4b66f5c996865a6085983cc90b5c8a242d1959e7",
-                "reference": "4b66f5c996865a6085983cc90b5c8a242d1959e7",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/ac567407e750b94e2133dace33b19082ad9ed751",
+                "reference": "ac567407e750b94e2133dace33b19082ad9ed751",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^1.11"
+                "phpstan/phpstan": "^1.10.64"
             },
             "conflict": {
                 "doctrine/collections": "<1.0",
@@ -8801,22 +8801,22 @@
             "description": "Doctrine extensions for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.4.0"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.3.69"
             },
-            "time": "2024-04-24T14:05:48+00:00"
+            "time": "2024-04-18T12:56:14+00:00"
         },
         {
             "name": "phpstan/phpstan-nette",
-            "version": "1.3.0",
+            "version": "1.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-nette.git",
-                "reference": "8af94743efcc6d1e685f2ffd7ab279e39c96429c"
+                "reference": "0e3a6805917811d685e59bb83c2286315f2f6d78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-nette/zipball/8af94743efcc6d1e685f2ffd7ab279e39c96429c",
-                "reference": "8af94743efcc6d1e685f2ffd7ab279e39c96429c",
+                "url": "https://api.github.com/repos/phpstan/phpstan-nette/zipball/0e3a6805917811d685e59bb83c2286315f2f6d78",
+                "reference": "0e3a6805917811d685e59bb83c2286315f2f6d78",
                 "shasum": ""
             },
             "require": {
@@ -8837,6 +8837,7 @@
                 "nette/utils": "^2.3.0 || ^3.0.0",
                 "nikic/php-parser": "^4.13.2",
                 "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/phpstan-php-parser": "^1.1",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^9.5"
@@ -8862,27 +8863,27 @@
             "description": "Nette Framework class reflection extension for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-nette/issues",
-                "source": "https://github.com/phpstan/phpstan-nette/tree/1.3.0"
+                "source": "https://github.com/phpstan/phpstan-nette/tree/1.2.9"
             },
-            "time": "2024-04-20T06:40:32+00:00"
+            "time": "2023-04-12T14:11:53+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
-            "version": "1.4.0",
+            "version": "1.3.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-phpunit.git",
-                "reference": "f3ea021866f4263f07ca3636bf22c64be9610c11"
+                "reference": "d5242a59d035e46774f2e634b374bc39ff62cb95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/f3ea021866f4263f07ca3636bf22c64be9610c11",
-                "reference": "f3ea021866f4263f07ca3636bf22c64be9610c11",
+                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/d5242a59d035e46774f2e634b374bc39ff62cb95",
+                "reference": "d5242a59d035e46774f2e634b374bc39ff62cb95",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^1.11"
+                "phpstan/phpstan": "^1.10"
             },
             "conflict": {
                 "phpunit/phpunit": "<7.0"
@@ -8914,27 +8915,27 @@
             "description": "PHPUnit extensions and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-phpunit/issues",
-                "source": "https://github.com/phpstan/phpstan-phpunit/tree/1.4.0"
+                "source": "https://github.com/phpstan/phpstan-phpunit/tree/1.3.16"
             },
-            "time": "2024-04-20T06:39:00+00:00"
+            "time": "2024-02-23T09:51:20+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
-            "version": "1.6.0",
+            "version": "1.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-strict-rules.git",
-                "reference": "363f921dd8441777d4fc137deb99beb486c77df1"
+                "reference": "2e193a07651a6f4be3baa44ddb21d822681f5918"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/363f921dd8441777d4fc137deb99beb486c77df1",
-                "reference": "363f921dd8441777d4fc137deb99beb486c77df1",
+                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/2e193a07651a6f4be3baa44ddb21d822681f5918",
+                "reference": "2e193a07651a6f4be3baa44ddb21d822681f5918",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^1.11"
+                "phpstan/phpstan": "^1.10.60"
             },
             "require-dev": {
                 "nikic/php-parser": "^4.13.0",
@@ -8963,9 +8964,9 @@
             "description": "Extra strict and opinionated rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
-                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/1.6.0"
+                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/1.5.5"
             },
-            "time": "2024-04-20T06:37:51+00:00"
+            "time": "2024-04-19T15:12:26+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
