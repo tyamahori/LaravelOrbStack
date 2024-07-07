@@ -273,10 +273,10 @@ tasks:
     cmds:
       - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }}"
   onSavePHP:
-    deps:
-      - ecsOnSave
-      - stanOnSave
-      - rectorOnSave
+    cmds:
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }}"
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix {{ .CLI_ARGS }}"
+      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G"
   cli:
     requires:
       vars: [ CLI_ARGS ]
