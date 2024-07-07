@@ -13,7 +13,7 @@ RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.11
 FROM golang:1.22.4 AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.11
 
-FROM php:8.3-apache AS commonphp
+FROM php:8.3.9-apache AS commonphp
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
