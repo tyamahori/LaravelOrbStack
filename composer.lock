@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ddb5e690ab29483ee2ab04c297fd3ea",
+    "content-hash": "35b6ef79851901ae76d53f756f279020",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -11203,16 +11203,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "12.3.1",
+            "version": "12.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/easy-coding-standard/easy-coding-standard.git",
-                "reference": "bd670feae8d0b6da891d29a3c549bd0f4aa48711"
+                "reference": "cc6f11357b457e9dbf2fd14f6ee47fd266d50e73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/bd670feae8d0b6da891d29a3c549bd0f4aa48711",
-                "reference": "bd670feae8d0b6da891d29a3c549bd0f4aa48711",
+                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/cc6f11357b457e9dbf2fd14f6ee47fd266d50e73",
+                "reference": "cc6f11357b457e9dbf2fd14f6ee47fd266d50e73",
                 "shasum": ""
             },
             "require": {
@@ -11248,7 +11248,7 @@
             ],
             "support": {
                 "issues": "https://github.com/easy-coding-standard/easy-coding-standard/issues",
-                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.3.1"
+                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.3.2"
             },
             "funding": [
                 {
@@ -11260,7 +11260,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-06T12:33:15+00:00"
+            "time": "2024-07-21T18:39:09+00:00"
         },
         {
             "name": "theseer/tokenizer",
