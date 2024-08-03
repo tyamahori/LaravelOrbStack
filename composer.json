@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.3.9",
+        "php": "^8.3.10",
         "azjezz/psl": "^2.9.1",
         "cuyz/valinor": "^1.12.0",
         "guzzlehttp/guzzle": "^7.9.2",
@@ -24,14 +24,14 @@
         "php-standard-library/phpstan-extension": "^1.0",
         "phpstan/extension-installer": "^1.4.1",
         "phpstan/phpstan-doctrine": "^1.4.8",
-        "phpstan/phpstan-nette": "^1.3.3",
+        "phpstan/phpstan-nette": "^1.3.5",
         "phpstan/phpstan-phpunit": "^1.4.0",
         "phpstan/phpstan-strict-rules": "^1.6.0",
         "phpunit/phpunit": "^11.3.0",
         "qossmic/deptrac": "^2.0.1",
         "rector/rector": "^1.2.2",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^12.3.3"
+        "symplify/easy-coding-standard": "^12.3.4"
     },
     "autoload": {
         "psr-4": {
