@@ -1,17 +1,17 @@
-FROM golang:1.22.4 AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.37.2
+FROM golang:1.22.6 AS task
+RUN go install github.com/go-task/task/v3/cmd/task@v3.38.0
 
-FROM golang:1.22.4 AS purl
-RUN go install github.com/catatsuy/purl@v0.0.5
+FROM golang:1.22.6 AS purl
+RUN go install github.com/catatsuy/purl@latest
 
-FROM golang:1.22.4 AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.112.3
+FROM golang:1.22.6 AS runn
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.117.1
 
-FROM golang:1.22.4 AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.11
+FROM golang:1.22.6 AS mysqldef
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.17
 
-FROM golang:1.22.4 AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.11
+FROM golang:1.22.6 AS psqldef
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.17
 
 FROM php:8.3.10-apache AS commonphp
 ARG USER_ID
