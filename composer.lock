@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b9ceece1b4cc732a0f5584b1de898cd",
+    "content-hash": "b26d313fcbbcecb16aa5fef884d1111d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8573,22 +8573,22 @@
         },
         {
             "name": "phpstan/extension-installer",
-            "version": "1.4.1",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/extension-installer.git",
-                "reference": "f6b87faf9fc7978eab2f7919a8760bc9f58f9203"
+                "reference": "85e90b3942d06b2326fba0403ec24fe912372936"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/f6b87faf9fc7978eab2f7919a8760bc9f58f9203",
-                "reference": "f6b87faf9fc7978eab2f7919a8760bc9f58f9203",
+                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/85e90b3942d06b2326fba0403ec24fe912372936",
+                "reference": "85e90b3942d06b2326fba0403ec24fe912372936",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^2.0",
                 "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^1.9.0"
+                "phpstan/phpstan": "^1.9.0 || ^2.0"
             },
             "require-dev": {
                 "composer/composer": "^2.0",
@@ -8609,11 +8609,15 @@
                 "MIT"
             ],
             "description": "Composer plugin for automatic installation of PHPStan extensions",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
             "support": {
                 "issues": "https://github.com/phpstan/extension-installer/issues",
-                "source": "https://github.com/phpstan/extension-installer/tree/1.4.1"
+                "source": "https://github.com/phpstan/extension-installer/tree/1.4.3"
             },
-            "time": "2024-06-10T08:20:49+00:00"
+            "time": "2024-09-04T20:21:43+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -8664,16 +8668,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.11.11",
+            "version": "1.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "707c2aed5d8d0075666e673a5e71440c1d01a5a3"
+                "reference": "d8ed7fffa66de1db0d2972267d8ed1d8fa0fe5a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/707c2aed5d8d0075666e673a5e71440c1d01a5a3",
-                "reference": "707c2aed5d8d0075666e673a5e71440c1d01a5a3",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d8ed7fffa66de1db0d2972267d8ed1d8fa0fe5a2",
+                "reference": "d8ed7fffa66de1db0d2972267d8ed1d8fa0fe5a2",
                 "shasum": ""
             },
             "require": {
@@ -8718,20 +8722,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-19T14:37:29+00:00"
+            "time": "2024-09-03T19:55:22+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "1.5.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "4d17bed8a33aa8220c1f2a21a6b14fcdb0e5b02c"
+                "reference": "38db3bad8f1567d7bf64806738d724261f8a2b5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/4d17bed8a33aa8220c1f2a21a6b14fcdb0e5b02c",
-                "reference": "4d17bed8a33aa8220c1f2a21a6b14fcdb0e5b02c",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/38db3bad8f1567d7bf64806738d724261f8a2b5c",
+                "reference": "38db3bad8f1567d7bf64806738d724261f8a2b5c",
                 "shasum": ""
             },
             "require": {
@@ -8788,9 +8792,9 @@
             "description": "Doctrine extensions for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.5.2"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.5.3"
             },
-            "time": "2024-08-23T11:07:15+00:00"
+            "time": "2024-09-01T13:17:34+00:00"
         },
         {
             "name": "phpstan/phpstan-nette",
@@ -8956,32 +8960,32 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "11.0.5",
+            "version": "11.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "19b6365ab8b59a64438c0c3f4241feeb480c9861"
+                "reference": "ebdffc9e09585dafa71b9bffcdb0a229d4704c45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/19b6365ab8b59a64438c0c3f4241feeb480c9861",
-                "reference": "19b6365ab8b59a64438c0c3f4241feeb480c9861",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ebdffc9e09585dafa71b9bffcdb0a229d4704c45",
+                "reference": "ebdffc9e09585dafa71b9bffcdb0a229d4704c45",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
                 "ext-xmlwriter": "*",
-                "nikic/php-parser": "^5.0",
+                "nikic/php-parser": "^5.1.0",
                 "php": ">=8.2",
-                "phpunit/php-file-iterator": "^5.0",
-                "phpunit/php-text-template": "^4.0",
-                "sebastian/code-unit-reverse-lookup": "^4.0",
-                "sebastian/complexity": "^4.0",
-                "sebastian/environment": "^7.0",
-                "sebastian/lines-of-code": "^3.0",
-                "sebastian/version": "^5.0",
-                "theseer/tokenizer": "^1.2.0"
+                "phpunit/php-file-iterator": "^5.0.1",
+                "phpunit/php-text-template": "^4.0.1",
+                "sebastian/code-unit-reverse-lookup": "^4.0.1",
+                "sebastian/complexity": "^4.0.1",
+                "sebastian/environment": "^7.2.0",
+                "sebastian/lines-of-code": "^3.0.1",
+                "sebastian/version": "^5.0.1",
+                "theseer/tokenizer": "^1.2.3"
             },
             "require-dev": {
                 "phpunit/phpunit": "^11.0"
@@ -8993,7 +8997,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "11.0-dev"
+                    "dev-main": "11.0.x-dev"
                 }
             },
             "autoload": {
@@ -9022,7 +9026,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/11.0.5"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/11.0.6"
             },
             "funding": [
                 {
@@ -9030,20 +9034,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-03T05:05:37+00:00"
+            "time": "2024-08-22T04:37:56+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "5.0.1",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "6ed896bf50bbbfe4d504a33ed5886278c78e4a26"
+                "reference": "118cfaaa8bc5aef3287bf315b6060b1174754af6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/6ed896bf50bbbfe4d504a33ed5886278c78e4a26",
-                "reference": "6ed896bf50bbbfe4d504a33ed5886278c78e4a26",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/118cfaaa8bc5aef3287bf315b6060b1174754af6",
+                "reference": "118cfaaa8bc5aef3287bf315b6060b1174754af6",
                 "shasum": ""
             },
             "require": {
@@ -9083,7 +9087,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-file-iterator/issues",
                 "security": "https://github.com/sebastianbergmann/php-file-iterator/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/5.0.1"
+                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/5.1.0"
             },
             "funding": [
                 {
@@ -9091,7 +9095,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-03T05:06:37+00:00"
+            "time": "2024-08-27T05:02:59+00:00"
         },
         {
             "name": "phpunit/php-invoker",
@@ -9279,16 +9283,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.3.1",
+            "version": "11.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fe179875ef0c14e90b75617002767eae0a742641"
+                "reference": "8ed08766d9a2ed979a2f5fdbb95a0671523419c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fe179875ef0c14e90b75617002767eae0a742641",
-                "reference": "fe179875ef0c14e90b75617002767eae0a742641",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8ed08766d9a2ed979a2f5fdbb95a0671523419c1",
+                "reference": "8ed08766d9a2ed979a2f5fdbb95a0671523419c1",
                 "shasum": ""
             },
             "require": {
@@ -9302,8 +9306,8 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.2",
-                "phpunit/php-code-coverage": "^11.0.5",
-                "phpunit/php-file-iterator": "^5.0.1",
+                "phpunit/php-code-coverage": "^11.0.6",
+                "phpunit/php-file-iterator": "^5.1.0",
                 "phpunit/php-invoker": "^5.0.1",
                 "phpunit/php-text-template": "^4.0.1",
                 "phpunit/php-timer": "^7.0.1",
@@ -9359,7 +9363,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.3.1"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.3.3"
             },
             "funding": [
                 {
@@ -9375,7 +9379,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-13T06:14:23+00:00"
+            "time": "2024-09-04T13:34:52+00:00"
         },
         {
             "name": "qossmic/deptrac",
@@ -11341,7 +11345,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.3.10"
+        "php": "^8.3.11"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"
