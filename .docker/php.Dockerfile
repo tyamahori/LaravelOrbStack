@@ -26,7 +26,7 @@ RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && mkdir /composer \
     && chown ${USER_NAME}:${USER_NAME} /composer
 ENV COMPOSER_HOME=/composer \
-    PATH=$COMPOSER_HOME/vendor/bin:$PATH \
+    PATH=/composer/vendor/bin:$PATH \
     COMPOSER_ALLOW_SUPERUSER=1 \
     DEBCONF_NOWARNINGS=yes \
     APACHE_RUN_USER=${USER_NAME} \
