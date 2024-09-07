@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3.11",
-        "azjezz/psl": "^2.9.1",
+        "azjezz/psl": "^3.0.0",
         "cuyz/valinor": "^1.13.0",
         "guzzlehttp/guzzle": "^7.9.2",
         "laravel/framework": "^11.21.0",
