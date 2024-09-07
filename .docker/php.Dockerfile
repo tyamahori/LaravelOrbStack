@@ -1,21 +1,21 @@
-ARG GO_VERSION=1.23.1
+ARG PHP_DOCKER_IMAGE_VERSION=8.3.11-apache
+ARG GO_DOCKER_IMAGE_VERSION=1.23.1
 
-FROM golang:${GO_VERSION} AS task
+FROM golang:${GO_DOCKER_IMAGE_VERSION} AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.38.0
 
-FROM golang:${GO_VERSION} AS purl
+FROM golang:${GO_DOCKER_IMAGE_VERSION} AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
-FROM golang:${GO_VERSION} AS runn
+FROM golang:${GO_DOCKER_IMAGE_VERSION} AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v0.117.1
 
-FROM golang:${GO_VERSION} AS mysqldef
+FROM golang:${GO_DOCKER_IMAGE_VERSION} AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.17
 
-FROM golang:${GO_VERSION} AS psqldef
+FROM golang:${GO_DOCKER_IMAGE_VERSION} AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.17
 
-ARG PHP_DOCKER_IMAGE_VERSION=8.3.11-apache
 FROM php:${PHP_DOCKER_IMAGE_VERSION} AS commonphp
 ARG USER_ID
 ARG GROUP_ID
