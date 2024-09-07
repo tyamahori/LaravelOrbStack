@@ -34,7 +34,7 @@ ENV COMPOSER_HOME=/composer \
 ARG PHP_EXTTENSION_INSTALLER_VERSION=2.4.2
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${PHP_EXTTENSION_INSTALLER_VERSION}/install-php-extensions /usr/local/bin/
 RUN apt-get update \
-    && apt-get install -yq git vim dnsutils iputils-ping iproute2 default-mysql-client postgresql unzip \
+    && apt-get install -yq default-mysql-client dnsutils git iproute2 iputils-ping postgresql unzip vim \
     && install-php-extensions redis gd opcache intl zip bcmath pdo_mysql pdo_pgsql pgsql \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite headers
