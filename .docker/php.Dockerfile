@@ -1,19 +1,22 @@
-FROM golang:1.22.6 AS task
+ARG GO_VERSION=1.23.1
+
+FROM golang:${GO_VERSION} AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.38.0
 
-FROM golang:1.22.6 AS purl
-RUN go install github.com/catatsuy/purl@latest
+FROM golang:${GO_VERSION} AS purl
+RUN go install github.com/catatsuy/purl@v0.0.6
 
-FROM golang:1.22.6 AS runn
+FROM golang:${GO_VERSION} AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v0.117.1
 
-FROM golang:1.22.6 AS mysqldef
+FROM golang:${GO_VERSION} AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.17
 
-FROM golang:1.22.6 AS psqldef
+FROM golang:${GO_VERSION} AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.17
 
-FROM php:8.3.10-apache AS commonphp
+ARG PHP_DOCKER_IMAGE_VERSION=8.3.11-apache
+FROM php:${PHP_DOCKER_IMAGE_VERSION} AS commonphp
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
@@ -36,6 +39,8 @@ RUN apt-get update \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite headers
 
+ARG COMPOSER_VERSION=2.7.8
+
 FROM commonphp AS local
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=purl /go/bin/purl /usr/bin/purl
@@ -43,7 +48,7 @@ COPY --from=runn /go/bin/runn /usr/bin/runn
 COPY --from=mysqldef /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
-RUN install-php-extensions xdebug @composer-2.7.7
+RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
@@ -57,7 +62,7 @@ COPY --from=purl /go/bin/purl /usr/bin/purl
 COPY --from=runn /go/bin/runn /usr/bin/runn
 COPY --from=mysqldef /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
-RUN install-php-extensions @composer-2.7.7 && \
+RUN install-php-extensions @composer-${COMPOSER_VERSION} && \
     composer install && \
     composer dump-autoload && \
     php artisan clear-compiled && \
@@ -72,7 +77,7 @@ COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/php.ini /usr/local/etc/p
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
-RUN install-php-extensions @composer-2.7.7 && \
+RUN install-php-extensions @composer-${COMPOSER_VERSION} && \
     composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
     php artisan clear-compiled && \
@@ -88,7 +93,7 @@ COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
-RUN install-php-extensions @composer-2.7.7 && \
+RUN install-php-extensions @composer-${COMPOSER_VERSION} && \
     composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
     php artisan clear-compiled && \
