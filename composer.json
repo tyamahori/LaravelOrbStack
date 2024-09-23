@@ -16,7 +16,7 @@
         "php-http/httplug": "^2.4"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.13.5",
+        "barryvdh/laravel-debugbar": "^3.14.0",
         "barryvdh/laravel-ide-helper": "^3.1.0",
         "fakerphp/faker": "^1.23.1",
         "larastan/larastan": "^2.9.8",
