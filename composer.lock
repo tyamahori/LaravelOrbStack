@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03206f869335ab53b2fa610f608cccdb",
+    "content-hash": "5b3d7fc77172de59a28f51c448815548",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6889,16 +6889,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v7.1.4",
+            "version": "v7.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "a5fa7481b199090964d6fd5dab6294d5a870c7aa"
+                "reference": "e20e03889539fd4e4211e14d2179226c513c010d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/a5fa7481b199090964d6fd5dab6294d5a870c7aa",
-                "reference": "a5fa7481b199090964d6fd5dab6294d5a870c7aa",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/e20e03889539fd4e4211e14d2179226c513c010d",
+                "reference": "e20e03889539fd4e4211e14d2179226c513c010d",
                 "shasum": ""
             },
             "require": {
@@ -6952,7 +6952,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v7.1.4"
+                "source": "https://github.com/symfony/var-dumper/tree/v7.1.5"
             },
             "funding": [
                 {
@@ -6968,7 +6968,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-30T16:12:47+00:00"
+            "time": "2024-09-16T10:07:02+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -7243,23 +7243,23 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.13.5",
+            "version": "v3.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "92d86be45ee54edff735e46856f64f14b6a8bb07"
+                "reference": "16a13cc5221aee90ae20aa59083ced2211e714eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/92d86be45ee54edff735e46856f64f14b6a8bb07",
-                "reference": "92d86be45ee54edff735e46856f64f14b6a8bb07",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/16a13cc5221aee90ae20aa59083ced2211e714eb",
+                "reference": "16a13cc5221aee90ae20aa59083ced2211e714eb",
                 "shasum": ""
             },
             "require": {
                 "illuminate/routing": "^9|^10|^11",
                 "illuminate/session": "^9|^10|^11",
                 "illuminate/support": "^9|^10|^11",
-                "maximebf/debugbar": "~1.22.0",
+                "maximebf/debugbar": "~1.23.0",
                 "php": "^8.0",
                 "symfony/finder": "^6|^7"
             },
@@ -7272,7 +7272,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.13-dev"
+                    "dev-master": "3.14-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -7311,7 +7311,7 @@
             ],
             "support": {
                 "issues": "https://github.com/barryvdh/laravel-debugbar/issues",
-                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.13.5"
+                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.14.0"
             },
             "funding": [
                 {
@@ -7323,7 +7323,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-12T11:20:37+00:00"
+            "time": "2024-09-20T12:16:37+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -7908,16 +7908,16 @@
         },
         {
             "name": "maximebf/debugbar",
-            "version": "v1.22.4",
+            "version": "v1.23.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maximebf/php-debugbar.git",
-                "reference": "ec4979077ff5ddf987eb2457055ee343f466c250"
+                "reference": "689720d724c771ac4add859056744b7b3f2406da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/ec4979077ff5ddf987eb2457055ee343f466c250",
-                "reference": "ec4979077ff5ddf987eb2457055ee343f466c250",
+                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/689720d724c771ac4add859056744b7b3f2406da",
+                "reference": "689720d724c771ac4add859056744b7b3f2406da",
                 "shasum": ""
             },
             "require": {
@@ -7939,7 +7939,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.22-dev"
+                    "dev-master": "1.23-dev"
                 }
             },
             "autoload": {
@@ -7970,9 +7970,9 @@
             ],
             "support": {
                 "issues": "https://github.com/maximebf/php-debugbar/issues",
-                "source": "https://github.com/maximebf/php-debugbar/tree/v1.22.4"
+                "source": "https://github.com/maximebf/php-debugbar/tree/v1.23.2"
             },
-            "time": "2024-09-06T17:37:59+00:00"
+            "time": "2024-09-16T11:23:09+00:00"
         },
         {
             "name": "myclabs/deep-copy",
