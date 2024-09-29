@@ -52,7 +52,6 @@ RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
-USER ${USER_NAME}
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/php.ini /usr/local/etc/php/php.ini
@@ -62,8 +61,9 @@ COPY --from=purl /go/bin/purl /usr/bin/purl
 COPY --from=runn /go/bin/runn /usr/bin/runn
 COPY --from=mysqldef /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
-RUN install-php-extensions @composer-${COMPOSER_VERSION} && \
-    composer install && \
+RUN install-php-extensions @composer-${COMPOSER_VERSION}  \
+USER ${USER_NAME}
+RUN composer install && \
     composer dump-autoload && \
     php artisan clear-compiled && \
     php artisan optimize:clear
@@ -85,7 +85,6 @@ RUN install-php-extensions @composer-${COMPOSER_VERSION} && \
 
 FROM commonphp AS flyio
 ENV APACHE_LOG_DIR=/var/log/apache2
-USER ${USER_NAME}
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/ports.conf /etc/apache2/ports.conf
@@ -93,8 +92,9 @@ COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
-RUN install-php-extensions @composer-${COMPOSER_VERSION} && \
-    composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
+RUN install-php-extensions @composer-${COMPOSER_VERSION}
+USER ${USER_NAME}
+RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
     php artisan clear-compiled && \
     php artisan optimize:clear
