@@ -1,5 +1,5 @@
 ARG PHP_DOCKER_IMAGE_VERSION=8.3.12-apache
-ARG GO_DOCKER_IMAGE_VERSION=1.23.1
+ARG GO_DOCKER_IMAGE_VERSION=1.23.2-bookworm
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.38.0
