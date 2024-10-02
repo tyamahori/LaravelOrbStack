@@ -61,7 +61,7 @@ COPY --from=purl /go/bin/purl /usr/bin/purl
 COPY --from=runn /go/bin/runn /usr/bin/runn
 COPY --from=mysqldef /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
-RUN install-php-extensions @composer-${COMPOSER_VERSION}  \
+RUN install-php-extensions @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 RUN composer install && \
     composer dump-autoload && \
