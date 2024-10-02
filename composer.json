@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.3.11",
+        "php": "^8.3.12",
         "azjezz/psl": "^3.0.2",
         "cuyz/valinor": "^1.13.0",
         "guzzlehttp/guzzle": "^7.9.2",
@@ -13,10 +13,10 @@
         "laravel/tinker": "^2.10.0",
         "league/flysystem-aws-s3-v3": "^3.29.0",
         "open-telemetry/opentelemetry": "^1.0",
-        "php-http/httplug": "^2.4"
+        "php-http/httplug": "^2.4.1"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.14.0",
+        "barryvdh/laravel-debugbar": "^3.14.3",
         "barryvdh/laravel-ide-helper": "^3.1.0",
         "fakerphp/faker": "^1.23.1",
         "larastan/larastan": "^2.9.8",
