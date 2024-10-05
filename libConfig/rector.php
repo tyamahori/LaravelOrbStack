@@ -34,7 +34,7 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::TYPE_DECLARATION,
         SetList::INSTANCEOF,
         SetList::STRICT_BOOLEANS,
-        PHPUnitSetList::PHPUNIT_100,
+        PHPUnitSetList::PHPUNIT_110,
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
     ]);
     $rectorConfig->importNames();
