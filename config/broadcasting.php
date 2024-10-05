@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 $env = env('PUSHER_APP_CLUSTER', 'mt1');

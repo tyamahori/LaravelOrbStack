@@ -38,6 +38,7 @@ use PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoPackageFixer;
+use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderNameFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
@@ -237,4 +238,5 @@ return ECSConfig::configure()
         PhpUnitDataProviderNameFixer::class,
         PhpUnitDataProviderReturnTypeFixer::class,
         StatementIndentationFixer::class,
+        BlankLineAfterOpeningTagFixer::class,
     ]);

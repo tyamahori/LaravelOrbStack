@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace LaravelOrbStack\Samples;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Carbon\CarbonImmutable;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Routing\UrlGenerator;
 use Psr\Log\LoggerInterface;
 
@@ -19,7 +21,8 @@ class HomeController extends Controller
         Repository $config,
         UrlGenerator $url,
         CarbonImmutable $carbonImmutable,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Factory $view
     ): Renderable {
 
         $appUrl = $config->get('app.url');
@@ -36,6 +39,6 @@ class HomeController extends Controller
                 ]
             );
 
-        return view('welcome');
+        return $view->make('welcome');
     }
 }
