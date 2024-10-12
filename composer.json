@@ -29,7 +29,7 @@
         "phpstan/phpstan-strict-rules": "^1.6.1",
         "phpunit/phpunit": "^11.4.1",
         "qossmic/deptrac": "^2.0.1",
-        "rector/rector": "^1.2.6",
+        "rector/rector": "^1.2.7",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^12.3.6"
     },
