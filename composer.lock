@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3484fea5c7b6e87a486e2231fcb49877",
+    "content-hash": "2acdfc2409f664f18bfdc0cea0c18fc9",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2786,32 +2786,31 @@
         },
         {
             "name": "nunomaduro/termwind",
-            "version": "v2.1.0",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/termwind.git",
-                "reference": "e5f21eade88689536c0cdad4c3cd75f3ed26e01a"
+                "reference": "42c84e4e8090766bbd6445d06cd6e57650626ea3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/termwind/zipball/e5f21eade88689536c0cdad4c3cd75f3ed26e01a",
-                "reference": "e5f21eade88689536c0cdad4c3cd75f3ed26e01a",
+                "url": "https://api.github.com/repos/nunomaduro/termwind/zipball/42c84e4e8090766bbd6445d06cd6e57650626ea3",
+                "reference": "42c84e4e8090766bbd6445d06cd6e57650626ea3",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": "^8.2",
-                "symfony/console": "^7.0.4"
+                "symfony/console": "^7.1.5"
             },
             "require-dev": {
-                "ergebnis/phpstan-rules": "^2.2.0",
-                "illuminate/console": "^11.1.1",
-                "laravel/pint": "^1.15.0",
-                "mockery/mockery": "^1.6.11",
-                "pestphp/pest": "^2.34.6",
-                "phpstan/phpstan": "^1.10.66",
-                "phpstan/phpstan-strict-rules": "^1.5.2",
-                "symfony/var-dumper": "^7.0.4",
+                "illuminate/console": "^11.28.0",
+                "laravel/pint": "^1.18.1",
+                "mockery/mockery": "^1.6.12",
+                "pestphp/pest": "^2.36.0",
+                "phpstan/phpstan": "^1.12.6",
+                "phpstan/phpstan-strict-rules": "^1.6.1",
+                "symfony/var-dumper": "^7.1.5",
                 "thecodingmachine/phpstan-strict-rules": "^1.0.0"
             },
             "type": "library",
@@ -2854,7 +2853,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/termwind/issues",
-                "source": "https://github.com/nunomaduro/termwind/tree/v2.1.0"
+                "source": "https://github.com/nunomaduro/termwind/tree/v2.2.0"
             },
             "funding": [
                 {
@@ -2870,7 +2869,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-05T15:25:50+00:00"
+            "time": "2024-10-15T16:15:16+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -7459,37 +7458,37 @@
         },
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "v3.1.0",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-                "reference": "591e7d665fbab8a3b682e451641706341573eb80"
+                "reference": "7956ccb4943f8532d008c17a1094b34bb6394d56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/591e7d665fbab8a3b682e451641706341573eb80",
-                "reference": "591e7d665fbab8a3b682e451641706341573eb80",
+                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/7956ccb4943f8532d008c17a1094b34bb6394d56",
+                "reference": "7956ccb4943f8532d008c17a1094b34bb6394d56",
                 "shasum": ""
             },
             "require": {
-                "barryvdh/reflection-docblock": "^2.1.1",
+                "barryvdh/reflection-docblock": "^2.1.2",
                 "composer/class-map-generator": "^1.0",
                 "ext-json": "*",
-                "illuminate/console": "^10 || ^11",
-                "illuminate/database": "^10.38 || ^11",
-                "illuminate/filesystem": "^10 || ^11",
-                "illuminate/support": "^10 || ^11",
+                "illuminate/console": "^11.15",
+                "illuminate/database": "^11.15",
+                "illuminate/filesystem": "^11.15",
+                "illuminate/support": "^11.15",
                 "nikic/php-parser": "^4.18 || ^5",
-                "php": "^8.1",
+                "php": "^8.2",
                 "phpdocumentor/type-resolver": "^1.1.0"
             },
             "require-dev": {
                 "ext-pdo_sqlite": "*",
                 "friendsofphp/php-cs-fixer": "^3",
-                "illuminate/config": "^9 || ^10 || ^11",
-                "illuminate/view": "^9 || ^10 || ^11",
+                "illuminate/config": "^11.15",
+                "illuminate/view": "^11.15",
                 "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^8 || ^9",
+                "orchestra/testbench": "^9.2",
                 "phpunit/phpunit": "^10.5",
                 "spatie/phpunit-snapshot-assertions": "^4 || ^5",
                 "vimeo/psalm": "^5.4"
@@ -7500,7 +7499,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev"
+                    "dev-master": "3.2-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -7537,7 +7536,7 @@
             ],
             "support": {
                 "issues": "https://github.com/barryvdh/laravel-ide-helper/issues",
-                "source": "https://github.com/barryvdh/laravel-ide-helper/tree/v3.1.0"
+                "source": "https://github.com/barryvdh/laravel-ide-helper/tree/v3.2.0"
             },
             "funding": [
                 {
@@ -7549,20 +7548,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-12T14:20:51+00:00"
+            "time": "2024-10-17T16:43:13+00:00"
         },
         {
             "name": "barryvdh/reflection-docblock",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/ReflectionDocBlock.git",
-                "reference": "e6811e927f0ecc37cc4deaa6627033150343e597"
+                "reference": "bba116ba9d5794fbf12e03ed40f10804e51acf76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/ReflectionDocBlock/zipball/e6811e927f0ecc37cc4deaa6627033150343e597",
-                "reference": "e6811e927f0ecc37cc4deaa6627033150343e597",
+                "url": "https://api.github.com/repos/barryvdh/ReflectionDocBlock/zipball/bba116ba9d5794fbf12e03ed40f10804e51acf76",
+                "reference": "bba116ba9d5794fbf12e03ed40f10804e51acf76",
                 "shasum": ""
             },
             "require": {
@@ -7599,9 +7598,9 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/barryvdh/ReflectionDocBlock/tree/v2.1.1"
+                "source": "https://github.com/barryvdh/ReflectionDocBlock/tree/v2.1.2"
             },
-            "time": "2023-06-14T05:06:27+00:00"
+            "time": "2024-10-16T11:06:28+00:00"
         },
         {
             "name": "composer/class-map-generator",
@@ -8168,23 +8167,23 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v8.4.0",
+            "version": "v8.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "e7d1aa8ed753f63fa816932bbc89678238843b4a"
+                "reference": "f5c101b929c958e849a633283adff296ed5f38f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/e7d1aa8ed753f63fa816932bbc89678238843b4a",
-                "reference": "e7d1aa8ed753f63fa816932bbc89678238843b4a",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/f5c101b929c958e849a633283adff296ed5f38f5",
+                "reference": "f5c101b929c958e849a633283adff296ed5f38f5",
                 "shasum": ""
             },
             "require": {
-                "filp/whoops": "^2.15.4",
-                "nunomaduro/termwind": "^2.0.1",
+                "filp/whoops": "^2.16.0",
+                "nunomaduro/termwind": "^2.1.0",
                 "php": "^8.2.0",
-                "symfony/console": "^7.1.3"
+                "symfony/console": "^7.1.5"
             },
             "conflict": {
                 "laravel/framework": "<11.0.0 || >=12.0.0",
@@ -8192,14 +8191,14 @@
             },
             "require-dev": {
                 "larastan/larastan": "^2.9.8",
-                "laravel/framework": "^11.19.0",
-                "laravel/pint": "^1.17.1",
-                "laravel/sail": "^1.31.0",
-                "laravel/sanctum": "^4.0.2",
-                "laravel/tinker": "^2.9.0",
-                "orchestra/testbench-core": "^9.2.3",
-                "pestphp/pest": "^2.35.0 || ^3.0.0",
-                "sebastian/environment": "^6.1.0 || ^7.0.0"
+                "laravel/framework": "^11.28.0",
+                "laravel/pint": "^1.18.1",
+                "laravel/sail": "^1.36.0",
+                "laravel/sanctum": "^4.0.3",
+                "laravel/tinker": "^2.10.0",
+                "orchestra/testbench-core": "^9.5.3",
+                "pestphp/pest": "^2.36.0 || ^3.4.0",
+                "sebastian/environment": "^6.1.0 || ^7.2.0"
             },
             "type": "library",
             "extra": {
@@ -8261,7 +8260,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-08-03T15:32:23+00:00"
+            "time": "2024-10-15T16:06:32+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -8683,16 +8682,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.32.0",
+            "version": "1.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "6ca22b154efdd9e3c68c56f5d94670920a1c19a4"
+                "reference": "82a311fd3690fb2bf7b64d5c98f912b3dd746140"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/6ca22b154efdd9e3c68c56f5d94670920a1c19a4",
-                "reference": "6ca22b154efdd9e3c68c56f5d94670920a1c19a4",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/82a311fd3690fb2bf7b64d5c98f912b3dd746140",
+                "reference": "82a311fd3690fb2bf7b64d5c98f912b3dd746140",
                 "shasum": ""
             },
             "require": {
@@ -8724,9 +8723,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.32.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.33.0"
             },
-            "time": "2024-09-26T07:23:32+00:00"
+            "time": "2024-10-13T11:25:22+00:00"
         },
         {
             "name": "phpstan/phpstan",
