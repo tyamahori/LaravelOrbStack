@@ -16,10 +16,10 @@
         "php-http/httplug": "^2.4.1"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.14.3",
+        "barryvdh/laravel-debugbar": "^3.14.5",
         "barryvdh/laravel-ide-helper": "^3.2.0",
         "fakerphp/faker": "^1.23.1",
-        "larastan/larastan": "^2.9.8",
+        "larastan/larastan": "^2.9.9",
         "nunomaduro/collision": "^8.5.0",
         "php-standard-library/phpstan-extension": "^1.1.0",
         "phpstan/extension-installer": "^1.4.3",
@@ -29,7 +29,7 @@
         "phpstan/phpstan-strict-rules": "^1.6.1",
         "phpunit/phpunit": "^11.4.1",
         "qossmic/deptrac": "^2.0.1",
-        "rector/rector": "^1.2.7",
+        "rector/rector": "^1.2.8",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^12.3.6"
     },
