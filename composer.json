@@ -9,7 +9,7 @@
         "azjezz/psl": "^3.0.2",
         "cuyz/valinor": "^1.13.0",
         "guzzlehttp/guzzle": "^7.9.2",
-        "laravel/framework": "^11.28.1",
+        "laravel/framework": "^11.29.0",
         "laravel/tinker": "^2.10.0",
         "league/flysystem-aws-s3-v3": "^3.29.0",
         "open-telemetry/opentelemetry": "^1.0",
