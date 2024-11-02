@@ -2,19 +2,19 @@ ARG PHP_DOCKER_IMAGE_VERSION=8.3.12-apache
 ARG GO_DOCKER_IMAGE_VERSION=1.23.2-bookworm
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.38.0
+RUN go install github.com/go-task/task/v3/cmd/task@v3.39.2
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.119.0
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.120.0
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.17
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.21
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.17
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.21
 
 FROM php:${PHP_DOCKER_IMAGE_VERSION} AS commonphp
 ARG USER_ID
@@ -39,7 +39,7 @@ RUN apt-get update \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite headers
 
-ARG COMPOSER_VERSION=2.7.8
+ARG COMPOSER_VERSION=2.8.2
 
 FROM commonphp AS local
 COPY --from=task /go/bin/task /usr/bin/task
@@ -48,7 +48,7 @@ COPY --from=runn /go/bin/runn /usr/bin/runn
 COPY --from=mysqldef /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
-RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
+RUN install-php-extensions xdebug-3.4.0beta1 @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
