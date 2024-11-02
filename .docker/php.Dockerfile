@@ -48,7 +48,7 @@ COPY --from=runn /go/bin/runn /usr/bin/runn
 COPY --from=mysqldef /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
-RUN install-php-extensions xdebug-3.4.0beta1 @composer-${COMPOSER_VERSION}
+RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
