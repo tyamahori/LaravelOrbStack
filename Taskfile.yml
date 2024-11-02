@@ -61,10 +61,18 @@ tasks:
         .
   pullImages:
     cmd: "{{ .BASE_COMMAND }} pull redis localstack mailpit mysql postgresql"
-  cleanUp:
+  cleanUpComposeProject:
     cmds:
       - task: removeVendor
       - cmd: "{{ .BASE_COMMAND }} --profile '*' down -v --remove-orphans --rmi all"
+  cleanUpComposeProjectVolumes:
+    cmds:
+      - task: removeVendor
+      - cmd: "{{ .BASE_COMMAND }} --profile '*' down -v --remove-orphans"
+  cleanUpComposeProjectImages:
+    cmds:
+      - task: removeVendor
+      - cmd: "{{ .BASE_COMMAND }} --profile '*' down --remove-orphans --rmi all"
   buildImages:
     deps:
       - task: buildPhpImage
@@ -77,9 +85,21 @@ tasks:
       - "{{ .BASE_COMMAND }} ps -a"
   init:
     deps:
-      - task: cleanUp
+      - task: cleanUpComposeProject
     cmds:
       - task: buildImages
+      - task: up
+      - task: bucket
+      - "{{ .BASE_COMMAND }} exec -it php-app composer install"
+      - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
+      - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
+      - "{{ .BASE_COMMAND }} exec -it php-app composer ide-helper"
+      - "{{ .BASE_COMMAND }} exec -it php-app ./artisan -V"
+      - "{{ .BASE_COMMAND }} exec -it php-app whoami"
+  start:
+    deps:
+      - task: cleanUpComposeProjectVolumes
+    cmds:
       - task: up
       - task: bucket
       - "{{ .BASE_COMMAND }} exec -it php-app composer install"
