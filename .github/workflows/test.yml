@@ -3,7 +3,7 @@ name: test
 on: push
 
 jobs:
-  buildAndLint:
+  build:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -27,15 +27,36 @@ jobs:
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
         run: task buildImages
-      - name: lint
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cache Docker images
+        uses: ScribeMD/docker-cache@0.3.7
+        with:
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.Dockerfile') }}-${{ hashFiles('./.docker/local/s3/Dockerfile') }}
+      - name: Setup
+        run: task upOnCI
+      - name: Rector
         run: |
           task rectorDryRun
+      - name: Stan
+        run: |
           task stan
+      - name: Ecs
+        run: |
           task ecs
 
   test:
     runs-on: ubuntu-latest
-    needs: buildAndLint
+    needs: build
     steps:
       - name: Install Task
         uses: arduino/setup-task@v2
