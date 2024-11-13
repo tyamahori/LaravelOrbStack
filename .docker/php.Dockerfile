@@ -1,5 +1,5 @@
-ARG PHP_DOCKER_IMAGE_VERSION=8.3.13-apache
-ARG GO_DOCKER_IMAGE_VERSION=1.23.2-bookworm
+ARG PHP_DOCKER_IMAGE_VERSION=8.4.0RC4-apache
+ARG GO_DOCKER_IMAGE_VERSION=1.23.3-bookworm
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.39.2
@@ -11,10 +11,10 @@ FROM golang:${GO_DOCKER_IMAGE_VERSION} AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v0.120.0
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.21
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.23
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.21
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.23
 
 FROM php:${PHP_DOCKER_IMAGE_VERSION} AS commonphp
 ARG USER_ID
@@ -31,7 +31,7 @@ ENV COMPOSER_HOME=/composer \
     DEBCONF_NOWARNINGS=yes \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
-ARG PHP_EXTTENSION_INSTALLER_VERSION=2.4.2
+ARG PHP_EXTTENSION_INSTALLER_VERSION=2.6.3
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${PHP_EXTTENSION_INSTALLER_VERSION}/install-php-extensions /usr/local/bin/
 RUN apt-get update \
     && apt-get install -yq default-mysql-client dnsutils git iproute2 iputils-ping postgresql unzip vim \
@@ -48,7 +48,7 @@ COPY --from=runn /go/bin/runn /usr/bin/runn
 COPY --from=mysqldef /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
-RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
+RUN install-php-extensions xdebug-3.4.0beta1 @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
