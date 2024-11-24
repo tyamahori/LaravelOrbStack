@@ -5,7 +5,7 @@ vars:
   PHP_DOCKERFILE_PATH: .docker/php.Dockerfile
   S3_DOCKERFILE_PATH: .docker/local/s3/Dockerfile
 
-  PHP_TAG: laravelorbstack/php-apache:8.3
+  PHP_TAG: laravelorbstack/php-apache:8.4
   S3_TAG: laravelorbstack/s3:20240328
 
   BASE_COMMAND: docker compose -f .docker/local/compose.yaml
@@ -94,6 +94,7 @@ tasks:
       - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
       - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
       - "{{ .BASE_COMMAND }} exec -it php-app composer ide-helper"
+      - "{{ .BASE_COMMAND }} exec -it php-app php -v"
       - "{{ .BASE_COMMAND }} exec -it php-app ./artisan -V"
       - "{{ .BASE_COMMAND }} exec -it php-app whoami"
   start:
@@ -106,6 +107,7 @@ tasks:
       - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
       - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
       - "{{ .BASE_COMMAND }} exec -it php-app composer ide-helper"
+      - "{{ .BASE_COMMAND }} exec -it php-app php -v"
       - "{{ .BASE_COMMAND }} exec -it php-app ./artisan -V"
       - "{{ .BASE_COMMAND }} exec -it php-app whoami"
   images:

@@ -139,7 +139,7 @@ services:
         target: /var/lib/localstack
 
   php-app:
-    image: laravelorbstack/php-apache:8.3
+    image: laravelorbstack/php-apache:8.4
     container_name: laravelorbstack-php
     volumes:
       - type: bind
@@ -179,7 +179,7 @@ services:
 
   php-cli:
     env_file: ./php/.env.app
-    image: laravelorbstack/php-apache:8.3
+    image: laravelorbstack/php-apache:8.4
     volumes:
       - type: bind
         source: ../..
