@@ -31,7 +31,7 @@
         "qossmic/deptrac": "^2.0.4",
         "rector/rector": "dev-main",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^12.3.6"
+        "symplify/easy-coding-standard": "^12.4.0"
     },
     "autoload": {
         "psr-4": {
