@@ -113,6 +113,7 @@ services:
       default:
         aliases:
           - laravelorbstack.storage.local
+          - sample-bucket.laravelorbstack.storage.local
     image: minio/minio:RELEASE.2024-11-07T00-52-20Z
     container_name: laravelorbstack-minio
     command: server /export --console-address ":80"
