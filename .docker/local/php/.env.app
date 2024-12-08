@@ -50,13 +50,10 @@ AWS_ACCESS_KEY_ID=samplesample
 AWS_SECRET_ACCESS_KEY=samplesample
 AWS_DEFAULT_REGION=us-east-1
 AWS_BUCKET=sample-bucket
-AWS_USE_PATH_STYLE_ENDPOINT=true
+AWS_USE_PATH_STYLE_ENDPOINT=false
 
-AWS_URL=localstack.laravelorbstack.orb.local:4566
-# or minio.laravelorbstack.orb.local:9000
-
-AWS_ENDPOINT=localstack.laravelorbstack.orb.local:4566
-# or minio.laravelorbstack.orb.local:9000
+AWS_URL=laravelorbstack.storage.local:9000
+AWS_ENDPOINT=sample-bucket.laravelorbstack.storage.local:9000
 
 PUSHER_APP_ID=
 PUSHER_APP_KEY=

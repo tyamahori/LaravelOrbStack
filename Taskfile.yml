@@ -1,14 +1,12 @@
 version: '3'
 silent: false
 vars:
-  COMPOSE_FILE_PATH: .docker/local/compose.yaml
+  COMPOSE_FILE_PATH: .docker/compose.yaml
   PHP_DOCKERFILE_PATH: .docker/php.Dockerfile
-  S3_DOCKERFILE_PATH: .docker/local/s3/Dockerfile
 
   PHP_TAG: laravelorbstack/php-apache:8.4
-  S3_TAG: laravelorbstack/s3:20240328
 
-  BASE_COMMAND: docker compose -f .docker/local/compose.yaml
+  BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
 
   USER_NAME:
     sh: whoami
@@ -52,15 +50,8 @@ tasks:
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }} \
         .
-  buildS3Image:
-    cmd: |
-      docker build \
-        -t {{ .S3_TAG }} \
-        -f {{ .S3_DOCKERFILE_PATH }} \
-        --no-cache \
-        .
   pullImages:
-    cmd: "{{ .BASE_COMMAND }} pull redis localstack mailpit mysql postgresql"
+    cmd: "{{ .BASE_COMMAND }} pull redis mailpit mysql postgresql"
   cleanUpComposeProject:
     cmds:
       - task: removeVendor
@@ -76,7 +67,6 @@ tasks:
   buildImages:
     deps:
       - task: buildPhpImage
-      - task: buildS3Image
       - task: pullImages
     cmds:
       - task: images
@@ -273,12 +263,11 @@ tasks:
     cmd: "{{ .BASE_COMMAND }} run --rm php-cli composer ide-helper"
   bucket:
     cmds:
-      - "{{ .BASE_COMMAND }} exec minio bash -c
-      'mc config host add myminio http://minio:9000 samplesample samplesample &&
-       mc mb myminio/sample-bucket &&
-       mc anonymous set public myminio/sample-bucket
-       '
-      "
+      - "{{ .BASE_COMMAND }} run --entrypoint /bin/sh --rm mc -c '
+      mc config host add myminio http://laravelorbstack.storage.local:9000 samplesample samplesample && \
+      mc mb myminio/sample-bucket && \
+      mc anonymous set public myminio/sample-bucket
+      '"
   ecsOnSave:
     requires:
       vars: [ CLI_ARGS ]
