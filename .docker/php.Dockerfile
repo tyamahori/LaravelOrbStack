@@ -8,7 +8,7 @@ FROM golang:${GO_DOCKER_IMAGE_VERSION} AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.120.0
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.122.3
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.23
@@ -17,21 +17,25 @@ FROM golang:${GO_DOCKER_IMAGE_VERSION} AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.23
 
 FROM php:${PHP_DOCKER_IMAGE_VERSION} AS commonphp
+
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
+
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /var/www/html \
     && mkdir /composer \
     && chown ${USER_NAME}:${USER_NAME} /composer
+
 ENV COMPOSER_HOME=/composer \
     PATH=/composer/vendor/bin:$PATH \
     COMPOSER_ALLOW_SUPERUSER=1 \
     DEBCONF_NOWARNINGS=yes \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
-ARG PHP_EXTTENSION_INSTALLER_VERSION=2.6.3
+
+ARG PHP_EXTTENSION_INSTALLER_VERSION=2.7.5
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${PHP_EXTTENSION_INSTALLER_VERSION}/install-php-extensions /usr/local/bin/
 RUN apt-get update \
     && apt-get install -yq git postgresql unzip \
