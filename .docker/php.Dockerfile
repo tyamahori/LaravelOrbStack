@@ -34,8 +34,8 @@ ENV COMPOSER_HOME=/composer \
 ARG PHP_EXTTENSION_INSTALLER_VERSION=2.6.3
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${PHP_EXTTENSION_INSTALLER_VERSION}/install-php-extensions /usr/local/bin/
 RUN apt-get update \
-    && apt-get install -yq default-mysql-client dnsutils git iproute2 iputils-ping postgresql unzip vim \
-    && install-php-extensions redis gd opcache intl zip bcmath pdo_mysql pdo_pgsql pgsql \
+    && apt-get install -yq git postgresql unzip \
+    && install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite headers
 
@@ -43,12 +43,16 @@ ARG COMPOSER_VERSION=2.8.2
 
 FROM commonphp AS local
 COPY --from=task /go/bin/task /usr/bin/task
-COPY --from=purl /go/bin/purl /usr/bin/purl
 COPY --from=runn /go/bin/runn /usr/bin/runn
-COPY --from=mysqldef /go/bin/mysqldef /usr/bin/mysqldef
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
-RUN install-php-extensions xdebug-3.4.0beta1 @composer-${COMPOSER_VERSION}
+RUN apt-get update && apt-get install -yq dnsutils iproute2 iputils-ping vim \
+    && install-php-extensions xdebug-3.4.0 @composer-${COMPOSER_VERSION} \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+USER ${USER_NAME}
+
+FROM commonphp AS ci
+RUN install-php-extensions xdebug-3.4.0 @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
