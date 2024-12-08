@@ -53,7 +53,7 @@ AWS_BUCKET=sample-bucket
 AWS_USE_PATH_STYLE_ENDPOINT=false
 
 AWS_URL=laravelorbstack.storage.local:9000
-AWS_ENDPOINT=sample-bucket.laravelorbstack.storage.local:9000
+AWS_ENDPOINT=http://sample-bucket.laravelorbstack.storage.local:9000
 
 PUSHER_APP_ID=
 PUSHER_APP_KEY=
