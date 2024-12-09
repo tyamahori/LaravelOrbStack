@@ -24,7 +24,8 @@ ARG USER_NAME
 
 RUN apt-get update \
     && apt-get install -yq git postgresql unzip \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
     && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /var/www/html \
@@ -72,13 +73,13 @@ RUN composer install && \
 
 FROM commonphp AS prod
 ENV APACHE_LOG_DIR=/var/log/apache2
-USER ${USER_NAME}
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/php.ini /usr/local/etc/php/php.ini
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
-RUN install-php-extensions @composer-${COMPOSER_VERSION} && \
-    composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
+RUN install-php-extensions @composer-${COMPOSER_VERSION}
+USER ${USER_NAME}
+RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
     php artisan clear-compiled && \
     php artisan optimize:clear
