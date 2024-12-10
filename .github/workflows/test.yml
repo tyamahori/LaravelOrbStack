@@ -67,7 +67,7 @@ jobs:
       - name: Cache Docker images
         uses: ScribeMD/docker-cache@0.3.7
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.Dockerfile') }}-${{ hashFiles('./.docker/local/s3/Dockerfile') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.Dockerfile') }}-${{ hashFiles('./.docker/compose.yaml') }}
       - name: Setup
         run: task upOnCI
       - name: test
