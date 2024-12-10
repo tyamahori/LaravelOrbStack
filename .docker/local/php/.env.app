@@ -12,8 +12,8 @@ LOG_LEVEL=debug
 DB_CONNECTION=pgsql
 # mysql
 
-DB_HOST=postgresql
-# or mysql
+DB_HOST=laravelorbstack.pgsql.local
+# or laravelorbstack.mysql.local
 
 DB_PORT=5432
 # or 3306
