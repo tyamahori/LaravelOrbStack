@@ -26,3 +26,6 @@ README.md
 Taskfile.yml
 libConfig
 .editorconfig
+.docker/compose.yaml
+.docker/local
+.docker/php.Dockerfile
