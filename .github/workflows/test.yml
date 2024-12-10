@@ -23,7 +23,7 @@ jobs:
         uses: ScribeMD/docker-cache@0.5.0
         id: docker-cache
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.Dockerfile') }}-${{ hashFiles('./.docker/local/s3/Dockerfile') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.Dockerfile') }}-${{ hashFiles('./.docker/compose.yaml') }}
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
         run: task pullImages buildPhpImage -- ci
@@ -41,7 +41,7 @@ jobs:
       - name: Cache Docker images
         uses: ScribeMD/docker-cache@0.3.7
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.Dockerfile') }}-${{ hashFiles('./.docker/local/s3/Dockerfile') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.Dockerfile') }}-${{ hashFiles('./.docker/compose.yaml') }}
       - name: Setup
         run: task upOnCI
       - name: Rector
