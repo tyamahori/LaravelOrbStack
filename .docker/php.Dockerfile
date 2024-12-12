@@ -40,23 +40,23 @@ ENV COMPOSER_HOME=/composer \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
 
-ARG PHP_EXTTENSION_INSTALLER_VERSION=2.7.5
+ARG PHP_EXTTENSION_INSTALLER_VERSION=2.7.6
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${PHP_EXTTENSION_INSTALLER_VERSION}/install-php-extensions /usr/local/bin/
 RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 
-ARG COMPOSER_VERSION=2.8.2
+ARG COMPOSER_VERSION=2.8.3
 
 FROM commonphp AS local
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=runn /go/bin/runn /usr/bin/runn
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
 RUN apt-get update && apt-get install -yq dnsutils iproute2 iputils-ping vim \
-    && install-php-extensions xdebug-3.4.0 @composer-${COMPOSER_VERSION} \
+    && install-php-extensions xdebug @composer-${COMPOSER_VERSION} \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 USER ${USER_NAME}
 
 FROM commonphp AS ci
-RUN install-php-extensions xdebug-3.4.0 @composer-${COMPOSER_VERSION}
+RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
