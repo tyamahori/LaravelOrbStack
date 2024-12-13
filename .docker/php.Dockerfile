@@ -60,11 +60,11 @@ RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
+RUN install-php-extensions @composer-${COMPOSER_VERSION}
+COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/php.ini /usr/local/etc/php/php.ini
-RUN install-php-extensions @composer-${COMPOSER_VERSION}
-COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 USER ${USER_NAME}
 RUN composer install && \
     composer dump-autoload && \
@@ -73,11 +73,11 @@ RUN composer install && \
 
 FROM commonphp AS prod
 ENV APACHE_LOG_DIR=/var/log/apache2
+RUN install-php-extensions @composer-${COMPOSER_VERSION}
+COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/php.ini /usr/local/etc/php/php.ini
-RUN install-php-extensions @composer-${COMPOSER_VERSION}
-COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 USER ${USER_NAME}
 RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
@@ -86,12 +86,12 @@ RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefe
 
 FROM commonphp AS flyio
 ENV APACHE_LOG_DIR=/var/log/apache2
+RUN install-php-extensions @composer-${COMPOSER_VERSION}
+COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/ports.conf /etc/apache2/ports.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
-RUN install-php-extensions @composer-${COMPOSER_VERSION}
-COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 USER ${USER_NAME}
 RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
     composer dump-autoload && \
