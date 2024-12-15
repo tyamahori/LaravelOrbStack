@@ -27,7 +27,7 @@
         "phpstan/phpstan-nette": "^2.0.1",
         "phpstan/phpstan-phpunit": "^2.0.1",
         "phpstan/phpstan-strict-rules": "^2.0.0",
-        "phpunit/phpunit": "^11.5.0",
+        "phpunit/phpunit": "^11.5.1",
         "qossmic/deptrac": "^2.0.4",
         "rector/rector": "dev-main",
         "roave/security-advisories": "dev-latest",
