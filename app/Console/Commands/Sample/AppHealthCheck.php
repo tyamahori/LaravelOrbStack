@@ -9,6 +9,7 @@ use Illuminate\Cache\CacheManager;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\Factory as FactoryContract;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Mail\MailManager;
 use Illuminate\Session\Store;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
@@ -18,10 +19,11 @@ use function sprintf;
 class AppHealthCheck extends Command
 {
     public function __construct(
-        private readonly ConnectionInterface $_cn,
-        private readonly FactoryContract $_fc,
-        private readonly CacheManager $_cm,
-        private readonly Store $_sm
+        private readonly ConnectionInterface $connectionInterface,
+        private readonly FactoryContract $factoryContract,
+        private readonly CacheManager $cacheManager,
+        private readonly Store $store,
+        private readonly MailManager $mailManager,
     ) {
         parent::__construct();
     }
@@ -47,15 +49,16 @@ class AppHealthCheck extends Command
     {
         $this->updateS3();
         $this->database();
-        $this->useCache($this->_cm);
-        $this->useSession($this->_sm);
+        $this->useCache($this->cacheManager);
+        $this->useSession($this->store);
+        $this->useMailManager($this->mailManager);
 
         return self::SUCCESS;
     }
 
     private function database(): void
     {
-        $this->_cn->table('migrations')->select('*')->get()->toArray();
+        $this->connectionInterface->table('migrations')->select('*')->get()->toArray();
     }
 
     private function updateS3(): void
@@ -64,7 +67,7 @@ class AppHealthCheck extends Command
 
         $fileName = sprintf('file-%s.csv', $now->toAtomString());
 
-        $this->_fc->disk('s3')->put($fileName, 'Contents');
+        $this->factoryContract->disk('s3')->put($fileName, 'Contents');
     }
 
     /**
@@ -84,5 +87,11 @@ class AppHealthCheck extends Command
         $key = CarbonImmutable::now()->toAtomString();
         $item = 'asdfasdf';
         $sm->put($key, $item);
+    }
+
+    private function useMailManager(MailManager $mm): void
+    {
+        $mm->to('sample@example.com')
+            ->send(new \App\Mail\AppHealthCheck());
     }
 }
