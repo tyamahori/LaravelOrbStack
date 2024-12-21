@@ -1,4 +1,3 @@
-ARG PHP_DOCKER_IMAGE_VERSION=8.4.2-apache
 ARG GO_DOCKER_IMAGE_VERSION=1.23.4-bookworm
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS task
@@ -16,7 +15,7 @@ RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.24
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.24
 
-FROM php:${PHP_DOCKER_IMAGE_VERSION} AS commonphp
+FROM php:8.4.2-apache AS commonphp
 
 ARG USER_ID
 ARG GROUP_ID
@@ -47,16 +46,20 @@ RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 ARG COMPOSER_VERSION=2.8.4
 
 FROM commonphp AS local
+ENV APACHE_LOG_DIR=/var/www/html/storage/logs
+RUN apt-get update \
+    && apt-get install -yq dnsutils iproute2 iputils-ping vim  \
+    && install-php-extensions xdebug \
+    && apt-get clean  \
+    && rm -rf /var/lib/apt/lists/*
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=runn /go/bin/runn /usr/bin/runn
-ENV APACHE_LOG_DIR=/var/www/html/storage/logs
-RUN apt-get update && apt-get install -yq dnsutils iproute2 iputils-ping vim \
-    && install-php-extensions xdebug @composer-${COMPOSER_VERSION} \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN install-php-extensions @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS ci
-RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
+RUN install-php-extensions xdebug
+RUN install-php-extensions @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
