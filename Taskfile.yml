@@ -51,7 +51,7 @@ tasks:
         --build-arg USER_NAME={{ .USER_NAME }} \
         .
   pullImages:
-    cmd: "{{ .BASE_COMMAND }} pull redis mailpit mysql postgresql minio mc"
+    cmd: "{{ .BASE_COMMAND }} pull session cache mailpit mysql postgresql minio mc"
   cleanUpComposeProject:
     cmds:
       - task: removeVendor
