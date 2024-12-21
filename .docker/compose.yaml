@@ -71,17 +71,37 @@ services:
       ]
       <<: *healthcheck-settings
 
-  redis:
+  cache:
     networks:
       default:
         aliases:
-          - laravelorbstack.redis.local
+          - laravelorbstack.cache.local
     image: redis:7.2
-    container_name: laravelorbstack-redis
+    container_name: laravelorbstack-cache
     command: redis-server --appendonly yes
     volumes:
       - type: volume
-        source: redis
+        source: cache
+        target: /data
+    healthcheck:
+      test: [
+        "CMD",
+        "redis-cli",
+        "ping"
+      ]
+      <<: *healthcheck-settings
+
+  session:
+    networks:
+      default:
+        aliases:
+          - laravelorbstack.session.local
+    image: redis:7.2
+    container_name: laravelorbstack-session
+    command: redis-server --appendonly yes
+    volumes:
+      - type: volume
+        source: session
         target: /data
     healthcheck:
       test: [
@@ -200,7 +220,9 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
-      redis:
+      cache:
+        condition: service_healthy
+      session:
         condition: service_healthy
       mailpit:
         condition: service_healthy
@@ -237,7 +259,8 @@ services:
 volumes:
   postgresql:
   mysql:
-  redis:
+  cache:
+  session:
   minio:
   minio-config:
 #  localstack:

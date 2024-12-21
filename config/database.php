@@ -137,24 +137,23 @@ return [
             'prefix' => env('REDIS_PREFIX', Str::slug($appName, '_').'_database_'),
         ],
 
-        'default' => [
-            'url' => env('REDIS_URL'),
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'username' => env('REDIS_USERNAME'),
-            'password' => env('REDIS_PASSWORD'),
-            'port' => env('REDIS_PORT', '6379'),
-            'database' => env('REDIS_DB', '0'),
+        'session' => [
+            'url' => env('REDIS_URL_SESSION'),
+            'host' => env('REDIS_HOST_SESSION', '127.0.0.1'),
+            'username' => env('REDIS_USERNAME_SESSION'),
+            'password' => env('REDIS_PASSWORD_SESSION'),
+            'port' => env('REDIS_PORT_SESSION', '6379'),
+            'database' => env('REDIS_CACHE_DB_SESSION', '1'),
         ],
 
         'cache' => [
-            'url' => env('REDIS_URL'),
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'username' => env('REDIS_USERNAME'),
-            'password' => env('REDIS_PASSWORD'),
-            'port' => env('REDIS_PORT', '6379'),
-            'database' => env('REDIS_CACHE_DB', '1'),
+            'url' => env('REDIS_URL_CACHE'),
+            'host' => env('REDIS_HOST_CACHE', '127.0.0.1'),
+            'username' => env('REDIS_USERNAME_CACHE'),
+            'password' => env('REDIS_PASSWORD_CACHE'),
+            'port' => env('REDIS_PORT_CACHE', '6379'),
+            'database' => env('REDIS_CACHE_DB_CACHE', '1'),
         ],
-
     ],
 
 ];

@@ -1,9 +1,9 @@
 # APP用のenv
-APP_NAME=Laravel
+APP_NAME=LaravelOrbStack
 APP_ENV=local
 APP_KEY=base64:zcGC9RB0cplYgwAIAJ1vnNVHsHN+FXqTB3g6WtTfZTU=
 APP_DEBUG=true
-APP_URL=http://php-app
+APP_URL=https://php-app.laravelorbstack.orb.local/
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
@@ -24,36 +24,43 @@ DB_PASSWORD=sample
 DB_SCHEMA=sample
 
 BROADCAST_DRIVER=log
-CACHE_DRIVER=redis
 FILESYSTEM_DISK=s3
 QUEUE_CONNECTION=redis
+
+# CACHE
+CACHE_DRIVER=redis
+
+REDIS_HOST_CACHE=laravelorbstack.cache.local
+REDIS_PASSWORD_CACHE=null
+REDIS_PORT_CACHE=6379
+
+# SESSION
 SESSION_DRIVER=redis
+SESSION_CONNECTION=session
 SESSION_LIFETIME=120
 
-MEMCACHED_HOST=127.0.0.1
+REDIS_HOST_SESSION=laravelorbstack.session.local
+REDIS_PASSWORD_SESSION=null
+REDIS_PORT_SESSION=6379
 
-REDIS_HOST=redis
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-
+# MAIL
 MAIL_MAILER=smtp
-MAIL_HOST=mailpit
-
+MAIL_HOST=laravelorbstack.mail.local
 MAIL_PORT=1025
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS="hello@example.com"
+MAIL_FROM_ADDRESS="hello@laravelorbstack.com"
 MAIL_FROM_NAME="${APP_NAME}"
 
+# AWS
 AWS_ACCESS_KEY_ID=samplesample
 AWS_SECRET_ACCESS_KEY=samplesample
 AWS_DEFAULT_REGION=us-east-1
 AWS_BUCKET=sample-bucket
 AWS_USE_PATH_STYLE_ENDPOINT=false
-
 AWS_URL=laravelorbstack.storage.local:9000
-AWS_ENDPOINT=http://sample-bucket.laravelorbstack.storage.local:9000
+AWS_ENDPOINT=http://laravelorbstack.storage.local:9000
 
 PUSHER_APP_ID=
 PUSHER_APP_KEY=
