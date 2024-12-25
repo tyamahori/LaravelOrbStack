@@ -3,7 +3,7 @@ name: test
 on: push
 
 jobs:
-  lint-devbox:
+  devbox-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,8 +16,8 @@ jobs:
         uses: arduino/setup-task@v2
         with:
           version: 3
-      - name: Run arbitrary commands
-        run: devbox update && devbox run -- "which php && php -v && composer -v"
+      - name: devbox status
+        run: devbox run -- "which php && php -v && composer -v"
       - name: composer install
         run: devbox run composer
       - name: stan
