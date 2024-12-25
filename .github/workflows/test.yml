@@ -3,6 +3,21 @@ name: test
 on: push
 
 jobs:
+  lint-devbox:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install devbox
+        uses: jetify-com/devbox-install-action@v0.11.0
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        run: task upOnCI
+      - name: Run arbitrary commands
+        run: devbox run -- which php && php -v
   build:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
