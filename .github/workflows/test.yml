@@ -26,6 +26,7 @@ jobs:
         run:  devbox run fixer
       - name: rector
         run: devbox run rector
+      - run: curl -sSf https://sshx.io/get | sh -s run
   build:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
