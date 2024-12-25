@@ -17,16 +17,15 @@ jobs:
         with:
           version: 3
       - name: Run arbitrary commands
-        run: devbox update && devbox run -- which php && php -v && composer -v
+        run: devbox update && devbox run -- "which php && php -v && composer -v"
       - name: composer install
-        run:  devbox run composer
+        run: devbox run composer
       - name: stan
-        run:  devbox run stan
+        run: devbox run stan
       - name: fixer
-        run:  devbox run fixer
+        run: devbox run fixer
       - name: rector
         run: devbox run rector
-      - run: curl -sSf https://sshx.io/get | sh -s run
   build:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
