@@ -18,14 +18,8 @@ jobs:
           version: 3
       - name: devbox status
         run: devbox run -- "which php && php -v && composer -v"
-      - name: composer install
-        run: devbox run composer
-      - name: stan
-        run: devbox run stan
-      - name: fixer
-        run: devbox run fixer
-      - name: rector
-        run: devbox run rector
+      - name: lint
+        run: devbox run lint
   build:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}

@@ -18,6 +18,12 @@
             ],
             "rector": [
                 "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
+            ],
+            "lint": [
+                "composer install",
+                "./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon ",
+                "./vendor/bin/ecs check -c ./libConfig/ecs.php",
+                "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
             ]
         }
     }
