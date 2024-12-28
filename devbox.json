@@ -2,11 +2,13 @@
     "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.7/.schema/devbox.schema.json",
     "packages": [
         "php@8.4",
-        "php84Packages.composer@latest"
+        "php84Packages.composer@latest",
+        "flyctl@latest"
     ],
     "shell": {
         "init_hook": [
-            "echo 'Welcome to devbox!' > /dev/null"
+            "echo 'Welcome to devbox!' > /dev/null",
+            "devbox install"
         ],
         "scripts": {
             "composer": "composer install",
