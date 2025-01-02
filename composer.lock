@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a047365ba81045a3484932629271622",
+    "content-hash": "829a1cabf94f1baf728f9ce3ef8e0a8f",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -4868,12 +4868,12 @@
             },
             "type": "library",
             "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/contracts",
+                    "name": "symfony/contracts"
+                },
                 "branch-alias": {
                     "dev-main": "3.5-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
                 }
             },
             "autoload": {
@@ -5149,16 +5149,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v7.2.0",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "6de263e5868b9a137602dd1e33e4d48bfae99c49"
+                "reference": "87a71856f2f56e4100373e92529eed3171695cfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/6de263e5868b9a137602dd1e33e4d48bfae99c49",
-                "reference": "6de263e5868b9a137602dd1e33e4d48bfae99c49",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/87a71856f2f56e4100373e92529eed3171695cfb",
+                "reference": "87a71856f2f56e4100373e92529eed3171695cfb",
                 "shasum": ""
             },
             "require": {
@@ -5193,7 +5193,7 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v7.2.0"
+                "source": "https://github.com/symfony/finder/tree/v7.2.2"
             },
             "funding": [
                 {
@@ -5209,7 +5209,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-23T06:56:12+00:00"
+            "time": "2024-12-30T19:00:17+00:00"
         },
         {
             "name": "symfony/http-client",
@@ -8763,16 +8763,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.0.4",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "50d276fc3bf1430ec315f2f109bbde2769821524"
+                "reference": "2392d360fdf54ea253aa6c68cad1d4ba2e54e927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/50d276fc3bf1430ec315f2f109bbde2769821524",
-                "reference": "50d276fc3bf1430ec315f2f109bbde2769821524",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/2392d360fdf54ea253aa6c68cad1d4ba2e54e927",
+                "reference": "2392d360fdf54ea253aa6c68cad1d4ba2e54e927",
                 "shasum": ""
             },
             "require": {
@@ -8817,7 +8817,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-17T17:14:01+00:00"
+            "time": "2024-12-31T07:30:03+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -9524,21 +9524,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.0.3",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "3f27091368bd935dbbaa8387099792fb20f65f68"
+                "reference": "f3354fbbdbeb090a53f5260fa5841d373540a831"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/3f27091368bd935dbbaa8387099792fb20f65f68",
-                "reference": "3f27091368bd935dbbaa8387099792fb20f65f68",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/f3354fbbdbeb090a53f5260fa5841d373540a831",
+                "reference": "f3354fbbdbeb090a53f5260fa5841d373540a831",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0",
-                "phpstan/phpstan": "^2.0.1"
+                "phpstan/phpstan": "^2.1.0"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -9571,7 +9571,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.0.3"
+                "source": "https://github.com/rectorphp/rector/tree/2.0.5"
             },
             "funding": [
                 {
@@ -9579,7 +9579,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-12T15:22:19+00:00"
+            "time": "2024-12-31T13:11:55+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -11411,16 +11411,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "12.5.4",
+            "version": "12.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/easy-coding-standard/easy-coding-standard.git",
-                "reference": "5673ecbc03eef9d7b2f563819c80e8e1ce0161be"
+                "reference": "16a6ac7f452e230fdcc81f1b35b2366903fcecf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/5673ecbc03eef9d7b2f563819c80e8e1ce0161be",
-                "reference": "5673ecbc03eef9d7b2f563819c80e8e1ce0161be",
+                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/16a6ac7f452e230fdcc81f1b35b2366903fcecf3",
+                "reference": "16a6ac7f452e230fdcc81f1b35b2366903fcecf3",
                 "shasum": ""
             },
             "require": {
@@ -11456,7 +11456,7 @@
             ],
             "support": {
                 "issues": "https://github.com/easy-coding-standard/easy-coding-standard/issues",
-                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.5.4"
+                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.5.5"
             },
             "funding": [
                 {
@@ -11468,7 +11468,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-12T15:36:04+00:00"
+            "time": "2025-01-02T08:43:03+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -11529,7 +11529,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.4",
+        "php": "^8.4.2",
         "ext-pdo": "*"
     },
     "platform-dev": {},
