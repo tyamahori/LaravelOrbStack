@@ -4,7 +4,7 @@ on: push
 
 jobs:
   devbox-lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Install Task
         uses: arduino/setup-task@v2
@@ -46,7 +46,7 @@ jobs:
         run: task pullImages buildPhpImage -- ci
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: build
     steps:
       - name: Install Task
@@ -72,7 +72,7 @@ jobs:
           task ecs
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: build
     steps:
       - name: Install Task

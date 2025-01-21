@@ -1,19 +1,19 @@
-ARG GO_DOCKER_IMAGE_VERSION=1.23.4-bookworm
+ARG GO_DOCKER_IMAGE_VERSION=1.23.5-bookworm
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.40.1
+RUN go install github.com/go-task/task/v3/cmd/task@v3.41.0
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.125.0
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.127.2
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.24
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.27
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.24
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.27
 
 FROM php:8.4.3-apache AS commonphp
 
@@ -39,7 +39,7 @@ ENV COMPOSER_HOME=/composer \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
 
-ARG PHP_EXTTENSION_INSTALLER_VERSION=2.7.8
+ARG PHP_EXTTENSION_INSTALLER_VERSION=2.7.13
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${PHP_EXTTENSION_INSTALLER_VERSION}/install-php-extensions /usr/local/bin/
 RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 
@@ -58,8 +58,7 @@ RUN install-php-extensions @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS ci
-RUN install-php-extensions xdebug
-RUN install-php-extensions @composer-${COMPOSER_VERSION}
+RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS develop
