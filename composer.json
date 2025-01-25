@@ -25,7 +25,7 @@
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-doctrine": "^2.0.1",
         "phpstan/phpstan-nette": "^2.0.2",
-        "phpstan/phpstan-phpunit": "^2.0.3",
+        "phpstan/phpstan-phpunit": "^2.0.4",
         "phpstan/phpstan-strict-rules": "^2.0.3",
         "phpunit/phpunit": "^11.5.3",
         "qossmic/deptrac": "^2.0.4",
