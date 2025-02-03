@@ -10,7 +10,7 @@
         "cuyz/valinor": "^1.14.2",
         "guzzlehttp/guzzle": "^7.9.2",
         "laravel/framework": "^11.41.3",
-        "laravel/tinker": "^2.10.0",
+        "laravel/tinker": "^2.10.1",
         "league/flysystem-aws-s3-v3": "^3.29.0",
         "open-telemetry/opentelemetry": "^1.0",
         "php-http/httplug": "^2.4.1"
@@ -27,11 +27,11 @@
         "phpstan/phpstan-nette": "^2.0.2",
         "phpstan/phpstan-phpunit": "^2.0.4",
         "phpstan/phpstan-strict-rules": "^2.0.3",
-        "phpunit/phpunit": "^11.5.3",
+        "phpunit/phpunit": "^11.5.6",
         "qossmic/deptrac": "^2.0.4",
         "rector/rector": "^2.0.7",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^12.5.5"
+        "symplify/easy-coding-standard": "^12.5.8"
     },
     "autoload": {
         "psr-4": {
