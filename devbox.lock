@@ -49,6 +49,9 @@
         }
       }
     },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "resolved": "github:NixOS/nixpkgs/1128e89fd5e11bb25aedbfc287733c6502202ea9?lastModified=1739451785&narHash=sha256-3ebRdThRic9bHMuNi2IAA%2Fek9b32bsy8F5R4SvGTIog%3D"
+    },
     "php@8.4.3": {
       "last_modified": "2025-01-24T01:56:22Z",
       "plugin_version": "0.0.3",
