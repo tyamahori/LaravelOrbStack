@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.4.4",
         "ext-pdo": "*",
-        "cuyz/valinor": "^1.14.2",
+        "cuyz/valinor": "^1.14.3",
         "guzzlehttp/guzzle": "^7.9.2",
         "laravel/framework": "^11.43.2",
         "laravel/tinker": "^2.10.1",
@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14.10",
-        "barryvdh/laravel-ide-helper": "^3.5.4",
+        "barryvdh/laravel-ide-helper": "^3.5.5",
         "deptrac/deptrac": "^3.0",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.0.4",
@@ -28,7 +28,7 @@
         "phpstan/phpstan-nette": "^2.0.3",
         "phpstan/phpstan-phpunit": "^2.0.4",
         "phpstan/phpstan-strict-rules": "^2.0.3",
-        "phpunit/phpunit": "^11.5.7",
+        "phpunit/phpunit": "^11.5.9",
         "rector/rector": "^2.0.9",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^12.5.8"
