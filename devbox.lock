@@ -2,55 +2,55 @@
   "lockfile_version": "1",
   "packages": {
     "flyctl@latest": {
-      "last_modified": "2025-01-14T09:56:28Z",
-      "resolved": "github:NixOS/nixpkgs/357cd3dfdb8993af11268d755d53357720675e66#flyctl",
+      "last_modified": "2025-02-07T11:26:36Z",
+      "resolved": "github:NixOS/nixpkgs/d98abf5cf5914e5e4e9d57205e3af55ca90ffc1d#flyctl",
       "source": "devbox-search",
-      "version": "0.3.61",
+      "version": "0.3.75",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/kvh0acr2ri6nw4vfrmxx8b6dwcgl3ccf-flyctl-0.3.61",
+              "path": "/nix/store/h5h3x51k7n3jb24y8rr1r3149pg3vkja-flyctl-0.3.75",
               "default": true
             }
           ],
-          "store_path": "/nix/store/kvh0acr2ri6nw4vfrmxx8b6dwcgl3ccf-flyctl-0.3.61"
+          "store_path": "/nix/store/h5h3x51k7n3jb24y8rr1r3149pg3vkja-flyctl-0.3.75"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/47b5fyw9i1iyvgidchmm7fmapc4mg00l-flyctl-0.3.61",
+              "path": "/nix/store/s6ns5m1gyq9j7q1f7qh9aklfai2ma19y-flyctl-0.3.75",
               "default": true
             }
           ],
-          "store_path": "/nix/store/47b5fyw9i1iyvgidchmm7fmapc4mg00l-flyctl-0.3.61"
+          "store_path": "/nix/store/s6ns5m1gyq9j7q1f7qh9aklfai2ma19y-flyctl-0.3.75"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/21jvpsk4vb9hdcz0mvvrmc6n2mmwzswa-flyctl-0.3.61",
+              "path": "/nix/store/k4ydzcxwlf77pjsgg4x83267mc87y6iz-flyctl-0.3.75",
               "default": true
             }
           ],
-          "store_path": "/nix/store/21jvpsk4vb9hdcz0mvvrmc6n2mmwzswa-flyctl-0.3.61"
+          "store_path": "/nix/store/k4ydzcxwlf77pjsgg4x83267mc87y6iz-flyctl-0.3.75"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/1d1d95igm4kxrvd2bcj8m472b79agbdk-flyctl-0.3.61",
+              "path": "/nix/store/ahyqr7a1w0llfrfh6pgkv0wj2jkdpa2d-flyctl-0.3.75",
               "default": true
             }
           ],
-          "store_path": "/nix/store/1d1d95igm4kxrvd2bcj8m472b79agbdk-flyctl-0.3.61"
+          "store_path": "/nix/store/ahyqr7a1w0llfrfh6pgkv0wj2jkdpa2d-flyctl-0.3.75"
         }
       }
     },
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
-      "resolved": "github:NixOS/nixpkgs/1128e89fd5e11bb25aedbfc287733c6502202ea9?lastModified=1739451785&narHash=sha256-3ebRdThRic9bHMuNi2IAA%2Fek9b32bsy8F5R4SvGTIog%3D"
+      "resolved": "github:NixOS/nixpkgs/dad564433178067be1fbdfcce23b546254b6d641?lastModified=1740019556&narHash=sha256-vn285HxnnlHLWnv59Og7muqECNMS33mWLM14soFIv2g%3D"
     },
     "php@8.4.3": {
       "last_modified": "2025-01-24T01:56:22Z",
