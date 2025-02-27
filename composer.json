@@ -21,7 +21,6 @@
         "deptrac/deptrac": "^3.0",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.1.0",
-        "nunomaduro/collision": "^8.6.1",
         "php-standard-library/phpstan-extension": "^2.0.0",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-doctrine": "^2.0.1",
