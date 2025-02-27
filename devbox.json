@@ -2,7 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.7/.schema/devbox.schema.json",
   "packages": [
     "flyctl@latest",
-    "php@8.4.3"
+    "php@8.4.3",
+    "uv@latest"
   ],
   "shell": {
     "init_hook": [
@@ -25,6 +26,10 @@
         "./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon ",
         "./vendor/bin/ecs check -c ./libConfig/ecs.php",
         "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
+      ],
+      "build-pict": [
+          "git clone https://github.com/microsoft/pict.git .devbox/pict | true",
+          "make -C .devbox/pict pict"
       ]
     }
   }
