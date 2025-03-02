@@ -1,36 +1,43 @@
 {
-  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.7/.schema/devbox.schema.json",
-  "packages": [
-    "flyctl@latest",
-    "uv@latest",
-    "php@8.4.4"
-  ],
-  "shell": {
-    "init_hook": [
-      "echo 'Welcome to devbox!' > /dev/null",
-      "devbox install"
+    "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.7/.schema/devbox.schema.json",
+    "packages": [
+        "flyctl@latest",
+        "uv@latest",
+        "php@8.4.4",
+        "go@latest",
+        "go-task@latest"
     ],
-    "scripts": {
-      "composer": "composer install",
-      "stan": [
-        "./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon "
-      ],
-      "fixer": [
-        "./vendor/bin/ecs check -c ./libConfig/ecs.php"
-      ],
-      "rector": [
-        "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
-      ],
-      "lint": [
-        "composer install",
-        "./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon ",
-        "./vendor/bin/ecs check -c ./libConfig/ecs.php",
-        "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
-      ],
-      "build-pict": [
-        "git clone https://github.com/microsoft/pict.git .devbox/pict | true",
-        "make -C .devbox/pict pict"
-      ]
+    "shell": {
+        "init_hook": [
+            "echo 'Welcome to devbox!' > /dev/null",
+            "devbox install",
+            "devbox run build-pict",
+            "devbox run build-runn"
+        ],
+        "scripts": {
+            "composer": "composer install",
+            "stan": [
+                "./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon "
+            ],
+            "fixer": [
+                "./vendor/bin/ecs check -c ./libConfig/ecs.php"
+            ],
+            "rector": [
+                "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
+            ],
+            "lint": [
+                "composer install",
+                "./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon ",
+                "./vendor/bin/ecs check -c ./libConfig/ecs.php",
+                "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
+            ],
+            "build-pict": [
+                "git clone https://github.com/microsoft/pict.git .devbox/pict | true",
+                "make -C .devbox/pict pict"
+            ],
+            "build-runn": [
+                "go install github.com/k1LoW/runn/cmd/runn@v0.128.3"
+            ]
+        }
     }
-  }
 }
