@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LaravelOrbStack\Samples;
 
-use App\Http\Controllers\Controller;
 use Carbon\CarbonImmutable;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Support\Renderable;
@@ -15,7 +14,7 @@ use Psr\Log\LoggerInterface;
 use function assert;
 use function is_string;
 
-class HomeController extends Controller
+class HomeController
 {
     public function home(
         Repository $config,
