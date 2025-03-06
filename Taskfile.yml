@@ -288,10 +288,6 @@ tasks:
       - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }}"
       - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix {{ .CLI_ARGS }}"
       - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G"
-  cli:
-    requires:
-      vars: [ CLI_ARGS ]
-    cmd: '{{ .BASE_COMMAND }} run --rm php-cli sh -c "{{ .CLI_ARGS | default "php -v && php artisan -V" }}"'
 
   composerRefresh:
     cmds:
@@ -309,3 +305,19 @@ tasks:
 
   sshFlyIo:
     cmd: fly ssh console
+  php:
+    vars:
+      CALLBACK_TASK: php
+      SERVICE: php-app
+      COMMAND: php {{.CLI_ARGS | default "-v"}}
+    cmds:
+      - |
+        if [ -f /.dockerenv ]; then
+          {{ .COMMAND }}
+          exit 0
+        fi
+        if {{ .BASE_COMMAND }} ps {{.SERVICE}} | grep -q 'Up'; then
+          {{ .BASE_COMMAND }} exec -it {{.SERVICE}} task {{.CALLBACK_TASK}} -- {{ .CLI_ARGS }}
+          exit 0
+        fi
+        {{ .BASE_COMMAND }} run --rm php-cli task {{.CALLBACK_TASK}} -- {{ .CLI_ARGS }}
