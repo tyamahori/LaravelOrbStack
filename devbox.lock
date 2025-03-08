@@ -50,7 +50,7 @@
       }
     },
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
-      "resolved": "github:NixOS/nixpkgs/199169a2135e6b864a888e89a2ace345703c025d?lastModified=1740791350&narHash=sha256-igS2Z4tVw5W%2Fx3lCZeeadt0vcU9fxtetZ%2FRyrqsCRQ0%3D"
+      "resolved": "github:NixOS/nixpkgs/de0fe301211c267807afd11b12613f5511ff7433?lastModified=1741310760&narHash=sha256-aizILFrPgq%2FW53Jw8i0a1h1GZAAKtlYOrG%2FA5r46gVM%3D"
     },
     "go-task@latest": {
       "last_modified": "2025-02-07T11:26:36Z",
@@ -290,6 +290,54 @@
             }
           ],
           "store_path": "/nix/store/s01j8vh4b72r7l1pc8mw7hy34d3anj2g-php-with-extensions-8.4.4"
+        }
+      }
+    },
+    "symfony-cli@latest": {
+      "last_modified": "2025-02-27T15:48:43Z",
+      "resolved": "github:NixOS/nixpkgs/6c5c5f5100281f8f4ff23f13edd17d645178c87c#symfony-cli",
+      "source": "devbox-search",
+      "version": "5.11.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/72d907ry8wjnv5j0x98353zqs7l9l8aa-symfony-cli-5.11.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/72d907ry8wjnv5j0x98353zqs7l9l8aa-symfony-cli-5.11.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/q3fffjgj724b3fxk3xf2xiyknhgi9z0m-symfony-cli-5.11.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/q3fffjgj724b3fxk3xf2xiyknhgi9z0m-symfony-cli-5.11.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ixxazr00lbal2wy3h8raim54w3c4r1x3-symfony-cli-5.11.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ixxazr00lbal2wy3h8raim54w3c4r1x3-symfony-cli-5.11.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/xgdmv99382ajpc24j290qn08qky5jpn7-symfony-cli-5.11.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/xgdmv99382ajpc24j290qn08qky5jpn7-symfony-cli-5.11.0"
         }
       }
     },

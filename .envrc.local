@@ -6,4 +6,4 @@ eval "$(devbox generate direnv --print-envrc)"
 export TASK_TEMP_DIR=$PWD/.devbox/.task
 export GOPATH=$PWD/.devbox
 export COMPOSER_HOME=$PWD/.devbox/.composer
-export PATH=$GOPATH/bin:$COMPOSER_HOME/vendor/bin:$PATH
+export PATH=$GOPATH/bin:$COMPOSER_HOME/vendor/bin:$PWD/.devbox/pict:$PATH
