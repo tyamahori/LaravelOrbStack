@@ -321,3 +321,21 @@ tasks:
           exit 0
         fi
         {{ .BASE_COMMAND }} run --rm php-cli task {{.CALLBACK_TASK}} -- {{ .CLI_ARGS }}
+
+  artisan:
+    vars:
+      SERVICE: php-app
+      COMMAND: php artisan {{.CLI_ARGS | default "-V"}}
+    deps:
+      - task: composer
+    cmds:
+      - |
+        if [ -f /.dockerenv ]; then
+          {{ .COMMAND }}
+          exit 0
+        fi
+        if {{ .BASE_COMMAND }} ps {{.SERVICE}} | grep -q 'Up'; then
+          {{ .BASE_COMMAND }} exec -it {{.SERVICE}} {{.COMMAND}}
+          exit 0
+        fi
+        {{ .BASE_COMMAND }} run --rm php-cli {{.COMMAND}}
