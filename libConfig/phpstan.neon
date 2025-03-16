@@ -1,5 +1,3 @@
-includes:
- - baseline.php
 parameters:
   level: max
   paths:

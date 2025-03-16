@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -20,8 +19,6 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command(
     'inspire',
     function (): void {
-        assert($this instanceof Command, '$this should be an instance of Command');
-
         $this->comment(Inspiring::quote());
     }
 )
