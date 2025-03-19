@@ -14,9 +14,7 @@
   "shell": {
     "init_hook": [
       "echo 'Welcome to devbox!' > /dev/null",
-      "devbox install",
-      "devbox run build-pict",
-      "devbox run build-runn"
+      "devbox install"
     ],
     "scripts": {
       "composer": "composer install",
@@ -40,7 +38,7 @@
         "make -C .devbox/pict pict"
       ],
       "build-runn": [
-        "go install github.com/k1LoW/runn/cmd/runn@v0.128.3"
+        "go install github.com/k1LoW/runn/cmd/runn@v0.129.0"
       ]
     }
   }

@@ -7,13 +7,13 @@ FROM golang:${GO_DOCKER_IMAGE_VERSION} AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.128.1
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.129.0
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.30
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.5
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v0.17.30
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.5
 
 FROM php:8.4.5-apache AS commonphp
 
