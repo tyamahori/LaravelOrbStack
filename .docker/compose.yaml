@@ -209,6 +209,9 @@ services:
         source: ./local/php/000-default.conf
         target: /etc/apache2/sites-available/000-default.conf
       - type: bind
+        source: ./common/security.conf
+        target: /etc/apache2/conf-available/security.conf
+      - type: bind
         source: ./local/php/php.ini
         target: /usr/local/etc/php/php.ini
       - type: bind
