@@ -30,7 +30,7 @@ RUN apt-get update \
     && chown ${USER_NAME}:${USER_NAME} /var/www/html \
     && mkdir /composer \
     && chown ${USER_NAME}:${USER_NAME} /composer \
-    && a2enmod rewrite headers
+    && a2enmod rewrite headers && a2dismod status && a2dismod info
 
 ENV COMPOSER_HOME=/composer \
     PATH=/composer/vendor/bin:$PATH \
