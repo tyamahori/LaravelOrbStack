@@ -131,6 +131,7 @@ tasks:
     cmd: "{{ .BASE_COMMAND }} exec -it php-app bash"
   exec-php-app-as-root:
     cmd: "{{ .BASE_COMMAND }} exec -u root -it php-app bash"
+
   composer:
     sources:
       - ./composer.json
@@ -139,15 +140,30 @@ tasks:
       - ./vendor/composer/installed.json
       - ./vendor/autoload.php
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli composer install"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: composer {{ .CLI_ARGS | default "-V" }}
     status:
       - test -d ./vendor
   composerUpdate:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli composer update"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            composer update
   composerDump:
     deps:
       - task: composer
+        vars:
+          CLI_ARGS: install
     sources:
       - ./packages/**/*.php
       - ./app/**/*.php
@@ -158,10 +174,17 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli composer dump-autoload"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            composer dump-autoload
   ecs:
     deps:
       - task: composer
+        vars:
+          CLI_ARGS: install
     sources:
       - ./packages/**/*.php
       - ./app/**/*.php
@@ -172,8 +195,17 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check -c ./libConfig/ecs.php"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/ecs check -c ./libConfig/ecs.php
   stan:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
     sources:
       - ./packages/**/*.php
       - ./app/**/*.php
@@ -184,10 +216,18 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan analyze -c libConfig/phpstan.neon"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/phpstan analyze -c libConfig/phpstan.neon
+
   phpunit:
     deps:
       - task: composer
+        vars:
+          CLI_ARGS: install
     sources:
       - ./packages/**/*.php
       - ./app/**/*.php
@@ -198,8 +238,18 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
-      - "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpunit -c ./libConfig/phpunit.xml {{ .CLI_ARGS }}"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/phpunit -c ./libConfig/phpunit.xml {{ .CLI_ARGS }}
+
   runRector:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
     sources:
       - ./packages/**/*.php
       - ./app/**/*.php
@@ -209,24 +259,41 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
-    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector -c ./libConfig/rector.php"
-  runEcs:
-    sources:
-      - ./packages/**/*.php
-      - ./app/**/*.php
-      - ./config/**/*.php
-      - ./database/**/*.php
-      - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
-      - ./tests/**/*.php
-    requires:
-      vars: [ CLI_ARGS ]
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/rector -c ./libConfig/rector.php
+
+  runEcs:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
+    sources:
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
+    cmds:
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix
+
   rectorDryRun:
     deps:
       - task: composer
+        vars:
+          CLI_ARGS: install
     sources:
       - ./packages/**/*.php
       - ./app/**/*.php
@@ -236,7 +303,13 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
-    cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
+    cmds:
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/rector process --dry-run -c ./libConfig/rector.php
   runLint:
     internal: true
     deps:
@@ -246,11 +319,16 @@ tasks:
   lintCode:
     deps:
       - task: composer
+        vars:
+          CLI_ARGS: install
     cmds:
       - task: runLint
+
   ide-helper:
     deps:
       - task: composer
+        vars:
+          CLI_ARGS: install
     sources:
       - ./packages/**/*.php
       - ./app/**/*.php
@@ -260,7 +338,14 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
-    cmd: "{{ .BASE_COMMAND }} run --rm php-cli composer ide-helper"
+    cmds:
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            composer ide-helper
+
   bucket:
     cmds:
       - "{{ .BASE_COMMAND }} run --entrypoint /bin/sh --rm mc -c '
@@ -268,26 +353,60 @@ tasks:
       mc mb myminio/sample-bucket && \
       mc anonymous set public myminio/sample-bucket
       '"
+
   ecsOnSave:
-    requires:
-      vars: [ CLI_ARGS ]
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix {{ .CLI_ARGS }}"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix {{ .CLI_ARGS }}
+
   stanOnSave:
-    requires:
-      vars: [ CLI_ARGS ]
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G
+
   rectorOnSave:
-    requires:
-      vars: [ CLI_ARGS ]
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }}"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }}
+
   onSavePHP:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
     cmds:
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }}"
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix {{ .CLI_ARGS }}"
-      - cmd: "{{ .BASE_COMMAND }} run --rm php-cli ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G"
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }} &&
+            ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix {{ .CLI_ARGS }} &&
+            ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G
 
   composerRefresh:
     cmds:
@@ -305,37 +424,59 @@ tasks:
 
   sshFlyIo:
     cmd: fly ssh console
-  php:
-    vars:
-      CALLBACK_TASK: php
-      SERVICE: php-app
-      COMMAND: php {{.CLI_ARGS | default "-v"}}
+
+  run:cmd:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
     cmds:
-      - |
-        if [ -f /.dockerenv ]; then
-          {{ .COMMAND }}
-          exit 0
-        fi
-        if {{ .BASE_COMMAND }} ps {{.SERVICE}} | grep -q 'Up'; then
-          {{ .BASE_COMMAND }} exec -it {{.SERVICE}} task {{.CALLBACK_TASK}} -- {{ .CLI_ARGS }}
-          exit 0
-        fi
-        {{ .BASE_COMMAND }} run --rm php-cli task {{.CALLBACK_TASK}} -- {{ .CLI_ARGS }}
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            {{ .CLI_ARGS | default "whoami && pwd" }}
+
+  php:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
+    cmds:
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            php {{ .CLI_ARGS | default "-v" }}
 
   artisan:
-    vars:
-      SERVICE: php-app
-      COMMAND: php artisan {{.CLI_ARGS | default "-V"}}
     deps:
       - task: composer
     cmds:
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            php artisan {{ .CLI_ARGS | default "-V" }}
+
+  baseCommand:
+    requires:
+      vars: [
+        RUNNING_SERVICE,
+        CLI_SERVICE,
+        COMMAND_TO_RUN
+      ]
+    cmds:
       - |
-        if [ -f /.dockerenv ]; then
-          {{ .COMMAND }}
+        if [ -f /.dockerenv ] || command -v php 2>&1 >/dev/null ; then
+          {{ .COMMAND_TO_RUN }}
           exit 0
         fi
-        if {{ .BASE_COMMAND }} ps {{.SERVICE}} | grep -q 'Up'; then
-          {{ .BASE_COMMAND }} exec -it {{.SERVICE}} {{.COMMAND}}
+        if {{ .BASE_COMMAND }} ps {{ .RUNNING_SERVICE }} | grep -q 'Up'; then
+          {{ .BASE_COMMAND }} exec -it {{ .RUNNING_SERVICE }} {{ .COMMAND_TO_RUN }}
           exit 0
         fi
-        {{ .BASE_COMMAND }} run --rm php-cli {{.COMMAND}}
+        {{ .BASE_COMMAND }} run --rm {{ .CLI_SERVICE }} {{ .COMMAND_TO_RUN }}
