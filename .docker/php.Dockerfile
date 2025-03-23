@@ -1,13 +1,13 @@
-ARG GO_DOCKER_IMAGE_VERSION=1.24.0-bookworm
+ARG GO_DOCKER_IMAGE_VERSION=1.24.1-bookworm
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.41.0
+RUN go install github.com/go-task/task/v3/cmd/task@v3.42.1
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.129.0
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.129.1
 
 FROM golang:${GO_DOCKER_IMAGE_VERSION} AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.5
