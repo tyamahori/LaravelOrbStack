@@ -39,11 +39,11 @@ ENV COMPOSER_HOME=/composer \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
 
-ARG PHP_EXTTENSION_INSTALLER_VERSION=2.7.24
+ARG PHP_EXTTENSION_INSTALLER_VERSION=2.7.28
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${PHP_EXTTENSION_INSTALLER_VERSION}/install-php-extensions /usr/local/bin/
 RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 
-ARG COMPOSER_VERSION=2.8.5
+ARG COMPOSER_VERSION=2.8.6
 
 FROM commonphp AS local
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
