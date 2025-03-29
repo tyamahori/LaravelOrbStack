@@ -1,18 +1,16 @@
-ARG GO_DOCKER_IMAGE_VERSION=1.24.1-bookworm
-
-FROM golang:${GO_DOCKER_IMAGE_VERSION} AS task
+FROM golang:1.24.1-bookworm AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.42.1
 
-FROM golang:${GO_DOCKER_IMAGE_VERSION} AS purl
+FROM golang:1.24.1-bookworm AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
-FROM golang:${GO_DOCKER_IMAGE_VERSION} AS runn
+FROM golang:1.24.1-bookworm AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v0.129.1
 
-FROM golang:${GO_DOCKER_IMAGE_VERSION} AS mysqldef
+FROM golang:1.24.1-bookworm AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.5
 
-FROM golang:${GO_DOCKER_IMAGE_VERSION} AS psqldef
+FROM golang:1.24.1-bookworm AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.5
 
 FROM php:8.4.5-apache AS commonphp
@@ -39,11 +37,9 @@ ENV COMPOSER_HOME=/composer \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
 
-ARG PHP_EXTTENSION_INSTALLER_VERSION=2.7.28
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${PHP_EXTTENSION_INSTALLER_VERSION}/install-php-extensions /usr/local/bin/
+COPY --from=composer:2.8.6 /usr/bin/composer /usr/bin/composer
+COPY --from=mlocati/php-extension-installer:2.7.28 /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
 RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
-
-ARG COMPOSER_VERSION=2.8.6
 
 FROM commonphp AS local
 ENV APACHE_LOG_DIR=/var/www/html/storage/logs
@@ -54,15 +50,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=runn /go/bin/runn /usr/bin/runn
-RUN install-php-extensions @composer-${COMPOSER_VERSION}
 USER ${USER_NAME}
 
 FROM commonphp AS ci
-RUN install-php-extensions xdebug @composer-${COMPOSER_VERSION}
+RUN install-php-extensions xdebug
 USER ${USER_NAME}
 
 FROM commonphp AS develop
-RUN install-php-extensions @composer-${COMPOSER_VERSION}
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
@@ -76,7 +70,6 @@ RUN composer install && \
 
 FROM commonphp AS prod
 ENV APACHE_LOG_DIR=/var/log/apache2
-RUN install-php-extensions @composer-${COMPOSER_VERSION}
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/prod/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
@@ -90,7 +83,6 @@ RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefe
 
 FROM commonphp AS flyio
 ENV APACHE_LOG_DIR=/var/log/apache2
-RUN install-php-extensions @composer-${COMPOSER_VERSION}
 COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
