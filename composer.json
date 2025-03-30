@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.4.5",
         "ext-pdo": "*",
-        "cuyz/valinor": "^1.14.4",
+        "cuyz/valinor": "^1.15.0",
         "guzzlehttp/guzzle": "^7.9.3",
         "laravel/framework": "^12.3.0",
         "laravel/tinker": "^2.10.1",
