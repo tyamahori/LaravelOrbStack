@@ -196,6 +196,7 @@ services:
 #        target: /var/lib/localstack
 
   php-app:
+    hostname: php-app
     image: laravelorbstack/php-apache:8.4
     container_name: laravelorbstack-php
     volumes:
