@@ -51,6 +51,18 @@ tasks:
         --build-arg USER_NAME={{ .USER_NAME }} \
         .
 
+  buildPhpImageForCi:
+    requires:
+      vars: [ CLI_ARGS ]
+    cmd: |
+      docker build \
+        -t {{ .PHP_TAG }} \
+        -f {{ .PHP_DOCKERFILE_PATH }} \
+        --target={{ .CLI_ARGS | default "ci" }} \
+        --build-arg USER_ID={{ .USER_ID }} \
+        --build-arg GROUP_ID={{ .GROUP_ID }} \
+        --build-arg USER_NAME={{ .USER_NAME }} \
+
   buildPhpImageForFrankenPHP:
     requires:
       vars: [ CLI_ARGS ]
@@ -63,6 +75,11 @@ tasks:
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }} \
         .
+
+  buildPHPImagesOnCi:
+    deps:
+        - buildPhpImageForCi
+        - buildPhpImageForFrankenPHP
 
   pullImages:
     cmd: "{{ .BASE_COMMAND }} pull session cache mailpit mysql postgresql minio mc"

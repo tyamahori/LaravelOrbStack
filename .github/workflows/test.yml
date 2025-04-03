@@ -43,7 +43,7 @@ jobs:
           key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.Dockerfile') }}-${{ hashFiles('./.docker/compose.yaml') }}
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
-        run: task pullImages buildPhpImage -- ci
+        run: task pullImages buildPHPImagesOnCi
 
   lint:
     runs-on: ubuntu-24.04-arm
