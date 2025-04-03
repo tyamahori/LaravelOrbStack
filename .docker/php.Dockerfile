@@ -13,6 +13,43 @@ RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.5
 FROM golang:1.24.1-bookworm AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.5
 
+FROM dunglas/frankenphp:php8.4.5 AS basefrankenphp
+
+ARG USER_ID
+ARG GROUP_ID
+ARG USER_NAME
+RUN apt-get update \
+    && apt-get install -yq git postgresql unzip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
+    && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
+    && mkdir /composer \
+    && chown ${USER_NAME}:${USER_NAME} /composer \
+    && chown ${USER_NAME}:${USER_NAME} /app \
+    && chown ${USER_NAME}:${USER_NAME} /data/caddy \
+    && chown ${USER_NAME}:${USER_NAME} /config/caddy \
+    && chown ${USER_NAME}:${USER_NAME} /etc/caddy \
+    && setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp
+
+ENV COMPOSER_HOME=/composer \
+    PATH=/composer/vendor/bin:$PATH \
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    DEBCONF_NOWARNINGS=yes
+
+COPY --from=composer:2.8.6 /usr/bin/composer /usr/bin/composer
+RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
+
+FROM basefrankenphp AS frankenphplocal
+RUN apt-get update \
+    && apt-get install -yq dnsutils iproute2 iputils-ping vim  \
+    && install-php-extensions xdebug \
+    && apt-get clean  \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=task /go/bin/task /usr/bin/task
+COPY --from=runn /go/bin/runn /usr/bin/runn
+USER ${USER_NAME}
+
 FROM php:8.4.5-apache AS commonphp
 
 ARG USER_ID

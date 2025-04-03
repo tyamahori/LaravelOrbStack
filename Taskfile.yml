@@ -50,6 +50,20 @@ tasks:
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }} \
         .
+
+  buildPhpImageForFrankenPHP:
+    requires:
+      vars: [ CLI_ARGS ]
+    cmd: |
+      docker build \
+        -t laravelorbstack/franken-php:php84 \
+        -f {{ .PHP_DOCKERFILE_PATH }} \
+        --target={{ .CLI_ARGS | default "frankenphplocal" }} \
+        --build-arg USER_ID={{ .USER_ID }} \
+        --build-arg GROUP_ID={{ .GROUP_ID }} \
+        --build-arg USER_NAME={{ .USER_NAME }} \
+        .
+
   pullImages:
     cmd: "{{ .BASE_COMMAND }} pull session cache mailpit mysql postgresql minio mc"
   cleanUpComposeProject:

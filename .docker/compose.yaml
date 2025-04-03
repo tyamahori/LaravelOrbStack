@@ -240,6 +240,48 @@ services:
       - customImage
       - app
 
+  php-franken:
+    hostname: php-franken
+    image: laravelorbstack/franken-php:php84
+    container_name: laravelorbstack-frankenphp
+    volumes:
+      - type: bind
+        source: ..
+        target: /app
+      - type: volume
+        source: caddy-data
+        target: /data
+      - type: volume
+        source: caddy-config
+        target: /config
+      - type: bind
+        source: ./local/php/php.ini
+        target: /usr/local/etc/php/php.ini
+      - type: bind
+        source: ./local/php/docker-php-ext-xdebug-franken.ini
+        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
+    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
+    env_file: local/php/.env.franken
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+      session:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    #      localstack:
+    #        condition: service_healthy
+    profiles:
+      - customImage
+      - app
+
   php-cli:
     env_file: local/php/.env.app
     image: laravelorbstack/php-apache:8.4
@@ -269,4 +311,6 @@ volumes:
   session:
   minio:
   minio-config:
+  caddy-data:
+  caddy-config:
 #  localstack:
