@@ -5,7 +5,6 @@ storage/app/*
 storage/logs/*
 *.env*
 .rr.yml
-fly.toml
 .vscode
 node_modules
 **/*~
@@ -29,3 +28,7 @@ libConfig
 .docker/compose.yaml
 .docker/local
 .docker/php.Dockerfile
+.devbox
+devbox.*
+fly-apache.toml
+fly-franken.toml

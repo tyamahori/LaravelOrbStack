@@ -467,7 +467,7 @@ tasks:
         --build-arg USER_NAME={{ .USER_NAME }}
 
   sshFlyIo:
-    cmd: fly ssh console
+    cmd: fly ssh console -a html2 -u {{ .USER_NAME }}
 
   run:cmd:
     deps:

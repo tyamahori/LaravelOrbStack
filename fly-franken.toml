@@ -5,7 +5,7 @@
 
 app = 'html2'
 primary_region = 'nrt'
-console_command = 'php /var/www/html/artisan tinker'
+console_command = 'php /app/artisan tinker'
 
 [env]
   APP_ENV = 'production'
