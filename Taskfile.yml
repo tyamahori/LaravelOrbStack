@@ -444,12 +444,24 @@ tasks:
     cmds:
       - "{{ .BASE_COMMAND }} run -v ~/{{ .SSH_PATH }}:/home/{{ .USER_NAME }}/{{ .SSH_PATH }} --rm php-cli sh -c 'rm -rf ./vendor && composer clear-cache && composer install'"
 
-  deployFlyIo:
+  deployApache:
     cmd: |
       fly deploy \
+        -c fly-apache.toml \
         --app html2 \
         --dockerfile {{ .PHP_DOCKERFILE_PATH }} \
         --build-target flyio \
+        --build-arg USER_ID={{ .USER_ID }} \
+        --build-arg GROUP_ID={{ .GROUP_ID }} \
+        --build-arg USER_NAME={{ .USER_NAME }}
+
+  deployFranken:
+    cmd: |
+      fly deploy \
+        -c fly-franken.toml \
+        --app html2 \
+        --dockerfile {{ .PHP_DOCKERFILE_PATH }} \
+        --build-target frankenphpflyio \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }}

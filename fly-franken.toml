@@ -14,9 +14,10 @@ console_command = 'php /var/www/html/artisan tinker'
   LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
   SESSION_DRIVER = 'cookie'
   SESSION_SECURE_COOKIE = 'true'
+  SERVER_NAME = 'http://html2.fly.dev/'
 
 [http_service]
-  internal_port = 8080
+  internal_port = 80
   force_https = false
   auto_stop_machines = true
   auto_start_machines = true
