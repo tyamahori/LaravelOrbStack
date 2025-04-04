@@ -131,4 +131,10 @@ RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefe
     composer dump-autoload && \
     php artisan clear-compiled && \
     php artisan optimize:clear
-EXPOSE 8080
+
+FROM basefrankenphp AS frankenphpflyio
+COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
+COPY --chown=${USER_NAME}:${USER_NAME} . /app/
+USER ${USER_NAME}
+RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
+    composer dump-autoload && php artisan clear-compiled && php artisan optimize:clear
