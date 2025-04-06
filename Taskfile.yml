@@ -179,6 +179,7 @@ tasks:
           COMMAND_TO_RUN: composer {{ .CLI_ARGS | default "-V" }}
     status:
       - test -d ./vendor
+
   composerUpdate:
     deps:
       - task: composer
@@ -498,6 +499,8 @@ tasks:
   artisan:
     deps:
       - task: composer
+        vars:
+          CLI_ARGS: install
     cmds:
       - task: baseCommand
         vars:
