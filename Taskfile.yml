@@ -3,11 +3,8 @@ silent: false
 vars:
   COMPOSE_FILE_PATH: .docker/compose.yaml
   PHP_DOCKERFILE_PATH: .docker/php.Dockerfile
-
   PHP_TAG: laravelorbstack/php-apache:8.4
-
   BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
-
   USER_NAME:
     sh: whoami
   USER_ID:
@@ -15,6 +12,8 @@ vars:
   GROUP_ID:
     sh: id -g
   SSH_PATH: .ssh
+  APACHE_SERVICE: php-app
+  FRANKEN_SERVICE: php-franken
 
 tasks:
   default:
@@ -159,10 +158,14 @@ tasks:
   deleteVolume:
     cmds:
       - "{{ .BASE_COMMAND }} down -v"
-  exec-php-app-as-user:
-    cmd: "{{ .BASE_COMMAND }} exec -it php-app bash"
-  exec-php-app-as-root:
-    cmd: "{{ .BASE_COMMAND }} exec -u root -it php-app bash"
+
+  exec:apache:
+    cmd: |
+      {{ .BASE_COMMAND }} exec -u {{ .CLI_ARGS | default .USER_NAME }} -it {{ .APACHE_SERVICE }} bash
+
+  exec:franken:
+    cmd: |
+      {{ .BASE_COMMAND }} exec -u {{ .CLI_ARGS | default .USER_NAME }} -it {{ .FRANKEN_SERVICE }} bash
 
   composer:
     sources:
