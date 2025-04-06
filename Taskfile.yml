@@ -99,6 +99,7 @@ tasks:
     deps:
       - task: buildPhpImage
       - task: pullImages
+      - task: buildPhpImageForFrankenPHP
     cmds:
       - task: images
   ps:
@@ -111,13 +112,14 @@ tasks:
       - task: buildImages
       - task: up
       - task: bucket
-      - "{{ .BASE_COMMAND }} exec -it php-app composer install"
-      - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
-      - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
-      - "{{ .BASE_COMMAND }} exec -it php-app composer ide-helper"
-      - "{{ .BASE_COMMAND }} exec -it php-app php -v"
-      - "{{ .BASE_COMMAND }} exec -it php-app ./artisan -V"
-      - "{{ .BASE_COMMAND }} exec -it php-app whoami"
+      - |
+        {{ .BASE_COMMAND }} exec -it  {{ .APACHE_SERVICE }} sh -c '
+          composer install && \
+          php artisan optimize:clear  && \
+          php artisan migrate:refresh --seed && \
+          composer ide-helper && \
+          php -v && php artisan -V && whoami && pwd
+        '
   start:
     deps:
       - task: cleanUpComposeProjectVolumes
