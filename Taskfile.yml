@@ -449,8 +449,11 @@ tasks:
             ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G
 
   composerRefresh:
-    cmds:
-      - "{{ .BASE_COMMAND }} run -v ~/{{ .SSH_PATH }}:/home/{{ .USER_NAME }}/{{ .SSH_PATH }} --rm php-cli sh -c 'rm -rf ./vendor && composer clear-cache && composer install'"
+    cmd: |
+      {{ .BASE_COMMAND }} run \
+        -v ~/{{ .SSH_PATH }}:/home/{{ .USER_NAME }}/{{ .SSH_PATH }} \
+        --rm php-cli sh -c \
+        'rm -rf ./vendor && composer clear-cache && composer install'
 
   deployApache:
     cmd: |
