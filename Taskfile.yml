@@ -124,13 +124,14 @@ tasks:
     cmds:
       - task: up
       - task: bucket
-      - "{{ .BASE_COMMAND }} exec -it php-app composer install"
-      - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
-      - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
-      - "{{ .BASE_COMMAND }} exec -it php-app composer ide-helper"
-      - "{{ .BASE_COMMAND }} exec -it php-app php -v"
-      - "{{ .BASE_COMMAND }} exec -it php-app ./artisan -V"
-      - "{{ .BASE_COMMAND }} exec -it php-app whoami"
+      - |
+        {{ .BASE_COMMAND }} exec -it  {{ .APACHE_SERVICE }} sh -c '
+          composer install && \
+          php artisan optimize:clear  && \
+          php artisan migrate:refresh --seed && \
+          composer ide-helper && \
+          php -v && php artisan -V && whoami && pwd
+        '
   images:
     cmds:
       - "docker images"
@@ -138,12 +139,14 @@ tasks:
     cmds:
       - task: up
       - task: bucket
-      - "{{ .BASE_COMMAND }} exec -it php-app composer install"
-      - "{{ .BASE_COMMAND }} exec -it php-app php artisan optimize:clear"
-      - "{{ .BASE_COMMAND }} exec -it php-app php artisan migrate:refresh --seed"
-      - "{{ .BASE_COMMAND }} exec -it php-app composer ide-helper"
-      - "{{ .BASE_COMMAND }} exec -it php-app ./artisan -V"
-      - "{{ .BASE_COMMAND }} exec -it php-app whoami"
+      - |
+        {{ .BASE_COMMAND }} exec -it  {{ .APACHE_SERVICE }} sh -c '
+          composer install && \
+          php artisan optimize:clear  && \
+          php artisan migrate:refresh --seed && \
+          composer ide-helper && \
+          php -v && php artisan -V && whoami && pwd
+        '
   down:
     cmds:
       - "{{ .BASE_COMMAND }} --profile '*' down --remove-orphans"
@@ -384,11 +387,12 @@ tasks:
 
   bucket:
     cmds:
-      - "{{ .BASE_COMMAND }} run --entrypoint /bin/sh --rm mc -c '
-      mc config host add myminio http://laravelorbstack.storage.local:9000 samplesample samplesample && \
-      mc mb myminio/sample-bucket && \
-      mc anonymous set public myminio/sample-bucket
-      '"
+      - |
+        {{ .BASE_COMMAND }} run --entrypoint /bin/sh --rm mc -c '
+        mc config host add myminio http://laravelorbstack.storage.local:9000 samplesample samplesample && \
+        mc mb myminio/sample-bucket && \
+        mc anonymous set public myminio/sample-bucket
+        '
 
   ecsOnSave:
     deps:
