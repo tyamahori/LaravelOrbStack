@@ -44,7 +44,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mysql.local
-    image: mysql:9.2.0
+    image: mysql:9.3.0
     container_name: laravelorbstack-mysql
     environment:
       MYSQL_ROOT_PASSWORD: sample
@@ -116,7 +116,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mail.local
-    image: axllent/mailpit:v1.23
+    image: axllent/mailpit:v1.24.1
     container_name: laravelorbstack-mailpit
     healthcheck:
       test: [
@@ -136,7 +136,7 @@ services:
           - sample-bucket.laravelorbstack.storage.local
     labels:
       dev.orbstack.domains: sample-bucket.laravelorbstack.storage.local,laravelorbstack.storage.local
-    image: minio/minio:RELEASE.2025-02-28T09-55-16Z
+    image: minio/minio:RELEASE.2025-04-08T15-41-24Z
     container_name: laravelorbstack-minio
     command: server /export --console-address ":80"
     volumes:
@@ -161,7 +161,7 @@ services:
       <<: *healthcheck-settings
 
   mc:
-    image: minio/mc:RELEASE.2025-03-12T17-29-24Z
+    image: minio/mc:RELEASE.2025-04-08T15-39-49Z
     depends_on:
       minio:
         condition: service_healthy
