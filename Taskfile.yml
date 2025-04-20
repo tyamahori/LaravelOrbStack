@@ -139,7 +139,6 @@ tasks:
       - "docker images"
   upOnCI:
     cmds:
-      - task: buildImages
       - task: up
       - task: bucket
       - |

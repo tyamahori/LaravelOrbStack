@@ -5,7 +5,7 @@ FROM golang:1.24.1-bookworm AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
 FROM golang:1.24.1-bookworm AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.129.1
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.129.4
 
 FROM golang:1.24.1-bookworm AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.5
@@ -13,7 +13,7 @@ RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.5
 FROM golang:1.24.1-bookworm AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.5
 
-FROM dunglas/frankenphp:php8.4.5 AS basefrankenphp
+FROM dunglas/frankenphp:php8.4.6 AS basefrankenphp
 
 ARG USER_ID
 ARG GROUP_ID
@@ -50,7 +50,7 @@ COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=runn /go/bin/runn /usr/bin/runn
 USER ${USER_NAME}
 
-FROM php:8.4.5-apache AS commonphp
+FROM php:8.4.6-apache AS commonphp
 
 ARG USER_ID
 ARG GROUP_ID
@@ -74,7 +74,7 @@ ENV COMPOSER_HOME=/composer \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
 
-COPY --from=composer:2.8.6 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.8.8 /usr/bin/composer /usr/bin/composer
 COPY --from=mlocati/php-extension-installer:2.7.28 /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
 RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 
