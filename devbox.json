@@ -3,13 +3,13 @@
   "packages": [
     "flyctl@latest",
     "uv@latest",
-    "php@8.4.5",
     "go@latest",
     "go-task@latest",
     "php84Extensions.redis@latest",
     "php84Extensions.xdebug@latest",
     "symfony-cli@latest",
-    "direnv@latest"
+    "direnv@latest",
+    "php@8.4.5"
   ],
   "shell": {
     "init_hook": [
