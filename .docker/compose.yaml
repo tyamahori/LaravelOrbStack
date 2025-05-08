@@ -319,7 +319,7 @@ services:
     container_name: laravelorbstack-balancer
     volumes:
       - type: bind
-        source: ./local/lb/default.conf
+        source: ./local/lb/nginx.orb.conf
         target: /etc/nginx/conf.d/default.conf
     depends_on:
       php-app:
