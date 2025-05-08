@@ -196,6 +196,10 @@ services:
 #        target: /var/lib/localstack
 
   php-app:
+    networks:
+      default:
+        aliases:
+          - laravelorbstack.apache.local
     hostname: php-app
     image: laravelorbstack/php-apache:8.4
     container_name: laravelorbstack-php
@@ -241,6 +245,10 @@ services:
       - app
 
   php-franken:
+    networks:
+      default:
+        aliases:
+          - laravelorbstack.franken.local
     hostname: php-franken
     image: laravelorbstack/franken-php:php84
     container_name: laravelorbstack-frankenphp
@@ -300,6 +308,27 @@ services:
     profiles:
       - customImage
       - cli
+  balancer:
+    networks:
+      default:
+        aliases:
+          - frankenphp.local
+          - apachephp.local
+    hostname: balancer
+    image: nginx:1.28.0
+    container_name: laravelorbstack-balancer
+    volumes:
+      - type: bind
+        source: ./local/lb/default.conf
+        target: /etc/nginx/conf.d/default.conf
+    depends_on:
+      php-app:
+        condition: service_started
+    labels:
+      dev.orbstack.domains: frankenphp.local,apachephp.local
+    profiles:
+      - app
+
 volumes:
   postgresql:
   mysql:
