@@ -111,13 +111,13 @@ services:
       ]
       <<: *healthcheck-settings
 
-  mailpit:
+  mail:
     networks:
       default:
         aliases:
           - laravelorbstack.mail.local
     image: axllent/mailpit:v1.24.1
-    container_name: laravelorbstack-mailpit
+    container_name: laravelorbstack-mail
     healthcheck:
       test: [
         "CMD",
@@ -128,7 +128,7 @@ services:
       ]
       <<: *healthcheck-settings
 
-  minio:
+  storage:
     networks:
       default:
         aliases:
@@ -137,7 +137,7 @@ services:
     labels:
       dev.orbstack.domains: sample-bucket.laravelorbstack.storage.local,laravelorbstack.storage.local
     image: minio/minio:RELEASE.2025-04-08T15-41-24Z
-    container_name: laravelorbstack-minio
+    container_name: laravelorbstack-storage
     command: server /export --console-address ":80"
     volumes:
       - type: volume
@@ -160,11 +160,12 @@ services:
       ]
       <<: *healthcheck-settings
 
-  mc:
+  setUpStorage:
     image: minio/mc:RELEASE.2025-04-08T15-39-49Z
     depends_on:
-      minio:
+      storage:
         condition: service_healthy
+    entrypoint: ''
     profiles:
       - bucket
 
@@ -234,9 +235,9 @@ services:
         condition: service_healthy
       session:
         condition: service_healthy
-      mailpit:
+      mail:
         condition: service_healthy
-      minio:
+      storage:
         condition: service_healthy
 #      localstack:
 #        condition: service_healthy
@@ -278,9 +279,9 @@ services:
         condition: service_healthy
       session:
         condition: service_healthy
-      mailpit:
+      mail:
         condition: service_healthy
-      minio:
+      storage:
         condition: service_healthy
     profiles:
       - customImage
