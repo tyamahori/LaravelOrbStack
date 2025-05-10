@@ -82,7 +82,7 @@ tasks:
         - buildPhpImageForFrankenPHP
 
   pullImages:
-    cmd: "{{ .BASE_COMMAND }} pull session cache mail mysql postgresql storage mc"
+    cmd: "{{ .BASE_COMMAND }} pull session cache mail mysql postgresql storage setUpStorage"
   cleanUpComposeProject:
     cmds:
       - task: removeVendor
