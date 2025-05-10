@@ -82,7 +82,7 @@ tasks:
         - buildPhpImageForFrankenPHP
 
   pullImages:
-    cmd: "{{ .BASE_COMMAND }} pull session cache mailpit mysql postgresql minio mc"
+    cmd: "{{ .BASE_COMMAND }} pull session cache mail mysql postgresql minio mc"
   cleanUpComposeProject:
     cmds:
       - task: removeVendor
