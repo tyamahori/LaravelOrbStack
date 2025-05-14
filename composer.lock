@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fe36293de9832075e1b328d6cbd37b9",
+    "content-hash": "289012ff9807d5f9d40ede5da5bb8fdf",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8846,16 +8846,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "12.1.2",
+            "version": "12.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "05c33d01a856f9f62488d144bafddc3d7b7a4ebb"
+                "reference": "448f2c504d86dbff3949dcd02c95aa85db2c7617"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/05c33d01a856f9f62488d144bafddc3d7b7a4ebb",
-                "reference": "05c33d01a856f9f62488d144bafddc3d7b7a4ebb",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/448f2c504d86dbff3949dcd02c95aa85db2c7617",
+                "reference": "448f2c504d86dbff3949dcd02c95aa85db2c7617",
                 "shasum": ""
             },
             "require": {
@@ -8873,7 +8873,7 @@
                 "theseer/tokenizer": "^1.2.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^12.0"
+                "phpunit/phpunit": "^12.1"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -8882,7 +8882,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "12.1.x-dev"
+                    "dev-main": "12.2.x-dev"
                 }
             },
             "autoload": {
@@ -8911,15 +8911,27 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.1.2"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.2.1"
             },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
                     "type": "github"
+                },
+                {
+                    "url": "https://liberapay.com/sebastianbergmann",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
+                    "type": "thanks_dev"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpunit/php-code-coverage",
+                    "type": "tidelift"
                 }
             ],
-            "time": "2025-04-03T14:34:39+00:00"
+            "time": "2025-05-04T05:25:05+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -9168,16 +9180,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.1.4",
+            "version": "12.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "5ee57ad690bda2c487594577600931a99053436c"
+                "reference": "f93ef2198df8d54b3195bcee381a33be51d8705e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/5ee57ad690bda2c487594577600931a99053436c",
-                "reference": "5ee57ad690bda2c487594577600931a99053436c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f93ef2198df8d54b3195bcee381a33be51d8705e",
+                "reference": "f93ef2198df8d54b3195bcee381a33be51d8705e",
                 "shasum": ""
             },
             "require": {
@@ -9191,7 +9203,7 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.3",
-                "phpunit/php-code-coverage": "^12.1.2",
+                "phpunit/php-code-coverage": "^12.2.1",
                 "phpunit/php-file-iterator": "^6.0.0",
                 "phpunit/php-invoker": "^6.0.0",
                 "phpunit/php-text-template": "^5.0.0",
@@ -9245,7 +9257,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.1.4"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.1.5"
             },
             "funding": [
                 {
@@ -9269,20 +9281,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-02T07:01:56+00:00"
+            "time": "2025-05-11T06:44:52+00:00"
         },
         {
             "name": "rector/rector",
-            "version": "2.0.15",
+            "version": "2.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "abbbf32474a67e242d26bffc098a712a05b3d32a"
+                "reference": "f1366d1f8c7490541c8f7af6e5c7cef7cca1b5a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/abbbf32474a67e242d26bffc098a712a05b3d32a",
-                "reference": "abbbf32474a67e242d26bffc098a712a05b3d32a",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/f1366d1f8c7490541c8f7af6e5c7cef7cca1b5a2",
+                "reference": "f1366d1f8c7490541c8f7af6e5c7cef7cca1b5a2",
                 "shasum": ""
             },
             "require": {
@@ -9320,7 +9332,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.0.15"
+                "source": "https://github.com/rectorphp/rector/tree/2.0.16"
             },
             "funding": [
                 {
@@ -9328,7 +9340,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-05T10:00:41+00:00"
+            "time": "2025-05-12T16:37:16+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -11095,16 +11107,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "12.5.16",
+            "version": "12.5.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/easy-coding-standard/easy-coding-standard.git",
-                "reference": "3e99ec9bd64528cedb7f7e0a9e892a1c3c803935"
+                "reference": "451dfeba3770f2d7476468b891a789c451ae4b34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/3e99ec9bd64528cedb7f7e0a9e892a1c3c803935",
-                "reference": "3e99ec9bd64528cedb7f7e0a9e892a1c3c803935",
+                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/451dfeba3770f2d7476468b891a789c451ae4b34",
+                "reference": "451dfeba3770f2d7476468b891a789c451ae4b34",
                 "shasum": ""
             },
             "require": {
@@ -11140,7 +11152,7 @@
             ],
             "support": {
                 "issues": "https://github.com/easy-coding-standard/easy-coding-standard/issues",
-                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.5.16"
+                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.5.18"
             },
             "funding": [
                 {
@@ -11152,7 +11164,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-04-28T07:01:07+00:00"
+            "time": "2025-05-14T09:38:08+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -11213,7 +11225,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.4.6",
+        "php": "^8.4.7",
         "ext-pdo": "*"
     },
     "platform-dev": {},
