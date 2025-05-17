@@ -1,7 +1,6 @@
-FROM mlocati/php-extension-installer:2.7.34 AS basephpextensioninstaller
-
 FROM golang:1.24.3-bookworm AS basego
 
+FROM mlocati/php-extension-installer:2.7.34 AS basephpextensioninstaller
 FROM composer:2.8.8 AS basecomposer
 FROM dunglas/frankenphp:php8.4.7 AS basefrankenphp
 FROM php:8.4.7-apache AS baseapachephp
@@ -140,7 +139,7 @@ RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefe
     php artisan clear-compiled && \
     php artisan optimize:clear
 
-FROM basefrankenphp AS frankenphpflyio
+FROM basesetupfrankenphp AS frankenphpflyio
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
 COPY --chown=${USER_NAME}:${USER_NAME} . /app/
 USER ${USER_NAME}
