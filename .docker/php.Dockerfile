@@ -1,19 +1,19 @@
-FROM golang:1.24.1-bookworm AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.42.1
+FROM golang:1.24.3-bookworm AS task
+RUN go install github.com/go-task/task/v3/cmd/task@v3.43.3
 
-FROM golang:1.24.1-bookworm AS purl
+FROM golang:1.24.3-bookworm AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
-FROM golang:1.24.1-bookworm AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.129.4
+FROM golang:1.24.3-bookworm AS runn
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.130.2
 
-FROM golang:1.24.1-bookworm AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.5
+FROM golang:1.24.3-bookworm AS mysqldef
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.6
 
-FROM golang:1.24.1-bookworm AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.5
+FROM golang:1.24.3-bookworm AS psqldef
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.6
 
-FROM dunglas/frankenphp:php8.4.6 AS basefrankenphp
+FROM dunglas/frankenphp:php8.4.7 AS basefrankenphp
 
 ARG USER_ID
 ARG GROUP_ID
@@ -50,7 +50,7 @@ COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=runn /go/bin/runn /usr/bin/runn
 USER ${USER_NAME}
 
-FROM php:8.4.6-apache AS commonphp
+FROM php:8.4.7-apache AS commonphp
 
 ARG USER_ID
 ARG GROUP_ID
