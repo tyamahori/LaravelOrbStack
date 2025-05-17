@@ -1,19 +1,27 @@
-FROM golang:1.24.3-bookworm AS task
+FROM mlocati/php-extension-installer:2.7.34 AS basephpextensioninstaller
+
+FROM golang:1.24.3-bookworm AS basego
+
+FROM composer:2.8.8 AS basecomposer
+FROM dunglas/frankenphp:php8.4.7 AS basefrankenphp
+FROM php:8.4.7-apache AS baseapachephp
+
+FROM basego AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.43.3
 
-FROM golang:1.24.3-bookworm AS purl
+FROM basego AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
-FROM golang:1.24.3-bookworm AS runn
+FROM basego AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v0.130.2
 
-FROM golang:1.24.3-bookworm AS mysqldef
+FROM basego AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.6
 
-FROM golang:1.24.3-bookworm AS psqldef
+FROM basego AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.6
 
-FROM dunglas/frankenphp:php8.4.7 AS basefrankenphp
+FROM basefrankenphp AS basesetupfrankenphp
 
 ARG USER_ID
 ARG GROUP_ID
@@ -37,10 +45,10 @@ ENV COMPOSER_HOME=/composer \
     COMPOSER_ALLOW_SUPERUSER=1 \
     DEBCONF_NOWARNINGS=yes
 
-COPY --from=composer:2.8.6 /usr/bin/composer /usr/bin/composer
+COPY --from=basecomposer /usr/bin/composer /usr/bin/composer
 RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 
-FROM basefrankenphp AS frankenphplocal
+FROM basesetupfrankenphp AS frankenphplocal
 RUN apt-get update \
     && apt-get install -yq dnsutils iproute2 iputils-ping vim  \
     && install-php-extensions xdebug \
@@ -50,7 +58,7 @@ COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=runn /go/bin/runn /usr/bin/runn
 USER ${USER_NAME}
 
-FROM php:8.4.7-apache AS commonphp
+FROM baseapachephp AS commonphp
 
 ARG USER_ID
 ARG GROUP_ID
@@ -74,8 +82,8 @@ ENV COMPOSER_HOME=/composer \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
 
-COPY --from=composer:2.8.8 /usr/bin/composer /usr/bin/composer
-COPY --from=mlocati/php-extension-installer:2.7.28 /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
+COPY --from=basecomposer /usr/bin/composer /usr/bin/composer
+COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
 RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 
 FROM commonphp AS local
