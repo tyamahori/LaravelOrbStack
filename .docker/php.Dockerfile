@@ -1,29 +1,25 @@
-FROM golang:1.24.3-bookworm AS basego
+FROM golang:1.24.3-bookworm AS go
+FROM composer:2.8.9 AS composer
+FROM mlocati/php-extension-installer:2.7.34 AS basephpextensioninstaller
+FROM dunglas/frankenphp:php8.4.7 AS frankenphp
+FROM php:8.4.7-apache AS apachephp
 
-FROM basego AS task
+FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.43.3
 
-FROM basego AS purl
+FROM go AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
-FROM basego AS runn
+FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v0.130.2
 
-FROM basego AS mysqldef
+FROM go AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.6
 
-FROM basego AS psqldef
+FROM go AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.6
 
-FROM mlocati/php-extension-installer:2.7.34 AS basephpextensioninstaller
-
-FROM composer:2.8.8 AS basecomposer
-
-FROM dunglas/frankenphp:php8.4.7 AS basefrankenphp
-
-FROM php:8.4.7-apache AS baseapachephp
-
-FROM basefrankenphp AS basesetupfrankenphp
+FROM frankenphp AS basesetupfrankenphp
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
@@ -44,7 +40,7 @@ ENV COMPOSER_HOME=/composer \
     PATH=/composer/vendor/bin:$PATH \
     COMPOSER_ALLOW_SUPERUSER=1 \
     DEBCONF_NOWARNINGS=yes
-COPY --from=basecomposer /usr/bin/composer /usr/bin/composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 
 FROM basesetupfrankenphp AS frankenphplocal
@@ -57,7 +53,7 @@ COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=runn /go/bin/runn /usr/bin/runn
 USER ${USER_NAME}
 
-FROM baseapachephp AS commonphp
+FROM apachephp AS commonphp
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
@@ -77,7 +73,7 @@ ENV COMPOSER_HOME=/composer \
     DEBCONF_NOWARNINGS=yes \
     APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME}
-COPY --from=basecomposer /usr/bin/composer /usr/bin/composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
 RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 
