@@ -34,7 +34,7 @@ RUN apt-get update \
     && chown ${USER_NAME}:${USER_NAME} /app \
     && chown ${USER_NAME}:${USER_NAME} /data/caddy \
     && chown ${USER_NAME}:${USER_NAME} /config/caddy \
-    && chown ${USER_NAME}:${USER_NAME} /etc/caddy \
+    && mkdir -p /etc/caddy && chown ${USER_NAME}:${USER_NAME} /etc/caddy \
     && setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp
 ENV COMPOSER_HOME=/composer \
     PATH=/composer/vendor/bin:$PATH \
