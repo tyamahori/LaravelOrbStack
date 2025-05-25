@@ -33,11 +33,13 @@ LaravelをOrbStackで動かすサンプルです。環境を立ち上げたあ�
 
 ## 普段の対応
 
-| コマンド                          | 用途         |
-|:------------------------------|:-----------|
-| `$ task up`                   | コンテナを立ち上げる |
-| `$ task down`                 | コンテナを落とす   |
-| `$ task exec-php-app-as-user` | PHPコンテナに入る |
+| コマンド                                 | 用途                  |
+|:-------------------------------------|:--------------------|
+| `$ task up`                          | コンテナを立ち上げる          |
+| `$ task down`                        | コンテナを落とす            |
+| `$ task buildPhpImageForFrankenPHP ` | FrankenPHPイメージを作り直す |
+| `$ task buildPhpImage `              | ApachePHPイメージを作り直す  |
+| `$ task exec:apache`                 | ApachePHPコンテナに入る    |
 
 
 # できること
