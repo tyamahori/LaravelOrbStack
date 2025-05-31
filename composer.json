@@ -29,9 +29,9 @@
         "phpstan/phpstan-phpunit": "^2.0.6",
         "phpstan/phpstan-strict-rules": "^2.0.4",
         "phpunit/phpunit": "^12.1.6",
-        "rector/rector": "^2.0.16",
+        "rector/rector": "^2.0.17",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^12.5.18"
+        "symplify/easy-coding-standard": "^12.5.20"
     },
     "autoload": {
         "psr-4": {
