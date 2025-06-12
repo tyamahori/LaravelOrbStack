@@ -1,8 +1,8 @@
 FROM golang:1.24.3-bookworm AS go
 FROM composer:2.8.9 AS composer
 FROM mlocati/php-extension-installer:2.7.34 AS basephpextensioninstaller
-FROM dunglas/frankenphp:php8.4.7 AS frankenphp
-FROM php:8.4.7-apache AS apachephp
+FROM dunglas/frankenphp:php8.4.8 AS frankenphp
+FROM php:8.4.8-apache AS apachephp
 
 FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.43.3
