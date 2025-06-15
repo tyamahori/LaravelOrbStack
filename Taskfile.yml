@@ -391,7 +391,7 @@ tasks:
     cmds:
       - |
         {{ .BASE_COMMAND }} run --rm setUpStorage sh -c '
-        mc config host add myminio http://laravelorbstack.storage.local:9000 samplesample samplesample && \
+        mc alias set myminio http://laravelorbstack.storage.local:9000 samplesample samplesample && \
         mc mb myminio/sample-bucket && \
         mc anonymous set public myminio/sample-bucket
         '
