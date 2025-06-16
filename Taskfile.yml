@@ -390,7 +390,11 @@ tasks:
   bucket:
     cmds:
       - |
-        {{ .BASE_COMMAND }} run --rm setUpStorage
+        {{ .BASE_COMMAND }} run --rm setUpStorage sh -c '
+        mc alias set myminio http://laravelorbstack.storage.local:9000 samplesample samplesample && \
+        mc mb myminio/sample-bucket && \
+        mc anonymous set public myminio/sample-bucket
+        '
 
   ecsOnSave:
     deps:

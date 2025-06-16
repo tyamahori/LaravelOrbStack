@@ -134,8 +134,6 @@ services:
         aliases:
           - laravelorbstack.storage.local
           - sample-bucket.laravelorbstack.storage.local
-    labels:
-      dev.orbstack.domains: sample-bucket.laravelorbstack.storage.local,laravelorbstack.storage.local
     image: minio/minio:RELEASE.2025-05-24T17-08-30Z
     container_name: laravelorbstack-storage
     command: server /export --console-address ":80"
@@ -165,10 +163,7 @@ services:
     depends_on:
       storage:
         condition: service_healthy
-    entrypoint: |
-      mc alias set myminio http://laravelorbstack.storage.local:9000 samplesample samplesample && \
-      mc mb myminio/sample-bucket --ignore-existing && \
-      mc anonymous set public myminio/sample-bucket
+    entrypoint: ''
     profiles:
       - bucket
 
