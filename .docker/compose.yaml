@@ -165,7 +165,10 @@ services:
     depends_on:
       storage:
         condition: service_healthy
-    entrypoint: ''
+    entrypoint: |
+      mc alias set myminio http://laravelorbstack.storage.local:9000 samplesample samplesample && \
+      mc mb myminio/sample-bucket --ignore-existing && \
+      mc anonymous set public myminio/sample-bucket
     profiles:
       - bucket
 
