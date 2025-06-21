@@ -25,10 +25,10 @@
         "php-standard-library/phpstan-extension": "^2.0.0",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-doctrine": "^2.0.3",
-        "phpstan/phpstan-nette": "^2.0.3",
+        "phpstan/phpstan-nette": "^2.0.4",
         "phpstan/phpstan-phpunit": "^2.0.6",
         "phpstan/phpstan-strict-rules": "^2.0.4",
-        "phpunit/phpunit": "^12.2.2",
+        "phpunit/phpunit": "^12.2.3",
         "rector/rector": "^2.0.18",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^12.5.20"
