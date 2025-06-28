@@ -29,7 +29,7 @@
         "phpstan/phpstan-phpunit": "^2.0.6",
         "phpstan/phpstan-strict-rules": "^2.0.4",
         "phpunit/phpunit": "^12.2.3",
-        "rector/rector": "^2.0.18",
+        "rector/rector": "^2.1.0",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^12.5.20"
     },
