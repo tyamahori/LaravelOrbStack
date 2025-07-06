@@ -1,17 +1,17 @@
-FROM golang:1.24.3-bookworm AS go
+FROM golang:1.24.4-bookworm AS go
 FROM composer:2.8.9 AS composer
-FROM mlocati/php-extension-installer:2.7.34 AS basephpextensioninstaller
-FROM dunglas/frankenphp:php8.4.8 AS frankenphp
-FROM php:8.4.8-apache AS apachephp
+FROM mlocati/php-extension-installer:2.8.4 AS basephpextensioninstaller
+FROM dunglas/frankenphp:php8.4.10 AS frankenphp
+FROM php:8.4.10-apache AS apachephp
 
 FROM go AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.43.3
+RUN go install github.com/go-task/task/v3/cmd/task@v3.44.0
 
 FROM go AS purl
 RUN go install github.com/catatsuy/purl@v0.0.6
 
 FROM go AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.130.2
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.132.1
 
 FROM go AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.6
