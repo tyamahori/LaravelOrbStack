@@ -19,6 +19,20 @@ RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.6
 FROM go AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.6
 
+FROM frankenphp AS basebuild
+RUN apt-get update \
+    && apt-get install -yq git postgresql unzip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir /composer \
+    && setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp
+ENV COMPOSER_HOME=/composer \
+    PATH=/composer/vendor/bin:$PATH \
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    DEBCONF_NOWARNINGS=yes
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
+
 FROM frankenphp AS basesetupfrankenphp
 ARG USER_ID
 ARG GROUP_ID
