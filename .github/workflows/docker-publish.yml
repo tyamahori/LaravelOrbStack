@@ -30,9 +30,9 @@ jobs:
       packages: write
       id-token: write
     outputs:
-      prod_digest: ${{ steps.build-and-push-prod.outputs.digest }}
-      frankenphp_digest: ${{ steps.build-and-push-frankenphp.outputs.digest }}
-      flyio_digest: ${{ steps.build-and-push-flyio.outputs.digest }}
+      prod_digest: ${{ steps.build-and-push-base.outputs.digest }}
+#      frankenphp_digest: ${{ steps.build-and-push-frankenphp.outputs.digest }}
+#      flyio_digest: ${{ steps.build-and-push-flyio.outputs.digest }}
 
     steps:
       - name: Checkout repository
@@ -61,7 +61,7 @@ jobs:
 
       # Build and push the production image for this architecture
       - name: Build and push production image (${{ matrix.arch }})
-        id: build-and-push-prod
+        id: build-and-push-base
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -74,35 +74,35 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Build and push the FrankenPHP image for Fly.io for this architecture
-      - name: Build and push FrankenPHP image (${{ matrix.arch }})
-        id: build-and-push-frankenphp
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: .docker/php.Dockerfile
-          target: frankenphpflyio
-          platforms: linux/${{ matrix.arch }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:frankenphp-${{ matrix.arch }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      # Build and push the Apache image for Fly.io for this architecture
-      - name: Build and push Fly.io Apache image (${{ matrix.arch }})
-        id: build-and-push-flyio
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: .docker/php.Dockerfile
-          target: flyio
-          platforms: linux/${{ matrix.arch }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:flyio-${{ matrix.arch }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+#      # Build and push the FrankenPHP image for Fly.io for this architecture
+#      - name: Build and push FrankenPHP image (${{ matrix.arch }})
+#        id: build-and-push-frankenphp
+#        uses: docker/build-push-action@v5
+#        with:
+#          context: .
+#          file: .docker/php.Dockerfile
+#          target: frankenphpflyio
+#          platforms: linux/${{ matrix.arch }}
+#          push: ${{ github.event_name != 'pull_request' }}
+#          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:frankenphp-${{ matrix.arch }}
+#          labels: ${{ steps.meta.outputs.labels }}
+#          cache-from: type=gha
+#          cache-to: type=gha,mode=max
+#
+#      # Build and push the Apache image for Fly.io for this architecture
+#      - name: Build and push Fly.io Apache image (${{ matrix.arch }})
+#        id: build-and-push-flyio
+#        uses: docker/build-push-action@v5
+#        with:
+#          context: .
+#          file: .docker/php.Dockerfile
+#          target: flyio
+#          platforms: linux/${{ matrix.arch }}
+#          push: ${{ github.event_name != 'pull_request' }}
+#          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:flyio-${{ matrix.arch }}
+#          labels: ${{ steps.meta.outputs.labels }}
+#          cache-from: type=gha
+#          cache-to: type=gha,mode=max
 
   # Create multi-architecture manifests
   manifest:
