@@ -108,7 +108,7 @@ jobs:
   manifest:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
+#    if: github.event_name != 'pull_request'
     permissions:
       contents: read
       packages: write
@@ -143,7 +143,7 @@ jobs:
         with:
           context: .
           file: .docker/php.Dockerfile
-          target: prod
+          target: basebuild
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
@@ -152,32 +152,32 @@ jobs:
             ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && format('{0}/{1}:latest-prod', env.REGISTRY, env.IMAGE_NAME) || '' }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      # Create and push FrankenPHP manifest
-      - name: Create and push FrankenPHP manifest
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: .docker/php.Dockerfile
-          target: frankenphpflyio
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:frankenphp
-            ${{ github.event_name == 'push' && github.ref_type == 'tag' && format('{0}/{1}:{2}-frankenphp', env.REGISTRY, env.IMAGE_NAME, github.ref_name) || '' }}
-            ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && format('{0}/{1}:latest-frankenphp', env.REGISTRY, env.IMAGE_NAME) || '' }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-      # Create and push Fly.io Apache manifest
-      - name: Create and push Fly.io Apache manifest
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: .docker/php.Dockerfile
-          target: flyio
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:flyio
-            ${{ github.event_name == 'push' && github.ref_type == 'tag' && format('{0}/{1}:{2}-flyio', env.REGISTRY, env.IMAGE_NAME, github.ref_name) || '' }}
-            ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && format('{0}/{1}:latest-flyio', env.REGISTRY, env.IMAGE_NAME) || '' }}
-          labels: ${{ steps.meta.outputs.labels }}
+#      # Create and push FrankenPHP manifest
+#      - name: Create and push FrankenPHP manifest
+#        uses: docker/build-push-action@v5
+#        with:
+#          context: .
+#          file: .docker/php.Dockerfile
+#          target: frankenphpflyio
+#          platforms: linux/amd64,linux/arm64
+#          push: true
+#          tags: |
+#            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:frankenphp
+#            ${{ github.event_name == 'push' && github.ref_type == 'tag' && format('{0}/{1}:{2}-frankenphp', env.REGISTRY, env.IMAGE_NAME, github.ref_name) || '' }}
+#            ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && format('{0}/{1}:latest-frankenphp', env.REGISTRY, env.IMAGE_NAME) || '' }}
+#          labels: ${{ steps.meta.outputs.labels }}
+#
+#      # Create and push Fly.io Apache manifest
+#      - name: Create and push Fly.io Apache manifest
+#        uses: docker/build-push-action@v5
+#        with:
+#          context: .
+#          file: .docker/php.Dockerfile
+#          target: flyio
+#          platforms: linux/amd64,linux/arm64
+#          push: true
+#          tags: |
+#            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:flyio
+#            ${{ github.event_name == 'push' && github.ref_type == 'tag' && format('{0}/{1}:{2}-flyio', env.REGISTRY, env.IMAGE_NAME, github.ref_name) || '' }}
+#            ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && format('{0}/{1}:latest-flyio', env.REGISTRY, env.IMAGE_NAME) || '' }}
+#          labels: ${{ steps.meta.outputs.labels }}
