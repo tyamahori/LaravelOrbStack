@@ -12,7 +12,7 @@ env:
   # Use GitHub Container Registry
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: tyamahori/laravelorbstack
 
 jobs:
   # Build individual architecture images on their native hardware
