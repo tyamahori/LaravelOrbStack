@@ -62,7 +62,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: .docker/php.Dockerfile
+          file: .docker/php.franken.Dockerfile
           target: basebuild
           platforms: linux/${{ matrix.arch }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -128,7 +128,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=20250709
+            type=raw,value=franken-8.4-base-20250712
 
       # Set up Docker Buildx for manifest creation
       - name: Set up Docker Buildx
