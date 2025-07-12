@@ -27,7 +27,8 @@ libConfig
 .editorconfig
 .docker/compose.yaml
 .docker/local
-.docker/php.Dockerfile
+.docker/php.apache.Dockerfile
+.docker/php.franken.Dockerfile
 .devbox
 devbox.*
 fly-apache.toml

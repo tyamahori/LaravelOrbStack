@@ -206,7 +206,7 @@ services:
         aliases:
           - laravelorbstack.apache.local
     hostname: php-app
-    image: laravelorbstack/php-apache:8.4
+    image: laravelorbstack/php:apache-8.4-local
     container_name: laravelorbstack-php
     volumes:
       - type: bind
@@ -255,7 +255,7 @@ services:
         aliases:
           - laravelorbstack.franken.local
     hostname: php-franken
-    image: laravelorbstack/franken-php:php84
+    image: laravelorbstack/php:franken-8.4-local
     container_name: laravelorbstack-frankenphp
     volumes:
       - type: bind
