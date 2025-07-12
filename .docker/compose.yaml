@@ -293,7 +293,7 @@ services:
 
   php-cli:
     env_file: local/php/.env.app
-    image: laravelorbstack/php-apache:8.4
+    image: laravelorbstack/php:apache-8.4-local
     volumes:
       - type: bind
         source: ..

@@ -54,7 +54,7 @@ assert($app instanceof Application, Application::class . 'is required.');
 
 try {
     $kernel = $app->make(Kernel::class);
-} catch (BindingResolutionException $bindingResolutionException) {
+} catch (BindingResolutionException) {
     die('kernel binding failed');
 }
 
