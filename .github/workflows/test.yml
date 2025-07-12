@@ -41,10 +41,10 @@ jobs:
         uses: AndreKurait/docker-cache@0.6.0
         id: docker-cache
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.Dockerfile') }}-${{ hashFiles('./.docker/compose.yaml') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.franken.Dockerfile') }}-${{ hashFiles('./.docker/compose.yaml') }}
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
-        run: task pullImages buildPHPImagesOnCi
+        run: task pullImages buildLocalPhps
 
   lint:
     runs-on: ubuntu-24.04-arm

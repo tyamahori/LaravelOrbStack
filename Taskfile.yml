@@ -2,7 +2,8 @@ version: '3'
 silent: false
 vars:
   COMPOSE_FILE_PATH: .docker/compose.yaml
-  PHP_DOCKERFILE_PATH: .docker/php.Dockerfile
+  PHP_APACHE_DOCKERFILE_PATH: .docker/php.apache.Dockerfile
+  PHP_FRANKEN_DOCKERFILE_PATH: .docker/php.franken.Dockerfile
   PHP_TAG: laravelorbstack/php-apache:8.4
   BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
   USER_NAME:
@@ -24,62 +25,61 @@ tasks:
       - echo {{ .USER_NAME }}
   removeVendor:
     cmd: rm -rf ./vendor
-  buildPhpImageNoCache:
+  buildBaseApacheModPhp:
     requires:
       vars: [ CLI_ARGS ]
     cmd: |
       docker build \
-        -t {{ .PHP_TAG }} \
-        -f {{ .PHP_DOCKERFILE_PATH }} \
-        --target={{ .CLI_ARGS | default "local" }} \
-        --no-cache \
-        --build-arg USER_ID={{ .USER_ID }} \
-        --build-arg GROUP_ID={{ .GROUP_ID }} \
-        --build-arg USER_NAME={{ .USER_NAME }} \
+        -t laravelorbstack/php:apache-8.4-base \
+        -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
+        --target=basebuild \
         .
-  buildPhpImage:
+  buildBaseFrankenPhp:
     requires:
       vars: [ CLI_ARGS ]
     cmd: |
       docker build \
-        -t {{ .PHP_TAG }} \
-        -f {{ .PHP_DOCKERFILE_PATH }} \
-        --target={{ .CLI_ARGS | default "local" }} \
-        --build-arg USER_ID={{ .USER_ID }} \
-        --build-arg GROUP_ID={{ .GROUP_ID }} \
-        --build-arg USER_NAME={{ .USER_NAME }} \
+        -t laravelorbstack/php:franken-8.4-base \
+        -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
+        --target=basebuild \
         .
-
-  buildPhpImageForCi:
-    requires:
-      vars: [ CLI_ARGS ]
-    cmd: |
-      docker build \
-        -t {{ .PHP_TAG }} \
-        -f {{ .PHP_DOCKERFILE_PATH }} \
-        --target={{ .CLI_ARGS | default "ci" }} \
-        --build-arg USER_ID={{ .USER_ID }} \
-        --build-arg GROUP_ID={{ .GROUP_ID }} \
-        --build-arg USER_NAME={{ .USER_NAME }} \
-        .
-
-  buildPhpImageForFrankenPHP:
-    requires:
-      vars: [ CLI_ARGS ]
-    cmd: |
-      docker build \
-        -t laravelorbstack/franken-php:php84 \
-        -f {{ .PHP_DOCKERFILE_PATH }} \
-        --target={{ .CLI_ARGS | default "frankenphplocal" }} \
-        --build-arg USER_ID={{ .USER_ID }} \
-        --build-arg GROUP_ID={{ .GROUP_ID }} \
-        --build-arg USER_NAME={{ .USER_NAME }} \
-        .
-
-  buildPHPImagesOnCi:
+  buildBaseImages:
     deps:
-        - buildPhpImageForCi
-        - buildPhpImageForFrankenPHP
+      - task: buildBaseApacheModPhp
+      - task: buildBaseFrankenPhp
+  buildLocalApacheModPhp:
+    requires:
+      vars: [ CLI_ARGS ]
+    deps:
+      - task: buildBaseApacheModPhp
+    cmd: |
+      docker build \
+        -t laravelorbstack/php:apache-8.4-local \
+        -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
+        --target=local \
+        --build-arg USER_ID={{ .USER_ID }} \
+        --build-arg GROUP_ID={{ .GROUP_ID }} \
+        --build-arg USER_NAME={{ .USER_NAME }} \
+        .
+  buildLocalFrankenPhp:
+    requires:
+      vars: [ CLI_ARGS ]
+    deps:
+      - task: buildBaseFrankenPhp
+    cmd: |
+      docker build \
+        -t laravelorbstack/php:franken-8.4-local \
+        -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
+        --target=local \
+        --build-arg USER_ID={{ .USER_ID }} \
+        --build-arg GROUP_ID={{ .GROUP_ID }} \
+        --build-arg USER_NAME={{ .USER_NAME }} \
+        .
+
+  buildLocalPhps:
+    deps:
+      - buildLocalApacheModPhp
+      - buildLocalFrankenPhp
 
   pullImages:
     cmd: "{{ .BASE_COMMAND }} pull balancer session cache mail mysql postgresql storage setUpStorage"
