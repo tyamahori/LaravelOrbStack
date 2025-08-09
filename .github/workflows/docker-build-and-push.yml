@@ -1,14 +1,12 @@
 
 name: Build and Push Docker Images
-
 on:
-  push:
-    branches: [ "main" ]
-    # Publish semver tags as releases
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "main" ]
-
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        default: 'latest'
 env:
   # Use GitHub Container Registry
   REGISTRY: ghcr.io
@@ -128,7 +126,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=franken-8.4-base-20250712
+            type=raw,value=${{ github.event.inputs.version }}
 
       # Set up Docker Buildx for manifest creation
       - name: Set up Docker Buildx
