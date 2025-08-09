@@ -1,9 +1,11 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "baseBranches": [
+    "baseBranchPatterns": [
         "main"
     ],
-    "enabledManagers": ["composer"],
+    "enabledManagers": [
+        "composer"
+    ],
     "extends": [
         "config:recommended",
         ":automergePatch",
@@ -25,9 +27,12 @@
         {
             "groupName": "PHP libraries for minor",
             "groupSlug": "php-libraries",
-            "matchUpdateTypes": ["minor", "patch"],
-            "excludePackageNames": [
-                "laravel/framework"
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
+            "matchPackageNames": [
+                "!laravel/framework"
             ]
         }
     ]
