@@ -97,9 +97,9 @@ tasks:
       - cmd: "{{ .BASE_COMMAND }} --profile '*' down --remove-orphans --rmi all"
   buildImages:
     deps:
-      - task: buildPhpImage
+      - task: buildLocalApacheModPhp
+      - task: buildLocalFrankenPhp
       - task: pullImages
-      - task: buildPhpImageForFrankenPHP
     cmds:
       - task: images
   ps:
