@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Override;
 use PHPUnit\Event\Application\Started;
 use PHPUnit\Event\Application\StartedSubscriber;
 use PHPUnit\Runner\Extension\Extension as PhpunitExtension;
@@ -14,7 +13,6 @@ use PHPUnit\TextUI\Configuration\Configuration;
 
 final class SetUpTest implements PhpunitExtension
 {
-    #[Override]
     public function bootstrap(
         Configuration $configuration,
         Facade $facade,

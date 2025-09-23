@@ -23,7 +23,6 @@ class HomeController
         LoggerInterface $logger,
         Factory $view
     ): Renderable {
-
         $appUrl = $config->get('app.url');
         assert(is_string($appUrl), 'appUrl should be string.');
         $route = $url->route('welcome');
