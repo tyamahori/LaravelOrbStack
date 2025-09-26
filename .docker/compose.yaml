@@ -10,7 +10,7 @@ services:
       default:
         aliases:
           - laravelorbstack.pgsql.local
-    image: postgres:17.5-alpine3.22
+    image: postgres:18.0-alpine3.22
     container_name: laravelorbstack-postgresql
     environment:
       POSTGRES_DB: sample
@@ -44,7 +44,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mysql.local
-    image: mysql:9.3.0
+    image: mysql:9.4.0
     container_name: laravelorbstack-mysql
     environment:
       MYSQL_ROOT_PASSWORD: sample
@@ -76,7 +76,7 @@ services:
       default:
         aliases:
           - laravelorbstack.cache.local
-    image: redis:8.0.2-alpine
+    image: redis:8.2.1-alpine3.22
     container_name: laravelorbstack-cache
     command: redis-server --appendonly yes
     volumes:
@@ -96,7 +96,7 @@ services:
       default:
         aliases:
           - laravelorbstack.session.local
-    image: redis:8.0.2-alpine
+    image: redis:8.2.1-alpine3.22
     container_name: laravelorbstack-session
     command: redis-server --appendonly yes
     volumes:
@@ -116,7 +116,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mail.local
-    image: axllent/mailpit:v1.26.1
+    image: axllent/mailpit:v1.27.8
     container_name: laravelorbstack-mail
     healthcheck:
       test: [
@@ -134,7 +134,7 @@ services:
         aliases:
           - laravelorbstack.storage.local
           - sample-bucket.laravelorbstack.storage.local
-    image: minio/minio:RELEASE.2025-05-24T17-08-30Z
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
     container_name: laravelorbstack-storage
     command: server /export --console-address ":80"
     volumes:
@@ -159,7 +159,7 @@ services:
       <<: *healthcheck-settings
 
   setUpStorage:
-    image: minio/mc:RELEASE.2025-05-21T01-59-54Z
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
     depends_on:
       storage:
         condition: service_healthy
@@ -320,7 +320,7 @@ services:
           - frankenphp.local
           - apachephp.local
     hostname: balancer
-    image: nginx:1.28.0
+    image: nginx:1.29.1
     container_name: laravelorbstack-balancer
     volumes:
       - type: bind

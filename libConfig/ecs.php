@@ -67,17 +67,17 @@ $dirname = dirname(__FILE__, 2);
 
 return ECSConfig::configure()
     ->withPaths([
-        $dirname . '/app',
-        $dirname . '/bootstrap/app.php',
-        $dirname . '/config',
-        $dirname . '/packages',
-        $dirname . '/public',
-        $dirname . '/resources',
-        $dirname . '/routes',
-        $dirname . '/tests',
+        "{$dirname}/app",
+        "{$dirname}/bootstrap/app.php",
+        "{$dirname}/config",
+        "{$dirname}/packages",
+        "{$dirname}/public",
+        "{$dirname}/resources",
+        "{$dirname}/routes",
+        "{$dirname}/tests",
     ])
     ->withCache(
-        $dirname . '/.tempCache/.ecs'
+        "{$dirname}/.tempCache/.ecs",
     )
     ->withPhpCsFixerSets(
         php84Migration: true,
@@ -240,4 +240,6 @@ return ECSConfig::configure()
         BlankLineAfterOpeningTagFixer::class,
         SpaceAfterCommaHereNowDocFixer::class,
         WhitespaceAfterCommaInArrayFixer::class,
-    ]);
+    ])
+    // modify parallel run
+    ->withParallel(timeoutSeconds: 120, maxNumberOfProcess: 32, jobSize: 20);

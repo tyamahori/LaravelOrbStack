@@ -1,7 +1,7 @@
 FROM golang:1.24.4-bookworm AS go
 FROM composer:2.8.9 AS composer
-FROM mlocati/php-extension-installer:2.8.4 AS basephpextensioninstaller
-FROM php:8.4.11-apache AS apachephp
+FROM mlocati/php-extension-installer:2.9.8 AS basephpextensioninstaller
+FROM php:8.4.12-apache AS apachephp
 
 FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.44.0
@@ -13,10 +13,10 @@ FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v0.132.1
 
 FROM go AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v1.0.6
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.0.5
 
 FROM go AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v1.0.6
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.0.5
 
 FROM apachephp AS basebuild
 COPY --from=composer /usr/bin/composer /usr/bin/composer
