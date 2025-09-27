@@ -289,6 +289,55 @@
         }
       }
     },
+    "php@8.4.12": {
+      "last_modified": "2025-09-18T16:33:27Z",
+      "plugin_version": "0.0.3",
+      "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#php",
+      "source": "devbox-search",
+      "version": "8.4.12",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/gx4q81rmipiazmsjpmr2glwfv6jfs7n1-php-with-extensions-8.4.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/gx4q81rmipiazmsjpmr2glwfv6jfs7n1-php-with-extensions-8.4.12"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/bsgvsyq039rbxhdlx9iqfckm4dxib5hb-php-with-extensions-8.4.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/bsgvsyq039rbxhdlx9iqfckm4dxib5hb-php-with-extensions-8.4.12"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/jqjz6gkbwvj4fpbjzhivvdw2mjyxa0x1-php-with-extensions-8.4.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/jqjz6gkbwvj4fpbjzhivvdw2mjyxa0x1-php-with-extensions-8.4.12"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/x1fz9ibjqlplq28dryvyb4jhsa71w8im-php-with-extensions-8.4.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/x1fz9ibjqlplq28dryvyb4jhsa71w8im-php-with-extensions-8.4.12"
+        }
+      }
+    },
     "symfony-cli@latest": {
       "last_modified": "2025-06-20T02:24:11Z",
       "resolved": "github:NixOS/nixpkgs/076e8c6678d8c54204abcb4b1b14c366835a58bb#symfony-cli",
