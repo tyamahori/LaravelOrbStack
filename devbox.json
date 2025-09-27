@@ -8,7 +8,8 @@
     "php84Extensions.redis@latest",
     "php84Extensions.xdebug@latest",
     "symfony-cli@latest",
-    "direnv@latest"
+    "direnv@latest",
+    "php@8.4.12"
   ],
   "shell": {
     "init_hook": [
