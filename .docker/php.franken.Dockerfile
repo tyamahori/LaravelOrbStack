@@ -1,6 +1,6 @@
 FROM golang:1.24.4-bookworm AS go
-FROM composer:2.8.9 AS composer
-FROM mlocati/php-extension-installer:2.8.4 AS basephpextensioninstaller
+FROM composer:2.8.12 AS composer
+FROM mlocati/php-extension-installer:2.9.8 AS basephpextensioninstaller
 FROM dunglas/frankenphp:php8.4.12 AS frankenphp
 
 FROM go AS task

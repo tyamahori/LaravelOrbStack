@@ -1,5 +1,5 @@
 FROM golang:1.24.4-bookworm AS go
-FROM composer:2.8.9 AS composer
+FROM composer:2.8.12 AS composer
 FROM mlocati/php-extension-installer:2.9.8 AS basephpextensioninstaller
 FROM php:8.4.12-apache AS apachephp
 
@@ -19,7 +19,6 @@ FROM go AS psqldef
 RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.0.5
 
 FROM apachephp AS basebuild
-COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
 RUN apt-get update \
     && apt-get install -yq \
@@ -43,6 +42,7 @@ RUN install-php-extensions \
       bcmath \
       pdo_pgsql \
       pgsql
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 FROM basebuild AS local
 ARG USER_ID
