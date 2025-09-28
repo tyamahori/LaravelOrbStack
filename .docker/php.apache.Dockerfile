@@ -21,10 +21,7 @@ RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.0.5
 FROM apachephp AS basebuild
 COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
 RUN apt-get update \
-    && apt-get install -yq \
-      git \
-      postgresql \
-      unzip \
+    && apt-get install -yq git postgresql unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /composer \
@@ -33,15 +30,7 @@ ENV COMPOSER_HOME=/composer \
     PATH=/composer/vendor/bin:$PATH \
     COMPOSER_ALLOW_SUPERUSER=1 \
     DEBCONF_NOWARNINGS=yes
-RUN install-php-extensions \
-      redis \
-      gd \
-      opcache \
-      intl \
-      zip \
-      bcmath \
-      pdo_pgsql \
-      pgsql
+RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 FROM basebuild AS local
