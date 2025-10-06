@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d9ab7c574739bb0303ca35cf207dbed",
+    "content-hash": "71f618adb8eedf6c018bdfb8dc11570e",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -365,16 +365,16 @@
         },
         {
             "name": "cuyz/valinor",
-            "version": "2.1.2",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CuyZ/Valinor.git",
-                "reference": "03521de8bc7fbf52b0bd07094809ff8f616bbf2d"
+                "reference": "35470e576041dd9695ef36aceaab8925bc676586"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/03521de8bc7fbf52b0bd07094809ff8f616bbf2d",
-                "reference": "03521de8bc7fbf52b0bd07094809ff8f616bbf2d",
+                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/35470e576041dd9695ef36aceaab8925bc676586",
+                "reference": "35470e576041dd9695ef36aceaab8925bc676586",
                 "shasum": ""
             },
             "require": {
@@ -387,7 +387,7 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.4",
-                "infection/infection": "^0.29",
+                "infection/infection": "^0.31",
                 "marcocesarato/php-conventional-changelog": "^1.12",
                 "mikey179/vfsstream": "^1.6.10",
                 "phpbench/phpbench": "^1.3",
@@ -430,7 +430,7 @@
             ],
             "support": {
                 "issues": "https://github.com/CuyZ/Valinor/issues",
-                "source": "https://github.com/CuyZ/Valinor/tree/2.1.2"
+                "source": "https://github.com/CuyZ/Valinor/tree/2.2.0"
             },
             "funding": [
                 {
@@ -438,7 +438,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-28T12:41:24+00:00"
+            "time": "2025-09-29T13:07:34+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -9838,16 +9838,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.3.14",
+            "version": "12.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "13e9b2bea9327b094176147250d2c10319a10f5b"
+                "reference": "f62aab5794e36ccd26860db2d1bbf89ac19028d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/13e9b2bea9327b094176147250d2c10319a10f5b",
-                "reference": "13e9b2bea9327b094176147250d2c10319a10f5b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f62aab5794e36ccd26860db2d1bbf89ac19028d9",
+                "reference": "f62aab5794e36ccd26860db2d1bbf89ac19028d9",
                 "shasum": ""
             },
             "require": {
@@ -9861,7 +9861,7 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.3",
-                "phpunit/php-code-coverage": "^12.3.8",
+                "phpunit/php-code-coverage": "^12.4.0",
                 "phpunit/php-file-iterator": "^6.0.0",
                 "phpunit/php-invoker": "^6.0.0",
                 "phpunit/php-text-template": "^5.0.0",
@@ -9883,7 +9883,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "12.3-dev"
+                    "dev-main": "12.4-dev"
                 }
             },
             "autoload": {
@@ -9915,7 +9915,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.3.14"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.4.0"
             },
             "funding": [
                 {
@@ -9939,25 +9939,25 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-24T06:34:27+00:00"
+            "time": "2025-10-03T04:28:03+00:00"
         },
         {
             "name": "rector/rector",
-            "version": "2.1.7",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "c34cc07c4698f007a20dc5c99ff820089ae413ce"
+                "reference": "3c5a641c39f2def0c93d36df118fb2e75cfc2aae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/c34cc07c4698f007a20dc5c99ff820089ae413ce",
-                "reference": "c34cc07c4698f007a20dc5c99ff820089ae413ce",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/3c5a641c39f2def0c93d36df118fb2e75cfc2aae",
+                "reference": "3c5a641c39f2def0c93d36df118fb2e75cfc2aae",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0",
-                "phpstan/phpstan": "^2.1.18"
+                "phpstan/phpstan": "^2.1.26"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -9991,7 +9991,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.1.7"
+                "source": "https://github.com/rectorphp/rector/tree/2.2.0"
             },
             "funding": [
                 {
@@ -9999,7 +9999,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-10T11:13:58+00:00"
+            "time": "2025-10-06T12:18:16+00:00"
         },
         {
             "name": "roave/security-advisories",
