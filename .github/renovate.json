@@ -8,7 +8,7 @@
         "dockerfile",
         "docker-compose",
         "devbox",
-        "custom.regex",
+        "regex",
         "github-actions"
     ],
     "extends": [
@@ -90,14 +90,12 @@
             ]
         }
     ],
-    "customManagers": [
+    "regexManagers": [
         {
-            "customType": "regex",
-            "managerFilePatterns": ["/^Dockerfile$/"],
+            "fileMatch": ["\\.Dockerfile$"],
             "matchStrings": [
-                "ARG RUNN_VERSION=(?<currentValue>\\S+)"
+                "go install (?<depName>[^@]+)@(?<currentValue>v[0-9.]+)"
             ],
-            "depNameTemplate": "github.com/go-task/task",
             "datasourceTemplate": "go",
             "versioningTemplate": "semver-coerced"
         }
