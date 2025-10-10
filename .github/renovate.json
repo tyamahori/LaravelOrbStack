@@ -4,16 +4,18 @@
         "main"
     ],
     "enabledManagers": [
-        "composer"
+        "composer",
+        "dockerfile",
+        "docker-compose"
     ],
     "extends": [
-        "config:recommended",
+        "config:best-practices",
         ":automergePatch",
         "schedule:weekends",
         "schedule:automergeEarlyMondays"
     ],
     "dependencyDashboard": true,
-    "timezone": "America/New_York",
+    "timezone": "Asia/Tokyo",
     "rangeStrategy": "bump",
     "assignAutomerge": true,
     "packageRules": [
@@ -25,14 +27,45 @@
             ]
         },
         {
-            "groupName": "PHP libraries for minor",
+            "groupName": "PHP",
+            "groupSlug": "php",
+            "matchPackageNames": [
+                "php"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "major"
+            ]
+        },
+        {
+            "groupName": "PHP libraries",
             "groupSlug": "php-libraries",
+            "matchPackageNames": [
+                "!laravel/framework",
+                "!php"
+            ]
+        },
+        {
+            "groupName": "Docker images for minor",
+            "groupSlug": "docker-images",
+            "matchManagers": [
+                "dockerfile",
+                "docker-compose"
+            ],
             "matchUpdateTypes": [
                 "minor",
                 "patch"
+            ]
+        },
+        {
+            "groupName": "Docker images for major",
+            "groupSlug": "docker-images-major",
+            "matchManagers": [
+                "dockerfile",
+                "docker-compose"
             ],
-            "matchPackageNames": [
-                "!laravel/framework"
+            "matchUpdateTypes": [
+                "major"
             ]
         }
     ]
