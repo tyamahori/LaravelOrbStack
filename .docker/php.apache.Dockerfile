@@ -8,13 +8,13 @@ ARG RUNN_VERSION=v3.44.0
 RUN go install github.com/go-task/task/v3/cmd/task@${RUNN_VERSION}
 
 FROM go AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v0.132.1
+RUN go install github.com/k1LoW/runn/cmd/runn@v0.132.2
 
 FROM go AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.0.5
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.0.8
 
 FROM go AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.0.5
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.0.8
 
 FROM apachephp AS basebuild
 COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
