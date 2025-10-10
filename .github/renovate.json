@@ -41,12 +41,12 @@
         {
             "groupName": "PHP libraries",
             "groupSlug": "php-libraries",
-            "excludePackageNames": [
-                "laravel/framework",
-                "php"
-            ],
             "matchManagers": [
                 "composer"
+            ],
+            "matchPackageNames": [
+                "!laravel/framework",
+                "!php"
             ]
         },
         {
