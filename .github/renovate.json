@@ -41,9 +41,9 @@
         {
             "groupName": "PHP libraries",
             "groupSlug": "php-libraries",
-            "matchPackageNames": [
-                "!laravel/framework",
-                "!php"
+            "excludePackageNames": [
+                "laravel/framework",
+                "php"
             ],
             "matchManagers": [
                 "composer"
