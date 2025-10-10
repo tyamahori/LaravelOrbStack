@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -57,7 +57,7 @@ jobs:
       # Build and push the production image for this architecture
       - name: Build and push production image (${{ matrix.arch }})
         id: build-and-push-base
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
         with:
           context: .
           file: .docker/php.franken.Dockerfile
@@ -96,11 +96,11 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       # Download all digests
       - name: Download digests
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           path: /tmp/digests
           pattern: digests-*
