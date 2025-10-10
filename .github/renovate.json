@@ -44,6 +44,16 @@
             "matchPackageNames": [
                 "!laravel/framework",
                 "!php"
+            ],
+            "matchManagers": [
+                "composer"
+            ]
+        },
+        {
+            "groupName": "Dependencies",
+            "groupSlug": "Dependencies",
+            "matchManagers": [
+                "!composer"
             ]
         },
         {
