@@ -4,10 +4,8 @@ FROM mlocati/php-extension-installer:2.9.13@sha256:f07adf63f4458e6f8d2774b62a34d
 FROM php:8.4.13-apache@sha256:30cf37c4a2680da1f7c00e044eb515dda1a875f4a553384a1289bf5e80acd40b AS apachephp
 
 FROM go AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.44.0
-
-FROM go AS purl
-RUN go install github.com/catatsuy/purl@v0.0.6
+ARG RUNN_VERSION=v3.44.0
+RUN go install github.com/go-task/task/v3/cmd/task@${RUNN_VERSION}
 
 FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v0.132.1

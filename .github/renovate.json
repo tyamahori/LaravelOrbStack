@@ -7,7 +7,9 @@
         "composer",
         "dockerfile",
         "docker-compose",
-        "devbox"
+        "devbox",
+        "custom.regex",
+        "github-actions"
     ],
     "extends": [
         "config:best-practices",
@@ -53,7 +55,8 @@
             "groupName": "Dependencies",
             "groupSlug": "Dependencies",
             "matchManagers": [
-                "!composer"
+                "!composer",
+                "!github-actions"
             ]
         },
         {
@@ -78,6 +81,25 @@
             "matchUpdateTypes": [
                 "major"
             ]
+        },
+        {
+            "groupName": "GitHub Actions",
+            "groupSlug": "github-actions",
+            "matchManagers": [
+                "github-actions"
+            ]
+        }
+    ],
+    "customManagers": [
+        {
+            "customType": "regex",
+            "managerFilePatterns": ["/^Dockerfile$/"],
+            "matchStrings": [
+                "ARG RUNN_VERSION=(?<currentValue>\\S+)"
+            ],
+            "depNameTemplate": "github.com/go-task/task",
+            "datasourceTemplate": "go",
+            "versioningTemplate": "semver-coerced"
         }
     ]
 }
