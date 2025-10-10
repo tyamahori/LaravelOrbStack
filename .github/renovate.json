@@ -23,24 +23,6 @@
     "assignAutomerge": true,
     "packageRules": [
         {
-            "groupName": "PHP libraries",
-            "groupSlug": "php-libraries",
-            "matchManagers": [
-                "composer"
-            ],
-            "ignoreDeps": [
-                "laravel/framework",
-                "php"
-            ]
-        },
-        {
-            "groupName": "Laravel",
-            "groupSlug": "laravel",
-            "matchPackageNames": [
-                "laravel/framework"
-            ]
-        },
-        {
             "groupName": "PHP",
             "groupSlug": "php",
             "matchPackageNames": [
@@ -52,34 +34,39 @@
             ]
         },
         {
-            "groupName": "Dependencies",
-            "groupSlug": "Dependencies",
+            "groupName": "Laravel",
+            "groupSlug": "laravel",
             "matchManagers": [
-                "!composer",
-                "!github-actions"
+                "composer"
+            ],
+            "matchPackageNames": [
+                "laravel/framework"
             ]
         },
         {
-            "groupName": "Docker images for minor",
+            "groupName": "PHP libraries",
+            "groupSlug": "php-libraries",
+            "matchManagers": [
+                "composer"
+            ],
+            "ignoreDeps": [
+                "laravel/framework",
+                "php"
+            ]
+        },
+        {
+            "groupName": "Devbox",
+            "groupSlug": "devbox",
+            "matchManagers": [
+                "devbox"
+            ]
+        },
+        {
+            "groupName": "Docker images",
             "groupSlug": "docker-images",
             "matchManagers": [
                 "dockerfile",
                 "docker-compose"
-            ],
-            "matchUpdateTypes": [
-                "minor",
-                "patch"
-            ]
-        },
-        {
-            "groupName": "Docker images for major",
-            "groupSlug": "docker-images-major",
-            "matchManagers": [
-                "dockerfile",
-                "docker-compose"
-            ],
-            "matchUpdateTypes": [
-                "major"
             ]
         },
         {
@@ -100,7 +87,9 @@
                 "go install (?<depName>[^@]+)@(?<currentValue>v[0-9.]+)"
             ],
             "datasourceTemplate": "go",
-            "versioningTemplate": "semver-coerced"
+            "versioningTemplate": "semver-coerced",
+            "groupName": "Docker images",
+            "groupSlug": "docker-images"
         }
     ]
 }
