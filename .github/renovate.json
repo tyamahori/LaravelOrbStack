@@ -26,9 +26,9 @@
             "matchManagers": [
                 "composer"
             ],
-            "matchPackageNames": [
-                "!laravel/framework",
-                "!php"
+            "ignoreDeps": [
+                "laravel/framework",
+                "php"
             ]
         },
         {
