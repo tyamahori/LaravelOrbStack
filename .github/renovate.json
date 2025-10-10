@@ -6,7 +6,8 @@
     "enabledManagers": [
         "composer",
         "dockerfile",
-        "docker-compose"
+        "docker-compose",
+        "devbox"
     ],
     "extends": [
         "config:best-practices",
