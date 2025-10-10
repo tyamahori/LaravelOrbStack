@@ -8,7 +8,7 @@
         "dockerfile",
         "docker-compose",
         "devbox",
-        "regex",
+        "custom.regex",
         "github-actions"
     ],
     "extends": [
@@ -90,9 +90,12 @@
             ]
         }
     ],
-    "regexManagers": [
+    "customManagers": [
         {
-            "fileMatch": ["\\.Dockerfile$"],
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/\\.Dockerfile$/"
+            ],
             "matchStrings": [
                 "go install (?<depName>[^@]+)@(?<currentValue>v[0-9.]+)"
             ],
