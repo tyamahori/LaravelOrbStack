@@ -21,6 +21,17 @@
     "assignAutomerge": true,
     "packageRules": [
         {
+            "groupName": "PHP libraries",
+            "groupSlug": "php-libraries",
+            "matchManagers": [
+                "composer"
+            ],
+            "matchPackageNames": [
+                "!laravel/framework",
+                "!php"
+            ]
+        },
+        {
             "groupName": "Laravel",
             "groupSlug": "laravel",
             "matchPackageNames": [
@@ -36,17 +47,6 @@
             "matchUpdateTypes": [
                 "minor",
                 "major"
-            ]
-        },
-        {
-            "groupName": "PHP libraries",
-            "groupSlug": "php-libraries",
-            "matchManagers": [
-                "composer"
-            ],
-            "matchPackageNames": [
-                "!laravel/framework",
-                "!php"
             ]
         },
         {
