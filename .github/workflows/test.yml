@@ -87,16 +87,54 @@ jobs:
       - name: Install dependencies
         run: |
           composer install --prefer-dist --no-progress --no-suggest
+      - name: Restore Rector cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: .tempCache/.rector
+          key: rector-cache-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            rector-cache-${{ runner.os }}-${{ github.run_id }}
+            rector-cache-${{ runner.os }}-
       - name: Rector
         run: |
           composer rectorCheck
+      - name: Cache .rector
+        uses: actions/cache/save@v4
+        with:
+          path: .tempCache/.rector
+          key: rector-cache-${{ runner.os }}-${{ github.run_id }}
+      - name: Restore Stan cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: .tempCache/.stan
+          key: stan-cache-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            stan-cache-${{ runner.os }}-${{ github.run_id }}
+            stan-cache-${{ runner.os }}-
       - name: Stan
         run: |
           composer stanCheck
+      - name: Cache .stan
+        uses: actions/cache/save@v4
+        with:
+          path: .tempCache/.stan
+          key: stan-cache-${{ runner.os }}-${{ github.run_id }}
+      - name: Restore Ecs cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: .tempCache/.ecs
+          key: ecs-cache-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            ecs-cache-${{ runner.os }}-${{ github.run_id }}
+            ecs-cache-${{ runner.os }}-
       - name: Ecs
         run: |
           composer ecsCheck
-
+      - name: Cache .ecs
+        uses: actions/cache/save@v4
+        with:
+          path: .tempCache/..ecs
+          key: ecs-cache-${{ runner.os }}-${{ github.run_id }}
   test:
     runs-on: ubuntu-24.04-arm
     needs: build
