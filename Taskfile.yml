@@ -2,10 +2,16 @@ version: '3'
 silent: false
 vars:
   COMPOSE_FILE_PATH: .docker/compose.yaml
+  CI_COMPOSE_FILE_PATH: .docker/compose.ci.yaml
+
   PHP_APACHE_DOCKERFILE_PATH: .docker/php.apache.Dockerfile
   PHP_FRANKEN_DOCKERFILE_PATH: .docker/php.franken.Dockerfile
+
   PHP_TAG: laravelorbstack/php-apache:8.4
+
   BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
+  CI_BASE_COMMAND: docker compose -f {{ .CI_COMPOSE_FILE_PATH }}
+
   USER_NAME:
     sh: whoami
   USER_ID:
@@ -83,6 +89,8 @@ tasks:
 
   pullImages:
     cmd: "{{ .BASE_COMMAND }} pull balancer session cache mail mysql postgresql storage setUpStorage"
+  pullCiImages:
+    cmd: "{{ .CI_BASE_COMMAND }} --profile '*' pull"
   cleanUpComposeProject:
     cmds:
       - task: removeVendor
@@ -139,16 +147,14 @@ tasks:
       - "docker images"
   upOnCI:
     cmds:
-      - task: up
-      - task: bucket
+      - "{{ .CI_BASE_COMMAND }} --profile 'app' --profile '' up -d"
+      - "{{ .CI_BASE_COMMAND }} run --rm setUpStorage"
       - |
-        {{ .BASE_COMMAND }} exec -it  {{ .APACHE_SERVICE }} sh -c '
-          composer install && \
-          php artisan optimize:clear  && \
-          php artisan migrate:refresh --seed && \
-          composer ide-helper && \
-          php -v && php artisan -V && whoami && pwd
-        '
+        composer install && \
+        php artisan optimize:clear  && \
+        php artisan migrate:refresh --seed && \
+        composer ide-helper && \
+        php -v && php artisan -V && whoami && pwd
   down:
     cmds:
       - "{{ .BASE_COMMAND }} --profile '*' down --remove-orphans"
