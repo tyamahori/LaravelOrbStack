@@ -73,6 +73,11 @@
                 "**/*.Dockerfile",
                 "**/Dockerfile",
                 "**/compose.yaml"
+            ],
+            "matchUpdateTypes": [
+                "major",
+                "minor",
+                "patch"
             ]
         },
         {
