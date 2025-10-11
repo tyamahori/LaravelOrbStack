@@ -1,6 +1,8 @@
 name: Delete Action Cache
 on:
   workflow_dispatch:
+permissions:
+  actions: write
 jobs:
   delete-cache:
     runs-on: ubuntu-latest
