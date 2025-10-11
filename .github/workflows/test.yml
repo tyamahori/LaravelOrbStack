@@ -133,5 +133,8 @@ jobs:
         run: |
           cp .docker/local/php/.env.ci.testing .env
           task upOnCI
+      - name: Install dependencies
+        run: |
+          composer install --prefer-dist --no-progress --no-suggest
       - name: test
         run: composer phpunit
