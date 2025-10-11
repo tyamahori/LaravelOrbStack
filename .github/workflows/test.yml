@@ -3,28 +3,43 @@ name: test
 on: push
 
 jobs:
-  devbox-lint:
+  cache:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - name: Install devbox
-        uses: jetify-com/devbox-install-action@a0d2d53632934ae004f878c840055956d9f741b0 # v0.14.0
+      - name: Get PHP version
+        id: php-version
+        run: |
+          echo "PHP_VERSION=`jq -r '.config.platform.php' composer.json`" >> $GITHUB_ENV
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          enable-cache: 'true'
-      - name: Install Task
-        uses: arduino/setup-task@v2
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+      - name: Restore Composer packages
+        uses: actions/cache/restore@v4.3.0
         with:
-          version: 3
-      - name: devbox status
-        run: devbox run -- "which php && php -v && composer -v"
-      - name: lint
-        run: devbox run lint
+          path: vendor
+          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+            composer-cache-${{ runner.os }}-
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Save Composer packages
+        id: cache-composer
+        uses: actions/cache/save@v4.3.0
+        with:
+          path: vendor
+          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
   build:
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+      group: ${{ github.workflow }}-${{ github.ref }}-build
       cancel-in-progress: true
     runs-on: ubuntu-24.04-arm
+    needs: cache
     steps:
       - name: Install Task
         uses: arduino/setup-task@v2
@@ -38,40 +53,49 @@ jobs:
 #          filters:
       - name: Check Docker Image Cache
         # uses: ScribeMD/docker-cache@0.5.0
-        uses: AndreKurait/docker-cache@0fe76702a40db986d9663c24954fc14c6a6031b7 # 0.6.0
+        uses: AndreKurait/docker-cache  @0fe76702a40db986d9663c24954fc14c6a6031b7 # 0.6.0
         id: docker-cache
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.franken.Dockerfile') }}-${{ hashFiles('./.docker/compose.yaml') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
-        run: task pullImages buildLocalPhps
+        run: task pullCiImages
 
   lint:
     runs-on: ubuntu-24.04-arm
-    needs: build
+    needs: cache
     steps:
-      - name: Install Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - name: Cache Docker images
-        # uses: ScribeMD/docker-cache@0.5.0
-        uses: AndreKurait/docker-cache@0fe76702a40db986d9663c24954fc14c6a6031b7 # 0.6.0
+      - name: Restore Composer packages
+        uses: actions/cache/restore@v4.3.0
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.franken.Dockerfile') }}-${{ hashFiles('./.docker/compose.yaml') }}
-      - name: Setup
-        run: task upOnCI
+          path: vendor
+          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+            composer-cache-${{ runner.os }}-
+      - name: Get PHP version
+        id: php-version
+        run: |
+          echo "PHP_VERSION=`jq -r '.config.platform.php' composer.json`" >> $GITHUB_ENV
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+      - name: Install dependencies
+        run: |
+          composer install --prefer-dist --no-progress --no-suggest
       - name: Rector
         run: |
-          task rectorDryRun
+          composer rectorCheck
       - name: Stan
         run: |
-          task stan
+          composer stanCheck
       - name: Ecs
         run: |
-          task ecs
+          composer ecsCheck
 
   test:
     runs-on: ubuntu-24.04-arm
@@ -87,8 +111,27 @@ jobs:
         # uses: ScribeMD/docker-cache@0.5.0
         uses: AndreKurait/docker-cache@0fe76702a40db986d9663c24954fc14c6a6031b7 # 0.6.0
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/php.franken.Dockerfile') }}-${{ hashFiles('./.docker/compose.yaml') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}
+      - name: Restore Composer packages
+        uses: actions/cache/restore@v4.3.0
+        with:
+          path: vendor
+          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+            composer-cache-${{ runner.os }}-
+      - name: Get PHP version
+        id: php-version
+        run: |
+          echo "PHP_VERSION=`jq -r '.config.platform.php' composer.json`" >> $GITHUB_ENV
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
       - name: Setup
-        run: task upOnCI
+        run: |
+          cp .docker/local/php/.env.ci.testing .env
+          task upOnCI
       - name: test
-        run: task phpunit
+        run: composer phpunit

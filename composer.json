@@ -64,8 +64,19 @@
             "@php artisan ide-helper:generate .tempCache/.ide_helper.php",
             "@php artisan ide-helper:models --nowrite --dir=./packages --dir=./app -F .tempCache/.model.php",
             "@php artisan ide-helper:meta -F .tempCache/.meta.php"
+        ],
+        "stanCheck": [
+            "./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon"
+        ],
+        "ecsCheck": [
+            "./vendor/bin/ecs check -c ./libConfig/ecs.php"
+        ],
+        "rectorCheck": [
+            "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
+        ],
+        "phpunit": [
+            "./vendor/bin/phpunit -c ./libConfig/phpunit.xml"
         ]
-
     },
     "extra": {
         "laravel": {
@@ -81,6 +92,9 @@
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
             "tbachert/spi": true
+        },
+        "platform": {
+            "php": "8.4"
         }
     },
     "minimum-stability": "stable",
