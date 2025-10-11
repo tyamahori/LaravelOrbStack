@@ -26,7 +26,12 @@ class RouteServiceProvider extends ServiceProvider
     #[Override]
     public function boot(): void
     {
-        $this->configureRateLimiting();
+        // 利用する明確は理由がアレば使う
+        //        RateLimiter::for(
+        //            'api',
+        //            static fn (Request $request) => Limit::perMinute(60)
+        //                ->by($request->user() !== null ? $request->user()->id : $request->ip())
+        //        );
 
         $this->routes(static function (): void {
             Route::middleware('api')
@@ -36,17 +41,5 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
-    }
-
-    /**
-     * Configure the rate limiters for the application.
-     */
-    protected function configureRateLimiting(): void
-    {
-        RateLimiter::for(
-            'api',
-            static fn (Request $request) => Limit::perMinute(60)
-                ->by($request->user() !== null ? $request->user()->id : $request->ip())
-        );
     }
 }
