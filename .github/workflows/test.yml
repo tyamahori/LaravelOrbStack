@@ -26,7 +26,7 @@ jobs:
             composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
             composer-cache-${{ runner.os }}-
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress
       - name: Save Composer packages
         id: cache-composer
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -86,7 +86,7 @@ jobs:
           tools: composer:v2
       - name: Install dependencies
         run: |
-          composer install --prefer-dist --no-progress --no-suggest
+          composer install --prefer-dist --no-progress
       - name: Restore Rector cache
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
@@ -173,6 +173,6 @@ jobs:
           task upOnCI
       - name: Install dependencies
         run: |
-          composer install --prefer-dist --no-progress --no-suggest
+          composer install --prefer-dist --no-progress
       - name: test
         run: composer phpunit
