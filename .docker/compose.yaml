@@ -38,6 +38,9 @@ services:
         "5432",
       ]
       <<: *healthcheck-settings
+    profiles:
+      - app
+      - cli
 
   mysql:
     networks:
@@ -70,7 +73,9 @@ services:
         "3306",
       ]
       <<: *healthcheck-settings
-
+    profiles:
+      - app
+      - cli
   cache:
     networks:
       default:
@@ -90,6 +95,9 @@ services:
         "ping"
       ]
       <<: *healthcheck-settings
+    profiles:
+      - app
+      - cli
 
   session:
     networks:
@@ -110,6 +118,9 @@ services:
         "ping"
       ]
       <<: *healthcheck-settings
+    profiles:
+      - app
+      - cli
 
   mail:
     networks:
@@ -127,6 +138,9 @@ services:
         "laravelorbstack.mail.local"
       ]
       <<: *healthcheck-settings
+    profiles:
+      - app
+      - cli
 
   storage:
     networks:
@@ -157,6 +171,9 @@ services:
         "laravelorbstack.storage.local/minio/health/live"
       ]
       <<: *healthcheck-settings
+    profiles:
+      - app
+      - cli
 
   setUpStorage:
     image: minio/mc:RELEASE.2025-08-13T08-35-41Z@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727
@@ -313,6 +330,19 @@ services:
     profiles:
       - customImage
       - cli
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+      session:
+        condition: service_healthy
+      mail:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
   balancer:
     networks:
       default:

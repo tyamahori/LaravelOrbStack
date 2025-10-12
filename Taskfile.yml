@@ -162,7 +162,7 @@ tasks:
     deps:
       - task: down
     cmds:
-      - "{{ .BASE_COMMAND }} --profile 'app' --profile '' up -d"
+      - "{{ .BASE_COMMAND }} --profile 'app' up -d"
   logs:
     cmds:
       - "{{ .BASE_COMMAND }} --profile '*' logs -f"
