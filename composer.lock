@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "853310c025d546c2028b8827d7f43d3b",
+    "content-hash": "c54b400b9b12725115d0f904a5de2397",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -365,16 +365,16 @@
         },
         {
             "name": "cuyz/valinor",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CuyZ/Valinor.git",
-                "reference": "574bbe531e78f56c39ec129cbe4e92a7d2eea987"
+                "reference": "f6e00a8c4196d2df483d454ab67a54f0ced60a1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/574bbe531e78f56c39ec129cbe4e92a7d2eea987",
-                "reference": "574bbe531e78f56c39ec129cbe4e92a7d2eea987",
+                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/f6e00a8c4196d2df483d454ab67a54f0ced60a1a",
+                "reference": "f6e00a8c4196d2df483d454ab67a54f0ced60a1a",
                 "shasum": ""
             },
             "require": {
@@ -430,7 +430,7 @@
             ],
             "support": {
                 "issues": "https://github.com/CuyZ/Valinor/issues",
-                "source": "https://github.com/CuyZ/Valinor/tree/2.2.1"
+                "source": "https://github.com/CuyZ/Valinor/tree/2.2.2"
             },
             "funding": [
                 {
@@ -438,7 +438,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-12T22:36:15+00:00"
+            "time": "2025-10-13T07:23:21+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
