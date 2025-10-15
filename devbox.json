@@ -4,10 +4,10 @@
     "flyctl@0.3.172",
     "uv@0.8.14",
     "go@1.25.0",
-    "go-task@3.44.1",
+    "go-task@3.45.4",
     "php84Extensions.redis@6.2.0",
     "php84Extensions.xdebug@3.4.5",
-    "symfony-cli@5.12.0",
+    "symfony-cli@5.14.2",
     "direnv@2.37.1",
     "php@8.4.12"
   ],
