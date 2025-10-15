@@ -2,14 +2,14 @@
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.7/.schema/devbox.schema.json",
   "packages": [
     "flyctl@0.3.172",
-    "uv@0.8.14",
-    "go@1.25.0",
+    "uv@0.8.19",
+    "go@1.25.1",
     "go-task@3.45.4",
     "php84Extensions.redis@6.2.0",
-    "php84Extensions.xdebug@3.4.5",
+    "php84Extensions.xdebug@3.4.6",
     "symfony-cli@5.14.2",
     "direnv@2.37.1",
-    "php@8.4.12"
+    "php@8.4.13"
   ],
   "shell": {
     "init_hook": [
