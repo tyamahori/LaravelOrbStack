@@ -1,4 +1,4 @@
-name: test
+name: test with next PHP version
 
 on:
   pull_request:
@@ -28,9 +28,9 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: vendor
-          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
+          key: composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
           restore-keys: |
-            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
+            composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
       - name: Save Composer packages
@@ -38,7 +38,7 @@ jobs:
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: vendor
-          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
+          key: composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
 
   build:
     concurrency:
@@ -77,9 +77,9 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: vendor
-          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
+          key: composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
           restore-keys: |
-            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
+            composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
       - name: Get PHP version
         id: php-version
         run: |
@@ -156,9 +156,9 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: vendor
-          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
+          key: composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
           restore-keys: |
-            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
+            composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
       - name: Get PHP version
         id: php-version
         run: |
