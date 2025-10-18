@@ -18,7 +18,7 @@ jobs:
       - name: Get PHP version
         id: php-version
         run: |
-          echo "PHP_VERSION=`jq -r '.config.platform.php' composer.json`" >> $GITHUB_ENV
+          echo "PHP_VERSION=`jq -r '.config.platform.nextPhp' composer.json`" >> $GITHUB_ENV
       - name: Setup PHP
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2
         with:
@@ -28,10 +28,9 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: vendor
-          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
           restore-keys: |
-            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
-            composer-cache-${{ runner.os }}-
+            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
       - name: Save Composer packages
@@ -39,11 +38,11 @@ jobs:
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: vendor
-          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
 
   build:
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-build
+      group: ${{ github.workflow }}-${{ github.ref }}-build-next-php
       cancel-in-progress: true
     runs-on: ubuntu-24.04-arm
     needs: cache
@@ -78,14 +77,13 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: vendor
-          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
           restore-keys: |
-            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
-            composer-cache-${{ runner.os }}-
+            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
       - name: Get PHP version
         id: php-version
         run: |
-          echo "PHP_VERSION=`jq -r '.config.platform.php' composer.json`" >> $GITHUB_ENV
+          echo "PHP_VERSION=`jq -r '.config.platform.nextPhp' composer.json`" >> $GITHUB_ENV
       - name: Setup PHP
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2
         with:
@@ -98,10 +96,9 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .tempCache/.rector
-          key: rector-cache-${{ runner.os }}-${{ github.run_id }}
+          key: rector-cache-${{ runner.os }}-${{ github.run_id }}-next-php
           restore-keys: |
-            rector-cache-${{ runner.os }}-${{ github.run_id }}
-            rector-cache-${{ runner.os }}-
+            rector-cache-${{ runner.os }}-${{ github.run_id }}-next-php
       - name: Rector
         run: |
           composer rectorCheck
@@ -109,15 +106,14 @@ jobs:
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: .tempCache/.rector
-          key: rector-cache-${{ runner.os }}-${{ github.run_id }}
+          key: rector-cache-${{ runner.os }}-${{ github.run_id }}-next-php
       - name: Restore Stan cache
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .tempCache/.stan
-          key: stan-cache-${{ runner.os }}-${{ github.run_id }}
+          key: stan-cache-${{ runner.os }}-${{ github.run_id }}-next-php
           restore-keys: |
-            stan-cache-${{ runner.os }}-${{ github.run_id }}
-            stan-cache-${{ runner.os }}-
+            stan-cache-${{ runner.os }}-${{ github.run_id }}-next-php
       - name: Stan
         run: |
           composer stanCheck
@@ -125,15 +121,14 @@ jobs:
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: .tempCache/.stan
-          key: stan-cache-${{ runner.os }}-${{ github.run_id }}
+          key: stan-cache-${{ runner.os }}-${{ github.run_id }}-next-php
       - name: Restore Ecs cache
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .tempCache/.ecs
-          key: ecs-cache-${{ runner.os }}-${{ github.run_id }}
+          key: ecs-cache-${{ runner.os }}-${{ github.run_id }}-next-php
           restore-keys: |
-            ecs-cache-${{ runner.os }}-${{ github.run_id }}
-            ecs-cache-${{ runner.os }}-
+            ecs-cache-${{ runner.os }}-${{ github.run_id }}-next-php
       - name: Ecs
         run: |
           composer ecsCheck
@@ -141,7 +136,7 @@ jobs:
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: .tempCache/.ecs
-          key: ecs-cache-${{ runner.os }}-${{ github.run_id }}
+          key: ecs-cache-${{ runner.os }}-${{ github.run_id }}-next-php
   test:
     runs-on: ubuntu-24.04-arm
     needs: build
@@ -161,14 +156,13 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: vendor
-          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          key: composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
           restore-keys: |
-            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}
-            composer-cache-${{ runner.os }}-
+            composer-cache-${{ runner.os }}-${{ hashFiles('composer.lock') }}-next-php
       - name: Get PHP version
         id: php-version
         run: |
-          echo "PHP_VERSION=`jq -r '.config.platform.php' composer.json`" >> $GITHUB_ENV
+          echo "PHP_VERSION=`jq -r '.config.platform.nextPhp' composer.json`" >> $GITHUB_ENV
       - name: Setup PHP
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2
         with:
