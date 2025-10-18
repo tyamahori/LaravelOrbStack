@@ -94,7 +94,8 @@
             "tbachert/spi": true
         },
         "platform": {
-            "php": "8.4"
+            "php": "8.4",
+            "next-php": "8.5"
         }
     },
     "minimum-stability": "stable",
