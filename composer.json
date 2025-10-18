@@ -95,7 +95,7 @@
         },
         "platform": {
             "php": "8.4",
-            "next-php": "8.5"
+            "nextPhp": "8.5"
         }
     },
     "minimum-stability": "stable",
