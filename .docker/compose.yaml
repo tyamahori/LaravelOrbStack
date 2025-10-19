@@ -3,6 +3,17 @@ x-common-settings: &healthcheck-settings
   interval: 1s
   timeout: 30s
   retries: 30
+volumes:
+  postgresql:
+  mysql:
+  cache:
+  session:
+  minio:
+  minio-config:
+  caddy-data:
+  caddy-config:
+  https-portal-data:
+#  localstack:
 services:
   postgresql:
     networks:
@@ -359,14 +370,3 @@ services:
       dev.orbstack.domains: frankenphp.local,apachephp.local
     profiles:
       - app
-
-volumes:
-  postgresql:
-  mysql:
-  cache:
-  session:
-  minio:
-  minio-config:
-  caddy-data:
-  caddy-config:
-#  localstack:
