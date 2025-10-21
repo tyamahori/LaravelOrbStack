@@ -12,7 +12,7 @@ jobs:
       - name: Get PHP version
         id: php-version
         run: |
-          echo "PHP_VERSION=`jq -r '.config.platform.nextPhp' composer.json`" >> $GITHUB_ENV
+          echo "PHP_VERSION=`jq -r '.config.nextPhp' composer.json`" >> $GITHUB_ENV
       - name: Setup PHP
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2
         with:
@@ -77,7 +77,7 @@ jobs:
       - name: Get PHP version
         id: php-version
         run: |
-          echo "PHP_VERSION=`jq -r '.config.platform.nextPhp' composer.json`" >> $GITHUB_ENV
+          echo "PHP_VERSION=`jq -r '.config.nextPhp' composer.json`" >> $GITHUB_ENV
       - name: Setup PHP
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2
         with:
@@ -156,7 +156,7 @@ jobs:
       - name: Get PHP version
         id: php-version
         run: |
-          echo "PHP_VERSION=`jq -r '.config.platform.nextPhp' composer.json`" >> $GITHUB_ENV
+          echo "PHP_VERSION=`jq -r '.config.nextPhp' composer.json`" >> $GITHUB_ENV
       - name: Setup PHP
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2
         with:
