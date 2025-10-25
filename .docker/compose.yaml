@@ -20,7 +20,7 @@ services:
       default:
         aliases:
           - laravelorbstack.pgsql.local
-    image: postgres:18.0-alpine3.22@sha256:f898ac406e1a9e05115cc2efcb3c3abb3a92a4c0263f3b6f6aaae354cbb1953a
+    image: postgres:18.0-alpine3.22@sha256:48c8ad3a7284b82be4482a52076d47d879fd6fb084a1cbfccbd551f9331b0e40
     container_name: laravelorbstack-postgresql
     environment:
       POSTGRES_DB: sample
@@ -57,7 +57,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mysql.local
-    image: mysql:9.4.0@sha256:135bc87cce147c3d28cecb9ad270b814cb52805af7ddeea83bfcaf157d05a6b2
+    image: mysql:9.5.0@sha256:569c4128dfa625ac2ac62cdd8af588a3a6a60a049d1a8d8f0fac95880ecdbbe5
     container_name: laravelorbstack-mysql
     environment:
       MYSQL_ROOT_PASSWORD: sample
