@@ -10,7 +10,7 @@
     "symfony-cli@5.14.2",
     "direnv@2.37.1",
     "php@8.4.13",
-    "mkcert@latest"
+    "mkcert@1.4.4"
   ],
   "shell": {
     "init_hook": [
