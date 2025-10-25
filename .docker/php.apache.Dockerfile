@@ -1,5 +1,5 @@
-FROM golang:1.25.3-bookworm@sha256:d29490805ab9b5e113725f4f516e292c8b4a6d2a722cbbce7d9827672d4bd431 AS go
-FROM composer:2.8.12@sha256:3ca62a8176c743eebef305ac2b93094a733dd5a34b5c1e3d3cf6cbbbd0792649 AS composer
+FROM golang:1.25.3-bookworm@sha256:ee420c17fa013f71eca6b35c3547b854c838d4f26056a34eb6171bba5bf8ece4 AS go
+FROM composer:2.8.12@sha256:23b68157c13e1bcc91908f5119da5537cf908983bb35bb2424f461ca5440d3e6 AS composer
 FROM mlocati/php-extension-installer:2.9.13@sha256:f07adf63f4458e6f8d2774b62a34dde7990ef57d9c2cad21d13df61885475350 AS basephpextensioninstaller
 FROM php:8.4.14-apache@sha256:ed36ad20988759c87ab6a96b1dda5065fd29f08cab65ba8c24ec351c239a8e1c AS apachephp
 
