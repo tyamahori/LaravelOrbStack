@@ -193,6 +193,54 @@
         }
       }
     },
+    "mkcert@latest": {
+      "last_modified": "2025-10-07T08:41:47Z",
+      "resolved": "github:NixOS/nixpkgs/bce5fe2bb998488d8e7e7856315f90496723793c#mkcert",
+      "source": "devbox-search",
+      "version": "1.4.4",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/1ggh4hv381klhj15j5dxla3q3lm49szq-mkcert-1.4.4",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/1ggh4hv381klhj15j5dxla3q3lm49szq-mkcert-1.4.4"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4zffl2ka04k2z6pi607r6xgy1waspg3f-mkcert-1.4.4",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/4zffl2ka04k2z6pi607r6xgy1waspg3f-mkcert-1.4.4"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4psnrxk8sr5f5rri13dgryyzplfv76ij-mkcert-1.4.4",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/4psnrxk8sr5f5rri13dgryyzplfv76ij-mkcert-1.4.4"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/jrx8k79p5vnx1pw7fi2ji0sikgj2ylrm-mkcert-1.4.4",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/jrx8k79p5vnx1pw7fi2ji0sikgj2ylrm-mkcert-1.4.4"
+        }
+      }
+    },
     "php84Extensions.redis@6.2.0": {
       "last_modified": "2025-09-18T16:33:27Z",
       "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#php84Extensions.redis",
