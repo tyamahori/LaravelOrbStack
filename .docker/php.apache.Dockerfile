@@ -1,7 +1,7 @@
 FROM golang:1.25.3-bookworm@sha256:d29490805ab9b5e113725f4f516e292c8b4a6d2a722cbbce7d9827672d4bd431 AS go
 FROM composer:2.8.12@sha256:3ca62a8176c743eebef305ac2b93094a733dd5a34b5c1e3d3cf6cbbbd0792649 AS composer
 FROM mlocati/php-extension-installer:2.9.13@sha256:f07adf63f4458e6f8d2774b62a34dde7990ef57d9c2cad21d13df61885475350 AS basephpextensioninstaller
-FROM php:8.4.13-apache@sha256:0e3cd97ac29126f00a0dd2827148ba592a9d3a2ff2508a1d9fc282597ff30f20 AS apachephp
+FROM php:8.4.14-apache@sha256:ed36ad20988759c87ab6a96b1dda5065fd29f08cab65ba8c24ec351c239a8e1c AS apachephp
 
 FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.45.4
@@ -10,10 +10,10 @@ FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v0.140.1
 
 FROM go AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.2.1
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.2.2
 
 FROM go AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.2.1
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.2.2
 
 FROM apachephp AS basebuild
 COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
