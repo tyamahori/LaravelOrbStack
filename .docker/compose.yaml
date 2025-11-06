@@ -91,7 +91,7 @@ services:
       default:
         aliases:
           - laravelorbstack.cache.local
-    image: redis:8.2.2-alpine3.22@sha256:59b6e694653476de2c992937ebe1c64182af4728e54bb49e9b7a6c26614d8933
+    image: redis:8.2.3-alpine3.22@sha256:28c9c4d7596949a24b183eaaab6455f8e5d55ecbf72d02ff5e2c17fe72671d31
     container_name: laravelorbstack-cache
     command: redis-server --appendonly yes
     volumes:
@@ -114,7 +114,7 @@ services:
       default:
         aliases:
           - laravelorbstack.session.local
-    image: redis:8.2.2-alpine3.22@sha256:59b6e694653476de2c992937ebe1c64182af4728e54bb49e9b7a6c26614d8933
+    image: redis:8.2.3-alpine3.22@sha256:28c9c4d7596949a24b183eaaab6455f8e5d55ecbf72d02ff5e2c17fe72671d31
     container_name: laravelorbstack-session
     command: redis-server --appendonly yes
     volumes:
