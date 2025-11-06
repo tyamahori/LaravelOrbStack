@@ -386,51 +386,51 @@
         }
       }
     },
-    "symfony-cli@5.14.2": {
-      "last_modified": "2025-10-07T08:41:47Z",
-      "resolved": "github:NixOS/nixpkgs/bce5fe2bb998488d8e7e7856315f90496723793c#symfony-cli",
+    "symfony-cli@5.15.1": {
+      "last_modified": "2025-10-26T01:09:48Z",
+      "resolved": "github:NixOS/nixpkgs/de69d2ba6c70e747320df9c096523b623d3a4c35#symfony-cli",
       "source": "devbox-search",
-      "version": "5.14.2",
+      "version": "5.15.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vpksjd5hyysd9rbq62621p08imfhkg6z-symfony-cli-5.14.2",
+              "path": "/nix/store/6m4ipbq4py7kbjxgc41az3al2cm5dddh-symfony-cli-5.15.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vpksjd5hyysd9rbq62621p08imfhkg6z-symfony-cli-5.14.2"
+          "store_path": "/nix/store/6m4ipbq4py7kbjxgc41az3al2cm5dddh-symfony-cli-5.15.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/b3gph265pj977z381jxg4ka5fxi6vxgb-symfony-cli-5.14.2",
+              "path": "/nix/store/rq001zr83nr0wwvapgmwj1k56k3jay7f-symfony-cli-5.15.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/b3gph265pj977z381jxg4ka5fxi6vxgb-symfony-cli-5.14.2"
+          "store_path": "/nix/store/rq001zr83nr0wwvapgmwj1k56k3jay7f-symfony-cli-5.15.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/crc1q7pplxxixzdfi6fz2ackwkcs3ld5-symfony-cli-5.14.2",
+              "path": "/nix/store/m7jdkf5h5bq3drqxcrrnimpw4dj3b55k-symfony-cli-5.15.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/crc1q7pplxxixzdfi6fz2ackwkcs3ld5-symfony-cli-5.14.2"
+          "store_path": "/nix/store/m7jdkf5h5bq3drqxcrrnimpw4dj3b55k-symfony-cli-5.15.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/bqyfhdfva8hlgvk559g6ilqb5yf6xkaz-symfony-cli-5.14.2",
+              "path": "/nix/store/wr49y20apg5n8nyn8pajafsj7hsxwbgz-symfony-cli-5.15.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/bqyfhdfva8hlgvk559g6ilqb5yf6xkaz-symfony-cli-5.14.2"
+          "store_path": "/nix/store/wr49y20apg5n8nyn8pajafsj7hsxwbgz-symfony-cli-5.15.1"
         }
       }
     },
