@@ -49,51 +49,51 @@
         }
       }
     },
-    "flyctl@0.3.172": {
-      "last_modified": "2025-09-18T16:33:27Z",
-      "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#flyctl",
+    "flyctl@0.3.209": {
+      "last_modified": "2025-11-12T10:38:40Z",
+      "resolved": "github:NixOS/nixpkgs/91c9a64ce2a84e648d0cf9671274bb9c2fb9ba60#flyctl",
       "source": "devbox-search",
-      "version": "0.3.172",
+      "version": "0.3.209",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/7kyv2sdwkqcbba35qxdfbxg6c33qsmd1-flyctl-0.3.172",
+              "path": "/nix/store/gpql68khqfh89rnayi50p66q5fqn2095-flyctl-0.3.209",
               "default": true
             }
           ],
-          "store_path": "/nix/store/7kyv2sdwkqcbba35qxdfbxg6c33qsmd1-flyctl-0.3.172"
+          "store_path": "/nix/store/gpql68khqfh89rnayi50p66q5fqn2095-flyctl-0.3.209"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/v9p1yg87cakrvmvj8cr5favj6xhxcj5q-flyctl-0.3.172",
+              "path": "/nix/store/qsk0pf3qgyjqp9gdicgry6f18yhgyldp-flyctl-0.3.209",
               "default": true
             }
           ],
-          "store_path": "/nix/store/v9p1yg87cakrvmvj8cr5favj6xhxcj5q-flyctl-0.3.172"
+          "store_path": "/nix/store/qsk0pf3qgyjqp9gdicgry6f18yhgyldp-flyctl-0.3.209"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/6a8cp3m1pqiq01l1v2nccn016vg8dw86-flyctl-0.3.172",
+              "path": "/nix/store/6ybg2na98k1nvprmw2m1zzndfyvg5zpw-flyctl-0.3.209",
               "default": true
             }
           ],
-          "store_path": "/nix/store/6a8cp3m1pqiq01l1v2nccn016vg8dw86-flyctl-0.3.172"
+          "store_path": "/nix/store/6ybg2na98k1nvprmw2m1zzndfyvg5zpw-flyctl-0.3.209"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/0zqb85bc5ashrqanpfc3ylvhnzbmri0k-flyctl-0.3.172",
+              "path": "/nix/store/3z7l2lpwp4c3zh7krf3mw1l301r8kbq2-flyctl-0.3.209",
               "default": true
             }
           ],
-          "store_path": "/nix/store/0zqb85bc5ashrqanpfc3ylvhnzbmri0k-flyctl-0.3.172"
+          "store_path": "/nix/store/3z7l2lpwp4c3zh7krf3mw1l301r8kbq2-flyctl-0.3.209"
         }
       }
     },
