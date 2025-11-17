@@ -113,6 +113,7 @@ tasks:
   ps:
     cmds:
       - "{{ .CI_BASE_COMMAND }} ps -a"
+      - "{{ .BASE_COMMAND }} ps -a"
   init:
     deps:
       - task: cleanUpComposeProject
@@ -158,6 +159,7 @@ tasks:
   down:
     cmds:
       - "{{ .CI_BASE_COMMAND }} --profile '*' down --remove-orphans"
+      - "{{ .BASE_COMMAND }} --profile '*' down --remove-orphans"
   up:
     deps:
       - task: down
