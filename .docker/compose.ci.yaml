@@ -1,8 +1,4 @@
 name: ci
-x-common-settings: &healthcheck-settings
-  interval: 1s
-  timeout: 30s
-  retries: 30
 networks:
   orb:
     ipam:
