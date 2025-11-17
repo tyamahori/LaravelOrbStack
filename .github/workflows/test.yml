@@ -176,9 +176,10 @@ jobs:
           tools: composer:v2
       - name: Setup
         run: |
-          set -a; source .docker/local/php/.env.ci; set +a; task upOnCI;
+          bash -c 'set -a; source .docker/local/php/.env.ci; set +a; task upOnCI'
       - name: Install dependencies
         run: |
-          composer install --prefer-dist --no-progress
+          bash -c 'set -a; source .docker/local/php/.env.ci; set +a; composer install --prefer-dist --no-progress'
       - name: test
-        run: composer phpunit
+        run: |
+          bash -c 'set -a; source .docker/local/php/.env.ci; set +a; composer phpunit'
