@@ -112,7 +112,7 @@ tasks:
       - task: images
   ps:
     cmds:
-      - "{{ .BASE_COMMAND }} ps -a"
+      - "{{ .CI_BASE_COMMAND }} ps -a"
   init:
     deps:
       - task: cleanUpComposeProject
@@ -157,7 +157,7 @@ tasks:
         php -v && php artisan -V && whoami && pwd
   down:
     cmds:
-      - "{{ .BASE_COMMAND }} --profile '*' down --remove-orphans"
+      - "{{ .CI_BASE_COMMAND }} --profile '*' down --remove-orphans"
   up:
     deps:
       - task: down
