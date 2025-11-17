@@ -10,7 +10,7 @@ vars:
   PHP_TAG: laravelorbstack/php-apache:8.4
 
   BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
-  CI_BASE_COMMAND: docker compose -f {{ .CI_COMPOSE_FILE_PATH }}
+  CI_BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} -f {{ .CI_COMPOSE_FILE_PATH }}
 
   USER_NAME:
     sh: whoami
