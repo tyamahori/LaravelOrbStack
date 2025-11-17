@@ -3,35 +3,50 @@ x-common-settings: &healthcheck-settings
   interval: 1s
   timeout: 30s
   retries: 30
-
+networks:
+  orb:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.198.0/24
+          gateway: 192.168.198.1
 services:
   postgresql:
     volumes: !override
       - type: bind
         source: ./local/db/script.sql
         target: /docker-entrypoint-initdb.d/script.sql
-    ports:
-      - "127.0.0.1:5432:5432"
+    networks:
+      orb:
+        ipv4_address: 192.168.198.10
 
   mysql:
     volumes: !reset []
-    ports: !override
-      - "127.0.0.1:3306:3306"
+    networks:
+      orb:
+        ipv4_address: 192.168.198.9
 
   cache:
     volumes: !reset []
-    ports: !override
-      - "127.0.0.1:6379:6379"
+    networks:
+      orb:
+        ipv4_address: 192.168.198.8
 
   session:
     volumes: !reset []
-    ports: !override
-      - "127.0.0.1:6380:6379"
+    networks:
+      orb:
+        ipv4_address: 192.168.198.7
 
   storage:
-    ports: !override
-      - "127.0.0.1:8025:8025"
-      - "127.0.0.1:1025:1025"
+    networks:
+      orb:
+        ipv4_address: 192.168.198.6
+
+  mail:
+    networks:
+      orb:
+        ipv4_address: 192.168.198.5
 
   php-app: !reset []
 
