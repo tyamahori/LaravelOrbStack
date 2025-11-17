@@ -176,8 +176,7 @@ jobs:
           tools: composer:v2
       - name: Setup
         run: |
-          cp .docker/local/php/.env.ci .env
-          task upOnCI
+          set -a; source .docker/local/php/.env.ci; set +a; task upOnCI;
       - name: Install dependencies
         run: |
           composer install --prefer-dist --no-progress
