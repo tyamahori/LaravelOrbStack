@@ -8,6 +8,7 @@ networks:
           gateway: 192.168.198.1
 services:
   postgresql:
+    container_name: !reset []
     volumes: !override
       - type: bind
         source: ./local/db/script.sql
@@ -17,30 +18,35 @@ services:
         ipv4_address: 192.168.198.10
 
   mysql:
+    container_name: !reset []
     volumes: !reset []
     networks:
       orb:
         ipv4_address: 192.168.198.9
 
   cache:
+    container_name: !reset []
     volumes: !reset []
     networks:
       orb:
         ipv4_address: 192.168.198.8
 
   session:
+    container_name: !reset []
     volumes: !reset []
     networks:
       orb:
         ipv4_address: 192.168.198.7
 
   storage:
+    container_name: !reset []
     volumes: !reset []
     networks:
       orb:
         ipv4_address: 192.168.198.6
 
   mail:
+    container_name: !reset []
     networks:
       orb:
         ipv4_address: 192.168.198.5
