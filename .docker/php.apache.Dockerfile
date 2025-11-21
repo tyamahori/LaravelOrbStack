@@ -1,7 +1,7 @@
 FROM golang:1.25.4-bookworm@sha256:e17419604b6d1f9bc245694425f0ec9b1b53685c80850900a376fb10cb0f70cb AS go
 FROM composer:2.9.1@sha256:7384cf9fa70b710af02c9f40bec6e44472e07138efa5ab3428a058087c0d2724 AS composer
 FROM mlocati/php-extension-installer:2.9.18@sha256:4ac3eefdb28ddbc07611c31dfe5353eb7f5e072c0d653bdd915903afa984dc89 AS basephpextensioninstaller
-FROM php:8.5.0-apache@sha256:c93958046aefc1355688347a907c6ea3a4c168214da654e33336b25036053352 AS apachephp
+FROM php:8.5.0-apache@sha256:74dcead709e8cf098764b35553f66ed249e57b232aa76bdb0aa7bc0795045ad9 AS apachephp
 
 FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.45.5
