@@ -91,7 +91,7 @@ services:
       default:
         aliases:
           - laravelorbstack.cache.local
-    image: redis:8.2.3-alpine3.22@sha256:28c9c4d7596949a24b183eaaab6455f8e5d55ecbf72d02ff5e2c17fe72671d31
+    image: redis:8.4.0-alpine3.22@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798
     container_name: laravelorbstack-cache
     command: redis-server --appendonly yes
     volumes:
@@ -114,7 +114,7 @@ services:
       default:
         aliases:
           - laravelorbstack.session.local
-    image: redis:8.2.3-alpine3.22@sha256:28c9c4d7596949a24b183eaaab6455f8e5d55ecbf72d02ff5e2c17fe72671d31
+    image: redis:8.4.0-alpine3.22@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798
     container_name: laravelorbstack-session
     command: redis-server --appendonly yes
     volumes:
@@ -357,7 +357,7 @@ services:
           - frankenphp.local
           - apachephp.local
     hostname: balancer
-    image: nginx:1.29.3@sha256:1beed3ca46acebe9d3fb62e9067f03d05d5bfa97a00f30938a0a3580563272ad
+    image: nginx:1.29.3@sha256:553f64aecdc31b5bf944521731cd70e35da4faed96b2b7548a3d8e2598c52a42
     container_name: laravelorbstack-balancer
     volumes:
       - type: bind
