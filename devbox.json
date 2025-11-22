@@ -3,8 +3,8 @@
   "packages": [
     "flyctl",
     "uv@0.8.23",
-    "go@1.25.2",
-    "go-task@3.45.4",
+    "go@1.25.3",
+    "go-task@3.45.5",
     "php84Extensions.redis@6.2.0",
     "php84Extensions.xdebug@3.4.7",
     "symfony-cli@5.15.1",
