@@ -7,7 +7,7 @@ FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.45.5
 
 FROM go AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v1.0.0
+RUN go install github.com/k1LoW/runn/cmd/runn@v1.1.0
 
 FROM go AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.6.6
