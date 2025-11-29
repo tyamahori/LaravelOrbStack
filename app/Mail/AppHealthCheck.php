@@ -13,7 +13,9 @@ use Illuminate\Queue\SerializesModels;
 class AppHealthCheck extends Mailable
 {
     use Queueable;
+
     use SerializesModels;
+
     /**
      * Create a new message instance.
      */
