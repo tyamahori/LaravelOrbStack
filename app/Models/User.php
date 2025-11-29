@@ -16,6 +16,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<TFactory> */
     use HasFactory;
+
     use Notifiable;
 
     /**
