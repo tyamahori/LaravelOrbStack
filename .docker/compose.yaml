@@ -21,7 +21,6 @@ services:
         aliases:
           - laravelorbstack.pgsql.local
     image: postgres:18.1-alpine3.22@sha256:154ea39af68ff30dec041cd1f1b5600009993724c811dbadde54126eb10bedd1
-    container_name: laravelorbstack-postgresql
     environment:
       POSTGRES_DB: sample
       POSTGRES_USER: sample
@@ -58,7 +57,6 @@ services:
         aliases:
           - laravelorbstack.mysql.local
     image: mysql:9.5.0@sha256:569c4128dfa625ac2ac62cdd8af588a3a6a60a049d1a8d8f0fac95880ecdbbe5
-    container_name: laravelorbstack-mysql
     environment:
       MYSQL_ROOT_PASSWORD: sample
       MYSQL_DATABASE: sample
@@ -92,7 +90,6 @@ services:
         aliases:
           - laravelorbstack.cache.local
     image: redis:8.4.0-alpine3.22@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798
-    container_name: laravelorbstack-cache
     command: redis-server --appendonly yes
     volumes:
       - type: volume
@@ -115,7 +112,6 @@ services:
         aliases:
           - laravelorbstack.session.local
     image: redis:8.4.0-alpine3.22@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798
-    container_name: laravelorbstack-session
     command: redis-server --appendonly yes
     volumes:
       - type: volume
@@ -138,7 +134,6 @@ services:
         aliases:
           - laravelorbstack.mail.local
     image: axllent/mailpit:v1.28.0@sha256:c076638db1e15662150be4fb62b8a6e96ef6ba5bde90c838a0239225854830f7
-    container_name: laravelorbstack-mail
     healthcheck:
       test: [
         "CMD",
@@ -159,7 +154,6 @@ services:
           - laravelorbstack.storage.local
           - sample-bucket.laravelorbstack.storage.local
     image: minio/minio:RELEASE.2025-09-07T16-13-09Z@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
-    container_name: laravelorbstack-storage
     command: server /export --console-address ":80"
     volumes:
       - type: volume
@@ -203,7 +197,6 @@ services:
 #        aliases:
 #          - laravelorbstack.localstack.local
 #    image: localstack/localstack:2.2.0
-#    container_name: laravelorbstack-localstack
 #    environment:
 #      SERVICES: s3
 #    healthcheck:
@@ -231,7 +224,6 @@ services:
           - laravelorbstack.apache.local
     hostname: php-app
     image: laravelorbstack/php:apache-8.4-local
-    container_name: laravelorbstack-php
     volumes:
       - type: bind
         source: ..
@@ -280,7 +272,6 @@ services:
           - laravelorbstack.franken.local
     hostname: php-franken
     image: laravelorbstack/php:franken-8.4-local
-    container_name: laravelorbstack-frankenphp
     volumes:
       - type: bind
         source: ..
@@ -358,7 +349,6 @@ services:
           - apachephp.local
     hostname: balancer
     image: nginx:1.29.3@sha256:553f64aecdc31b5bf944521731cd70e35da4faed96b2b7548a3d8e2598c52a42
-    container_name: laravelorbstack-balancer
     volumes:
       - type: bind
         source: ./local/lb/nginx.orb.conf
