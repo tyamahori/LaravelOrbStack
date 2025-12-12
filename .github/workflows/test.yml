@@ -156,7 +156,7 @@ jobs:
         # uses: ScribeMD/docker-cache@0.5.0
         uses: AndreKurait/docker-cache@0fe76702a40db986d9663c24954fc14c6a6031b7 # 0.6.0
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}-${{ hashFiles('./.docker/compose.yaml') }}
       - name: Restore Composer packages
         uses: actions/cache/restore@a7833574556fa59680c1b7cb190c1735db73ebf0 # v5.0.0
         with:
