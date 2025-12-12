@@ -90,7 +90,7 @@ tasks:
   pullImages:
     cmd: "{{ .BASE_COMMAND }} pull balancer session cache mail mysql postgresql storage setUpStorage"
   pullCiImages:
-    cmd: "{{ .CI_BASE_COMMAND }} --profile '*' pull"
+    cmd: "{{ .CI_BASE_COMMAND }} pull session cache mail mysql postgresql storage setUpStorage"
   cleanUpComposeProject:
     cmds:
       - task: removeVendor
