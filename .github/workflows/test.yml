@@ -63,7 +63,7 @@ jobs:
         uses: AndreKurait/docker-cache  @0fe76702a40db986d9663c24954fc14c6a6031b7 # 0.6.0
         id: docker-cache
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}-${{ hashFiles('./.docker/compose.yaml') }}
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
         run: task pullCiImages
