@@ -7,7 +7,7 @@ vars:
   PHP_APACHE_DOCKERFILE_PATH: .docker/php.apache.Dockerfile
   PHP_FRANKEN_DOCKERFILE_PATH: .docker/php.franken.Dockerfile
 
-  PHP_TAG: laravelorbstack/php-apache:8.4
+  PHP_TAG: laravelorbstack/php-apache:8.5
 
   BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
   CI_BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} -f {{ .CI_COMPOSE_FILE_PATH }}
@@ -36,7 +36,7 @@ tasks:
       vars: [ CLI_ARGS ]
     cmd: |
       docker build \
-        -t laravelorbstack/php:apache-8.4-base \
+        -t laravelorbstack/php:apache-8.5-base \
         -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --target=basebuild \
         .
@@ -45,7 +45,7 @@ tasks:
       vars: [ CLI_ARGS ]
     cmd: |
       docker build \
-        -t laravelorbstack/php:franken-8.4-base \
+        -t laravelorbstack/php:franken-8.5-base \
         -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --target=basebuild \
         .
@@ -60,7 +60,7 @@ tasks:
       - task: buildBaseApacheModPhp
     cmd: |
       docker build \
-        -t laravelorbstack/php:apache-8.4-local \
+        -t laravelorbstack/php:apache-8.5-local \
         -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --target=local \
         --build-arg USER_ID={{ .USER_ID }} \
@@ -74,7 +74,7 @@ tasks:
       - task: buildBaseFrankenPhp
     cmd: |
       docker build \
-        -t laravelorbstack/php:franken-8.4-local \
+        -t laravelorbstack/php:franken-8.5-local \
         -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --target=local \
         --build-arg USER_ID={{ .USER_ID }} \

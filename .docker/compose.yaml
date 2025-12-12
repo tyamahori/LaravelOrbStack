@@ -223,7 +223,7 @@ services:
         aliases:
           - laravelorbstack.apache.local
     hostname: php-app
-    image: laravelorbstack/php:apache-8.4-local
+    image: laravelorbstack/php:apache-8.5-local
     volumes:
       - type: bind
         source: ..
@@ -271,7 +271,7 @@ services:
         aliases:
           - laravelorbstack.franken.local
     hostname: php-franken
-    image: laravelorbstack/php:franken-8.4-local
+    image: laravelorbstack/php:franken-8.5-local
     volumes:
       - type: bind
         source: ..
@@ -308,7 +308,7 @@ services:
 
   php-cli:
     env_file: local/php/.env.app
-    image: laravelorbstack/php:apache-8.4-local
+    image: laravelorbstack/php:apache-8.5-local
     volumes:
       - type: bind
         source: ..
