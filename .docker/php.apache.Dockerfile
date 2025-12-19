@@ -1,10 +1,10 @@
 FROM golang:1.25.5-bookworm@sha256:09f53deea14d4019922334afe6258b7b776afc1d57952be2012f2c8c4076db05 AS go
-FROM composer:2.9.2@sha256:8b4d59fde3bd505c5fef70c9f8d5c05e92af811fed037dad12869b373925ed31 AS composer
+FROM composer:2.9.2@sha256:8209324ed15c43af0c5cc900cbb9fd01e94b84a94c4bb0969aa95d31d2d7e43d AS composer
 FROM mlocati/php-extension-installer:2.9.23@sha256:067d6f813699f809edaee06b60a3fedcbfb424ceeb2cc5492806ce71ad249db7 AS basephpextensioninstaller
 FROM php:8.5.0-apache@sha256:1d825469e3c69b10baf6a8a63b1e766b81c6edb44a01f91509fc148bfd0e5f3e AS apachephp
 
 FROM go AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.45.5
+RUN go install github.com/go-task/task/v3/cmd/task@v3.46.3
 
 FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v1.1.2
