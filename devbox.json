@@ -6,7 +6,7 @@
     "go@1.25.4",
     "go-task@3.45.5",
     "php84Extensions.redis@6.3.0",
-    "php84Extensions.xdebug@3.4.7",
+    "php84Extensions.xdebug@3.5.0",
     "symfony-cli@5.16.1",
     "direnv@2.37.1",
     "php@8.4.15",
