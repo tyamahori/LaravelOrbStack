@@ -10,10 +10,10 @@ FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v1.1.2
 
 FROM go AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.8.13
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.8.14
 
 FROM go AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.8.13
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.8.14
 
 FROM frankenphp AS basebuild
 RUN apt-get update \
