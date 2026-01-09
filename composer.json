@@ -31,7 +31,7 @@
         "phpunit/phpunit": "^12.5.4",
         "rector/rector": "^2.3.0",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^13.0.0"
+        "symplify/easy-coding-standard": "^13.0.4"
     },
     "autoload": {
         "psr-4": {
