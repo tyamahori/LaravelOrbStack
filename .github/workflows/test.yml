@@ -48,10 +48,6 @@ jobs:
     runs-on: ubuntu-24.04-arm
     needs: cache
     steps:
-      - name: Install Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 #      - uses: dorny/paths-filter@v3
@@ -66,7 +62,7 @@ jobs:
           key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}-${{ hashFiles('./.docker/compose.yaml') }}
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
-        run: task pullCiImages
+        run: docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml pull session cache mail mysql postgresql storage setUpStorage
 
   lint:
     runs-on: ubuntu-24.04-arm
@@ -146,10 +142,6 @@ jobs:
     runs-on: ubuntu-24.04-arm
     needs: build
     steps:
-      - name: Install Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - name: Cache Docker images
@@ -176,10 +168,29 @@ jobs:
           tools: composer:v2
       - name: Setup
         run: |
-          bash -c 'set -a; source .docker/local/php/.env.ci; set +a; task upOnCI'
+          bash -c "set -a; source .docker/local/php/.env.ci; set +a; docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml --profile '*' down --remove-orphans"
+          bash -c "set -a; source .docker/local/php/.env.ci; set +a; docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml --profile 'app' --profile '' up -d"
+          bash -c "set -a; source .docker/local/php/.env.ci; set +a; docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml run --rm setUpStorage"
       - name: Install dependencies
         run: |
-          bash -c 'set -a; source .docker/local/php/.env.ci; set +a; composer install --prefer-dist --no-progress'
+          bash -c "
+          set -a;
+          source .docker/local/php/.env.ci;
+          set +a;
+          composer install --prefer-dist --no-progress;
+          php artisan optimize:clear;
+          php artisan migrate:refresh --seed;
+          composer ide-helper;
+          php -v;
+          php artisan -V;
+          whoami;
+          pwd;
+          "
       - name: test
         run: |
-          bash -c 'set -a; source .docker/local/php/.env.ci; set +a; composer phpunit'
+          bash -c '
+          set -a;
+          source .docker/local/php/.env.ci;
+          set +a;
+          composer phpunit
+          '
