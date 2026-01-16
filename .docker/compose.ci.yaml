@@ -55,6 +55,8 @@ services:
 
   php-franken: !reset []
 
+  php-rd: !reset []
+
   php-cli: !reset []
 
   balancer: !reset []

@@ -21,6 +21,8 @@ services:
         aliases:
           - laravelorbstack.pgsql.local
     image: postgres:18.1-alpine3.22@sha256:154ea39af68ff30dec041cd1f1b5600009993724c811dbadde54126eb10bedd1
+    ports:
+      - "127.0.0.1:5432:5432"
     environment:
       POSTGRES_DB: sample
       POSTGRES_USER: sample
@@ -216,7 +218,53 @@ services:
 #      - type: volume
 #        source: localstack
 #        target: /var/lib/localstack
-
+  php-rd:
+    networks:
+      default:
+        aliases:
+          - laravelorbstack.apache-rd.local
+    hostname: php-rd
+    image: laravelorbstack/php:apache-8.5-local
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - type: bind
+        source: ..
+        target: /var/www/html
+      - type: bind
+        source: ./local/php/mpm_prefork.conf
+        target: /etc/apache2/mods-available/mpm_prefork.conf
+      - type: bind
+        source: ./local/php/rd-default.conf
+        target: /etc/apache2/sites-available/000-default.conf
+      - type: bind
+        source: ./common/security.conf
+        target: /etc/apache2/conf-available/security.conf
+      - type: bind
+        source: ./local/php/php.ini
+        target: /usr/local/etc/php/php.ini
+      - type: bind
+        source: ./local/php/docker-php-ext-xdebug.ini
+        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
+    # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
+    env_file: local/php/.env.rd
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+      session:
+        condition: service_healthy
+      mail:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+    profiles:
+      - customImage
+      - app
   php-app:
     networks:
       default:
