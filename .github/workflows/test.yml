@@ -102,7 +102,7 @@ jobs:
         run: |
           composer rectorCheck
       - name: Cache .rector
-        uses: actions/cache/save@9255dc7a253b0ccc959486e2bca901246202afeb # v5
+        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5
         with:
           path: .tempCache/.rector
           key: rector-cache-${{ runner.os }}-${{ github.run_id }}
@@ -118,7 +118,7 @@ jobs:
         run: |
           composer stanCheck
       - name: Cache .stan
-        uses: actions/cache/save@9255dc7a253b0ccc959486e2bca901246202afeb # v5
+        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5
         with:
           path: .tempCache/.stan
           key: stan-cache-${{ runner.os }}-${{ github.run_id }}
@@ -134,7 +134,7 @@ jobs:
         run: |
           composer ecsCheck
       - name: Cache .ecs
-        uses: actions/cache/save@9255dc7a253b0ccc959486e2bca901246202afeb # v5
+        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5
         with:
           path: .tempCache/.ecs
           key: ecs-cache-${{ runner.os }}-${{ github.run_id }}
