@@ -19,7 +19,7 @@ jobs:
           php-version: ${{ env.PHP_VERSION }}
           tools: composer:v2
       - name: Restore Composer packages
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: vendor
           key: composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
@@ -29,7 +29,7 @@ jobs:
         run: composer install --prefer-dist --no-progress
       - name: Save Composer packages
         id: cache-composer
-        uses: actions/cache/save@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: vendor
           key: composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
@@ -68,7 +68,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - name: Restore Composer packages
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: vendor
           key: composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
@@ -87,7 +87,7 @@ jobs:
         run: |
           composer install --prefer-dist --no-progress
       - name: Restore Rector cache
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: .tempCache/.rector
           key: rector-cache-${{ runner.os }}-${{ github.run_id }}-next-php
@@ -102,7 +102,7 @@ jobs:
           path: .tempCache/.rector
           key: rector-cache-${{ runner.os }}-${{ github.run_id }}-next-php
       - name: Restore Stan cache
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: .tempCache/.stan
           key: stan-cache-${{ runner.os }}-${{ github.run_id }}-next-php
@@ -117,7 +117,7 @@ jobs:
           path: .tempCache/.stan
           key: stan-cache-${{ runner.os }}-${{ github.run_id }}-next-php
       - name: Restore Ecs cache
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: .tempCache/.ecs
           key: ecs-cache-${{ runner.os }}-${{ github.run_id }}-next-php
@@ -147,7 +147,7 @@ jobs:
         with:
           key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}
       - name: Restore Composer packages
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: vendor
           key: composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
