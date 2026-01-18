@@ -153,7 +153,7 @@ services:
         aliases:
           - laravelorbstack.storage.local
           - sample-bucket.laravelorbstack.storage.local
-    image: rustfs/rustfs:1.0.0-alpha.80
+    image: rustfs/rustfs:1.0.0-alpha.80@sha256:224fbaa3512e5a299b2e096316a81226b9f5dc3cb1a7561c9660e80e179071bd
     volumes:
       - type: volume
         source: storage
@@ -174,7 +174,7 @@ services:
       <<: *healthcheck-settings
 
   setUpStorage:
-    image: amazon/aws-cli:2.33.2
+    image: amazon/aws-cli:2.33.2@sha256:e53de7e9d96e346ba46f0b7c6ed6c6f32a477dbf36b2b784045a482fa5f52075
     depends_on:
       storage:
         condition: service_healthy
