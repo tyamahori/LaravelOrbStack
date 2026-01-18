@@ -55,10 +55,10 @@ MAIL_FROM_ADDRESS="hello@laravelorbstack.com"
 MAIL_FROM_NAME="${APP_NAME}"
 
 # AWS
-AWS_ACCESS_KEY_ID=samplesample
+AWS_ACCESS_KEY_ID=sample
 AWS_SECRET_ACCESS_KEY=samplesample
 AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=sample-bucket
+AWS_BUCKET=sample
 AWS_USE_PATH_STYLE_ENDPOINT=false
 AWS_URL=laravelorbstack.storage.local:9000
 AWS_ENDPOINT=http://laravelorbstack.storage.local:9000

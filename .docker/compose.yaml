@@ -152,7 +152,7 @@ services:
       default:
         aliases:
           - laravelorbstack.storage.local
-          - sample-bucket.laravelorbstack.storage.local
+          - sample.laravelorbstack.storage.local
     image: rustfs/rustfs:1.0.0-alpha.80@sha256:224fbaa3512e5a299b2e096316a81226b9f5dc3cb1a7561c9660e80e179071bd
     volumes:
       - type: volume
@@ -163,7 +163,7 @@ services:
       RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:80
       RUSTFS_ACCESS_KEY: sample
       RUSTFS_SECRET_KEY: samplesample
-      RUSTFS_SERVER_DOMAINS: laravelorbstack.storage.local
+      RUSTFS_SERVER_DOMAINS: laravelorbstack.storage.local:9000
     healthcheck:
       test: [
         "CMD",
