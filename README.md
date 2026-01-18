@@ -15,10 +15,10 @@ LaravelをOrbStackで動かすサンプルです。環境を立ち上げたあ�
 
 ## 技術スタック
 
-- **PHP**: 8.4.10
-- **Laravel**: 12.20.0
-- **Webサーバー**: Apache / FrankenPHP
-- **データベース**: PostgreSQL 17.5 / MySQL 9.3.0
+- **PHP**
+- **Laravel**
+- **Webサーバー**: ApachePHP / FrankenPHP
+- **データベース**: PostgreSQL / MySQL 
 - **コンテナ**: Docker + OrbStack
 - **タスクランナー**: Task
 - **開発環境**: Devbox
