@@ -1,5 +1,5 @@
 FROM golang:1.25.6-bookworm@sha256:2f768d462dbffbb0f0b3a5171009f162945b086f326e0b2a8fd5d29c3219ff14 AS go
-FROM composer:2.9.3@sha256:ce78434db8122b0c3b0ec2056da0072551780d60e864943008c3f5a785db0900 AS composer
+FROM composer:2.9.3@sha256:c404e6f07bdebf8a8c605be5b5fab88eef737f6e4acfba3651d39c824ce224d4 AS composer
 FROM mlocati/php-extension-installer:2.9.27@sha256:84950d61e2873817f814fd2c486d0143566a5b7aa36b9c926a138dafb9a07753 AS basephpextensioninstaller
 FROM dunglas/frankenphp:php8.5.0-trixie@sha256:85eb3d7f012c6404c516cc60152e9ccfeac9c84ec5db9f234df8000373eae5ce AS frankenphp
 
