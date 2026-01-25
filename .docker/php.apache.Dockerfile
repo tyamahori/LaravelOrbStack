@@ -40,6 +40,8 @@ RUN apt-get update \
       iproute2 \
       iputils-ping \
       vim \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
     && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /composer \
