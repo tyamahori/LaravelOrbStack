@@ -97,7 +97,7 @@ jobs:
         run: |
           composer rectorCheck
       - name: Cache .rector
-        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5
+        uses: actions/cache/save@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: .tempCache/.rector
           key: rector-cache-${{ runner.os }}-${{ github.run_id }}-next-php
@@ -112,7 +112,7 @@ jobs:
         run: |
           composer stanCheck
       - name: Cache .stan
-        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5
+        uses: actions/cache/save@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: .tempCache/.stan
           key: stan-cache-${{ runner.os }}-${{ github.run_id }}-next-php
@@ -127,7 +127,7 @@ jobs:
         run: |
           composer ecsCheck
       - name: Cache .ecs
-        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5
+        uses: actions/cache/save@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: .tempCache/.ecs
           key: ecs-cache-${{ runner.os }}-${{ github.run_id }}-next-php
