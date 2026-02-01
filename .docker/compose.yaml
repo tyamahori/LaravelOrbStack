@@ -18,7 +18,7 @@ services:
       default:
         aliases:
           - laravelorbstack.pgsql.local
-    image: postgres:18.1-alpine3.22@sha256:154ea39af68ff30dec041cd1f1b5600009993724c811dbadde54126eb10bedd1
+    image: postgres:18.1-alpine3.22@sha256:270579ee277a572fa8cfdbaec0e1ff588bb7247da92d25165c7237c483e565d9
     ports:
       - "127.0.0.1:5432:5432"
     environment:
@@ -56,7 +56,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mysql.local
-    image: mysql:9.6.0@sha256:6b18d01fb632c0f568ace1cc1ebffb42d1d21bc1de86f6d3e8b7eb18278444d9
+    image: mysql:9.6.0@sha256:932fe8fbc04c1488a38f8cab0f30cdac8d7753bded3df1762475a8001a323bc4
     environment:
       MYSQL_ROOT_PASSWORD: sample
       MYSQL_DATABASE: sample
@@ -89,7 +89,7 @@ services:
       default:
         aliases:
           - laravelorbstack.cache.local
-    image: redis:8.4.0-alpine3.22@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798
+    image: redis:8.4.0-alpine3.22@sha256:4eec4565e45aa0b3966554c866bc73211e281b0b3d89fe9a33c982e6faca809d
     command: redis-server --appendonly yes
     volumes:
       - type: volume
@@ -111,7 +111,7 @@ services:
       default:
         aliases:
           - laravelorbstack.session.local
-    image: redis:8.4.0-alpine3.22@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798
+    image: redis:8.4.0-alpine3.22@sha256:4eec4565e45aa0b3966554c866bc73211e281b0b3d89fe9a33c982e6faca809d
     command: redis-server --appendonly yes
     volumes:
       - type: volume
@@ -133,7 +133,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mail.local
-    image: axllent/mailpit:v1.28.4@sha256:0c71d88b0fb3e2c396242ca4a272c5be50d5ab5c9ba10ba3f3316777ca1d196e
+    image: axllent/mailpit:v1.29.0@sha256:0f93f36075f5f6fe428655d94299dda59b9a533d3fe9ce62909a72ac6fe455a9
     healthcheck:
       test: [
         "CMD",
