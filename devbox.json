@@ -9,7 +9,7 @@
     "php84Extensions.xdebug@3.5.0",
     "symfony-cli@5.16.1",
     "direnv@2.37.1",
-    "php@8.4.16",
+    "php@8.5.2",
     "mkcert@1.4.4"
   ],
   "shell": {
