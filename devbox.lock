@@ -71,6 +71,10 @@
         }
       }
     },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "last_modified": "2026-01-27T15:18:14Z",
+      "resolved": "github:NixOS/nixpkgs/afce96367b2e37fc29afb5543573cd49db3357b7?lastModified=1769527094"
+    },
     "go-task@3.45.5": {
       "last_modified": "2025-11-18T03:14:24Z",
       "resolved": "github:NixOS/nixpkgs/0ade817efdde79cbc46b624c849027335ebc25c5#go-task",
@@ -215,9 +219,9 @@
         }
       }
     },
-    "php84Extensions.redis@6.3.0": {
-      "last_modified": "2025-11-15T07:28:48Z",
-      "resolved": "github:NixOS/nixpkgs/1d4c88323ac36805d09657d13a5273aea1b34f0c#php84Extensions.redis",
+    "php85Extensions.redis@6.3.0": {
+      "last_modified": "2026-01-30T02:32:49Z",
+      "resolved": "github:NixOS/nixpkgs/6308c3b21396534d8aaeac46179c14c439a89b8a#php85Extensions.redis",
       "source": "devbox-search",
       "version": "6.3.0",
       "systems": {
@@ -225,47 +229,47 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/sdi13h3chmsf2hm1yf0yz8ag45wm4ang-php-redis-6.3.0",
+              "path": "/nix/store/x1y5mjn6a0p4gwcv7879q7wy1p3vnwmp-php-redis-6.3.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/sdi13h3chmsf2hm1yf0yz8ag45wm4ang-php-redis-6.3.0"
+          "store_path": "/nix/store/x1y5mjn6a0p4gwcv7879q7wy1p3vnwmp-php-redis-6.3.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/97fjrixq08c0vqa87mghrbblcc9yl5kh-php-redis-6.3.0",
+              "path": "/nix/store/hssz10i4g8g0nsc69dy88a0isycrwqqz-php-redis-6.3.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/97fjrixq08c0vqa87mghrbblcc9yl5kh-php-redis-6.3.0"
+          "store_path": "/nix/store/hssz10i4g8g0nsc69dy88a0isycrwqqz-php-redis-6.3.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/agx3k10j0711in707dlyq4x4gs0lnfnw-php-redis-6.3.0",
+              "path": "/nix/store/gh9ss5zyml634cn2582si8inm3g90k0l-php-redis-6.3.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/agx3k10j0711in707dlyq4x4gs0lnfnw-php-redis-6.3.0"
+          "store_path": "/nix/store/gh9ss5zyml634cn2582si8inm3g90k0l-php-redis-6.3.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/x94fp2fjxjz18kkl4l4r5z61wq7bly87-php-redis-6.3.0",
+              "path": "/nix/store/cq353a2f1j63d26flxmvlp9q9swfb9x4-php-redis-6.3.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/x94fp2fjxjz18kkl4l4r5z61wq7bly87-php-redis-6.3.0"
+          "store_path": "/nix/store/cq353a2f1j63d26flxmvlp9q9swfb9x4-php-redis-6.3.0"
         }
       }
     },
-    "php84Extensions.xdebug@3.5.0": {
-      "last_modified": "2025-12-15T04:22:15Z",
-      "resolved": "github:NixOS/nixpkgs/09b8fda8959d761445f12b55f380d90375a1d6bb#php84Extensions.xdebug",
+    "php85Extensions.xdebug@3.5.0": {
+      "last_modified": "2026-01-30T02:32:49Z",
+      "resolved": "github:NixOS/nixpkgs/6308c3b21396534d8aaeac46179c14c439a89b8a#php85Extensions.xdebug",
       "source": "devbox-search",
       "version": "3.5.0",
       "systems": {
@@ -273,90 +277,90 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/692g9dd04crcqm25jx55mr5rnqi6s7yk-php-xdebug-3.5.0",
+              "path": "/nix/store/xipyx417zij5j2xk7dmqh1xrykng1vdf-php-xdebug-3.5.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/692g9dd04crcqm25jx55mr5rnqi6s7yk-php-xdebug-3.5.0"
+          "store_path": "/nix/store/xipyx417zij5j2xk7dmqh1xrykng1vdf-php-xdebug-3.5.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/6pkxg0gkkih2icqyai69wxlqickfzqd5-php-xdebug-3.5.0",
+              "path": "/nix/store/y0c89kmvaxdayag9220z97icl02fb6sn-php-xdebug-3.5.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/6pkxg0gkkih2icqyai69wxlqickfzqd5-php-xdebug-3.5.0"
+          "store_path": "/nix/store/y0c89kmvaxdayag9220z97icl02fb6sn-php-xdebug-3.5.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/n3fcagdydpvdmi926f8rzxbapq09w2b8-php-xdebug-3.5.0",
+              "path": "/nix/store/bmwdlry5d3j70lky3sm5qzy8zqfbk8z5-php-xdebug-3.5.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/n3fcagdydpvdmi926f8rzxbapq09w2b8-php-xdebug-3.5.0"
+          "store_path": "/nix/store/bmwdlry5d3j70lky3sm5qzy8zqfbk8z5-php-xdebug-3.5.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/i3japy9xn974y3igki4kg4j60slmp2qn-php-xdebug-3.5.0",
+              "path": "/nix/store/91k73dvjhi8n831062by8x9qfc3kdpcc-php-xdebug-3.5.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/i3japy9xn974y3igki4kg4j60slmp2qn-php-xdebug-3.5.0"
+          "store_path": "/nix/store/91k73dvjhi8n831062by8x9qfc3kdpcc-php-xdebug-3.5.0"
         }
       }
     },
-    "php@8.4.16": {
-      "last_modified": "2025-12-31T03:27:36Z",
+    "php@8.5": {
+      "last_modified": "2026-01-30T02:32:49Z",
       "plugin_version": "0.0.3",
-      "resolved": "github:NixOS/nixpkgs/f665af0cdb70ed27e1bd8f9fdfecaf451260fc55#php",
+      "resolved": "github:NixOS/nixpkgs/6308c3b21396534d8aaeac46179c14c439a89b8a#php85",
       "source": "devbox-search",
-      "version": "8.4.16",
+      "version": "8.5.2",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vcc1qgjma41h0gxsjjajiz1zgk3x7azf-php-with-extensions-8.4.16",
+              "path": "/nix/store/sb9snl6fx7largw3wdpwhpy9qfzz9c6x-php-with-extensions-8.5.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vcc1qgjma41h0gxsjjajiz1zgk3x7azf-php-with-extensions-8.4.16"
+          "store_path": "/nix/store/sb9snl6fx7largw3wdpwhpy9qfzz9c6x-php-with-extensions-8.5.2"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/3bv66a3i6ccpmcxvs5in0vxkwfsj5nlr-php-with-extensions-8.4.16",
+              "path": "/nix/store/4kh0ad7izixvphsf66a4s4z5aqkybmqz-php-with-extensions-8.5.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/3bv66a3i6ccpmcxvs5in0vxkwfsj5nlr-php-with-extensions-8.4.16"
+          "store_path": "/nix/store/4kh0ad7izixvphsf66a4s4z5aqkybmqz-php-with-extensions-8.5.2"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/f8p067vigk85q5hfxwzq4nymzdvjljy0-php-with-extensions-8.4.16",
+              "path": "/nix/store/yij6j1b1z11lygqf365wmm5vny732z4x-php-with-extensions-8.5.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/f8p067vigk85q5hfxwzq4nymzdvjljy0-php-with-extensions-8.4.16"
+          "store_path": "/nix/store/yij6j1b1z11lygqf365wmm5vny732z4x-php-with-extensions-8.5.2"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/zc1v3c5sqbm9kazc0h9rzp17w4ihw2ih-php-with-extensions-8.4.16",
+              "path": "/nix/store/m7l6miscidwf1fg0bidl037q2yc2gbix-php-with-extensions-8.5.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/zc1v3c5sqbm9kazc0h9rzp17w4ihw2ih-php-with-extensions-8.4.16"
+          "store_path": "/nix/store/m7l6miscidwf1fg0bidl037q2yc2gbix-php-with-extensions-8.5.2"
         }
       }
     },
