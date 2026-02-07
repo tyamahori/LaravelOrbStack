@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a995d40cf78dca5cf140a2d42dea317",
+    "content-hash": "cb5348ebd5f676049326acecaf493c15",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8159,43 +8159,43 @@
         },
         {
             "name": "deptrac/deptrac",
-            "version": "4.5.0",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deptrac/deptrac.git",
-                "reference": "c5346666599dafd23acc6bc47396967956b37385"
+                "reference": "b27bfc5291a1cbe1c0ebf514716b1d25c68c63fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deptrac/deptrac/zipball/c5346666599dafd23acc6bc47396967956b37385",
-                "reference": "c5346666599dafd23acc6bc47396967956b37385",
+                "url": "https://api.github.com/repos/deptrac/deptrac/zipball/b27bfc5291a1cbe1c0ebf514716b1d25c68c63fd",
+                "reference": "b27bfc5291a1cbe1c0ebf514716b1d25c68c63fd",
                 "shasum": ""
             },
             "require": {
                 "composer/xdebug-handler": "^3.0",
-                "jetbrains/phpstorm-stubs": "2024.3",
+                "jetbrains/phpstorm-stubs": "2024.3 || 2025.3",
                 "nikic/php-parser": "^5",
                 "php": "^8.2",
                 "phpdocumentor/graphviz": "^2.1",
-                "phpdocumentor/type-resolver": "^1.9.0",
-                "phpstan/phpdoc-parser": "^1.5.0|^2.1.0",
+                "phpdocumentor/type-resolver": "^1.9.0 || ^2.0.0",
+                "phpstan/phpdoc-parser": "^1.5.0 || ^2.1.0",
                 "phpstan/phpstan": "^2.0",
                 "psr/container": "^2.0",
                 "psr/event-dispatcher": "^1.0",
-                "symfony/config": "^6.4|^7.0|^8.0",
-                "symfony/console": "^6.4|^7.0|^8.0",
-                "symfony/dependency-injection": "^6.4|^7.0|^8.0",
-                "symfony/event-dispatcher": "^6.4|^7.0|^8.0",
+                "symfony/config": "^6.4 || ^7.4 || ^8.0",
+                "symfony/console": "^6.4 || ^7.4 || ^8.0",
+                "symfony/dependency-injection": "^6.4 || ^7.4 || ^8.0",
+                "symfony/event-dispatcher": "^6.4 || ^7.4 || ^8.0",
                 "symfony/event-dispatcher-contracts": "^3.4",
-                "symfony/filesystem": "^6.4|^7.0|^8.0",
-                "symfony/finder": "^6.4|^7.0|^8.0",
-                "symfony/yaml": "^6.4|^7.0|^8.0"
+                "symfony/filesystem": "^6.4 || ^7.4 || ^8.0",
+                "symfony/finder": "^6.4 || ^7.4 || ^8.0",
+                "symfony/yaml": "^6.4 || ^7.4 || ^8.0"
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8",
                 "ergebnis/composer-normalize": "^2.45",
                 "ext-libxml": "*",
-                "symfony/stopwatch": "^6.4|^7.0|^8.0"
+                "symfony/stopwatch": "^6.4 || ^7.4 || ^8.0"
             },
             "suggest": {
                 "ext-dom": "For using the JUnit output formatter"
@@ -8238,9 +8238,9 @@
             ],
             "support": {
                 "issues": "https://github.com/deptrac/deptrac/issues",
-                "source": "https://github.com/deptrac/deptrac/tree/4.5.0"
+                "source": "https://github.com/deptrac/deptrac/tree/4.6.0"
             },
-            "time": "2026-01-22T09:57:17+00:00"
+            "time": "2026-02-02T09:44:37+00:00"
         },
         {
             "name": "doctrine/deprecations",

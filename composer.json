@@ -18,7 +18,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.0.5",
         "barryvdh/laravel-ide-helper": "^3.6.1",
-        "deptrac/deptrac": "^4.5.0",
+        "deptrac/deptrac": "^4.6.0",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.9.2",
         "nunomaduro/collision": "^8.8.3",
