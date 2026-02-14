@@ -18,7 +18,7 @@ services:
       default:
         aliases:
           - laravelorbstack.pgsql.local
-    image: postgres:18.1-alpine3.22@sha256:270579ee277a572fa8cfdbaec0e1ff588bb7247da92d25165c7237c483e565d9
+    image: postgres:18.2-alpine3.22@sha256:06f99695cdbfba50a9d19073e2c2af16b8995ee846d25119d992ad719818522b
     ports:
       - "127.0.0.1:5432:5432"
     environment:
