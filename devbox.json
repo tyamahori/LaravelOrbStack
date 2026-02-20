@@ -6,10 +6,10 @@
     "go@1.25.5",
     "go-task@3.45.5",
     "php84Extensions.redis@6.3.0",
-    "php84Extensions.xdebug@3.5.0",
+    "php84Extensions.xdebug@3.5.1",
     "symfony-cli@5.16.1",
     "direnv@2.37.1",
-    "php@8.5.2",
+    "php@8.5.3",
     "mkcert@1.4.4"
   ],
   "shell": {
