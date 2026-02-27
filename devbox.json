@@ -2,9 +2,9 @@
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.7/.schema/devbox.schema.json",
   "packages": [
     "flyctl",
-    "uv@0.9.30",
-    "go@1.25.5",
-    "go-task@3.45.5",
+    "uv@0.10.4",
+    "go@1.26.0",
+    "go-task@3.48.0",
     "php84Extensions.redis@6.3.0",
     "php84Extensions.xdebug@3.5.1",
     "symfony-cli@5.16.1",
