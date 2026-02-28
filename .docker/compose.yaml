@@ -11,7 +11,7 @@ volumes:
   storage:
   caddy-data:
   caddy-config:
-#  localstack:
+
 services:
   postgresql:
     networks:
@@ -188,31 +188,6 @@ services:
     profiles:
       - bucket
 
-#  localstack:
-#    networks:
-#      default:
-#        aliases:
-#          - laravelorbstack.localstack.local
-#    image: localstack/localstack:2.2.0
-#    environment:
-#      SERVICES: s3
-#    healthcheck:
-#      test: [
-#        "CMD",
-#        "bash",
-#        "-c",
-#        "awslocal s3 ls"
-#      ]
-#    volumes:
-#      - type: bind
-#        source: ./local/s3
-#        target: /etc/localstack/init/ready.d
-#      - type: bind
-#        source: /var/run/docker.sock
-#        target: /var/run/docker.sock
-#      - type: volume
-#        source: localstack
-#        target: /var/lib/localstack
   php-rd:
     networks:
       default:
@@ -302,8 +277,6 @@ services:
         condition: service_healthy
       storage:
         condition: service_healthy
-#      localstack:
-#        condition: service_healthy
     profiles:
       - customImage
       - app
