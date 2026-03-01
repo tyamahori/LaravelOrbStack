@@ -5,12 +5,12 @@
     "uv@0.10.4",
     "go@1.26.0",
     "go-task@3.48.0",
-    "php84Extensions.redis@6.3.0",
-    "php84Extensions.xdebug@3.5.1",
     "symfony-cli@5.16.1",
     "direnv@2.37.1",
     "php@8.5.3",
-    "mkcert@1.4.4"
+    "mkcert@1.4.4",
+    "php85Extensions.redis@latest",
+    "php85Extensions.xdebug@latest"
   ],
   "shell": {
     "init_hook": [
