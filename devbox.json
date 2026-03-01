@@ -10,7 +10,7 @@
     "php@8.5.3",
     "mkcert@1.4.4",
     "php85Extensions.redis@latest",
-    "php85Extensions.xdebug@latest"
+    "php85Extensions.xdebug@3.5.1"
   ],
   "shell": {
     "init_hook": [
