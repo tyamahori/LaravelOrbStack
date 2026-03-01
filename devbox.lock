@@ -267,7 +267,7 @@
         }
       }
     },
-    "php85Extensions.xdebug@latest": {
+    "php85Extensions.xdebug@3.5.1": {
       "last_modified": "2026-02-23T15:40:43Z",
       "resolved": "github:NixOS/nixpkgs/80d901ec0377e19ac3f7bb8c035201e2e098cc97#php85Extensions.xdebug",
       "source": "devbox-search",
