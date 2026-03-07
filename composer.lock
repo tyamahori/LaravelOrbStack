@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c236acb7990dc2dc840bcee1f9455121",
+    "content-hash": "d3f44bf360c44aa6cdc1ec205ba4a60c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -9047,16 +9047,16 @@
         },
         {
             "name": "php-standard-library/phpstan-extension",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-standard-library/phpstan-extension.git",
-                "reference": "eaf787ddf91f1b22b3a4da052f42294e0a75836e"
+                "reference": "dc4daa81757e6252946f7fa3385116c9889441fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-standard-library/phpstan-extension/zipball/eaf787ddf91f1b22b3a4da052f42294e0a75836e",
-                "reference": "eaf787ddf91f1b22b3a4da052f42294e0a75836e",
+                "url": "https://api.github.com/repos/php-standard-library/phpstan-extension/zipball/dc4daa81757e6252946f7fa3385116c9889441fd",
+                "reference": "dc4daa81757e6252946f7fa3385116c9889441fd",
                 "shasum": ""
             },
             "require": {
@@ -9064,7 +9064,7 @@
                 "phpstan/phpstan": "^2.0"
             },
             "conflict": {
-                "azjezz/psl": "<1.6||>=5.0"
+                "azjezz/psl": "<1.6||>=6.0"
             },
             "require-dev": {
                 "azjezz/psl": "^1.6||^2.0||^3.0||^4.0",
@@ -9095,9 +9095,9 @@
             "description": "PHPStan PSL extension",
             "support": {
                 "issues": "https://github.com/php-standard-library/phpstan-extension/issues",
-                "source": "https://github.com/php-standard-library/phpstan-extension/tree/2.0.2"
+                "source": "https://github.com/php-standard-library/phpstan-extension/tree/2.0.3"
             },
-            "time": "2025-11-30T13:33:52+00:00"
+            "time": "2026-03-05T16:17:25+00:00"
         },
         {
             "name": "phpdocumentor/graphviz",
