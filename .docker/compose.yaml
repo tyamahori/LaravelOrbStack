@@ -133,7 +133,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mail.local
-    image: axllent/mailpit:v1.29.2@sha256:030f06031ce5c60913ac9363da1ab0d4be6fd2a78147dd0e1ca0fcac665d6b34
+    image: axllent/mailpit:v1.29.3@sha256:fdaf09bd71dc0829ce8b62e4bfb5180bc5c0674c3e444283fc90681853f5a3c0
     healthcheck:
       test: [
         "CMD",
@@ -174,7 +174,7 @@ services:
       <<: *healthcheck-settings
 
   setUpStorage:
-    image: amazon/aws-cli:2.34.4@sha256:cbfe6812b05272afa3e669bc2e0fa74fc565308db39df4d4bb4dbbed7f338f23
+    image: amazon/aws-cli:2.34.9@sha256:19f21fa4e6bbeac6f6b1f9b167902578bbd8bf0a747cbaa92a892bffff540039
     depends_on:
       storage:
         condition: service_healthy
@@ -364,7 +364,7 @@ services:
           - frankenphp.local
           - apachephp.local
     hostname: balancer
-    image: nginx:1.29.5@sha256:0236ee02dcbce00b9bd83e0f5fbc51069e7e1161bd59d99885b3ae1734f3392e
+    image: nginx:1.29.6@sha256:bc45d248c4e1d1709321de61566eb2b64d4f0e32765239d66573666be7f13349
     volumes:
       - type: bind
         source: ./local/lb/nginx.orb.conf
