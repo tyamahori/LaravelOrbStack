@@ -9,8 +9,8 @@
         "ext-pdo": "*",
         "cuyz/valinor": "^2.3.2",
         "guzzlehttp/guzzle": "^7.10.0",
-        "laravel/framework": "^12.33.0",
-        "laravel/tinker": "^2.11.1",
+        "laravel/framework": "^13.0",
+        "laravel/tinker": "^3.0",
         "league/flysystem-aws-s3-v3": "^3.32.0",
         "open-telemetry/opentelemetry": "^1.0",
         "php-http/httplug": "^2.4.1"
