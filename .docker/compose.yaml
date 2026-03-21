@@ -174,7 +174,7 @@ services:
       <<: *healthcheck-settings
 
   setUpStorage:
-    image: amazon/aws-cli:2.34.11@sha256:2aba3b77ff0d8b90a675973b2773188bf175e387856bdb54a4ea14aa76c47fbb
+    image: amazon/aws-cli:2.34.14@sha256:0a8bbdb160cbb09e357ba24533204e90a97e2e56beadf1730739644c2d5f1bdb
     depends_on:
       storage:
         condition: service_healthy
