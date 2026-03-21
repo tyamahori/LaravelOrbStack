@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ee3e71121a5f1b1f3229be1a743669a",
+    "content-hash": "4aa92d8a13651cfdcea70e4deaf8c5fe",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -9013,16 +9013,16 @@
         },
         {
             "name": "php-standard-library/phpstan-extension",
-            "version": "2.0.4",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-standard-library/phpstan-extension.git",
-                "reference": "e48f3f10c43f9748fe68a62f0c84bd85f17331ad"
+                "reference": "138b048577442500656cf3def6ff840ee918116f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-standard-library/phpstan-extension/zipball/e48f3f10c43f9748fe68a62f0c84bd85f17331ad",
-                "reference": "e48f3f10c43f9748fe68a62f0c84bd85f17331ad",
+                "url": "https://api.github.com/repos/php-standard-library/phpstan-extension/zipball/138b048577442500656cf3def6ff840ee918116f",
+                "reference": "138b048577442500656cf3def6ff840ee918116f",
                 "shasum": ""
             },
             "require": {
@@ -9030,13 +9030,14 @@
                 "phpstan/phpstan": "^2.0"
             },
             "conflict": {
-                "azjezz/psl": "<1.6||>=6.0"
+                "azjezz/psl": "*",
+                "php-standard-library/php-standard-library": "<1.6||>=7.0"
             },
             "require-dev": {
-                "azjezz/psl": "^1.6||^2.0||^3.0||^4.0||^5.0",
                 "composer/semver": "^3.3",
                 "nikic/php-parser": "^4.14.0",
                 "php-parallel-lint/php-parallel-lint": "^1.2",
+                "php-standard-library/php-standard-library": "^1.6||^2.0||^3.0||^4.0||^5.0||^6.0",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpstan/phpstan-strict-rules": "^2.0",
                 "phpunit/phpunit": "^9.6"
@@ -9061,9 +9062,9 @@
             "description": "PHPStan PSL extension",
             "support": {
                 "issues": "https://github.com/php-standard-library/phpstan-extension/issues",
-                "source": "https://github.com/php-standard-library/phpstan-extension/tree/2.0.4"
+                "source": "https://github.com/php-standard-library/phpstan-extension/tree/2.1.0"
             },
-            "time": "2026-03-17T10:20:03+00:00"
+            "time": "2026-03-18T10:23:49+00:00"
         },
         {
             "name": "phpdocumentor/graphviz",
