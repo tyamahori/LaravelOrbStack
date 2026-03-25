@@ -39,12 +39,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
-    && chown ${USER_NAME}:${USER_NAME} /composer \
-    && chown ${USER_NAME}:${USER_NAME} /app \
-    && chown ${USER_NAME}:${USER_NAME} /data/caddy \
-    && chown ${USER_NAME}:${USER_NAME} /config/caddy \
-    && install -d -o ${USER_NAME} -g ${USER_NAME} /etc/caddy \
-    && install -d -o ${USER_NAME} -g ${USER_NAME} /config/psysh \
+    && install -d -o ${USER_NAME} -g ${USER_NAME} /composer /app /config/psysh /etc/caddy \
     && install-php-extensions xdebug
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=runn /go/bin/runn /usr/bin/runn

@@ -44,9 +44,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
-    && chown ${USER_NAME}:${USER_NAME} /composer \
-    && chown ${USER_NAME}:${USER_NAME} /var/www/html \
-    && install -d -o ${USER_NAME} -g ${USER_NAME} /config/psysh \
+    && install -d -o ${USER_NAME} -g ${USER_NAME} /config/psysh /composer /var/www/html \
     && install-php-extensions xdebug
 ENV APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME} \
