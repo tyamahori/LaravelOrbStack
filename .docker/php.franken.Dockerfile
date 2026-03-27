@@ -1,13 +1,13 @@
 FROM golang:1.26.1-bookworm@sha256:8e8aa801e8417ef0b5c42b504dd34db3db911bb73dba933bd8bde75ed815fdbb AS go
 FROM composer:2.9.5@sha256:743aebe48ca67097c36819040633ea77e44a561eca135e4fc84c002e63a1ba07 AS composer
-FROM mlocati/php-extension-installer:2.10.7@sha256:b499003350e3561ec39788a6171433351060306587979d30eba29a7a94371808 AS basephpextensioninstaller
+FROM mlocati/php-extension-installer:2.10.8@sha256:0fc67f4de8cad068b8bd46038fd335c946907de4bbb7c711ddf4b8db0bf4c011 AS basephpextensioninstaller
 FROM dunglas/frankenphp:php8.5.0-trixie@sha256:85eb3d7f012c6404c516cc60152e9ccfeac9c84ec5db9f234df8000373eae5ce AS frankenphp
 
 FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.49.1
 
 FROM go AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v1.6.1
+RUN go install github.com/k1LoW/runn/cmd/runn@v1.6.2
 
 FROM go AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.10.1
