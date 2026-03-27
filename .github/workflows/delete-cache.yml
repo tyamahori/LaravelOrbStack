@@ -7,4 +7,4 @@ jobs:
   delete-cache:
     runs-on: ubuntu-latest
     steps:
-      - uses: toshimaru/delete-action-cache@main
+      - uses: toshimaru/delete-action-cache@a12c3ca71338e3312989302c48edeb5ce66293b7 # main
