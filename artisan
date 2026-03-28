@@ -2,6 +2,9 @@
 <?php
 declare(strict_types=1);
 
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Foundation\Application;
+
 define('LARAVEL_START', microtime(true));
 
 /*
@@ -18,7 +21,8 @@ define('LARAVEL_START', microtime(true));
 
 require __DIR__.'/vendor/autoload.php';
 
-$app = require_once __DIR__.'/bootstrap/app.php';
+$app = require __DIR__.'/bootstrap/app.php';
+assert($app instanceof Application, Application::class . 'is required.');
 
 /*
 |--------------------------------------------------------------------------
@@ -31,12 +35,19 @@ $app = require_once __DIR__.'/bootstrap/app.php';
 |
 */
 
-$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+try {
+    $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+} catch (BindingResolutionException $e) {
+    exit($e->getMessage());
+}
 
 $status = $kernel->handle(
     $input = new Symfony\Component\Console\Input\ArgvInput,
     new Symfony\Component\Console\Output\ConsoleOutput
 );
+$kernel->terminate($input, $status);
+
+exit($status);
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +59,3 @@ $status = $kernel->handle(
 | down the process. This is the last thing to happen to the request.
 |
 */
-
-$kernel->terminate($input, $status);
-
-exit($status);
