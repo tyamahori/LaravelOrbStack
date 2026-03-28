@@ -133,6 +133,7 @@ tasks:
     deps:
       - task: cleanUpComposeProjectVolumes
     cmds:
+      - task: buildImages
       - task: up
       - task: bucket
       - |
