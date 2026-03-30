@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Pdo\Mysql;
 use Illuminate\Support\Str;
+use Pdo\Mysql;
 
 $appName = env('APP_NAME', 'laravel');
 assert(is_string($appName), 'APP_NAME must be a string');
