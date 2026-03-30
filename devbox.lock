@@ -1,54 +1,6 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "direnv@2.37.1": {
-      "last_modified": "2026-03-23T05:26:49Z",
-      "resolved": "github:NixOS/nixpkgs/4724d5647207377bede08da3212f809cbd94a648#direnv",
-      "source": "devbox-search",
-      "version": "2.37.1",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/79ckld4lzny6782ibl5jh3gbpqfq3v68-direnv-2.37.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/79ckld4lzny6782ibl5jh3gbpqfq3v68-direnv-2.37.1"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/yxy8j5jd4wjd3g9mxq3swkgc7vqg0g0q-direnv-2.37.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/yxy8j5jd4wjd3g9mxq3swkgc7vqg0g0q-direnv-2.37.1"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/36dshw2japih7avhw2dbdz4pq77q3r4c-direnv-2.37.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/36dshw2japih7avhw2dbdz4pq77q3r4c-direnv-2.37.1"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/y406m673ih3cwdc2z09vc35ik2ylrb7c-direnv-2.37.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/y406m673ih3cwdc2z09vc35ik2ylrb7c-direnv-2.37.1"
-        }
-      }
-    },
     "flyctl": {
       "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#flyctl",
       "source": "nixpkg",
