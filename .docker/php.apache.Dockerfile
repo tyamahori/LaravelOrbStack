@@ -4,16 +4,16 @@ FROM mlocati/php-extension-installer:2.10.16@sha256:c4d600a250b874c2c3620b140c2d
 FROM php:8.5.5-apache@sha256:103a8cd59a029b387470deace9736a7bc5aeb167a746774c68da82bb469c578c AS apachephp
 
 FROM go AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.49.1
+RUN go install github.com/go-task/task/v3/cmd/task@v3.50.0
 
 FROM go AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v1.6.2
+RUN go install github.com/k1LoW/runn/cmd/runn@v1.9.1
 
 FROM go AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.10.1
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.11.0
 
 FROM go AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.10.1
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.11.0
 
 FROM apachephp AS basebuild
 COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions

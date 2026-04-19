@@ -4,16 +4,16 @@ FROM mlocati/php-extension-installer:2.10.16@sha256:c4d600a250b874c2c3620b140c2d
 FROM dunglas/frankenphp:php8.5.0-trixie@sha256:85eb3d7f012c6404c516cc60152e9ccfeac9c84ec5db9f234df8000373eae5ce AS frankenphp
 
 FROM go AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.49.1
+RUN go install github.com/go-task/task/v3/cmd/task@v3.50.0
 
 FROM go AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v1.6.2
+RUN go install github.com/k1LoW/runn/cmd/runn@v1.9.1
 
 FROM go AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.10.1
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.11.0
 
 FROM go AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.10.1
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.11.0
 
 FROM frankenphp AS basebuild
 RUN apt-get update \
