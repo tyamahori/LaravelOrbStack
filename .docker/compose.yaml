@@ -133,7 +133,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mail.local
-    image: axllent/mailpit:v1.29.6@sha256:0b5c5f7ffd3c93474baa7fd3869c1462e5a3d03256ed0933dfc0e7d81d794036
+    image: axllent/mailpit:v1.29.7@sha256:757f22b56c1da03570afdb3d259effe5091018008a81bbedc8158cee7e16fdbc
     healthcheck:
       test: [
         "CMD",
@@ -174,7 +174,7 @@ services:
       <<: *healthcheck-settings
 
   setUpStorage:
-    image: amazon/aws-cli:2.34.29@sha256:a21c9fdf2ae8427b79d93d5a618aea12068da4864bd58072fa5436fd0ca9539d
+    image: amazon/aws-cli:2.34.32@sha256:4611a918d72fe666b94c4436386bc857a2c765cd5ffa07faaa651330cd5f30a7
     depends_on:
       storage:
         condition: service_healthy
