@@ -28,8 +28,8 @@
         "phpstan/phpstan-nette": "^2.0.9",
         "phpstan/phpstan-phpunit": "^2.0.16",
         "phpstan/phpstan-strict-rules": "^2.0.10",
-        "phpunit/phpunit": "^13.0.6",
-        "rector/rector": "^2.3.9",
+        "phpunit/phpunit": "^13.1.7",
+        "rector/rector": "^2.4.2",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^13.0.4"
     },
