@@ -56,7 +56,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mysql.local
-    image: mysql:9.7.0@sha256:c9e48b0c008f1936d4139d1c0dcd5950a9dbe57d4d40f383013cde432fa6d6aa
+    image: mysql:9.7.0@sha256:f0ef1d92fa650fcfa5b85f1d82bb1a56a6dd579bf256b8f8f2a5a0b1b61c8b0b
     environment:
       MYSQL_ROOT_PASSWORD: sample
       MYSQL_DATABASE: sample
@@ -364,7 +364,7 @@ services:
           - frankenphp.local
           - apachephp.local
     hostname: balancer
-    image: nginx:1.30.0@sha256:1a9ab83e2892b75773978e8d91f42a7a2a0d8bb704959a51ff17c0377481973d
+    image: nginx:1.30.0@sha256:55d1fb0944aafb8534b253e486c6cf57d3e0c785c4f6a7b3e9f02c5a080fb2ce
     volumes:
       - type: bind
         source: ./local/lb/nginx.orb.conf
