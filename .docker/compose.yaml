@@ -89,7 +89,7 @@ services:
       default:
         aliases:
           - laravelorbstack.cache.local
-    image: redis:8.4.2-alpine3.22@sha256:e1b6db24cb4fdd89f4bc9be09f671ea3bec92fbd7042554f76c34aa2be9b59ad
+    image: redis:8.4.3-alpine3.22@sha256:52e68c6542d1b658a207ba63e7545963ec7cde6c7efc8948108edfa7e339ff73
     command: redis-server --appendonly yes
     volumes:
       - type: volume
@@ -111,7 +111,7 @@ services:
       default:
         aliases:
           - laravelorbstack.session.local
-    image: redis:8.4.2-alpine3.22@sha256:e1b6db24cb4fdd89f4bc9be09f671ea3bec92fbd7042554f76c34aa2be9b59ad
+    image: redis:8.4.3-alpine3.22@sha256:52e68c6542d1b658a207ba63e7545963ec7cde6c7efc8948108edfa7e339ff73
     command: redis-server --appendonly yes
     volumes:
       - type: volume
@@ -174,7 +174,7 @@ services:
       <<: *healthcheck-settings
 
   setUpStorage:
-    image: amazon/aws-cli:2.34.41@sha256:2614310500ace4ab8e6dbc12dd61a59d709bd9a45283e73e75215226265de972
+    image: amazon/aws-cli:2.34.45@sha256:981a3a43de3e482f86385a8834232e440754326c2f4e159af17d2aa8707ff975
     depends_on:
       storage:
         condition: service_healthy
