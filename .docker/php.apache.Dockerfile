@@ -4,7 +4,7 @@ FROM mlocati/php-extension-installer:2.11.1@sha256:bd9ea77afcbc8e55e58d55ca9a391
 FROM php:8.5.6-apache@sha256:d81a85c0b4bd74737aa544de4db38ee6270d0006dcb8cb446b569cf3bf1525f1 AS apachephp
 
 FROM go AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.50.0
+RUN go install github.com/go-task/task/v3/cmd/task@v3.51.1
 
 FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v1.9.2
