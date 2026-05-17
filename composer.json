@@ -18,7 +18,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.2.8",
         "barryvdh/laravel-ide-helper": "^3.7.0",
-        "deptrac/deptrac": "^4.6.0",
+        "deptrac/deptrac": "^4.6.1",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.9.6",
         "nunomaduro/collision": "^8.9.4",
@@ -28,8 +28,8 @@
         "phpstan/phpstan-nette": "^2.0.9",
         "phpstan/phpstan-phpunit": "^2.0.16",
         "phpstan/phpstan-strict-rules": "^2.0.11",
-        "phpunit/phpunit": "^13.1.8",
-        "rector/rector": "^2.4.2",
+        "phpunit/phpunit": "^13.1.10",
+        "rector/rector": "^2.4.3",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^13.1.3"
     },
