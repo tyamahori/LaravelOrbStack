@@ -18,7 +18,7 @@ services:
       default:
         aliases:
           - laravelorbstack.pgsql.local
-    image: postgres:18.3-alpine3.22@sha256:af27ebd3413839ccfdcdf88e91ca76ad82117e52192067b76de9bb5be7ea6e04
+    image: postgres:18.4-alpine3.22@sha256:774521500f4c22761b25a6bdb772a0a3c2e8dd32468210bdad9231c5752ea398
     ports:
       - "127.0.0.1:5432:5432"
     environment:
@@ -56,7 +56,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mysql.local
-    image: mysql:9.7.0@sha256:f0ef1d92fa650fcfa5b85f1d82bb1a56a6dd579bf256b8f8f2a5a0b1b61c8b0b
+    image: mysql:9.7.0@sha256:c11782aa2a96624c1efc121768641d96954faa136d6aa82751b032d8c426ffbc
     environment:
       MYSQL_ROOT_PASSWORD: sample
       MYSQL_DATABASE: sample
@@ -133,7 +133,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mail.local
-    image: axllent/mailpit:v1.29.7@sha256:757f22b56c1da03570afdb3d259effe5091018008a81bbedc8158cee7e16fdbc
+    image: axllent/mailpit:v1.30.0@sha256:0059ef81e492a7192af3816281eed6859eb078bd7bdc58b76757c13e10e53a7d
     healthcheck:
       test: [
         "CMD",
@@ -364,7 +364,7 @@ services:
           - frankenphp.local
           - apachephp.local
     hostname: balancer
-    image: nginx:1.30.0@sha256:55d1fb0944aafb8534b253e486c6cf57d3e0c785c4f6a7b3e9f02c5a080fb2ce
+    image: nginx:1.31.0@sha256:06aa3d7be10bc6307990c81bdca075793132e9163391abc370c015e344e23128
     volumes:
       - type: bind
         source: ./local/lb/nginx.orb.conf
