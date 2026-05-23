@@ -1,230 +1,179 @@
-# 環境構築サンプルアプリケーション
+# LaravelOrbStack
 
-LaravelをOrbStackで動かすサンプルです。環境を立ち上げたあとトップページが表示されます
+Laravel を OrbStack 上の Docker Compose 環境で動かすためのサンプルプロジェクトです。Apache mod_php と FrankenPHP の 2 系統の PHP 実行環境を同時に立ち上げ、PostgreSQL、MySQL、Redis、Mailpit、S3 互換ストレージを含むローカル開発環境を構築します。
 
-## 概要
+## 構成
 
-このプロジェクトは、Laravel 12とPHP 8.4を使用したWebアプリケーションの開発環境をOrbStackで構築するサンプルです。ApacheとFrankenPHPの両方に対応し、PostgreSQLとMySQLのデータベース環境も含まれています。
+- PHP 8.5
+- Laravel 13
+- Apache mod_php
+- FrankenPHP
+- PostgreSQL
+- MySQL
+- Redis
+- Mailpit
+- RustFS
+- Docker Compose + OrbStack
+- Task
+- Devbox
 
 ## 前提条件
 
 - macOS
-- [OrbStack](https://orbstack.dev/) がインストールされていること
-- [Task](https://taskfile.dev/) がインストールされていること
-- [Devbox](https://www.jetify.com/devbox) がインストールされていること（推奨）
+- [OrbStack](https://orbstack.dev/)
+- [Task](https://taskfile.dev/)
+- [Devbox](https://www.jetify.com/devbox) 任意、推奨
 
-## 技術スタック
-
-- **PHP**
-- **Laravel**
-- **Webサーバー**: ApachePHP / FrankenPHP
-- **データベース**: PostgreSQL / MySQL 
-- **コンテナ**: Docker + OrbStack
-- **タスクランナー**: Task
-- **開発環境**: Devbox
-
-## 用途
-
-- OrbStackでLaravelを動かすとどうなるかを確認します
-- ApacheとFrankenPHPの両方の環境でのパフォーマンス比較
-- コンテナベースの開発環境の構築方法の学習
-
-# 行ったこと
-
-- `.docker`ディレクトリにて自作のdocker環境の設定ファイルを格納しました。
-- `compose.yaml` にて必要なコンテナ周りの設定を定義しました。
-- プロジェクト直下に`Taskfile.yml`を作成し、ラッパーコマンドを使うようにしました。
-
-### PHP
-
-`.docker/local/php`にて以下の対応を行いました。
-
-- PHPのDockerfileを作成しました。
-- `.env.app` というファイルを作り、Laravelの設定を集約しました。コンテナ内に環境変数として渡す用にしています
-- その他 PHPの設定ファイルを格納もしています。
-
-# セットアップ手順
-
-## 1. 初回セットアップ
+## セットアップ
 
 ```bash
-# プロジェクトをクローン
-git clone <repository-url>
-cd laravelorbstack
+git clone git@github.com:tyamahori/LaravelOrbStack.git
+cd LaravelOrbStack
 
-# Devboxを使用する場合（推奨）
+# Devbox を使う場合
 devbox shell
 
-# 初回環境構築
+# 初回構築
 task init
 ```
 
-## 2. アクセス確認
+`task init` は既存コンテナ、ボリューム、ローカルイメージ、`vendor` を削除してから再構築します。ボリュームだけ初期化して起動し直す場合は `task start` を使います。
 
-セットアップ完了後、以下のURLにアクセスしてLaravelのデフォルトページが表示されることを確認してください：
+## アクセス先
 
-- **Apache版**: https://php-app.laravelorbstack.orb.local/
-- **FrankenPHP版**: https://php-franken.laravelorbstack.orb.local/
+OrbStack のドメイン連携により、起動後は次の URL でアクセスできます。
 
-## 利用可能なコマンド
+| 実行環境 | URL |
+|:--|:--|
+| Apache | <https://apachephp.local/> |
+| FrankenPHP | <https://frankenphp.local/> |
 
-### 基本操作
+OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認できます。
 
-| コマンド | 用途 |
-|:--------|:-----|
-| `task init` | 初回セットアップ（全てクリーンアップしてから構築） |
-| `task start` | 通常の起動（ボリュームは保持） |
-| `task up` | コンテナを立ち上げる |
-| `task down` | コンテナを停止する |
-| `task ps` | コンテナの状態確認 |
-| `task logs` | ログを表示 |
+## 主なコマンド
 
-### イメージ管理
+### 起動と停止
 
-| コマンド | 用途 |
-|:--------|:-----|
-| `task buildLocalPhps` | 両方のPHPイメージをビルド |
-| `task buildLocalApacheModPhp` | Apache版PHPイメージをビルド |
-| `task buildLocalFrankenPhp` | FrankenPHP版イメージをビルド |
-| `task images` | Dockerイメージ一覧表示 |
+| コマンド | 内容 |
+|:--|:--|
+| `task init` | 全削除後にビルド、起動、S3 バケット作成、Composer install、migration、IDE Helper 生成を実行 |
+| `task start` | ボリューム削除後に再構築して起動 |
+| `task up` | アプリ用プロファイルのコンテナを起動 |
+| `task down` | コンテナを停止 |
+| `task ps` | コンテナ状態を表示 |
+| `task logs` | Compose ログを追跡表示 |
+
+### Docker イメージ
+
+| コマンド | 内容 |
+|:--|:--|
+| `task buildBaseImages` | Apache / FrankenPHP のベースイメージをビルド |
+| `task buildLocalPhps` | ローカル開発用 PHP イメージをビルド |
+| `task buildImages` | ローカル PHP イメージをビルドし、補助サービスのイメージを pull |
+| `task images` | Docker イメージ一覧を表示 |
 
 ### コンテナ操作
 
-| コマンド | 用途 |
-|:--------|:-----|
-| `task exec:apache` | Apache PHPコンテナに入る |
-| `task exec:franken` | FrankenPHPコンテナに入る |
+| コマンド | 内容 |
+|:--|:--|
+| `task exec:apache` | Apache コンテナに入る |
+| `task exec:franken` | FrankenPHP コンテナに入る |
+| `task run:cmd -- <command>` | PHP 実行環境内で任意コマンドを実行 |
+| `task php -- <args>` | PHP コマンドを実行 |
+| `task artisan -- <args>` | Artisan コマンドを実行 |
+| `task composer -- <args>` | Composer コマンドを実行 |
 
-### 開発ツール
+### 品質チェックとテスト
 
-| コマンド | 用途 |
-|:--------|:-----|
-| `task composer` | Composerコマンド実行 |
-| `task artisan` | Artisanコマンド実行 |
-| `task php` | PHPコマンド実行 |
-| `task lintCode` | コード品質チェック（PHPStan + ECS + Rector） |
-| `task phpunit` | PHPUnitテスト実行 |
-| `task ide-helper` | IDE Helper生成 |
+| コマンド | 内容 |
+|:--|:--|
+| `task lintCode` | PHPStan、Rector、ECS を実行 |
+| `task stan` | PHPStan を実行 |
+| `task rectorDryRun` | Rector を dry-run で実行 |
+| `task runRector` | Rector を適用 |
+| `task ecs` | ECS をチェックモードで実行 |
+| `task runEcs` | ECS を fix モードで実行 |
+| `task phpunit` | PHPUnit を実行 |
+| `task ide-helper` | Laravel IDE Helper を生成 |
 
+Devbox シェル内では `devbox run lint`、`devbox run stan`、`devbox run fixer`、`devbox run rector` も利用できます。
 
-# プロジェクト構成
+## ディレクトリ
 
-## ディレクトリ構造
-
-```
+```text
 .
-├── .docker/                 # Docker設定ファイル
-│   ├── compose.yaml        # Docker Compose設定
-│   ├── php.apache.Dockerfile # Apache版PHP Dockerfile
-│   ├── php.franken.Dockerfile # FrankenPHP版 Dockerfile
-│   ├── common/             # 共通設定
-│   ├── local/              # ローカル開発用設定
-│   ├── prod/               # 本番用設定
-│   └── flyio/              # Fly.io デプロイ用設定
-├── libConfig/              # 開発ツール設定
-│   ├── ecs.php            # Easy Coding Standard設定
-│   ├── phpstan.neon       # PHPStan設定
-│   ├── rector.php         # Rector設定
-│   ├── phpunit.xml        # PHPUnit設定
-│   └── deptrac.yaml       # Deptrac設定
-├── packages/               # カスタムパッケージ
-├── Taskfile.yml           # Taskコマンド定義
-└── devbox.json            # Devbox設定
+├── .docker/                  # Docker Compose と PHP イメージ定義
+│   ├── compose.yaml
+│   ├── compose.ci.yaml
+│   ├── php.apache.Dockerfile
+│   ├── php.franken.Dockerfile
+│   ├── common/
+│   ├── local/
+│   ├── prod/
+│   └── flyio/
+├── app/                      # Laravel アプリケーション
+├── config/                   # Laravel 設定
+├── database/                 # migration / seeder / factory
+├── libConfig/                # PHPStan / ECS / Rector / PHPUnit / Deptrac 設定
+├── packages/                 # サンプルパッケージ
+├── routes/                   # Laravel ルート定義
+├── tests/                    # PHPUnit テスト
+├── Taskfile.yml              # Task コマンド定義
+├── composer.json
+└── devbox.json               # Devbox 設定
 ```
 
-## 開発ツール
+## ローカルサービス
 
-このプロジェクトには以下の開発ツールが組み込まれています：
+Compose 内では次の補助サービスを利用します。
 
-### コード品質管理
+| サービス | 用途 |
+|:--|:--|
+| `postgresql` | PostgreSQL データベース |
+| `mysql` | MySQL データベース |
+| `cache` | Redis キャッシュ |
+| `session` | Redis セッション |
+| `mail` | Mailpit |
+| `storage` | RustFS による S3 互換ストレージ |
+| `setUpStorage` | `sample` バケット作成用の一時コンテナ |
 
-- **PHPStan**: 静的解析ツール（レベル9設定）
-- **Easy Coding Standard (ECS)**: コーディング規約チェック
-- **Rector**: PHPコードの自動リファクタリング
-- **Deptrac**: アーキテクチャ依存関係の管理
+アプリケーションの環境変数は `.docker/local/php/.env.app` と `.docker/local/php/.env.franken` で管理しています。変更後はコンテナを再起動してください。
 
-### テスト
+## デプロイ
 
-- **PHPUnit**: ユニットテスト・統合テスト
-- **Laravel IDE Helper**: IDE補完サポート
-
-### 実行例
-
-```bash
-# コード品質チェック（全て実行）
-task lintCode
-
-# 個別実行
-task stan      # PHPStan実行
-task ecs       # ECS実行
-task rector    # Rector実行（ドライラン）
-task phpunit   # テスト実行
-```
-
-## デプロイメント
-
-### Fly.io デプロイ
+Fly.io 用の設定ファイルとして `fly-apache.toml` と `fly-franken.toml` を用意しています。
 
 ```bash
-# Apache版をデプロイ
 task deployApache
-
-# FrankenPHP版をデプロイ
 task deployFranken
-
-# デプロイ後のSSH接続
 task sshFlyIo
 ```
 
 ## トラブルシューティング
 
-### よくある問題
+コンテナを作り直す場合:
 
-1. **コンテナが起動しない場合**
-   ```bash
-   task cleanUpComposeProject  # 全てクリーンアップ
-   task init                   # 再構築
-   ```
+```bash
+task cleanUpComposeProject
+task init
+```
 
-2. **Composerの依存関係エラー**
-   ```bash
-   task composerRefresh        # Composer完全リフレッシュ
-   ```
+Composer 依存関係を作り直す場合:
 
-3. **データベース接続エラー**
-   ```bash
-   task ps                     # コンテナ状態確認
-   task logs                   # ログ確認
-   ```
+```bash
+task composerRefresh
+```
 
-### パフォーマンス比較
+コンテナ状態とログを確認する場合:
 
-ApacheとFrankenPHPの両方の環境が利用可能なため、パフォーマンス比較が可能です：
-
-- **Apache**: 従来のmod_php環境
-- **FrankenPHP**: Go製の高速PHPサーバー
-
-## 利用可能な機能
-
-- **OrbStack統合**: https://orb.local でローカル環境一覧表示
-- **HTTPS対応**: 自動SSL証明書生成
-- **マルチデータベース**: PostgreSQL・MySQL両対応
-- **開発ツール統合**: 保存時の自動コード整形・解析
-
-## 制限事項・スコープ外
-
-このプロジェクトは環境構築のサンプルのため、以下は対応していません：
-
-- `.env.app` の不要な項目削除
-- configファイルの不要な項目削除
-- composer.jsonの設定最適化
-- 本番環境向けのセキュリティ設定
-- パフォーマンスチューニング
+```bash
+task ps
+task logs
+```
 
 ## 参考資料
 
-- [OrbStack公式ドキュメント](https://orbstack.dev/)
-- [Task公式ドキュメント](https://taskfile.dev/)
-- [Devbox公式ドキュメント](https://www.jetify.com/devbox)
-- [FrankenPHP公式ドキュメント](https://frankenphp.dev/)
-- [Caddy HTTPS設定](https://caddy.community/t/caddy-trust-in-docker-for-local-certificates/18122)
+- [OrbStack](https://orbstack.dev/)
+- [Task](https://taskfile.dev/)
+- [Devbox](https://www.jetify.com/devbox)
+- [FrankenPHP](https://frankenphp.dev/)
