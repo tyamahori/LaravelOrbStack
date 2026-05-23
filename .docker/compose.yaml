@@ -364,7 +364,7 @@ services:
           - frankenphp.local
           - apachephp.local
     hostname: balancer
-    image: nginx:1.31.1@sha256:0a0818182f39b9853d2b259d5a18a2e02808f05e2221bea43725aaea6ee94a86
+    image: nginx:1.31.1@sha256:5aca99593157f4ae539a5dec1092a0ad8762f8e2eb1789085a13a0f5622369f6
     volumes:
       - type: bind
         source: ./local/lb/nginx.orb.conf
