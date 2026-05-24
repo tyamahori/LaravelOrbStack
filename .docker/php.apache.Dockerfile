@@ -10,10 +10,10 @@ FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v1.9.2
 
 FROM go AS mysqldef
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.11.2
+RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.11.3
 
 FROM go AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.11.2
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.11.3
 
 FROM apachephp AS basebuild
 COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
