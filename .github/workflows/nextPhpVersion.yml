@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       - name: Get PHP version
         id: php-version
         run: |
@@ -46,14 +46,14 @@ jobs:
         with:
           version: 3
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 #      - uses: dorny/paths-filter@v3
 #        id: changes
 #        with:
 #          filters:
       - name: Check Docker Image Cache
         # uses: ScribeMD/docker-cache@0.5.0
-        uses: AndreKurait/docker-cache  @0fe76702a40db986d9663c24954fc14c6a6031b7 # 0.6.0
+        uses: AndreKurait/docker-cache@7a3887908bdb97935395833df69b060cfcca0f7f # 0.7.0
         id: docker-cache
         with:
           key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}
@@ -66,7 +66,7 @@ jobs:
     needs: cache
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       - name: Restore Composer packages
         uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
@@ -140,10 +140,10 @@ jobs:
         with:
           version: 3
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       - name: Cache Docker images
         # uses: ScribeMD/docker-cache@0.5.0
-        uses: AndreKurait/docker-cache@0fe76702a40db986d9663c24954fc14c6a6031b7 # 0.6.0
+        uses: AndreKurait/docker-cache@7a3887908bdb97935395833df69b060cfcca0f7f # 0.7.0
         with:
           key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}
       - name: Restore Composer packages
