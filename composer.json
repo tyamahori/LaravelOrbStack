@@ -8,7 +8,7 @@
         "php": "^8.5",
         "ext-pdo": "*",
         "cuyz/valinor": "^2.4.0",
-        "guzzlehttp/guzzle": "^7.10.4",
+        "guzzlehttp/guzzle": "^7.11.0",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0.2",
         "league/flysystem-aws-s3-v3": "^3.34.0",
@@ -16,11 +16,11 @@
         "php-http/httplug": "^2.4.1"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^4.2.8",
+        "barryvdh/laravel-debugbar": "^4.3.0",
         "barryvdh/laravel-ide-helper": "^3.7.0",
         "deptrac/deptrac": "^4.6.1",
         "fakerphp/faker": "^1.24.1",
-        "larastan/larastan": "^3.9.6",
+        "larastan/larastan": "^3.10.0",
         "nunomaduro/collision": "^8.9.4",
         "php-standard-library/phpstan-extension": "^2.1.0",
         "phpstan/extension-installer": "^1.4.3",
@@ -28,7 +28,7 @@
         "phpstan/phpstan-nette": "^2.0.9",
         "phpstan/phpstan-phpunit": "^2.0.16",
         "phpstan/phpstan-strict-rules": "^2.0.11",
-        "phpunit/phpunit": "^13.1.11",
+        "phpunit/phpunit": "^13.2.0",
         "rector/rector": "^2.4.4",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^13.1.3"
