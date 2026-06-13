@@ -174,7 +174,7 @@ services:
       <<: *healthcheck-settings
 
   setUpStorage:
-    image: amazon/aws-cli:2.34.64@sha256:61beb8d127f3955415f866d647a0d9a3377497069e086af0594a6b1443970b5a
+    image: amazon/aws-cli:2.35.4@sha256:0086abfb91b5f0f2add8740d041a71535ddbe1cd8316d5e89b7066c84db920e7
     depends_on:
       storage:
         condition: service_healthy
@@ -364,7 +364,7 @@ services:
           - frankenphp.local
           - apachephp.local
     hostname: balancer
-    image: nginx:1.31.1@sha256:5aca99593157f4ae539a5dec1092a0ad8762f8e2eb1789085a13a0f5622369f6
+    image: nginx:1.31.1@sha256:608a100c71651bf5b773c89083b4a1ad7ef4b2bd05d7a7e552271e03123692ad
     volumes:
       - type: bind
         source: ./local/lb/nginx.orb.conf
