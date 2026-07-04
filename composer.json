@@ -18,20 +18,20 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.3.0",
         "barryvdh/laravel-ide-helper": "^3.7.0",
-        "deptrac/deptrac": "^4.6.1",
+        "deptrac/deptrac": "^4.6.2",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.10.0",
         "nunomaduro/collision": "^8.9.4",
         "php-standard-library/phpstan-extension": "^2.1.0",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-doctrine": "^2.0.27",
-        "phpstan/phpstan-nette": "^2.0.10",
-        "phpstan/phpstan-phpunit": "^2.0.16",
+        "phpstan/phpstan-nette": "^2.0.12",
+        "phpstan/phpstan-phpunit": "^2.0.17",
         "phpstan/phpstan-strict-rules": "^2.0.11",
-        "phpunit/phpunit": "^13.2.0",
+        "phpunit/phpunit": "^13.2.2",
         "rector/rector": "^2.5.2",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^13.2.1"
+        "symplify/easy-coding-standard": "^13.2.5"
     },
     "autoload": {
         "psr-4": {
