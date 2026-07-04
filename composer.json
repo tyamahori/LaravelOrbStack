@@ -7,11 +7,11 @@
     "require": {
         "php": "^8.5",
         "ext-pdo": "*",
-        "cuyz/valinor": "^2.4.0",
-        "guzzlehttp/guzzle": "^7.11.1",
+        "cuyz/valinor": "^2.5.0",
+        "guzzlehttp/guzzle": "^7.13.1",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0.2",
-        "league/flysystem-aws-s3-v3": "^3.34.0",
+        "league/flysystem-aws-s3-v3": "^3.35.1",
         "open-telemetry/opentelemetry": "^1.1.0",
         "php-http/httplug": "^2.4.1"
     },
@@ -29,7 +29,7 @@
         "phpstan/phpstan-phpunit": "^2.0.16",
         "phpstan/phpstan-strict-rules": "^2.0.11",
         "phpunit/phpunit": "^13.2.0",
-        "rector/rector": "^2.4.5",
+        "rector/rector": "^2.5.2",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^13.2.1"
     },
