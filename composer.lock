@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b76199e98e491742b7ec58fba8bda4e7",
+    "content-hash": "0641b679a39a79ad3901563d9c213104",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -9646,16 +9646,16 @@
         },
         {
             "name": "phpstan/phpstan-phpunit",
-            "version": "2.0.17",
+            "version": "2.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-phpunit.git",
-                "reference": "c2f977551f0736d60467b3d754b2e0cf4e337b3f"
+                "reference": "f5dc20ff8082d02339b60cab68ec3eb0d859fb30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/c2f977551f0736d60467b3d754b2e0cf4e337b3f",
-                "reference": "c2f977551f0736d60467b3d754b2e0cf4e337b3f",
+                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/f5dc20ff8082d02339b60cab68ec3eb0d859fb30",
+                "reference": "f5dc20ff8082d02339b60cab68ec3eb0d859fb30",
                 "shasum": ""
             },
             "require": {
@@ -9698,9 +9698,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-phpunit/issues",
-                "source": "https://github.com/phpstan/phpstan-phpunit/tree/2.0.17"
+                "source": "https://github.com/phpstan/phpstan-phpunit/tree/2.0.18"
             },
-            "time": "2026-06-29T05:32:23+00:00"
+            "time": "2026-07-04T12:16:09+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
@@ -12971,16 +12971,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "13.2.5",
+            "version": "13.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecsphp/ecs.git",
-                "reference": "68aa41b5ff540e66d103422af9c991851a936cc5"
+                "reference": "47114ce652240df25763417eeab89d815323050b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/68aa41b5ff540e66d103422af9c991851a936cc5",
-                "reference": "68aa41b5ff540e66d103422af9c991851a936cc5",
+                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/47114ce652240df25763417eeab89d815323050b",
+                "reference": "47114ce652240df25763417eeab89d815323050b",
                 "shasum": ""
             },
             "require": {
@@ -13015,9 +13015,9 @@
                 "static analysis"
             ],
             "support": {
-                "source": "https://github.com/ecsphp/ecs/tree/13.2.5"
+                "source": "https://github.com/ecsphp/ecs/tree/13.2.6"
             },
-            "time": "2026-07-03T09:42:43+00:00"
+            "time": "2026-07-04T21:15:32+00:00"
         },
         {
             "name": "theseer/tokenizer",
