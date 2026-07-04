@@ -4,7 +4,7 @@ FROM mlocati/php-extension-installer:2.11.12@sha256:b6d3fa381b9ba5cf051117c1c601
 FROM dunglas/frankenphp:php8.5.0-trixie@sha256:85eb3d7f012c6404c516cc60152e9ccfeac9c84ec5db9f234df8000373eae5ce AS frankenphp
 
 FROM go AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.51.1
+RUN go install github.com/go-task/task/v3/cmd/task@v3.52.0
 
 FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v1.9.4
