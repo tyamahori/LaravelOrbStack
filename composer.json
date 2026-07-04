@@ -26,12 +26,12 @@
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-doctrine": "^2.0.27",
         "phpstan/phpstan-nette": "^2.0.12",
-        "phpstan/phpstan-phpunit": "^2.0.17",
+        "phpstan/phpstan-phpunit": "^2.0.18",
         "phpstan/phpstan-strict-rules": "^2.0.11",
         "phpunit/phpunit": "^13.2.2",
         "rector/rector": "^2.5.2",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^13.2.5"
+        "symplify/easy-coding-standard": "^13.2.6"
     },
     "autoload": {
         "psr-4": {
