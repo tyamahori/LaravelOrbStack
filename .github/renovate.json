@@ -13,13 +13,15 @@
     ],
     "extends": [
         "config:best-practices",
-        ":automergePatch",
         "schedule:weekends",
-        "schedule:automergeEarlyMondays"
+        ":automergeAll",
+        ":automergePr",
+        ":automergeRequireAllStatusChecks"
     ],
     "dependencyDashboard": true,
     "timezone": "Asia/Tokyo",
     "rangeStrategy": "bump",
+    "automergeStrategy": "squash",
     "assignAutomerge": true,
     "packageRules": [
         {
