@@ -5,7 +5,7 @@
     "uv@0.11.26",
     "go@1.26.4",
     "go-task@3.48.0",
-    "symfony-cli@5.17.1",
+    "symfony-cli@5.18.1",
     "php@8.5.8",
     "mkcert@1.4.4",
     "php85Extensions.redis@latest",
