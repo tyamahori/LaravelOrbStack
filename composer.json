@@ -8,7 +8,7 @@
         "php": "^8.5",
         "ext-pdo": "*",
         "cuyz/valinor": "^2.5.0",
-        "guzzlehttp/guzzle": "^7.13.3",
+        "guzzlehttp/guzzle": "^7.15.1",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0.2",
         "league/flysystem-aws-s3-v3": "^3.35.2",
