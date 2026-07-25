@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc098e5b97ee6c1b21377b75923475ae",
+    "content-hash": "091b2c59a81fe778b0f267c53660694d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8250,16 +8250,16 @@
         },
         {
             "name": "deptrac/deptrac",
-            "version": "4.6.2",
+            "version": "4.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deptrac/deptrac.git",
-                "reference": "bc9c98102a3ed3acce5ad49f3da989dc9921c648"
+                "reference": "de3303ae1e280b1e58552fef496074b4ee5b143b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deptrac/deptrac/zipball/bc9c98102a3ed3acce5ad49f3da989dc9921c648",
-                "reference": "bc9c98102a3ed3acce5ad49f3da989dc9921c648",
+                "url": "https://api.github.com/repos/deptrac/deptrac/zipball/de3303ae1e280b1e58552fef496074b4ee5b143b",
+                "reference": "de3303ae1e280b1e58552fef496074b4ee5b143b",
                 "shasum": ""
             },
             "require": {
@@ -8329,9 +8329,9 @@
             ],
             "support": {
                 "issues": "https://github.com/deptrac/deptrac/issues",
-                "source": "https://github.com/deptrac/deptrac/tree/4.6.2"
+                "source": "https://github.com/deptrac/deptrac/tree/4.7.1"
             },
-            "time": "2026-07-01T10:43:37+00:00"
+            "time": "2026-07-23T20:41:37+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -12983,16 +12983,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "13.2.9",
+            "version": "13.2.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecsphp/ecs.git",
-                "reference": "f4730d9fde79bf27993e31d9fd7f9df00da0d1aa"
+                "reference": "f5f8131520fb7d3efcf348b72205372ea619fe0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/f4730d9fde79bf27993e31d9fd7f9df00da0d1aa",
-                "reference": "f4730d9fde79bf27993e31d9fd7f9df00da0d1aa",
+                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/f5f8131520fb7d3efcf348b72205372ea619fe0e",
+                "reference": "f5f8131520fb7d3efcf348b72205372ea619fe0e",
                 "shasum": ""
             },
             "require": {
@@ -13027,9 +13027,9 @@
                 "static analysis"
             ],
             "support": {
-                "source": "https://github.com/ecsphp/ecs/tree/13.2.9"
+                "source": "https://github.com/ecsphp/ecs/tree/13.2.17"
             },
-            "time": "2026-07-17T15:05:23+00:00"
+            "time": "2026-07-22T20:02:43+00:00"
         },
         {
             "name": "theseer/tokenizer",
