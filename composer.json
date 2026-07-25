@@ -28,7 +28,7 @@
         "phpstan/phpstan-nette": "^2.0.12",
         "phpstan/phpstan-phpunit": "^2.0.18",
         "phpstan/phpstan-strict-rules": "^2.0.12",
-        "phpunit/phpunit": "^13.2.4",
+        "phpunit/phpunit": "^13.2.5",
         "rector/rector": "^2.5.7",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^13.2.17"
