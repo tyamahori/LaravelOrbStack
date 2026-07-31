@@ -56,7 +56,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mysql.local
-    image: mysql:9.7.1@sha256:cbade841779f1661300e705721f9d2ff159865cc7a8a291affbff43ac6ec7f1d
+    image: mysql:9.7.2@sha256:257388edf9c84dbc04c763625446d5f3fa6ed60d1b0873bc552c614ba0a7ab4e
     environment:
       MYSQL_ROOT_PASSWORD: sample
       MYSQL_DATABASE: sample
@@ -133,7 +133,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mail.local
-    image: axllent/mailpit:v1.30.5@sha256:b868afa176bfd6cce2323ea316cd99ccad77915e51e595748f6d786700ecf109
+    image: axllent/mailpit:v1.30.6@sha256:7f33095f80e901f6ad08028f06ca284aa58fe84942be5496008d041d3b9f4d4d
     healthcheck:
       test: [
         "CMD",
@@ -174,7 +174,7 @@ services:
       <<: *healthcheck-settings
 
   setUpStorage:
-    image: amazon/aws-cli:2.36.8@sha256:7e1b11a3c93bc5af81f496de0662f666b2352a4a6666e8ebae904fe102b131b6
+    image: amazon/aws-cli:2.36.14@sha256:72180b996fad939e764434d9a69a9512ed699a061cd5db198feeb2e9533fd750
     depends_on:
       storage:
         condition: service_healthy
