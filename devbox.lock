@@ -24,12 +24,12 @@
       }
     },
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
-      "last_modified": "2026-07-24T05:48:35Z",
-      "resolved": "github:NixOS/nixpkgs/335f0738cb2fa9708f3f428e39d2eae975d1338d?lastModified=1784872115&narHash=sha256-THPEF2po0fsoH8gNtp%2BAe0XFDJH3N%2Fol7xO3v6VMTJU%3D"
+      "last_modified": "2026-08-01T16:34:20Z",
+      "resolved": "github:NixOS/nixpkgs/a5cbcfe954791221bfffe2307f7d1a1bf61a871e?lastModified=1785602060&narHash=sha256-z7D96eESRM4CPV%2FXtwpwFn8IDdfLAmxz6lVWrGYXvR4%3D"
     },
     "go-task@3.48.0": {
-      "last_modified": "2026-07-23T05:10:05Z",
-      "resolved": "github:NixOS/nixpkgs/7525d999cd850b9a488817abc89c75dc733acf17#go-task",
+      "last_modified": "2026-08-01T16:34:20Z",
+      "resolved": "github:NixOS/nixpkgs/a5cbcfe954791221bfffe2307f7d1a1bf61a871e#go-task",
       "source": "devbox-search",
       "version": "3.48.0",
       "systems": {
@@ -37,21 +37,21 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/prnwf8ghn6h265k1xi7cvdm39ml29bn6-go-task-3.48.0",
+              "path": "/nix/store/wz6jrv59c01rqzaij5qri7ml7xw69jhh-go-task-3.48.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/prnwf8ghn6h265k1xi7cvdm39ml29bn6-go-task-3.48.0"
+          "store_path": "/nix/store/wz6jrv59c01rqzaij5qri7ml7xw69jhh-go-task-3.48.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/iyipshrjb0av8j12j036ad7jjyzjbrvl-go-task-3.48.0",
+              "path": "/nix/store/9sra1gbcfli5hy0as8wwp13c1gi5prw6-go-task-3.48.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/iyipshrjb0av8j12j036ad7jjyzjbrvl-go-task-3.48.0"
+          "store_path": "/nix/store/9sra1gbcfli5hy0as8wwp13c1gi5prw6-go-task-3.48.0"
         },
         "x86_64-darwin": {
           "outputs": [
@@ -67,17 +67,17 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/w3qpy77hf7ai4f08iv0phy13ls7mc2i0-go-task-3.48.0",
+              "path": "/nix/store/72lkcbkm5ki6af8dwy95nxqyv4g4lw2b-go-task-3.48.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/w3qpy77hf7ai4f08iv0phy13ls7mc2i0-go-task-3.48.0"
+          "store_path": "/nix/store/72lkcbkm5ki6af8dwy95nxqyv4g4lw2b-go-task-3.48.0"
         }
       }
     },
     "go@1.26.5": {
-      "last_modified": "2026-07-23T05:10:05Z",
-      "resolved": "github:NixOS/nixpkgs/7525d999cd850b9a488817abc89c75dc733acf17#go",
+      "last_modified": "2026-08-01T16:34:20Z",
+      "resolved": "github:NixOS/nixpkgs/a5cbcfe954791221bfffe2307f7d1a1bf61a871e#go",
       "source": "devbox-search",
       "version": "1.26.5",
       "systems": {
@@ -85,37 +85,37 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/naw4mj4s58ymzlc10a76y79m40w3wfpp-go-1.26.5",
+              "path": "/nix/store/8g06ffyaas333hzhsjcd50nqbsldqjhh-go-1.26.5",
               "default": true
             }
           ],
-          "store_path": "/nix/store/naw4mj4s58ymzlc10a76y79m40w3wfpp-go-1.26.5"
+          "store_path": "/nix/store/8g06ffyaas333hzhsjcd50nqbsldqjhh-go-1.26.5"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/fhg6v8k9hbqpr4b2zcmd099afxh7qxw0-go-1.26.5",
+              "path": "/nix/store/p8wbwrmaqggbg1griwkcjag8lbkgz0qg-go-1.26.5",
               "default": true
             }
           ],
-          "store_path": "/nix/store/fhg6v8k9hbqpr4b2zcmd099afxh7qxw0-go-1.26.5"
+          "store_path": "/nix/store/p8wbwrmaqggbg1griwkcjag8lbkgz0qg-go-1.26.5"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/rcz9i4msbg3178grqll9h98b07dwk7zg-go-1.26.5",
+              "path": "/nix/store/pwj3x44pp735yb038fnmqckyyra9k29x-go-1.26.5",
               "default": true
             }
           ],
-          "store_path": "/nix/store/rcz9i4msbg3178grqll9h98b07dwk7zg-go-1.26.5"
+          "store_path": "/nix/store/pwj3x44pp735yb038fnmqckyyra9k29x-go-1.26.5"
         }
       }
     },
     "mkcert@1.4.4": {
-      "last_modified": "2026-07-23T05:10:05Z",
-      "resolved": "github:NixOS/nixpkgs/7525d999cd850b9a488817abc89c75dc733acf17#mkcert",
+      "last_modified": "2026-08-01T16:34:20Z",
+      "resolved": "github:NixOS/nixpkgs/a5cbcfe954791221bfffe2307f7d1a1bf61a871e#mkcert",
       "source": "devbox-search",
       "version": "1.4.4",
       "systems": {
@@ -123,21 +123,21 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/mmr0by509z1g4ka3jxcy9f384lgd1k4z-mkcert-1.4.4",
+              "path": "/nix/store/ankzqb1fbbpwq3snwm496syjqvps89iw-mkcert-1.4.4",
               "default": true
             }
           ],
-          "store_path": "/nix/store/mmr0by509z1g4ka3jxcy9f384lgd1k4z-mkcert-1.4.4"
+          "store_path": "/nix/store/ankzqb1fbbpwq3snwm496syjqvps89iw-mkcert-1.4.4"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/zc7yh0gpi6m57lbzxxx7hf73f7857rnm-mkcert-1.4.4",
+              "path": "/nix/store/8y9pizz8gba5fpafg943wdp7r752n9kh-mkcert-1.4.4",
               "default": true
             }
           ],
-          "store_path": "/nix/store/zc7yh0gpi6m57lbzxxx7hf73f7857rnm-mkcert-1.4.4"
+          "store_path": "/nix/store/8y9pizz8gba5fpafg943wdp7r752n9kh-mkcert-1.4.4"
         },
         "x86_64-darwin": {
           "outputs": [
@@ -153,17 +153,17 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/b42hzhybr004a6bg7d2qzz81wnjqcg5q-mkcert-1.4.4",
+              "path": "/nix/store/rnb14an2cc3l2smhrygw6ghwvvfal6n8-mkcert-1.4.4",
               "default": true
             }
           ],
-          "store_path": "/nix/store/b42hzhybr004a6bg7d2qzz81wnjqcg5q-mkcert-1.4.4"
+          "store_path": "/nix/store/rnb14an2cc3l2smhrygw6ghwvvfal6n8-mkcert-1.4.4"
         }
       }
     },
     "php85Extensions.redis@latest": {
-      "last_modified": "2026-07-23T05:10:05Z",
-      "resolved": "github:NixOS/nixpkgs/7525d999cd850b9a488817abc89c75dc733acf17#php85Extensions.redis",
+      "last_modified": "2026-08-01T16:34:20Z",
+      "resolved": "github:NixOS/nixpkgs/a5cbcfe954791221bfffe2307f7d1a1bf61a871e#php85Extensions.redis",
       "source": "devbox-search",
       "version": "6.3.0",
       "systems": {
@@ -171,21 +171,21 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/sz8agbf9mww6c639c3ybszafjjjdb5d9-php-redis-6.3.0",
+              "path": "/nix/store/pk5318kz5wr0qpy3plxgqd7h1adva38k-php-redis-6.3.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/sz8agbf9mww6c639c3ybszafjjjdb5d9-php-redis-6.3.0"
+          "store_path": "/nix/store/pk5318kz5wr0qpy3plxgqd7h1adva38k-php-redis-6.3.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/5bjfv7p7v8lpyj111j97r5dmbpsyvab8-php-redis-6.3.0",
+              "path": "/nix/store/93x15ciqdix0zvyvy8s007dm1pw9r3nn-php-redis-6.3.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/5bjfv7p7v8lpyj111j97r5dmbpsyvab8-php-redis-6.3.0"
+          "store_path": "/nix/store/93x15ciqdix0zvyvy8s007dm1pw9r3nn-php-redis-6.3.0"
         },
         "x86_64-darwin": {
           "outputs": [
@@ -201,17 +201,17 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qs49p539x404y8ds7hp1m28mmahv4xrp-php-redis-6.3.0",
+              "path": "/nix/store/164pmcrmb8v4f3whgfc9kp4vr566fn7g-php-redis-6.3.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/qs49p539x404y8ds7hp1m28mmahv4xrp-php-redis-6.3.0"
+          "store_path": "/nix/store/164pmcrmb8v4f3whgfc9kp4vr566fn7g-php-redis-6.3.0"
         }
       }
     },
     "php85Extensions.xdebug@3.5.3": {
-      "last_modified": "2026-07-23T05:10:05Z",
-      "resolved": "github:NixOS/nixpkgs/7525d999cd850b9a488817abc89c75dc733acf17#php85Extensions.xdebug",
+      "last_modified": "2026-08-01T16:34:20Z",
+      "resolved": "github:NixOS/nixpkgs/a5cbcfe954791221bfffe2307f7d1a1bf61a871e#php85Extensions.xdebug",
       "source": "devbox-search",
       "version": "3.5.3",
       "systems": {
@@ -219,21 +219,21 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/881yww598fixcw0a0lhlxmf0gv7k0xac-php-xdebug-3.5.3",
+              "path": "/nix/store/h3sws7n4sjwzfq280a79hzkibnxlg4gr-php-xdebug-3.5.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/881yww598fixcw0a0lhlxmf0gv7k0xac-php-xdebug-3.5.3"
+          "store_path": "/nix/store/h3sws7n4sjwzfq280a79hzkibnxlg4gr-php-xdebug-3.5.3"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ccv04cmh68vsqpiz7rnbj8wsgzvq10ny-php-xdebug-3.5.3",
+              "path": "/nix/store/ihwsp9961xlaaf4wn88zahj19bvam258-php-xdebug-3.5.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/ccv04cmh68vsqpiz7rnbj8wsgzvq10ny-php-xdebug-3.5.3"
+          "store_path": "/nix/store/ihwsp9961xlaaf4wn88zahj19bvam258-php-xdebug-3.5.3"
         },
         "x86_64-darwin": {
           "outputs": [
@@ -249,11 +249,11 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/97aai8qws5hpdr6i2cla8711fm027h3x-php-xdebug-3.5.3",
+              "path": "/nix/store/v7vlkgczfq7359d8scv5qznk2qjvjswn-php-xdebug-3.5.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/97aai8qws5hpdr6i2cla8711fm027h3x-php-xdebug-3.5.3"
+          "store_path": "/nix/store/v7vlkgczfq7359d8scv5qznk2qjvjswn-php-xdebug-3.5.3"
         }
       }
     },
@@ -307,8 +307,8 @@
       }
     },
     "symfony-cli@5.18.1": {
-      "last_modified": "2026-07-23T05:10:05Z",
-      "resolved": "github:NixOS/nixpkgs/7525d999cd850b9a488817abc89c75dc733acf17#symfony-cli",
+      "last_modified": "2026-08-01T16:34:20Z",
+      "resolved": "github:NixOS/nixpkgs/a5cbcfe954791221bfffe2307f7d1a1bf61a871e#symfony-cli",
       "source": "devbox-search",
       "version": "5.18.1",
       "systems": {
@@ -316,31 +316,31 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/6yfmbxzjgnw0rcirz4csm39hdq2h7hix-symfony-cli-5.18.1",
+              "path": "/nix/store/11ayxnnv62yhn0ybpvafqk7a47cc627n-symfony-cli-5.18.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/6yfmbxzjgnw0rcirz4csm39hdq2h7hix-symfony-cli-5.18.1"
+          "store_path": "/nix/store/11ayxnnv62yhn0ybpvafqk7a47cc627n-symfony-cli-5.18.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/6qzpkhjv3qzf3gvkhr4pgczyl5an1wiy-symfony-cli-5.18.1",
+              "path": "/nix/store/9zy83nd3s98z3k42q6b3q8lj10jv23f7-symfony-cli-5.18.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/6qzpkhjv3qzf3gvkhr4pgczyl5an1wiy-symfony-cli-5.18.1"
+          "store_path": "/nix/store/9zy83nd3s98z3k42q6b3q8lj10jv23f7-symfony-cli-5.18.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/h84nqh7bhr0c01n9f5d838vc5xsgx5vr-symfony-cli-5.18.1",
+              "path": "/nix/store/jwjih5zf1rjf2b8kvc5mznlabb2jsf2s-symfony-cli-5.18.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/h84nqh7bhr0c01n9f5d838vc5xsgx5vr-symfony-cli-5.18.1"
+          "store_path": "/nix/store/jwjih5zf1rjf2b8kvc5mznlabb2jsf2s-symfony-cli-5.18.1"
         }
       }
     },
