@@ -19,8 +19,6 @@ services:
         aliases:
           - laravelorbstack.pgsql.local
     image: postgres:18.4-alpine3.22@sha256:774521500f4c22761b25a6bdb772a0a3c2e8dd32468210bdad9231c5752ea398
-    ports:
-      - "127.0.0.1:5432:5432"
     environment:
       POSTGRES_DB: sample
       POSTGRES_USER: sample

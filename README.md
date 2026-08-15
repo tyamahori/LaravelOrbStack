@@ -41,14 +41,25 @@ task init
 
 ## アクセス先
 
-OrbStack のドメイン連携により、起動後は次の URL でアクセスできます。
+OrbStack のドメイン連携により、起動後は次の URL でアクセスできます。ホストへの port 公開は行っておらず、ホストからのアクセスはすべて OrbStack のドメイン解決経由です。
 
 | 実行環境 | URL |
 |:--|:--|
 | Apache | <https://apachephp.local/> |
 | FrankenPHP | <https://frankenphp.local/> |
 
-OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認できます。
+補助サービスへは `<サービス名>.laravelorbstack.orb.local` でコンテナの port に直接アクセスできます。
+
+| サービス | アクセス先 |
+|:--|:--|
+| PostgreSQL | `postgresql.laravelorbstack.orb.local:5432` |
+| MySQL | `mysql.laravelorbstack.orb.local:3306` |
+| Redis(キャッシュ) | `cache.laravelorbstack.orb.local:6379` |
+| Redis(セッション) | `session.laravelorbstack.orb.local:6379` |
+| Mailpit UI | <http://mail.laravelorbstack.orb.local:8025/> |
+| RustFS(S3 API) | `storage.laravelorbstack.orb.local:9000` |
+
+OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認できます。ドメインが解決しなくなった場合は該当コンテナを `docker restart` すると再登録されます。
 
 ## 主なコマンド
 
