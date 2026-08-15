@@ -7,8 +7,6 @@ vars:
   PHP_APACHE_DOCKERFILE_PATH: .docker/php.apache.Dockerfile
   PHP_FRANKEN_DOCKERFILE_PATH: .docker/php.franken.Dockerfile
 
-  PHP_TAG: laravelorbstack/php-apache:8.5
-
   BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
   CI_BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} -f {{ .CI_COMPOSE_FILE_PATH }}
 
@@ -32,8 +30,6 @@ tasks:
   removeVendor:
     cmd: rm -rf ./vendor
   buildBaseApacheModPhp:
-    requires:
-      vars: [ CLI_ARGS ]
     cmd: |
       docker build \
         -t laravelorbstack/php:apache-8.5-base \
@@ -41,8 +37,6 @@ tasks:
         --target=basebuild \
         .
   buildBaseFrankenPhp:
-    requires:
-      vars: [ CLI_ARGS ]
     cmd: |
       docker build \
         -t laravelorbstack/php:franken-8.5-base \
@@ -54,8 +48,6 @@ tasks:
       - task: buildBaseApacheModPhp
       - task: buildBaseFrankenPhp
   buildLocalApacheModPhp:
-    requires:
-      vars: [ CLI_ARGS ]
     deps:
       - task: buildBaseApacheModPhp
     cmd: |
@@ -68,8 +60,6 @@ tasks:
         --build-arg USER_NAME={{ .USER_NAME }} \
         .
   buildLocalFrankenPhp:
-    requires:
-      vars: [ CLI_ARGS ]
     deps:
       - task: buildBaseFrankenPhp
     cmd: |
@@ -476,7 +466,7 @@ tasks:
       fly deploy \
         -c fly-apache.toml \
         --app html2 \
-        --dockerfile {{ .PHP_DOCKERFILE_PATH }} \
+        --dockerfile {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --build-target flyio \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
@@ -487,8 +477,8 @@ tasks:
       fly deploy \
         -c fly-franken.toml \
         --app html2 \
-        --dockerfile {{ .PHP_DOCKERFILE_PATH }} \
-        --build-target frankenphpflyio \
+        --dockerfile {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
+        --build-target flyio \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }}
