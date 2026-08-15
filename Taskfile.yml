@@ -136,7 +136,7 @@ tasks:
         '
   images:
     cmds:
-      - "docker images"
+      - "{{ .BASE_COMMAND }} --profile '*' images"
   upOnCI:
     deps:
       - task: down

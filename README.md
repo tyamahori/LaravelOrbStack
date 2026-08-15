@@ -81,7 +81,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 | `task buildBaseImages` | Apache / FrankenPHP のベースイメージをビルド |
 | `task buildLocalPhps` | ローカル開発用 PHP イメージをビルド |
 | `task buildImages` | ローカル PHP イメージをビルドし、補助サービスのイメージを pull |
-| `task images` | Docker イメージ一覧を表示 |
+| `task images` | このプロジェクトのコンテナが使う Docker イメージ一覧を表示 |
 
 ### コンテナ操作
 
