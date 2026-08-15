@@ -80,7 +80,7 @@ return ECSConfig::configure()
         "{$dirname}/.tempCache/.ecs",
     )
     ->withPhpCsFixerSets(
-        php84Migration: true,
+        php85Migration: true,
         psr2: true,
         psr12Risky: true,
         phpCsFixerRisky: true,

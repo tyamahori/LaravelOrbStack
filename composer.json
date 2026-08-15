@@ -74,6 +74,9 @@
         "rectorCheck": [
             "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
         ],
+        "deptracCheck": [
+            "./vendor/bin/deptrac --config-file=./libConfig/deptrac.yaml --no-progress"
+        ],
         "phpunit": [
             "./vendor/bin/phpunit -c ./libConfig/phpunit.xml"
         ]

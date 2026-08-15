@@ -64,6 +64,29 @@ jobs:
         name: Cache Docker Image
         run: docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml pull session cache mail mysql postgresql storage setUpStorage
 
+  flyio-build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runtime: Apache
+            dockerfile: .docker/php.apache.Dockerfile
+          - runtime: FrankenPHP
+            dockerfile: .docker/php.franken.Dockerfile
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Build ${{ matrix.runtime }} flyio target
+        run: |
+          docker build \
+            --file ${{ matrix.dockerfile }} \
+            --target flyio \
+            --build-arg USER_ID=1000 \
+            --build-arg GROUP_ID=1000 \
+            --build-arg USER_NAME=laravel \
+            .
+
   lint:
     runs-on: ubuntu-24.04-arm
     needs: cache
@@ -138,6 +161,9 @@ jobs:
         with:
           path: .tempCache/.ecs
           key: ecs-cache-${{ runner.os }}-${{ github.run_id }}
+      - name: Deptrac
+        run: |
+          composer deptracCheck
   test:
     runs-on: ubuntu-24.04-arm
     needs: build

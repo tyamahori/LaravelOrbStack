@@ -7,6 +7,7 @@ namespace App\Console\Commands\Sample;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\Factory as FactoryContract;
+use Override;
 
 use function sprintf;
 
@@ -23,6 +24,7 @@ class SampleS3Upload extends Command
      *
      * @inheritdoc
      */
+    #[Override]
     protected $signature = 'app:sample-s3-upload';
 
     /**
@@ -30,6 +32,7 @@ class SampleS3Upload extends Command
      *
      * @inheritdoc
      */
+    #[Override]
     protected $description = 'Command description';
 
     public function handle(): int

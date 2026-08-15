@@ -90,6 +90,12 @@
             ]
         },
         {
+            "matchPackageNames": [
+                "dunglas/frankenphp"
+            ],
+            "versioning": "regex:^php(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.+)$"
+        },
+        {
             "groupName": "GitHub Actions",
             "groupSlug": "github-actions",
             "matchManagers": [

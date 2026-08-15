@@ -41,14 +41,25 @@ task init
 
 ## アクセス先
 
-OrbStack のドメイン連携により、起動後は次の URL でアクセスできます。
+OrbStack のドメイン連携により、起動後は次の URL でアクセスできます。ホストへの port 公開は行っておらず、ホストからのアクセスはすべて OrbStack のドメイン解決経由です。
 
 | 実行環境 | URL |
 |:--|:--|
 | Apache | <https://apachephp.local/> |
 | FrankenPHP | <https://frankenphp.local/> |
 
-OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認できます。
+補助サービスへは `<サービス名>.laravelorbstack.orb.local` でコンテナの port に直接アクセスできます。
+
+| サービス | アクセス先 |
+|:--|:--|
+| PostgreSQL | `postgresql.laravelorbstack.orb.local:5432` |
+| MySQL | `mysql.laravelorbstack.orb.local:3306` |
+| Redis(キャッシュ) | `cache.laravelorbstack.orb.local:6379` |
+| Redis(セッション) | `session.laravelorbstack.orb.local:6379` |
+| Mailpit UI | <http://mail.laravelorbstack.orb.local:8025/> |
+| RustFS(S3 API) | `storage.laravelorbstack.orb.local:9000` |
+
+OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認できます。ドメインが解決しなくなった場合は該当コンテナを `docker restart` すると再登録されます。
 
 ## 主なコマンド
 
@@ -87,7 +98,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 
 | コマンド | 内容 |
 |:--|:--|
-| `task lintCode` | PHPStan、Rector、ECS を実行 |
+| `task lintCode` | PHPStan と Deptrac を実行し、Rector と ECS を適用(自動修正)モードで実行 |
 | `task stan` | PHPStan を実行 |
 | `task rectorDryRun` | Rector を dry-run で実行 |
 | `task runRector` | Rector を適用 |
@@ -129,6 +140,10 @@ Compose 内では次の補助サービスを利用します。
 
 | サービス | 用途 |
 |:--|:--|
+| `php-app` | Apache mod_php 実行環境(`apachephp.local` の実体) |
+| `php-franken` | FrankenPHP 実行環境(`frankenphp.local` の実体) |
+| `php-cli` | ワンショットコマンド実行用 PHP コンテナ |
+| `balancer` | リバースプロキシ。OrbStack ドメインを各実行環境へ振り分け |
 | `postgresql` | PostgreSQL データベース |
 | `mysql` | MySQL データベース |
 | `cache` | Redis キャッシュ |
@@ -137,7 +152,7 @@ Compose 内では次の補助サービスを利用します。
 | `storage` | RustFS による S3 互換ストレージ |
 | `setUpStorage` | `sample` バケット作成用の一時コンテナ |
 
-アプリケーションの環境変数は `.docker/local/php/.env.app` と `.docker/local/php/.env.franken` で管理しています。変更後はコンテナを再起動してください。
+アプリケーションの環境変数は `.docker/local/php/.env.app`(Apache)と `.env.franken`(FrankenPHP)で管理しています。CI では `.env.ci` を使います。変更後はコンテナを再起動してください。
 
 ## デプロイ
 
