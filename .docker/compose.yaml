@@ -27,7 +27,7 @@ services:
     volumes:
       - type: volume
         source: postgresql
-        target: /var/lib/postgresql/data
+        target: /var/lib/postgresql
       - type: bind
         source: ./local/db/script.sql
         target: /docker-entrypoint-initdb.d/script.sql
