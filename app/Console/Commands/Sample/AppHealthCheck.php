@@ -11,6 +11,7 @@ use Illuminate\Contracts\Filesystem\Factory as FactoryContract;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Mail\MailManager;
 use Illuminate\Session\Store;
+use Override;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
 
@@ -33,6 +34,7 @@ class AppHealthCheck extends Command
      *
      * @inheritdoc
      */
+    #[Override]
     protected $signature = 'app:sample-health-check';
 
     /**
@@ -40,6 +42,7 @@ class AppHealthCheck extends Command
      *
      * @inheritdoc
      */
+    #[Override]
     protected $description = 'Command description';
 
     /**

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Override;
 
 /**
  * @template TFactory of Factory
@@ -22,6 +23,7 @@ class User extends Authenticatable
     /**
      * @inheritdoc
      */
+    #[Override]
     protected $fillable = [
         'name',
         'email',
@@ -31,6 +33,7 @@ class User extends Authenticatable
     /**
      * @var list<string>
      */
+    #[Override]
     protected $hidden = [
         'password',
         'remember_token',
@@ -41,6 +44,7 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+    #[Override]
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

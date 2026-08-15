@@ -27,6 +27,7 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Override;
 
 class Kernel extends HttpKernel
 {
@@ -37,6 +38,7 @@ class Kernel extends HttpKernel
      *
      * @var array<int, string>
      */
+    #[Override]
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         TrustProxies::class,
@@ -52,6 +54,7 @@ class Kernel extends HttpKernel
      *
      * @var array<string, array<int, class-string|string>>
      */
+    #[Override]
     protected $middlewareGroups = [
         'web' => [
             EncryptCookies::class,
@@ -76,6 +79,7 @@ class Kernel extends HttpKernel
      *
      * @var array<string, string>
      */
+    #[Override]
     protected $middlewareAliases = [
         'auth' => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,

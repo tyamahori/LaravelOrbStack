@@ -15,6 +15,7 @@ class Handler extends ExceptionHandler
      *
      * @var array<class-string<Throwable>, \Psr\Log\LogLevel::*>
      */
+    #[Override]
     protected $levels = [
 
     ];
@@ -24,6 +25,7 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, class-string<Throwable>>
      */
+    #[Override]
     protected $dontReport = [
 
     ];
@@ -33,6 +35,7 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, string>
      */
+    #[Override]
     protected $dontFlash = [
         'current_password',
         'password',

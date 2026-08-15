@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use Override;
 
 class VerifyCsrfToken extends Middleware
 {
@@ -13,6 +14,7 @@ class VerifyCsrfToken extends Middleware
      *
      * @var array<int, string>
      */
+    #[Override]
     protected $except = [
 
     ];
