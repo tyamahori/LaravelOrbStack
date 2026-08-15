@@ -87,7 +87,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 
 | コマンド | 内容 |
 |:--|:--|
-| `task lintCode` | PHPStan、Rector、ECS を実行 |
+| `task lintCode` | PHPStan を実行し、Rector と ECS を適用(自動修正)モードで実行 |
 | `task stan` | PHPStan を実行 |
 | `task rectorDryRun` | Rector を dry-run で実行 |
 | `task runRector` | Rector を適用 |
@@ -129,6 +129,11 @@ Compose 内では次の補助サービスを利用します。
 
 | サービス | 用途 |
 |:--|:--|
+| `php-app` | Apache mod_php 実行環境(`apachephp.local` の実体) |
+| `php-franken` | FrankenPHP 実行環境(`frankenphp.local` の実体) |
+| `php-rd` | リモートデバッグ用 Apache 環境(`127.0.0.1:8080`) |
+| `php-cli` | ワンショットコマンド実行用 PHP コンテナ |
+| `balancer` | リバースプロキシ。OrbStack ドメインを各実行環境へ振り分け |
 | `postgresql` | PostgreSQL データベース |
 | `mysql` | MySQL データベース |
 | `cache` | Redis キャッシュ |
@@ -137,7 +142,7 @@ Compose 内では次の補助サービスを利用します。
 | `storage` | RustFS による S3 互換ストレージ |
 | `setUpStorage` | `sample` バケット作成用の一時コンテナ |
 
-アプリケーションの環境変数は `.docker/local/php/.env.app` と `.docker/local/php/.env.franken` で管理しています。変更後はコンテナを再起動してください。
+アプリケーションの環境変数は `.docker/local/php/.env.app`(Apache)、`.env.franken`(FrankenPHP)、`.env.rd`(リモートデバッグ用)で管理しています。CI では `.env.ci` を使います。変更後はコンテナを再起動してください。
 
 ## デプロイ
 
