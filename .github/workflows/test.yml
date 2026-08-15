@@ -138,6 +138,9 @@ jobs:
         with:
           path: .tempCache/.ecs
           key: ecs-cache-${{ runner.os }}-${{ github.run_id }}
+      - name: Deptrac
+        run: |
+          composer deptracCheck
   test:
     runs-on: ubuntu-24.04-arm
     needs: build

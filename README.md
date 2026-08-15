@@ -98,7 +98,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 
 | コマンド | 内容 |
 |:--|:--|
-| `task lintCode` | PHPStan を実行し、Rector と ECS を適用(自動修正)モードで実行 |
+| `task lintCode` | PHPStan と Deptrac を実行し、Rector と ECS を適用(自動修正)モードで実行 |
 | `task stan` | PHPStan を実行 |
 | `task rectorDryRun` | Rector を dry-run で実行 |
 | `task runRector` | Rector を適用 |

@@ -272,6 +272,23 @@ tasks:
           COMMAND_TO_RUN: |
             ./vendor/bin/phpstan analyze -c libConfig/phpstan.neon
 
+  deptrac:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
+    sources:
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./libConfig/deptrac.yaml
+    cmds:
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/deptrac --config-file=./libConfig/deptrac.yaml --no-progress
+
   phpunit:
     deps:
       - task: composer
@@ -365,6 +382,7 @@ tasks:
       - stan
       - runRector
       - runEcs
+      - deptrac
   lintCode:
     deps:
       - task: composer
