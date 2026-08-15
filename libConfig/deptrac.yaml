@@ -1,21 +1,22 @@
 deptrac:
   paths:
-    - ./src
+    - ../packages
+    - ../app
   exclude_files:
     - '#.*test.*#'
   layers:
     - name: Controller
       collectors:
-        - type: className
-          value: .*Controller.*
+        - type: classLike
+          value: ^(LaravelOrbStack|App)\\.*Controller.*
     - name: Repository
       collectors:
-        - type: className
-          value: .*Repository.*
+        - type: classLike
+          value: ^(LaravelOrbStack|App)\\.*Repository.*
     - name: Service
       collectors:
-        - type: className
-          value: .*Service.*
+        - type: classLike
+          value: ^(LaravelOrbStack|App)\\.*Service.*
   ruleset:
     Controller:
       - Service

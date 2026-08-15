@@ -19,5 +19,5 @@ yarn-error.log
 /.vscode
 .task
 xdebug.log
-libConfig
+/.deptrac.cache
 .tempCache
