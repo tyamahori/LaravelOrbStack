@@ -33,7 +33,9 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::EARLY_RETURN,
         SetList::TYPE_DECLARATION,
         SetList::INSTANCEOF,
-        PHPUnitSetList::PHPUNIT_110,
+        // Rector 2.6 removed PHPUnitSetList::PHPUNIT_110; COMPOSER_BASED applies
+        // version-appropriate PHPUnit sets based on the installed package.
+        PHPUnitSetList::COMPOSER_BASED,
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
     ]);
     // Rector 2.6 removed SetList::STRICT_BOOLEANS; register its sole rule directly.
