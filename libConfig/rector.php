@@ -32,10 +32,13 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::EARLY_RETURN,
         SetList::TYPE_DECLARATION,
         SetList::INSTANCEOF,
-        SetList::STRICT_BOOLEANS,
-        PHPUnitSetList::PHPUNIT_110,
+        // Rector 2.6 removed PHPUnitSetList::PHPUNIT_110; COMPOSER_BASED applies
+        // version-appropriate PHPUnit sets based on the installed package.
+        PHPUnitSetList::COMPOSER_BASED,
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
     ]);
+    // SetList::STRICT_BOOLEANS was removed in Rector 2.6 along with its only
+    // rule (DisallowedEmptyRuleFixerRector), which is deprecated upstream.
     $rectorConfig->importNames();
     $rectorConfig->parallel();
 };
