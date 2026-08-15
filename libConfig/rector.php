@@ -6,7 +6,6 @@ use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\SetList;
-use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheDirectory('./.tempCache/.rector');
@@ -38,10 +37,8 @@ return static function (RectorConfig $rectorConfig): void {
         PHPUnitSetList::COMPOSER_BASED,
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
     ]);
-    // Rector 2.6 removed SetList::STRICT_BOOLEANS; register its sole rule directly.
-    $rectorConfig->rules([
-        DisallowedEmptyRuleFixerRector::class,
-    ]);
+    // SetList::STRICT_BOOLEANS was removed in Rector 2.6 along with its only
+    // rule (DisallowedEmptyRuleFixerRector), which is deprecated upstream.
     $rectorConfig->importNames();
     $rectorConfig->parallel();
 };
