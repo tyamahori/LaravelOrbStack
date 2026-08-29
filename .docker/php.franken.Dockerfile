@@ -1,10 +1,10 @@
-FROM golang:1.26.6-bookworm@sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36 AS go
+FROM golang:1.27.0-bookworm@sha256:ded31c68586d2e49e760acc2e65a884b23d032e9bbbed0ae0c55abd3fcaf4452 AS go
 FROM composer:2.10.2@sha256:4d71c3c2109c61d5415544264b59ad4087e4c5b7244481723664138fd36d5040 AS composer
 FROM mlocati/php-extension-installer:2.11.12@sha256:b6d3fa381b9ba5cf051117c1c601d6a523b590e534bf3d56eb4fbe352949c138 AS basephpextensioninstaller
-FROM dunglas/frankenphp:php8.5.9-trixie@sha256:ee14233b7866ae5e9838ec3afe07721837c0a74b534fb30d0a7f7b373dd2fd12 AS frankenphp
+FROM dunglas/frankenphp:php8.5.9-trixie@sha256:f92d81eb3fe4fd18b35d3d58192b7cc3acc8943817bbf39f2fcf0be02a3916dc AS frankenphp
 
 FROM go AS task
-RUN go install github.com/go-task/task/v3/cmd/task@v3.52.0
+RUN go install github.com/go-task/task/v3/cmd/task@v3.53.1
 
 FROM go AS runn
 RUN go install github.com/k1LoW/runn/cmd/runn@v1.9.4
@@ -13,7 +13,7 @@ FROM go AS mysqldef
 RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v3.11.19
 
 FROM go AS psqldef
-RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.11.19
+RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.11.20
 
 FROM frankenphp AS basebuild
 RUN apt-get update \
