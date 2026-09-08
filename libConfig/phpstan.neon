@@ -39,8 +39,16 @@ parameters:
     - ../config
   viewDirectories:
     - ../resources/views
+  ignoreErrors:
+    # config/*.php run before the container exists; env() and *_path() are the only way in.
+    -
+      identifier: laravelOrbStack.noGlobalHelper
+      path: ../config/*
 
 services:
   -
     class: LibConfig\PhpStan\NoFacadeRule
+    tags: [phpstan.rules.rule]
+  -
+    class: LibConfig\PhpStan\NoGlobalHelperRule
     tags: [phpstan.rules.rule]
