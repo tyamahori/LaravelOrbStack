@@ -141,8 +141,10 @@ jobs:
       - name: Create manifest list and push
         working-directory: /tmp/digests
         run: |
-          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
+          mapfile -t tags < <(jq -r '.tags[] | "-t", .' <<< "$DOCKER_METADATA_OUTPUT_JSON")
+          digests=()
+          for digest in *; do digests+=("${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:${digest}"); done
+          docker buildx imagetools create "${tags[@]}" "${digests[@]}"
 
       # Inspect the final multi-arch image
       - name: Inspect image
