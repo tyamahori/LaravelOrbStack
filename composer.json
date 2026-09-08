@@ -83,7 +83,11 @@
         "magoCheck": [
             "./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint"
         ],
+        "psrCheck": [
+            "@composer dump-autoload --optimize --strict-psr --no-scripts"
+        ],
         "lintCheck": [
+            "@psrCheck",
             "@rectorCheck",
             "@stanCheck",
             "@ecsCheck",

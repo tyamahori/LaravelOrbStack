@@ -113,7 +113,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 | `task phpunit` | PHPUnit を実行(`composer phpunit` 経由) |
 | `task ide-helper` | Laravel IDE Helper を生成 |
 
-Devbox シェル内では `devbox run composer` で Composer install を実行できます。Docker を起動せずにホストの PHP で全チェック(Rector dry-run、PHPStan、ECS、Deptrac、Mago)をまとめて走らせるには `composer lintCheck` を使います。
+Devbox シェル内では `devbox run composer` で Composer install を実行できます。Docker を起動せずにホストの PHP で全チェック(PSR-4 の厳格検査、Rector dry-run、PHPStan、ECS、Deptrac、Mago)をまとめて走らせるには `composer lintCheck` を使います。`composer psrCheck` は `dump-autoload --strict-psr` で、ファイル名とクラス名の大文字小文字のずれを macOS(case-insensitive)でも検出します。クラス参照側のずれは PHPStan の `class.nameCase` が拾います。
 
 ## コーディング規約
 
