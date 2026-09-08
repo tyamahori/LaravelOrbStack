@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Broadcasting\Broadcasters\Broadcaster;
+use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Support\ServiceProvider;
+
+use function assert;
 
 final class BroadcastServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
+    public function boot(BroadcastManager $broadcast): void
     {
-        Broadcast::routes();
+        $broadcast->routes();
+        $broadcaster = $broadcast->driver();
+        assert($broadcaster instanceof Broadcaster, 'Every built-in broadcast driver extends Broadcaster.');
 
         require base_path('routes/channels.php');
     }

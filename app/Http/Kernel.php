@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http;
 
+use App\Foundation\Bootstrap\RegisterFacadeRoot;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
@@ -16,6 +17,11 @@ use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Foundation\Bootstrap\BootProviders;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
+use Illuminate\Foundation\Bootstrap\LoadConfiguration;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
+use Illuminate\Foundation\Bootstrap\RegisterProviders;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -31,6 +37,16 @@ use Override;
 
 final class Kernel extends HttpKernel
 {
+    #[Override]
+    protected $bootstrappers = [
+        LoadEnvironmentVariables::class,
+        LoadConfiguration::class,
+        HandleExceptions::class,
+        RegisterFacadeRoot::class,
+        RegisterProviders::class,
+        BootProviders::class,
+    ];
+
     /**
      * The application's global HTTP middleware stack.
      *

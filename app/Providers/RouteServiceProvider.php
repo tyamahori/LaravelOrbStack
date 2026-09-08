@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Router;
 use Override;
 
 final class RouteServiceProvider extends ServiceProvider
@@ -23,13 +23,12 @@ final class RouteServiceProvider extends ServiceProvider
     #[Override]
     public function boot(): void
     {
-        $this->routes(static function (): void {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
-
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+        $this->routes(static function (Router $router): void {
+            $router->group(
+                ['middleware' => 'api', 'prefix' => 'api'],
+                base_path('routes/api.php'),
+            );
+            $router->group(['middleware' => 'web'], base_path('routes/web.php'));
         });
     }
 }

@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use Illuminate\Support\Facades\Broadcast;
+
+/** @var Illuminate\Broadcasting\Broadcasters\Broadcaster $broadcaster */
 
 /*
 |--------------------------------------------------------------------------
@@ -11,9 +12,9 @@ use Illuminate\Support\Facades\Broadcast;
 |--------------------------------------------------------------------------
 |
 | Here you may register all of the event broadcasting channels that your
-| application supports. The given channel authorization callbacks are
-| used to check if an authenticated user can listen to the channel.
+| application supports. The channel authorization callbacks are used to
+| check if an authenticated user can listen to the channel.
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', static fn (User $user, string $id): bool => $user->id === (int) $id);
+$broadcaster->channel('App.Models.User.{id}', static fn (User $user, string $id): bool => $user->id === (int) $id);

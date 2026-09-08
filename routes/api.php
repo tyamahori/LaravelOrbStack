@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+
+/** @var Illuminate\Routing\Router $router */
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth')
-    ->get(
-        '/user',
-        static fn (Request $request) => $request->user()
-    );
+$router->get(
+    '/user',
+    static fn (Request $request) => $request->user(),
+)->middleware('auth');

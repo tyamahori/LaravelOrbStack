@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Route;
 use LaravelOrbStack\Samples\HomeController;
+
+/** @var Illuminate\Routing\Router $router */
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,4 @@ use LaravelOrbStack\Samples\HomeController;
 |
 */
 
-Route::get('/', [HomeController::class, 'home'])->name('welcome');
+$router->get('/', [HomeController::class, 'home'])->name('welcome');

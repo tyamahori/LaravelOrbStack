@@ -6,12 +6,17 @@ namespace App\Http\Middleware;
 
 use App\Providers\RouteServiceProvider;
 use Closure;
+use Illuminate\Contracts\Auth\Factory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 final class RedirectIfAuthenticated
 {
+    public function __construct(
+        private Factory $auth,
+    ) {
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -20,7 +25,7 @@ final class RedirectIfAuthenticated
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
         foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
+            if ($this->auth->guard($guard)->check()) {
                 return redirect(RouteServiceProvider::HOME);
             }
         }
