@@ -11,4 +11,3 @@ minimum-fail-level = "note"
 
 [linter.rules]
 literal-named-argument = { enabled = false }
-no-literal-password = { exclude = ["database/factories/"] }
