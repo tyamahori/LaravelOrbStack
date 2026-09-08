@@ -8,12 +8,14 @@ use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Contracts\Auth\Factory;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Symfony\Component\HttpFoundation\Response;
 
 final class RedirectIfAuthenticated
 {
     public function __construct(
         private Factory $auth,
+        private Redirector $redirector,
     ) {
     }
 
@@ -26,7 +28,7 @@ final class RedirectIfAuthenticated
     {
         foreach ($guards as $guard) {
             if ($this->auth->guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                return $this->redirector->to(RouteServiceProvider::HOME);
             }
         }
 

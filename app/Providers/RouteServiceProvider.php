@@ -23,12 +23,12 @@ final class RouteServiceProvider extends ServiceProvider
     #[Override]
     public function boot(): void
     {
-        $this->routes(static function (Router $router): void {
+        $this->routes(function (Router $router): void {
             $router->group(
                 ['middleware' => 'api', 'prefix' => 'api'],
-                base_path('routes/api.php'),
+                $this->app->basePath('routes/api.php'),
             );
-            $router->group(['middleware' => 'web'], base_path('routes/web.php'));
+            $router->group(['middleware' => 'web'], $this->app->basePath('routes/web.php'));
         });
     }
 }

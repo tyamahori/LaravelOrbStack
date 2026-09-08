@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\User;
-use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Hashing\BcryptHasher;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Override;
 
@@ -19,10 +20,10 @@ final class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => app(Hasher::class)->make('password'),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'email_verified_at' => Carbon::now(),
+            'password' => new BcryptHasher()->make('password'),
             'remember_token' => Str::random(10),
         ];
     }

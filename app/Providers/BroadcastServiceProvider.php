@@ -18,6 +18,6 @@ final class BroadcastServiceProvider extends ServiceProvider
         $broadcaster = $broadcast->driver();
         assert($broadcaster instanceof Broadcaster, 'Every built-in broadcast driver extends Broadcaster.');
 
-        require base_path('routes/channels.php');
+        require $this->app->basePath('routes/channels.php');
     }
 }

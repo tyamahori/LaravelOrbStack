@@ -16,6 +16,10 @@ minimum-fail-level = "note"
 # opinionated output conflicts with the PSR-12 style ECS enforces.
 [linter.rules]
 literal-named-argument = { enabled = false }
+# contradicts LibConfig\PhpStan\NoGlobalHelperRule: factories use $this->faker
+prefer-fake-helper = { enabled = false }
+# HomeController demos injecting every collaborator it touches
+excessive-parameter-list = { threshold = 8 }
 # owned by ECS
 block-statement = { enabled = false }               # control_structure_braces (@PSR2)
 braced-string-interpolation = { enabled = false }   # ExplicitStringVariableFixer
