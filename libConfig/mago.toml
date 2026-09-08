@@ -6,7 +6,7 @@ includes = ["vendor"]
 excludes = [".tempCache/**", "libConfig/**", "storage/**", "bootstrap/cache/**"]
 
 [linter]
-integrations = ["laravel", "phpunit", "guzzle", "carbon"]
+integrations = ["laravel", "phpunit", "carbon"]
 minimum-fail-level = "note"
 
 # Mago is lint-only here: ECS (libConfig/ecs.php) and Rector (libConfig/rector.php)

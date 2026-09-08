@@ -7,13 +7,9 @@
     "require": {
         "php": "8.5.*",
         "ext-pdo": "*",
-        "cuyz/valinor": "^2.6.0",
-        "guzzlehttp/guzzle": "^8.2.0",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0.2",
-        "league/flysystem-aws-s3-v3": "^3.35.3",
-        "open-telemetry/opentelemetry": "^1.1.0",
-        "php-http/httplug": "^2.4.1"
+        "league/flysystem-aws-s3-v3": "^3.35.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.4.3",
@@ -99,10 +95,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true,
-            "phpstan/extension-installer": true,
-            "tbachert/spi": true
+            "phpstan/extension-installer": true
         },
         "nextPhp": "8.6"
     },
