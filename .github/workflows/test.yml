@@ -18,7 +18,7 @@ jobs:
       - name: Get PHP version
         id: php-version
         run: |
-          echo "PHP_VERSION=$(jq -r '.config.platform.php' composer.json)" >> "$GITHUB_ENV"
+          echo "PHP_VERSION=$(jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json)" >> "$GITHUB_ENV"
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
@@ -77,11 +77,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Get PHP version
+        run: |
+          echo "PHP_VERSION=$(jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json)" >> "$GITHUB_ENV"
       - name: Build ${{ matrix.runtime }} flyio target
         run: |
           docker build \
             --file ${{ matrix.dockerfile }} \
             --target flyio \
+            --build-arg PHP_VERSION=${{ env.PHP_VERSION }} \
             --build-arg USER_ID=1000 \
             --build-arg GROUP_ID=1000 \
             --build-arg USER_NAME=laravel \
@@ -104,7 +108,7 @@ jobs:
       - name: Get PHP version
         id: php-version
         run: |
-          echo "PHP_VERSION=$(jq -r '.config.platform.php' composer.json)" >> "$GITHUB_ENV"
+          echo "PHP_VERSION=$(jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json)" >> "$GITHUB_ENV"
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
@@ -189,7 +193,7 @@ jobs:
       - name: Get PHP version
         id: php-version
         run: |
-          echo "PHP_VERSION=$(jq -r '.config.platform.php' composer.json)" >> "$GITHUB_ENV"
+          echo "PHP_VERSION=$(jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json)" >> "$GITHUB_ENV"
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:

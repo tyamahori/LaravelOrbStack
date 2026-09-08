@@ -6,6 +6,8 @@ vars:
 
   PHP_APACHE_DOCKERFILE_PATH: .docker/php.apache.Dockerfile
   PHP_FRANKEN_DOCKERFILE_PATH: .docker/php.franken.Dockerfile
+  PHP_VERSION:
+    sh: jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json
 
   BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
   CI_BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} -f {{ .CI_COMPOSE_FILE_PATH }}
@@ -32,16 +34,18 @@ tasks:
   buildBaseApacheModPhp:
     cmd: |
       docker build \
-        -t laravelorbstack/php:apache-8.5-base \
+        -t laravelorbstack/php:apache-base \
         -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --target=basebuild \
+        --build-arg PHP_VERSION={{ .PHP_VERSION }} \
         .
   buildBaseFrankenPhp:
     cmd: |
       docker build \
-        -t laravelorbstack/php:franken-8.5-base \
+        -t laravelorbstack/php:franken-base \
         -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --target=basebuild \
+        --build-arg PHP_VERSION={{ .PHP_VERSION }} \
         .
   buildBaseImages:
     deps:
@@ -52,9 +56,10 @@ tasks:
       - task: buildBaseApacheModPhp
     cmd: |
       docker build \
-        -t laravelorbstack/php:apache-8.5-local \
+        -t laravelorbstack/php:apache-local \
         -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --target=local \
+        --build-arg PHP_VERSION={{ .PHP_VERSION }} \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }} \
@@ -64,9 +69,10 @@ tasks:
       - task: buildBaseFrankenPhp
     cmd: |
       docker build \
-        -t laravelorbstack/php:franken-8.5-local \
+        -t laravelorbstack/php:franken-local \
         -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --target=local \
+        --build-arg PHP_VERSION={{ .PHP_VERSION }} \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }} \
@@ -524,6 +530,7 @@ tasks:
         --app html2 \
         --dockerfile {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --build-target flyio \
+        --build-arg PHP_VERSION={{ .PHP_VERSION }} \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }}
@@ -535,6 +542,7 @@ tasks:
         --app html2 \
         --dockerfile {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --build-target flyio \
+        --build-arg PHP_VERSION={{ .PHP_VERSION }} \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }}
