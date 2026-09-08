@@ -18,7 +18,7 @@ RUN go install github.com/sqldef/sqldef/cmd/psqldef@v3.11.20
 
 FROM frankenphp AS basebuild
 RUN apt-get update \
-    && apt-get install -yq git postgresql unzip \
+    && apt-get install -yq git postgresql-client unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /composer \
