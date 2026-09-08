@@ -32,7 +32,7 @@ final class SetUpTest implements PhpunitExtension
             #[Override]
             public function notify(Started $event): void
             {
-                echo shell_exec('DB_SCHEMA=test php artisan db:wipe');
+                echo shell_exec('DB_SCHEMA=test composer schema:apply');
             }
         };
     }

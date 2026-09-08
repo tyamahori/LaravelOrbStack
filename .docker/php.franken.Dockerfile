@@ -44,6 +44,7 @@ RUN apt-get update \
     && install-php-extensions xdebug
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=runn /go/bin/runn /usr/bin/runn
+COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 USER ${USER_NAME}
 
 FROM basebuild AS flyio

@@ -121,7 +121,7 @@ tasks:
         {{ .BASE_COMMAND }} exec -it  {{ .APACHE_SERVICE }} sh -c '
           composer install && \
           php artisan optimize:clear  && \
-          php artisan migrate:refresh --seed && \
+          composer schema:apply && php artisan db:seed && \
           composer ide-helper && \
           php -v && php artisan -V && whoami && pwd
         '
@@ -136,7 +136,7 @@ tasks:
         {{ .BASE_COMMAND }} exec -it  {{ .APACHE_SERVICE }} sh -c '
           composer install && \
           php artisan optimize:clear  && \
-          php artisan migrate:refresh --seed && \
+          composer schema:apply && php artisan db:seed && \
           composer ide-helper && \
           php -v && php artisan -V && whoami && pwd
         '
@@ -155,7 +155,8 @@ tasks:
         set +a;
         composer install;
         php artisan optimize:clear;
-        php artisan migrate:refresh --seed;
+        composer schema:apply;
+        php artisan db:seed;
         composer ide-helper;
         php -v;
         php artisan -V;
@@ -522,6 +523,24 @@ tasks:
         -v ~/{{ .SSH_PATH }}:/home/{{ .USER_NAME }}/{{ .SSH_PATH }} \
         --rm php-cli sh -c \
         'rm -rf ./vendor && composer clear-cache && composer install'
+  schema:apply:
+    cmds:
+      - task: run:cmd
+        vars:
+          CLI_ARGS: composer schema:apply
+
+  schema:dryRun:
+    cmds:
+      - task: run:cmd
+        vars:
+          CLI_ARGS: composer schema:dry-run
+
+  schema:export:
+    cmds:
+      - task: run:cmd
+        vars:
+          CLI_ARGS: composer schema:export
+
 
   deployApache:
     cmd: |

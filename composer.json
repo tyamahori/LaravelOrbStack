@@ -60,6 +60,10 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
+        "schema": "PGPASSWORD=$DB_PASSWORD PGOPTIONS=\"-c search_path=$DB_SCHEMA\" psqldef -h $DB_HOST -p $DB_PORT -U $DB_USERNAME $DB_DATABASE --config-inline \"target_schema: $DB_SCHEMA\" --file database/schema.sql",
+        "schema:apply": "@schema --apply --enable-drop",
+        "schema:dry-run": "@schema --dry-run",
+        "schema:export": "@schema --export",
         "ide-helper": [
             "@php artisan ide-helper:generate .tempCache/.ide_helper.php",
             "@php artisan ide-helper:models --nowrite --dir=./packages --dir=./app -F .tempCache/.model.php",

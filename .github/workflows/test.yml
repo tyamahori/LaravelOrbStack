@@ -204,6 +204,10 @@ jobs:
           bash -c "set -a; source .docker/local/php/.env.ci; set +a; docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml --profile '*' down --remove-orphans"
           bash -c "set -a; source .docker/local/php/.env.ci; set +a; docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml --profile 'app' --profile '' up -d"
           bash -c "set -a; source .docker/local/php/.env.ci; set +a; docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml run --rm setUpStorage"
+      - name: Install psqldef
+        run: |
+          version=$(sed -n 's#.*/psqldef@v\([0-9.]*\).*#\1#p' .docker/php.apache.Dockerfile)
+          curl -fsSL "https://github.com/sqldef/sqldef/releases/download/v${version}/psqldef_linux_arm64.tar.gz" | sudo tar -xz -C /usr/local/bin psqldef
       - name: Install dependencies
         run: |
           bash -c "
@@ -212,7 +216,8 @@ jobs:
           set +a;
           composer install --prefer-dist --no-progress;
           php artisan optimize:clear;
-          php artisan migrate:refresh --seed;
+          composer schema:apply;
+          php artisan db:seed;
           composer ide-helper;
           php -v;
           php artisan -V;

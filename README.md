@@ -67,8 +67,8 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 
 | コマンド | 内容 |
 |:--|:--|
-| `task init` | 全削除後にビルド、起動、S3 バケット作成、Composer install、migration、IDE Helper 生成を実行 |
-| `task start` | ボリューム削除後に再構築して起動 |
+| `task init` | 全削除後にビルド、起動、S3 バケット作成、Composer install、スキーマ適用（psqldef）、IDE Helper 生成を実行 |
+| `task start` | ボリューム削除後に再構築、起動、スキーマ適用（psqldef）を実行 |
 | `task up` | アプリ用プロファイルのコンテナを起動 |
 | `task down` | コンテナを停止 |
 | `task ps` | コンテナ状態を表示 |
@@ -93,6 +93,9 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 | `task php -- <args>` | PHP コマンドを実行 |
 | `task artisan -- <args>` | Artisan コマンドを実行 |
 | `task composer -- <args>` | Composer コマンドを実行 |
+| `task schema:apply` | psqldef でスキーマを適用 |
+| `task schema:dryRun` | psqldef の変更予定を表示 |
+| `task schema:export` | psqldef で現在のスキーマを出力 |
 
 ### 品質チェックとテスト
 
@@ -126,7 +129,7 @@ Devbox シェル内では `devbox run lint`、`devbox run stan`、`devbox run fi
 │   └── flyio/
 ├── app/                      # Laravel アプリケーション
 ├── config/                   # Laravel 設定
-├── database/                 # migration / seeder / factory
+├── database/                 # schema.sql (psqldef) / seeder / factory
 ├── libConfig/                # PHPStan / ECS / Rector / PHPUnit / Deptrac / Mago 設定
 ├── packages/                 # サンプルパッケージ
 ├── routes/                   # Laravel ルート定義
