@@ -4,51 +4,26 @@ declare(strict_types=1);
 
 namespace LaravelOrbStack\Samples;
 
-use Carbon\CarbonImmutable;
-use Illuminate\Config\Repository;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Foundation\Application;
+use const PHP_SAPI;
+use const PHP_VERSION;
+
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Routing\Router;
-use Illuminate\Routing\UrlGenerator;
-use Psr\Log\LoggerInterface;
-
-use function assert;
-use function is_string;
+use Illuminate\Foundation\Application;
 
 final class HomeController
 {
-    public function home(
-        Application $app,
-        Guard $auth,
-        Repository $config,
-        Router $router,
-        UrlGenerator $url,
-        CarbonImmutable $carbonImmutable,
-        LoggerInterface $logger,
-        Factory $view
-    ): Renderable {
-        $appUrl = $config->get('app.url');
-        assert(is_string($appUrl), 'appUrl should be string.');
-        $route = $url->route('welcome');
-
-        $logger
-            ->info(
-                'debug',
-                [
-                    $appUrl,
-                    $route,
-                    $carbonImmutable->toString(),
-                ]
-            );
-
+    public function home(Factory $view): Renderable
+    {
         return $view->make('welcome', [
-            'locale' => $app->getLocale(),
-            'authenticated' => $auth->check(),
-            'homeUrl' => $url->to('/home'),
-            'loginUrl' => $router->has('login') ? $url->route('login') : null,
-            'registerUrl' => $router->has('register') ? $url->route('register') : null,
+            'sapi' => PHP_SAPI,
+            'runtime' => match (PHP_SAPI) {
+                'frankenphp' => 'FrankenPHP',
+                'apache2handler' => 'Apache mod_php',
+                default => PHP_SAPI,
+            },
+            'laravelVersion' => Application::VERSION,
+            'phpVersion' => PHP_VERSION,
         ]);
     }
 }
