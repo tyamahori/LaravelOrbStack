@@ -47,10 +47,13 @@ function app(string|null $abstract = null, array $parameters = []): mixed
             continue;
         }
 
+        // storage/framework/views holds compiled Blade, including Laravel's
+        // own error pages (which call __()); the source path is lost there.
         if (
             str_starts_with($file, $root)
             && ! str_starts_with($file, $root . 'vendor/')
             && ! str_starts_with($file, $root . 'config/')
+            && ! str_starts_with($file, $root . 'storage/framework/views/')
         ) {
             throw new LogicException(sprintf(
                 'Global helper %s() called from %s:%d: inject the underlying contract instead.',
