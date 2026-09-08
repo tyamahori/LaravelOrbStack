@@ -7,7 +7,7 @@ namespace App\Console;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Override;
 
-class Kernel extends ConsoleKernel
+final class Kernel extends ConsoleKernel
 {
     #[Override]
     protected function commands(): void

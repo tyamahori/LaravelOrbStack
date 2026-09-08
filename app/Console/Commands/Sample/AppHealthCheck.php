@@ -17,18 +17,8 @@ use RuntimeException;
 
 use function sprintf;
 
-class AppHealthCheck extends Command
+final class AppHealthCheck extends Command
 {
-    public function __construct(
-        private readonly ConnectionInterface $connectionInterface,
-        private readonly FactoryContract $factoryContract,
-        private readonly CacheManager $cacheManager,
-        private readonly Store $store,
-        private readonly MailManager $mailManager,
-    ) {
-        parent::__construct();
-    }
-
     /**
      * The name and signature of the console command.
      *
@@ -44,6 +34,16 @@ class AppHealthCheck extends Command
      */
     #[Override]
     protected $description = 'Command description';
+
+    public function __construct(
+        private readonly ConnectionInterface $connectionInterface,
+        private readonly FactoryContract $factoryContract,
+        private readonly CacheManager $cacheManager,
+        private readonly Store $store,
+        private readonly MailManager $mailManager,
+    ) {
+        parent::__construct();
+    }
 
     /**
      * @throws InvalidArgumentException

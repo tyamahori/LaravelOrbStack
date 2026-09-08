@@ -11,14 +11,8 @@ use Override;
 
 use function sprintf;
 
-class SampleS3Upload extends Command
+final class SampleS3Upload extends Command
 {
-    public function __construct(
-        private readonly FactoryContract $filesystem
-    ) {
-        parent::__construct();
-    }
-
     /**
      * The name and signature of the console command.
      *
@@ -34,6 +28,12 @@ class SampleS3Upload extends Command
      */
     #[Override]
     protected $description = 'Command description';
+
+    public function __construct(
+        private readonly FactoryContract $filesystem
+    ) {
+        parent::__construct();
+    }
 
     public function handle(): int
     {

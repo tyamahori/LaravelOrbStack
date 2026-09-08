@@ -10,10 +10,9 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AppHealthCheck extends Mailable
+final class AppHealthCheck extends Mailable
 {
     use Queueable;
-
     use SerializesModels;
 
     /**

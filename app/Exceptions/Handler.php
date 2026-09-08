@@ -8,7 +8,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Override;
 use Throwable;
 
-class Handler extends ExceptionHandler
+final class Handler extends ExceptionHandler
 {
     /**
      * A list of exception types with their corresponding custom log levels.

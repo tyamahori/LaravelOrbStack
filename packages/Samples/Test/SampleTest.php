@@ -9,7 +9,7 @@ use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class SampleTest extends TestCase
+final class SampleTest extends TestCase
 {
     #[Override]
     public static function setUpBeforeClass(): void

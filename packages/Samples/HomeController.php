@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 use function assert;
 use function is_string;
 
-class HomeController
+final class HomeController
 {
     public function home(
         Repository $config,

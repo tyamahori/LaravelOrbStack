@@ -7,7 +7,7 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Override;
 
-class AuthServiceProvider extends ServiceProvider
+final class AuthServiceProvider extends ServiceProvider
 {
     /**
      * The model to policy mappings for the application.
@@ -18,12 +18,4 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
-
-    /**
-     * Register any authentication / authorization services.
-     */
-    public function boot(): void
-    {
-
-    }
 }
