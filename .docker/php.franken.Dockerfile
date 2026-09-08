@@ -7,12 +7,6 @@ FROM dunglas/frankenphp:php${PHP_VERSION}-trixie AS frankenphp
 FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.53.1
 
-FROM go AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v1.10.0
-
-FROM go AS mysqldef
-RUN go install github.com/sqldef/sqldef/v3/cmd/mysqldef@v3.11.20
-
 FROM go AS psqldef
 RUN go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.20
 
@@ -43,7 +37,6 @@ RUN apt-get update \
     && install -d -o ${USER_NAME} -g ${USER_NAME} /composer /app /config/psysh /etc/caddy /data/caddy/pki \
     && install-php-extensions xdebug
 COPY --from=task /go/bin/task /usr/bin/task
-COPY --from=runn /go/bin/runn /usr/bin/runn
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 USER ${USER_NAME}
 

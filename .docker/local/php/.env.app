@@ -10,13 +10,8 @@ LOG_DEPRECATIONS_CHANNEL=null
 LOG_LEVEL=debug
 
 DB_CONNECTION=pgsql
-# mysql
-
 DB_HOST=laravelorbstack.pgsql.local
-# or laravelorbstack.mysql.local
-
 DB_PORT=5432
-# or 3306
 
 DB_DATABASE=sample
 DB_USERNAME=sample

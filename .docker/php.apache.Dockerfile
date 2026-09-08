@@ -7,12 +7,6 @@ FROM php:${PHP_VERSION}-apache AS apachephp
 FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.53.1
 
-FROM go AS runn
-RUN go install github.com/k1LoW/runn/cmd/runn@v1.10.0
-
-FROM go AS mysqldef
-RUN go install github.com/sqldef/sqldef/v3/cmd/mysqldef@v3.11.20
-
 FROM go AS psqldef
 RUN go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.20
 
@@ -51,7 +45,6 @@ ENV APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME} \
     APACHE_LOG_DIR=/var/www/html/storage/logs
 COPY --from=task /go/bin/task /usr/bin/task
-COPY --from=runn /go/bin/runn /usr/bin/runn
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 USER ${USER_NAME}
 

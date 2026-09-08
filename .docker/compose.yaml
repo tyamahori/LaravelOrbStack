@@ -5,7 +5,6 @@ x-common-settings: &healthcheck-settings
   retries: 30
 volumes:
   postgresql:
-  mysql:
   cache:
   session:
   storage:
@@ -48,41 +47,6 @@ services:
       - app
       - cli
 
-  mysql:
-    networks:
-      default:
-        aliases:
-          - laravelorbstack.mysql.local
-    image: mysql:26.7.0@sha256:66aec17cd21a956029b83f083b813073859e8355dc1a00e55df6ba02f0e32345
-    environment:
-      MYSQL_ROOT_PASSWORD: sample
-      MYSQL_DATABASE: sample
-      MYSQL_USER: sample
-      MYSQL_PASSWORD: sample
-    command:
-      - mysqld
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - type: volume
-        source: mysql
-        target: /var/lib/mysql
-    healthcheck:
-      test:
-        - CMD
-        - mysqladmin
-        - ping
-        - -h
-        - laravelorbstack.mysql.local
-        - -u
-        - sample
-        - -psample
-        - -P
-        - "3306"
-      <<: *healthcheck-settings
-    profiles:
-      - app
-      - cli
   cache:
     networks:
       default:
@@ -225,8 +189,6 @@ services:
     depends_on:
       postgresql:
         condition: service_healthy
-      mysql:
-        condition: service_healthy
       cache:
         condition: service_healthy
       session:
@@ -267,8 +229,6 @@ services:
     depends_on:
       postgresql:
         condition: service_healthy
-      mysql:
-        condition: service_healthy
       cache:
         condition: service_healthy
       session:
@@ -306,8 +266,6 @@ services:
       - cli
     depends_on:
       postgresql:
-        condition: service_healthy
-      mysql:
         condition: service_healthy
       cache:
         condition: service_healthy

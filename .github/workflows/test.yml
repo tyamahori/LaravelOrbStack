@@ -62,7 +62,7 @@ jobs:
           key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}-${{ hashFiles('./.docker/compose.yaml') }}
       - if: steps.docker-cache.outputs.cache-hit != 'true'
         name: Cache Docker Image
-        run: docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml pull session cache mail mysql postgresql storage setUpStorage
+        run: docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml pull session cache mail postgresql storage setUpStorage
 
   flyio-build:
     runs-on: ubuntu-latest

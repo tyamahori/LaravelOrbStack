@@ -1,6 +1,6 @@
 # LaravelOrbStack
 
-Laravel を OrbStack 上の Docker Compose 環境で動かすためのサンプルプロジェクトです。Apache mod_php と FrankenPHP の 2 系統の PHP 実行環境を同時に立ち上げ、PostgreSQL、MySQL、Redis、Mailpit、S3 互換ストレージを含むローカル開発環境を構築します。
+Laravel を OrbStack 上の Docker Compose 環境で動かすためのサンプルプロジェクトです。Apache mod_php と FrankenPHP の 2 系統の PHP 実行環境を同時に立ち上げ、PostgreSQL、Redis、Mailpit、S3 互換ストレージを含むローカル開発環境を構築します。
 
 ## 構成
 
@@ -9,7 +9,6 @@ Laravel を OrbStack 上の Docker Compose 環境で動かすためのサンプ�
 - Apache mod_php
 - FrankenPHP
 - PostgreSQL
-- MySQL
 - Redis
 - Mailpit
 - RustFS
@@ -53,7 +52,6 @@ OrbStack のドメイン連携により、起動後は次の URL でアクセス
 | サービス | アクセス先 |
 |:--|:--|
 | PostgreSQL | `postgresql.laravelorbstack.orb.local:5432` |
-| MySQL | `mysql.laravelorbstack.orb.local:3306` |
 | Redis(キャッシュ) | `cache.laravelorbstack.orb.local:6379` |
 | Redis(セッション) | `session.laravelorbstack.orb.local:6379` |
 | Mailpit UI | <http://mail.laravelorbstack.orb.local:8025/> |
@@ -168,7 +166,6 @@ Compose 内では次の補助サービスを利用します。
 | `php-cli` | ワンショットコマンド実行用 PHP コンテナ |
 | `balancer` | リバースプロキシ。OrbStack ドメインを各実行環境へ振り分け |
 | `postgresql` | PostgreSQL データベース |
-| `mysql` | MySQL データベース |
 | `cache` | Redis キャッシュ |
 | `session` | Redis セッション |
 | `mail` | Mailpit |
