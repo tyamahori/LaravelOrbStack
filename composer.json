@@ -33,7 +33,6 @@
         "psr-4": {
             "LaravelOrbStack\\": "packages/",
             "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
     },

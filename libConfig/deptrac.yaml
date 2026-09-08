@@ -10,10 +10,6 @@ deptrac:
       collectors:
         - type: classLike
           value: ^(LaravelOrbStack|App)\\.*Controller.*
-    - name: Repository
-      collectors:
-        - type: classLike
-          value: ^(LaravelOrbStack|App)\\.*Repository.*
     - name: Service
       collectors:
         - type: classLike
@@ -22,5 +18,3 @@ deptrac:
     Controller:
       - Service
     Service:
-      - Repository
-    Repository:
