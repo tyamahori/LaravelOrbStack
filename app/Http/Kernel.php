@@ -56,7 +56,6 @@ final class Kernel extends HttpKernel
      */
     #[Override]
     protected $middleware = [
-        // \App\Http\Middleware\TrustHosts::class,
         TrustProxies::class,
         HandleCors::class,
         PreventRequestsDuringMaintenance::class,

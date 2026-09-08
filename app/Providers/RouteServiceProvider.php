@@ -24,10 +24,6 @@ final class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->routes(function (Router $router): void {
-            $router->group(
-                ['middleware' => 'api', 'prefix' => 'api'],
-                $this->app->basePath('routes/api.php'),
-            );
             $router->group(['middleware' => 'web'], $this->app->basePath('routes/web.php'));
         });
     }
