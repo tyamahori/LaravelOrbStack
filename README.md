@@ -109,12 +109,11 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 | `task ecs` | ECS をチェックモードで実行 |
 | `task runEcs` | ECS を fix モードで実行 |
 | `task mago` | Mago lint をチェックモードで実行 |
-| `task magoOnSave` | Mago lint を fix モードで実行 |
 | `task onSavePHP` | 保存時向けに Rector / ECS / Mago の fix と PHPStan をまとめて実行 |
 | `task phpunit` | PHPUnit を実行(`composer phpunit` 経由) |
 | `task ide-helper` | Laravel IDE Helper を生成 |
 
-Devbox シェル内では `devbox run lint`、`devbox run stan`、`devbox run fixer`、`devbox run rector` も利用できます。
+Devbox シェル内では `devbox run composer` で Composer install を実行できます。
 
 ## コーディング規約
 
