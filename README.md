@@ -142,9 +142,9 @@ PHPUnit は `composer phpunit`(または `task phpunit`)で実行してくださ
 │   └── flyio/
 ├── .github/workflows/        # CI(テスト、イメージビルド、Renovate)
 ├── app/                      # Laravel アプリケーション
-├── bootstrap/                # app.php と autoload.php(グローバルヘルパの実行時ガード)
+├── bootstrap/                # app.php(Application::configure)/ providers.php / autoload.php(グローバルヘルパの実行時ガード)
 ├── config/                   # Laravel 設定
-├── database/                 # schema.sql (psqldef) / seeder / factory
+├── database/                 # schema.sql (psqldef) / seeder
 ├── libConfig/                # PHPStan / ECS / Rector / PHPUnit / Deptrac / Mago 設定
 │   └── PhpStan/              # 自作 PHPStan ルール
 ├── packages/                 # アプリケーションコードとテスト(<Package>/Test/*Test.php)
