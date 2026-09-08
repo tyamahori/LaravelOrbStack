@@ -82,6 +82,13 @@
         ],
         "magoCheck": [
             "./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint"
+        ],
+        "lintCheck": [
+            "@rectorCheck",
+            "@stanCheck",
+            "@ecsCheck",
+            "@deptracCheck",
+            "@magoCheck"
         ]
     },
     "extra": {
