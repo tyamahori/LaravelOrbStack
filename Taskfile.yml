@@ -289,6 +289,29 @@ tasks:
           COMMAND_TO_RUN: |
             ./vendor/bin/deptrac --config-file=./libConfig/deptrac.yaml --no-progress
 
+  mago:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
+    sources:
+      - ./packages/**/*.php
+      - ./app/**/*.php
+      - ./config/**/*.php
+      - ./database/**/*.php
+      - ./public/**/*.php
+      - ./resources/**/*.php
+      - ./routes/**/*.php
+      - ./tests/**/*.php
+      - ./libConfig/mago.toml
+    cmds:
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint
+
   phpunit:
     deps:
       - task: composer
@@ -383,6 +406,7 @@ tasks:
       - runRector
       - runEcs
       - deptrac
+      - mago
   lintCode:
     deps:
       - task: composer
@@ -457,6 +481,19 @@ tasks:
           COMMAND_TO_RUN: |
             ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }}
 
+  magoOnSave:
+    deps:
+      - task: composer
+        vars:
+          CLI_ARGS: install
+    cmds:
+      - task: baseCommand
+        vars:
+          RUNNING_SERVICE: php-app
+          CLI_SERVICE: php-cli
+          COMMAND_TO_RUN: |
+            ./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint --fix {{ .CLI_ARGS }}
+
   onSavePHP:
     deps:
       - task: composer
@@ -469,6 +506,7 @@ tasks:
           CLI_SERVICE: php-cli
           COMMAND_TO_RUN: |
             ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }} &&
+            ./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint --fix {{ .CLI_ARGS }} &&
             ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix {{ .CLI_ARGS }} &&
             ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G
 
