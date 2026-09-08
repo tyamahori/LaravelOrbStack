@@ -339,7 +339,7 @@ tasks:
           RUNNING_SERVICE: php-app
           CLI_SERVICE: php-cli
           COMMAND_TO_RUN: |
-            ./vendor/bin/phpunit -c ./libConfig/phpunit.xml {{ .CLI_ARGS }}
+            composer phpunit -- {{ .CLI_ARGS }}
 
   runRector:
     deps:

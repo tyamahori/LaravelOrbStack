@@ -125,6 +125,7 @@ return ECSConfig::configure()
     ->withPaths([
         "{$dirname}/app",
         "{$dirname}/bootstrap/app.php",
+        "{$dirname}/bootstrap/autoload.php",
         "{$dirname}/config",
         "{$dirname}/database",
         "{$dirname}/packages",

@@ -83,7 +83,7 @@
             "./vendor/bin/deptrac --config-file=./libConfig/deptrac.yaml --no-progress"
         ],
         "phpunit": [
-            "./vendor/bin/phpunit -c ./libConfig/phpunit.xml"
+            "@php -d auto_prepend_file=bootstrap/autoload.php ./vendor/bin/phpunit -c ./libConfig/phpunit.xml"
         ],
         "magoCheck": [
             "./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint"
