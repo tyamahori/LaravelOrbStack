@@ -103,16 +103,33 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 |:--|:--|
 | `task lintCode` | PHPStan、Deptrac、Mago を実行し、Rector と ECS を適用(自動修正)モードで実行 |
 | `task stan` | PHPStan を実行 |
+| `task deptrac` | Deptrac でレイヤー依存を検査 |
 | `task rectorDryRun` | Rector を dry-run で実行 |
 | `task runRector` | Rector を適用 |
 | `task ecs` | ECS をチェックモードで実行 |
 | `task runEcs` | ECS を fix モードで実行 |
 | `task mago` | Mago lint をチェックモードで実行 |
 | `task magoOnSave` | Mago lint を fix モードで実行 |
-| `task phpunit` | PHPUnit を実行 |
+| `task onSavePHP` | 保存時向けに Rector / ECS / Mago の fix と PHPStan をまとめて実行 |
+| `task phpunit` | PHPUnit を実行(`composer phpunit` 経由) |
 | `task ide-helper` | Laravel IDE Helper を生成 |
 
 Devbox シェル内では `devbox run lint`、`devbox run stan`、`devbox run fixer`、`devbox run rector` も利用できます。
+
+## コーディング規約
+
+アプリケーションコードでは Laravel のファサードとグローバルヘルパ(`app()`、`config()`、`route()`、`view()`、`now()`、`fake()` など)を使わず、コンストラクタやメソッド引数で契約(`Illuminate\Contracts\*`)を受け取ります。Blade は必要な値をコントローラから渡し、テンプレート内でヘルパを呼びません。
+
+この規約は 2 段階で強制しています。
+
+| 層 | 仕組み | 対象 |
+|:--|:--|:--|
+| 静的解析 | `libConfig/PhpStan/NoFacadeRule.php`、`libConfig/PhpStan/NoGlobalHelperRule.php` | PHPStan の解析対象パス(`app/`、`packages/`、`database/`、`routes/`、`tests/` など)。`vendor/laravel/framework` の `helpers.php` に定義された関数はすべて対象 |
+| 実行時 | `bootstrap/autoload.php` が `app()` をフレームワークより先に定義し、`vendor/` と `config/` 以外からの呼び出しで `LogicException` を投げる | `public/index.php`、`artisan`、`composer phpunit` の 3 エントリポイント。コンパイル済み Blade も含む |
+
+`config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部からのヘルパ呼び出しは制限しません。
+
+PHPUnit は `composer phpunit`(または `task phpunit`)で実行してください。`vendor/bin/phpunit` を直接叩くとガードが読み込まれず、`packages/Samples/Test/GlobalHelperGuardTest.php` が失敗します。
 
 ## ディレクトリ
 
@@ -125,15 +142,17 @@ Devbox シェル内では `devbox run lint`、`devbox run stan`、`devbox run fi
 │   ├── php.franken.Dockerfile
 │   ├── common/
 │   ├── local/
-│   ├── prod/
 │   └── flyio/
+├── .github/workflows/        # CI(テスト、イメージビルド、Renovate)
 ├── app/                      # Laravel アプリケーション
+├── bootstrap/                # app.php と autoload.php(グローバルヘルパの実行時ガード)
 ├── config/                   # Laravel 設定
 ├── database/                 # schema.sql (psqldef) / seeder / factory
 ├── libConfig/                # PHPStan / ECS / Rector / PHPUnit / Deptrac / Mago 設定
-├── packages/                 # サンプルパッケージ
+│   └── PhpStan/              # 自作 PHPStan ルール
+├── packages/                 # アプリケーションコードとテスト(<Package>/Test/*Test.php)
 ├── routes/                   # Laravel ルート定義
-├── tests/                    # PHPUnit テスト
+├── tests/                    # PHPUnit の TestCase と拡張(テスト本体は packages/ 配下)
 ├── Taskfile.yml              # Task コマンド定義
 ├── composer.json
 └── devbox.json               # Devbox 設定
