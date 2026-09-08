@@ -103,7 +103,8 @@
         "allow-plugins": {
             "phpstan/extension-installer": true
         },
-        "nextPhp": "8.6"
+        "nextPhp": "8.6",
+        "composerVersion": "2.10.3"
     },
     "minimum-stability": "stable",
     "prefer-stable": true

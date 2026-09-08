@@ -34,9 +34,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Get PHP version
+      - name: Get PHP and Composer versions
         run: |
           echo "PHP_VERSION=$(jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json)" >> "$GITHUB_ENV"
+          echo "COMPOSER_VERSION=$(jq -r '.config.composerVersion' composer.json)" >> "$GITHUB_ENV"
 
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -66,7 +67,9 @@ jobs:
           context: .
           file: .docker/php.franken.Dockerfile
           target: basebuild
-          build-args: PHP_VERSION=${{ env.PHP_VERSION }}
+          build-args: |
+            PHP_VERSION=${{ env.PHP_VERSION }}
+            COMPOSER_VERSION=${{ env.COMPOSER_VERSION }}
           platforms: linux/${{ matrix.arch }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=${{ github.event_name != 'pull_request' }}

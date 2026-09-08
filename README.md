@@ -16,6 +16,8 @@ Laravel を OrbStack 上の Docker Compose 環境で動かすためのサンプ�
 - Task
 - Devbox
 
+PHP と Composer のバージョンは `composer.json` が正本です。PHP は `require.php`、Composer は `config.composerVersion` から Taskfile・Dockerfile(`--build-arg`)・GitHub Actions が読み取るので、上げるときはそこだけ変更します。Devbox の PHP は `devbox.json` で別途固定しています。
+
 ## 前提条件
 
 - macOS

@@ -8,6 +8,8 @@ vars:
   PHP_FRANKEN_DOCKERFILE_PATH: .docker/php.franken.Dockerfile
   PHP_VERSION:
     sh: jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json
+  COMPOSER_VERSION:
+    sh: jq -r '.config.composerVersion' composer.json
 
   BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
   CI_BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} -f {{ .CI_COMPOSE_FILE_PATH }}
@@ -38,6 +40,7 @@ tasks:
         -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --target=basebuild \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \
+        --build-arg COMPOSER_VERSION={{ .COMPOSER_VERSION }} \
         .
   buildBaseFrankenPhp:
     cmd: |
@@ -46,6 +49,7 @@ tasks:
         -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --target=basebuild \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \
+        --build-arg COMPOSER_VERSION={{ .COMPOSER_VERSION }} \
         .
   buildBaseImages:
     deps:
@@ -60,6 +64,7 @@ tasks:
         -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --target=local \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \
+        --build-arg COMPOSER_VERSION={{ .COMPOSER_VERSION }} \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }} \
@@ -73,6 +78,7 @@ tasks:
         -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --target=local \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \
+        --build-arg COMPOSER_VERSION={{ .COMPOSER_VERSION }} \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }} \
@@ -498,6 +504,7 @@ tasks:
         --dockerfile {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --build-target flyio \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \
+        --build-arg COMPOSER_VERSION={{ .COMPOSER_VERSION }} \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }}
@@ -510,6 +517,7 @@ tasks:
         --dockerfile {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --build-target flyio \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \
+        --build-arg COMPOSER_VERSION={{ .COMPOSER_VERSION }} \
         --build-arg USER_ID={{ .USER_ID }} \
         --build-arg GROUP_ID={{ .GROUP_ID }} \
         --build-arg USER_NAME={{ .USER_NAME }}

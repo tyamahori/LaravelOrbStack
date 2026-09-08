@@ -108,6 +108,18 @@
             ],
             "datasourceTemplate": "go",
             "versioningTemplate": "semver-coerced"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/^composer\\.json$/"
+            ],
+            "matchStrings": [
+                "\"composerVersion\": \"(?<currentValue>[0-9.]+)\""
+            ],
+            "depNameTemplate": "composer",
+            "datasourceTemplate": "docker",
+            "versioningTemplate": "semver"
         }
     ]
 }
