@@ -98,12 +98,14 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 
 | コマンド | 内容 |
 |:--|:--|
-| `task lintCode` | PHPStan と Deptrac を実行し、Rector と ECS を適用(自動修正)モードで実行 |
+| `task lintCode` | PHPStan、Deptrac、Mago を実行し、Rector と ECS を適用(自動修正)モードで実行 |
 | `task stan` | PHPStan を実行 |
 | `task rectorDryRun` | Rector を dry-run で実行 |
 | `task runRector` | Rector を適用 |
 | `task ecs` | ECS をチェックモードで実行 |
 | `task runEcs` | ECS を fix モードで実行 |
+| `task mago` | Mago lint をチェックモードで実行 |
+| `task magoOnSave` | Mago lint を fix モードで実行 |
 | `task phpunit` | PHPUnit を実行 |
 | `task ide-helper` | Laravel IDE Helper を生成 |
 
@@ -125,7 +127,7 @@ Devbox シェル内では `devbox run lint`、`devbox run stan`、`devbox run fi
 ├── app/                      # Laravel アプリケーション
 ├── config/                   # Laravel 設定
 ├── database/                 # migration / seeder / factory
-├── libConfig/                # PHPStan / ECS / Rector / PHPUnit / Deptrac 設定
+├── libConfig/                # PHPStan / ECS / Rector / PHPUnit / Deptrac / Mago 設定
 ├── packages/                 # サンプルパッケージ
 ├── routes/                   # Laravel ルート定義
 ├── tests/                    # PHPUnit テスト

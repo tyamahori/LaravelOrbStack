@@ -13,6 +13,6 @@ final class SampleControllerTest extends TestCase
     public function エンドポイントにアクセスすると200になる(): void
     {
         $response = $this->get(route('welcome'));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 }

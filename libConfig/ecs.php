@@ -62,7 +62,6 @@ use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Fixer\Operator\NoUselessConcatOperatorFixer;
 use PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer;
 use PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer;
-use PhpCsFixer\Fixer\Operator\TernaryToElvisOperatorFixer;
 use PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer;
 use PhpCsFixer\Fixer\Phpdoc\AlignMultilineCommentFixer;
 use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
@@ -127,6 +126,7 @@ return ECSConfig::configure()
         "{$dirname}/app",
         "{$dirname}/bootstrap/app.php",
         "{$dirname}/config",
+        "{$dirname}/database",
         "{$dirname}/packages",
         "{$dirname}/public",
         "{$dirname}/resources",
@@ -342,7 +342,8 @@ return ECSConfig::configure()
         NoUselessConcatOperatorFixer::class,
         NoUselessNullsafeOperatorFixer::class,
         StandardizeIncrementFixer::class,
-        TernaryToElvisOperatorFixer::class,
+        // TernaryToElvisOperatorFixer deliberately absent: it emits `?:`, which
+        // relies on loose truthiness and Mago's no-shorthand-ternary flags.
         ExplicitStringVariableFixer::class,
         ExplicitIndirectVariableFixer::class,
         CombineConsecutiveIssetsFixer::class,

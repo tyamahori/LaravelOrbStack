@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b7cc9fd5b897991d6e2eac48200288b",
+    "content-hash": "68f52c87aab40a7abfdb56b384b60698",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8001,6 +8001,69 @@
             "time": "2026-03-05T20:09:01+00:00"
         },
         {
+            "name": "carthage-software/mago",
+            "version": "1.47.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/carthage-software/mago.git",
+                "reference": "ad48106b8d1dbf3140f3a4bd4d244a5e47c9e495"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/ad48106b8d1dbf3140f3a4bd4d244a5e47c9e495",
+                "reference": "ad48106b8d1dbf3140f3a4bd4d244a5e47c9e495",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.1 || ~8.2 || ~8.3 || ~8.4 || ~8.5 || ~8.6",
+                "revolt/event-loop": "^1.0.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "suggest": {
+                "ext-curl": "To show binary download progress"
+            },
+            "bin": [
+                "composer/bin/mago"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "composer/src/functions.php",
+                    "composer/src/internal.php"
+                ],
+                "psr-4": {
+                    "Mago\\": "composer/src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT OR Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Seifeddine Gmati",
+                    "email": "azjezz@carthage.software"
+                }
+            ],
+            "description": "Mago is a toolchain for PHP that aims to provide a set of tools to help developers write better code.",
+            "keywords": [
+                "dev"
+            ],
+            "support": {
+                "issues": "https://github.com/carthage-software/mago/issues",
+                "source": "https://github.com/carthage-software/mago/tree/1.47.6"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/azjezz",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-09-04T17:48:48+00:00"
+        },
+        {
             "name": "composer/class-map-generator",
             "version": "1.7.3",
             "source": {
@@ -9473,117 +9536,26 @@
             "time": "2026-09-03T20:38:19+00:00"
         },
         {
-            "name": "phpstan/phpstan-doctrine",
-            "version": "2.0.28",
+            "name": "phpstan/phpstan-deprecation-rules",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "b4623954d5ffee6311e4ddbaef65c074ae0f781a"
+                "url": "https://github.com/phpstan/phpstan-deprecation-rules.git",
+                "reference": "67bedd65c24bc72840afc45aed48b1059dd44bec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/b4623954d5ffee6311e4ddbaef65c074ae0f781a",
-                "reference": "b4623954d5ffee6311e4ddbaef65c074ae0f781a",
+                "url": "https://api.github.com/repos/phpstan/phpstan-deprecation-rules/zipball/67bedd65c24bc72840afc45aed48b1059dd44bec",
+                "reference": "67bedd65c24bc72840afc45aed48b1059dd44bec",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.2.2"
-            },
-            "conflict": {
-                "doctrine/collections": "<1.0",
-                "doctrine/common": "<2.7",
-                "doctrine/mongodb-odm": "<1.2",
-                "doctrine/orm": "<2.5",
-                "doctrine/persistence": "<1.3"
+                "phpstan/phpstan": "^2.1.39"
             },
             "require-dev": {
-                "cache/array-adapter": "^1.1",
-                "composer/semver": "^3.3.2",
-                "cweagans/composer-patches": "^1.7.3",
-                "doctrine/annotations": "^2.0",
-                "doctrine/collections": "^1.6 || ^2.1",
-                "doctrine/common": "^2.7 || ^3.0",
-                "doctrine/dbal": "^3.3.8",
-                "doctrine/lexer": "^2.0 || ^3.0",
-                "doctrine/mongodb-odm": "^2.4.3",
-                "doctrine/orm": "^2.16.0",
-                "doctrine/persistence": "^2.2.1 || ^3.4.3",
-                "gedmo/doctrine-extensions": "^3.8",
-                "nesbot/carbon": "^2.49",
                 "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpstan/phpstan-deprecation-rules": "^2.0.2",
-                "phpstan/phpstan-phpunit": "^2.0.8",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^9.6.20",
-                "ramsey/uuid": "^4.2",
-                "shipmonk/name-collision-detector": "^2.1",
-                "symfony/cache": "^5.4",
-                "symfony/uid": "^5.4 || ^6.4 || ^7.3"
-            },
-            "type": "phpstan-extension",
-            "extra": {
-                "phpstan": {
-                    "includes": [
-                        "extension.neon",
-                        "rules.neon"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PHPStan\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Doctrine extensions for PHPStan",
-            "keywords": [
-                "static analysis"
-            ],
-            "support": {
-                "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.28"
-            },
-            "time": "2026-07-13T08:43:43+00:00"
-        },
-        {
-            "name": "phpstan/phpstan-nette",
-            "version": "2.0.12",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpstan-nette.git",
-                "reference": "2c104f121b9db65407112069ef4fd43799c9ba0c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-nette/zipball/2c104f121b9db65407112069ef4fd43799c9ba0c",
-                "reference": "2c104f121b9db65407112069ef4fd43799c9ba0c",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.2.3"
-            },
-            "conflict": {
-                "nette/application": "<2.3.0",
-                "nette/component-model": "<2.3.0",
-                "nette/di": "<2.3.0",
-                "nette/forms": "<2.3.0",
-                "nette/http": "<2.3.0",
-                "nette/utils": "<2.3.0"
-            },
-            "require-dev": {
-                "nette/application": "^3.0",
-                "nette/di": "^3.0",
-                "nette/forms": "^3.0",
-                "nette/utils": "^2.3.0 || ^3.0.0 || ^4.0",
-                "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0.8",
-                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
                 "phpunit/phpunit": "^9.6",
                 "shipmonk/name-collision-detector": "^2.1"
             },
@@ -9591,7 +9563,6 @@
             "extra": {
                 "phpstan": {
                     "includes": [
-                        "extension.neon",
                         "rules.neon"
                     ]
                 }
@@ -9605,12 +9576,15 @@
             "license": [
                 "MIT"
             ],
-            "description": "Nette Framework class reflection extension for PHPStan",
+            "description": "PHPStan rules for detecting usage of deprecated classes, methods, properties, constants and traits.",
+            "keywords": [
+                "static analysis"
+            ],
             "support": {
-                "issues": "https://github.com/phpstan/phpstan-nette/issues",
-                "source": "https://github.com/phpstan/phpstan-nette/tree/2.0.12"
+                "issues": "https://github.com/phpstan/phpstan-deprecation-rules/issues",
+                "source": "https://github.com/phpstan/phpstan-deprecation-rules/tree/2.0.5"
             },
-            "time": "2026-07-02T10:28:46+00:00"
+            "time": "2026-07-22T06:50:43+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
@@ -10253,6 +10227,78 @@
                 }
             ],
             "time": "2026-09-02T09:38:46+00:00"
+        },
+        {
+            "name": "revolt/event-loop",
+            "version": "v1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/revoltphp/event-loop.git",
+                "reference": "44061cf513e53c6200372fc935ac42271566295d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/revoltphp/event-loop/zipball/44061cf513e53c6200372fc935ac42271566295d",
+                "reference": "44061cf513e53c6200372fc935ac42271566295d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "jetbrains/phpstorm-stubs": "^2019.3",
+                "phpunit/phpunit": "^9",
+                "psalm/phar": "6.16.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Revolt\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Piotrowski",
+                    "email": "aaron@trowski.com"
+                },
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com"
+                },
+                {
+                    "name": "Christian Lück",
+                    "email": "christian@clue.engineering"
+                },
+                {
+                    "name": "Niklas Keller",
+                    "email": "me@kelunik.com"
+                }
+            ],
+            "description": "Rock-solid event loop for concurrent PHP applications.",
+            "keywords": [
+                "async",
+                "asynchronous",
+                "concurrency",
+                "event",
+                "event-loop",
+                "non-blocking",
+                "scheduler"
+            ],
+            "support": {
+                "issues": "https://github.com/revoltphp/event-loop/issues",
+                "source": "https://github.com/revoltphp/event-loop/tree/v1.0.9"
+            },
+            "time": "2026-05-16T17:55:38+00:00"
         },
         {
             "name": "roave/security-advisories",

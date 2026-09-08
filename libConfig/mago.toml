@@ -1,0 +1,46 @@
+php-version = "8.5"
+
+[source]
+paths = ["app", "bootstrap/app.php", "config", "database", "packages", "public", "resources", "routes", "tests"]
+includes = ["vendor"]
+excludes = [".tempCache/**", "libConfig/**", "storage/**", "bootstrap/cache/**"]
+
+[linter]
+integrations = ["laravel", "phpunit", "guzzle", "carbon"]
+minimum-fail-level = "note"
+
+# Mago is lint-only here: ECS (libConfig/ecs.php) and Rector (libConfig/rector.php)
+# own every rewrite. Rules below duplicate a fixer that already runs there, so
+# they are disabled to keep one owner per finding and stop `--fix` passes from
+# rewriting each other's output. `mago fmt` is intentionally not wired up: its
+# opinionated output conflicts with the PSR-12 style ECS enforces.
+[linter.rules]
+literal-named-argument = { enabled = false }
+# owned by ECS
+block-statement = { enabled = false }               # control_structure_braces (@PSR2)
+braced-string-interpolation = { enabled = false }   # ExplicitStringVariableFixer
+combine-consecutive-issets = { enabled = false }    # CombineConsecutiveIssetsFixer
+explicit-nullable-param = { enabled = false }       # NullableTypeDeclarationForDefaultNullValueFixer
+identity-comparison = { enabled = false }           # StrictComparisonFixer
+lowercase-keyword = { enabled = false }             # lowercase_keywords (@PSR2)
+lowercase-type-hint = { enabled = false }           # NativeTypeDeclarationCasingFixer, lowercase_cast (@PSR12)
+no-alias-function = { enabled = false }             # no_alias_functions (@Symfony:risky)
+no-closing-tag = { enabled = false }                # no_closing_tag (@PSR2)
+no-empty-comment = { enabled = false }              # NoEmptyCommentFixer
+no-noop = { enabled = false }                       # NoEmptyStatementFixer
+no-protected-in-final = { enabled = false }         # ProtectedToPrivateFixer
+no-redundant-block = { enabled = false }            # NoUnneededBracesFixer
+no-redundant-final = { enabled = false }            # no_unneeded_final_method (@Symfony:risky)
+no-redundant-nullsafe = { enabled = false }         # NoUselessNullsafeOperatorFixer
+no-redundant-parentheses = { enabled = false }      # NoUnneededControlParenthesesFixer
+no-redundant-string-concat = { enabled = false }    # NoUselessConcatOperatorFixer
+no-redundant-use = { enabled = false }              # NoUnusedImportsFixer
+no-trailing-space = { enabled = false }             # no_trailing_whitespace (@PSR2)
+prefer-arrow-function = { enabled = false }         # UseArrowFunctionsFixer
+prefer-static-closure = { enabled = false }         # StaticLambdaFixer
+strict-behavior = { enabled = false }               # StrictParamFixer
+strict-types = { enabled = false }                  # declare_strict_types (@PhpCsFixer:risky)
+# owned by Rector
+inline-variable-return = { enabled = false }        # SimplifyUselessVariableRector
+no-redundant-continue = { enabled = false }         # RemoveDeadContinueRector
+use-compound-assignment = { enabled = false }       # CombinedAssignRector
