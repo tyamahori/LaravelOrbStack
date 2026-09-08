@@ -7,7 +7,7 @@ namespace LaravelOrbStack\Samples\Test;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class SampleControllerTest extends TestCase
+final class SampleControllerTest extends TestCase
 {
     #[Test]
     public function エンドポイントにアクセスすると200になる(): void
