@@ -32,18 +32,17 @@ services:
         source: ./local/db/script.sql
         target: /docker-entrypoint-initdb.d/script.sql
     healthcheck:
-      test: [
-        "CMD",
-        "pg_isready",
-        "-h",
-        "laravelorbstack.pgsql.local",
-        "-U",
-        "sample",
-        "-d",
-        "sample",
-        "-p",
-        "5432",
-      ]
+      test:
+        - CMD
+        - pg_isready
+        - -h
+        - laravelorbstack.pgsql.local
+        - -U
+        - sample
+        - -d
+        - sample
+        - -p
+        - "5432"
       <<: *healthcheck-settings
     profiles:
       - app
@@ -60,24 +59,26 @@ services:
       MYSQL_DATABASE: sample
       MYSQL_USER: sample
       MYSQL_PASSWORD: sample
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    command:
+      - mysqld
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
     volumes:
       - type: volume
         source: mysql
         target: /var/lib/mysql
     healthcheck:
-      test: [
-        "CMD",
-        "mysqladmin",
-        "ping",
-        "-h",
-        "laravelorbstack.mysql.local",
-        "-u",
-        "sample",
-        "-psample",
-        "-P",
-        "3306",
-      ]
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - -h
+        - laravelorbstack.mysql.local
+        - -u
+        - sample
+        - -psample
+        - -P
+        - "3306"
       <<: *healthcheck-settings
     profiles:
       - app
@@ -88,17 +89,19 @@ services:
         aliases:
           - laravelorbstack.cache.local
     image: redis:8.4.6-alpine3.22@sha256:12da49daa000c2be4d55118574f889c8cc298140ecf343d04f345c818f227823
-    command: redis-server --appendonly yes
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
     volumes:
       - type: volume
         source: cache
         target: /data
     healthcheck:
-      test: [
-        "CMD",
-        "redis-cli",
-        "ping"
-      ]
+      test:
+        - CMD
+        - redis-cli
+        - ping
       <<: *healthcheck-settings
     profiles:
       - app
@@ -110,17 +113,19 @@ services:
         aliases:
           - laravelorbstack.session.local
     image: redis:8.4.6-alpine3.22@sha256:12da49daa000c2be4d55118574f889c8cc298140ecf343d04f345c818f227823
-    command: redis-server --appendonly yes
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
     volumes:
       - type: volume
         source: session
         target: /data
     healthcheck:
-      test: [
-        "CMD",
-        "redis-cli",
-        "ping"
-      ]
+      test:
+        - CMD
+        - redis-cli
+        - ping
       <<: *healthcheck-settings
     profiles:
       - app
@@ -133,13 +138,12 @@ services:
           - laravelorbstack.mail.local
     image: axllent/mailpit:v1.31.1@sha256:98b916bd3c8d61f7633a52d3ea2f58d00620cb01ca57ab59edde68c347a95365
     healthcheck:
-      test: [
-        "CMD",
-        "ping",
-        "-c",
-        "3",
-        "laravelorbstack.mail.local"
-      ]
+      test:
+        - CMD
+        - ping
+        - -c
+        - "3"
+        - laravelorbstack.mail.local
       <<: *healthcheck-settings
     profiles:
       - app
@@ -163,12 +167,11 @@ services:
       RUSTFS_SECRET_KEY: samplesample
       RUSTFS_SERVER_DOMAINS: laravelorbstack.storage.local:9000
     healthcheck:
-      test: [
-        "CMD",
-        "curl",
-        "-f",
-        "http://laravelorbstack.storage.local:9000/health"
-      ]
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://laravelorbstack.storage.local:9000/health
       <<: *healthcheck-settings
 
   setUpStorage:
@@ -181,8 +184,11 @@ services:
       AWS_SECRET_ACCESS_KEY: samplesample
       AWS_DEFAULT_REGION: us-east-1
       AWS_REGION: us-east-1
-    entrypoint: /bin/sh
-    command: -c "aws --endpoint-url http://laravelorbstack.storage.local:9000 s3api create-bucket --bucket sample || true"
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - aws --endpoint-url http://laravelorbstack.storage.local:9000 s3api create-bucket --bucket sample || true
     profiles:
       - bucket
 
@@ -214,7 +220,8 @@ services:
         target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
     # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
-    env_file: local/php/.env.app
+    env_file:
+      - path: local/php/.env.app
     depends_on:
       postgresql:
         condition: service_healthy
@@ -255,7 +262,8 @@ services:
       - type: bind
         source: ./local/php/docker-php-ext-xdebug-franken.ini
         target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    env_file: local/php/.env.franken
+    env_file:
+      - path: local/php/.env.franken
     depends_on:
       postgresql:
         condition: service_healthy
@@ -274,7 +282,8 @@ services:
       - app
 
   php-cli:
-    env_file: local/php/.env.app
+    env_file:
+      - path: local/php/.env.app
     image: laravelorbstack/php:apache-local
     volumes:
       - type: bind
