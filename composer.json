@@ -43,6 +43,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "LibConfig\\PhpStan\\": "libConfig/PhpStan/",
             "Tests\\": "tests/"
         }
     },

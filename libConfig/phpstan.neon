@@ -39,3 +39,8 @@ parameters:
     - ../config
   viewDirectories:
     - ../resources/views
+
+services:
+  -
+    class: LibConfig\PhpStan\NoFacadeRule
+    tags: [phpstan.rules.rule]
