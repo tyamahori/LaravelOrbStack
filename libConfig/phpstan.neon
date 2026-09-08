@@ -16,3 +16,26 @@ parameters:
   tmpDir: ../.tempCache/.stan
   strictRules:
     allRules: true
+  checkBenevolentUnionTypes: true
+  checkUninitializedProperties: true
+  checkTooWideReturnTypesInProtectedAndPublicMethods: true
+  checkMissingCallableSignature: true
+  checkMissingOverrideMethodAttribute: true
+  checkImplicitMixed: true
+  reportPossiblyNonexistentGeneralArrayOffset: true
+  reportPossiblyNonexistentConstantArrayOffset: true
+  reportAnyTypeWideningInVarTag: true
+  # Larastan
+  checkOctaneCompatibility: true
+  noUnnecessaryEnumerableToArrayCalls: true
+  checkModelProperties: true
+  checkModelMethodVisibility: true
+  checkConfigTypes: true
+  checkAuthCallsWhenInRequestScope: true
+  parseModelCastsMethod: true
+  checkUnusedViews: true
+  checkMissingTranslations: true
+  configDirectories:
+    - ../config
+  viewDirectories:
+    - ../resources/views
