@@ -42,11 +42,7 @@ final readonly class NoGlobalHelperRule implements Rule
     #[Override]
     public function processNode(Node $node, Scope $scope): array
     {
-        if (! $node->name instanceof Name) {
-            return [];
-        }
-
-        if (! $this->reflectionProvider->hasFunction($node->name, $scope)) {
+        if (! $node->name instanceof Name || ! $this->reflectionProvider->hasFunction($node->name, $scope)) {
             return [];
         }
 

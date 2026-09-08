@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ use Illuminate\Container\Container;
 /**
  * @param class-string|string|null $abstract
  * @param array<string, mixed> $parameters
+ *
+ * @throws BindingResolutionException
  */
 function app(string|null $abstract = null, array $parameters = []): mixed
 {

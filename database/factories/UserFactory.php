@@ -28,7 +28,7 @@ final class UserFactory extends Factory
         ];
     }
 
-    public function unverified(): static
+    public function unverified(): self
     {
         return $this
             ->state(
