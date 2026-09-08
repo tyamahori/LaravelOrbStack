@@ -18,6 +18,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.4.3",
         "barryvdh/laravel-ide-helper": "^3.7.0",
+        "carthage-software/mago": "^1.47.6",
         "deptrac/deptrac": "^4.7.1",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.11.0",
@@ -78,6 +79,9 @@
         ],
         "phpunit": [
             "./vendor/bin/phpunit -c ./libConfig/phpunit.xml"
+        ],
+        "magoCheck": [
+            "./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint"
         ]
     },
     "extra": {

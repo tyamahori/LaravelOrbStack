@@ -1,0 +1,14 @@
+php-version = "8.5"
+
+[source]
+paths = ["app", "bootstrap/app.php", "config", "database", "packages", "public", "resources", "routes", "tests"]
+includes = ["vendor"]
+excludes = [".tempCache/**", "libConfig/**", "storage/**", "bootstrap/cache/**"]
+
+[linter]
+integrations = ["laravel", "phpunit", "guzzle", "carbon"]
+minimum-fail-level = "note"
+
+[linter.rules]
+literal-named-argument = { enabled = false }
+no-literal-password = { exclude = ["database/factories/"] }
