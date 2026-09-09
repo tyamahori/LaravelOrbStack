@@ -251,6 +251,8 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
+      - ./libConfig/ecs.php
+      - ./composer.lock
     cmds:
       - task: baseCommand
         vars:
@@ -272,6 +274,9 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
+      - ./libConfig/phpstan.neon
+      - ./libConfig/PhpStan/*.php
+      - ./composer.lock
     cmds:
       - task: baseCommand
         vars:
@@ -289,6 +294,7 @@ tasks:
       - ./packages/**/*.php
       - ./app/**/*.php
       - ./libConfig/deptrac.yaml
+      - ./composer.lock
     cmds:
       - task: baseCommand
         vars:
@@ -312,6 +318,7 @@ tasks:
       - ./routes/**/*.php
       - ./tests/**/*.php
       - ./libConfig/mago.toml
+      - ./composer.lock
     cmds:
       - task: baseCommand
         vars:
@@ -347,6 +354,8 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
+      - ./libConfig/rector.php
+      - ./composer.lock
     cmds:
       - task: baseCommand
         vars:
@@ -369,6 +378,8 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
+      - ./libConfig/ecs.php
+      - ./composer.lock
     cmds:
       - task: baseCommand
         vars:
@@ -391,6 +402,8 @@ tasks:
       - ./resources/**/*.php
       - ./routes/**/*.php
       - ./tests/**/*.php
+      - ./libConfig/rector.php
+      - ./composer.lock
     cmds:
       - task: baseCommand
         vars:
