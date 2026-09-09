@@ -13,6 +13,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\ShouldNotHappenException;
 
 use function sprintf;
 use function str_starts_with;
@@ -35,6 +36,9 @@ final readonly class NoFacadeRule implements Rule
         return StaticCall::class;
     }
 
+    /**
+     * @throws ShouldNotHappenException
+     */
     #[Override]
     public function processNode(Node $node, Scope $scope): array
     {

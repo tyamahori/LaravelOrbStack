@@ -138,10 +138,10 @@ return ECSConfig::configure()
         "{$dirname}/.tempCache/.ecs",
     )
     ->withPhpCsFixerSets(
-        php85Migration: true,
         psr2: true,
         psr12Risky: true,
         phpCsFixerRisky: true,
+        php85Migration: true,
     )
     ->withConfiguredRule(
         ArraySyntaxFixer::class,

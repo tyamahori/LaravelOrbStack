@@ -12,6 +12,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\ShouldNotHappenException;
 
 use function sprintf;
 use function str_contains;
@@ -39,6 +40,9 @@ final readonly class NoGlobalHelperRule implements Rule
         return FuncCall::class;
     }
 
+    /**
+     * @throws ShouldNotHappenException
+     */
     #[Override]
     public function processNode(Node $node, Scope $scope): array
     {
