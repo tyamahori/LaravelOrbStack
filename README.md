@@ -124,11 +124,11 @@ Devbox シェル内では `devbox run composer` で Composer install を実行�
 | 層 | 仕組み | 対象 |
 |:--|:--|:--|
 | 静的解析 | `libConfig/PhpStan/NoFacadeRule.php`、`libConfig/PhpStan/NoGlobalHelperRule.php` | PHPStan の解析対象パス(`app/`、`packages/`、`database/`、`routes/`、`tests/` など)。`vendor/laravel/framework` の `helpers.php` に定義された関数はすべて対象 |
-| 実行時 | `bootstrap/autoload.php` が `app()` をフレームワークより先に定義し、`vendor/` と `config/` 以外からの呼び出しで `LogicException` を投げる | `public/index.php`、`artisan`、`composer phpunit` の 3 エントリポイント。コンパイル済み Blade も含む |
+| 実行時 | `bootstrap/autoload.php` が `app()` と `Illuminate\Support\Facades\Facade` をフレームワークより先に定義し、`vendor/` と `config/` 以外からの呼び出しで `LogicException` を投げる | `public/index.php`、`artisan`、`composer phpunit` の 3 エントリポイント。コンパイル済み Blade も含む |
 
-`config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部からのヘルパ呼び出しは制限しません。
+`config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部からのヘルパ・ファサード呼び出しは制限しません。実行時ガードのファサード判定は `__callStatic` で行うため、`swap()` や `shouldReceive()` のように基底クラスに実在する静的メソッドは静的解析のみが対象です。
 
-PHPUnit は `composer phpunit`(または `task phpunit`)で実行してください。`vendor/bin/phpunit` を直接叩くとガードが読み込まれず、`packages/Samples/Test/GlobalHelperGuardTest.php` が失敗します。
+PHPUnit は `composer phpunit`(または `task phpunit`)で実行してください。`vendor/bin/phpunit` を直接叩くとガードが読み込まれず、`packages/Samples/Test/GlobalHelperGuardTest.php` と `FacadeGuardTest.php` が失敗します。
 
 ## ディレクトリ
 
@@ -144,7 +144,7 @@ PHPUnit は `composer phpunit`(または `task phpunit`)で実行してくださ
 │   └── flyio/
 ├── .github/workflows/        # CI(テスト、イメージビルド、Renovate)
 ├── app/                      # Laravel アプリケーション
-├── bootstrap/                # app.php(Application::configure)/ providers.php / autoload.php(グローバルヘルパの実行時ガード)
+├── bootstrap/                # app.php(Application::configure)/ providers.php / autoload.php(グローバルヘルパとファサードの実行時ガード)
 ├── config/                   # Laravel 設定
 ├── database/                 # schema.sql (psqldef) / seeder
 ├── libConfig/                # PHPStan / ECS / Rector / PHPUnit / Deptrac / Mago 設定
