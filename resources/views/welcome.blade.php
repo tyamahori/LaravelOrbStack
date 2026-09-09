@@ -20,7 +20,7 @@
     html { background: var(--paper); color: var(--ink); }
     body {
       margin: 0;
-      font-family: var(--sans);
+      font-family: var(--sans), serif;
       font-size: 1rem;
       line-height: 1.9;
       line-break: strict;
@@ -91,11 +91,10 @@
     footer {
       max-width: 42rem;
       margin: 0 auto;
-      padding: 0 1.5rem 3rem;
       color: var(--ink-soft);
       font-size: 0.85rem;
       border-top: 1px solid var(--rule);
-      padding-top: 1.25rem;
+      padding: 1.25rem 1.5rem 3rem;
     }
   </style>
 </head>
