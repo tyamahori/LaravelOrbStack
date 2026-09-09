@@ -414,12 +414,12 @@ tasks:
             ./vendor/bin/rector process --dry-run -c ./libConfig/rector.php
   runLint:
     internal: true
-    deps:
-      - stan
-      - runRector
-      - runEcs
-      - deptrac
-      - mago
+    cmds:
+      - task: runRector
+      - task: runEcs
+      - task: stan
+      - task: deptrac
+      - task: mago
   lintCode:
     deps:
       - task: composer
