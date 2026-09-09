@@ -10,6 +10,36 @@ trim_trailing_whitespace = true
 
 [*.md]
 trim_trailing_whitespace = false
+# README is hand-wrapped Japanese prose; IDEA's markdown formatter inserts
+# spaces before `(` and pads tables, which ECS/README conventions do not want.
+ij_formatter_enabled = false
+
+# IDEA "Reformat Code" must agree with ECS (libConfig/ecs.php)
+[*.php]
+ij_php_space_after_type_cast = true
+ij_php_space_after_unary_not = true
+ij_php_space_before_closure_left_parenthesis = true
+ij_php_space_before_short_closure_left_parenthesis = true
+ij_php_blank_lines_after_package = 0
+ij_php_blank_lines_before_imports = 0
+ij_php_blank_lines_before_package = 1
+ij_php_keep_blank_lines_in_code = 1
+ij_php_keep_blank_lines_in_declarations = 1
+ij_php_keep_blank_lines_before_right_brace = 0
+ij_php_import_sorting = alphabetic
+ij_php_blank_lines_between_imports = 1
+ij_php_align_multiline_parameters = false
+ij_php_align_key_value_pairs = false
+ij_php_align_assignments = false
+ij_php_keep_rparen_and_lbrace_on_one_line = true
+ij_php_lower_case_boolean_const = true
+ij_php_lower_case_null_const = true
+ij_php_force_short_declaration_array_style = true
+ij_php_comma_after_last_array_element = true
+ij_php_phpdoc_blank_lines_around_parameters = true
+ij_php_phpdoc_keep_blank_lines = true
+ij_php_upper_case_boolean_const = false
+ij_php_upper_case_null_const = false
 
 
 [*.yaml]
