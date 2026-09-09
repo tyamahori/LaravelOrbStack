@@ -107,8 +107,7 @@ tasks:
       - cmd: "{{ .BASE_COMMAND }} --profile '*' down --remove-orphans --rmi all"
   buildImages:
     deps:
-      - task: buildLocalApacheModPhp
-      - task: buildLocalFrankenPhp
+      - task: buildLocalPhps
       - task: pullImages
     cmds:
       - task: images
@@ -210,10 +209,6 @@ tasks:
       - test -d ./vendor
 
   composerUpdate:
-    deps:
-      - task: composer
-        vars:
-          CLI_ARGS: install
     cmds:
       - task: baseCommand
         vars:
@@ -330,15 +325,6 @@ tasks:
       - task: composer
         vars:
           CLI_ARGS: install
-    sources:
-      - ./packages/**/*.php
-      - ./app/**/*.php
-      - ./config/**/*.php
-      - ./database/**/*.php
-      - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
-      - ./tests/**/*.php
     cmds:
       - task: baseCommand
         vars:
@@ -412,21 +398,13 @@ tasks:
           CLI_SERVICE: php-cli
           COMMAND_TO_RUN: |
             ./vendor/bin/rector process --dry-run -c ./libConfig/rector.php
-  runLint:
-    internal: true
+  lintCode:
     cmds:
       - task: runRector
       - task: runEcs
       - task: stan
       - task: deptrac
       - task: mago
-  lintCode:
-    deps:
-      - task: composer
-        vars:
-          CLI_ARGS: install
-    cmds:
-      - task: runLint
 
   ide-helper:
     deps:
