@@ -9,13 +9,11 @@ declare(strict_types=1);
 |
 | Every entry point requires this file instead of vendor/autoload.php.
 | Laravel declares its helpers behind `function_exists()`, so defining
-| app() here first means the framework's copy is never loaded. All the
-| service-locating helpers (route(), config(), view(), auth(), ...) funnel
-| through app(), so guarding this one function is enough to reject them
-| from user code while leaving the framework itself untouched.
-|
-| Helpers that never touch the container (collect(), now(), env(), ...)
-| are only covered by LibConfig\PhpStan\NoGlobalHelperRule.
+| them here first means the framework's copies are never loaded. Each
+| laravel/framework helpers.php is evaluated with a guard call injected
+| as the first statement of every function body; the bodies themselves
+| are the framework's own, so once() still hashes its real call site and
+| mix() still sees its real func_get_args().
 |
 | Facades get the same treatment at class level: Composer autoloads
 | lazily, so declaring Illuminate\Support\Facades\Facade here means the
@@ -73,32 +71,21 @@ namespace Illuminate\Support\Facades {
     }
 }
 
-namespace {
-    use Illuminate\Container\Container;
-    use Illuminate\Contracts\Container\BindingResolutionException;
+namespace LaravelOrbStack {
+    use LogicException;
 
-    /**
-     * @param class-string|string|null $abstract
-     * @param array<string, mixed> $parameters
-     *
-     * @throws BindingResolutionException
-     */
-    function app(string|null $abstract = null, array $parameters = []): mixed
+    function guard_helper(): void
     {
-        $root = dirname(__DIR__) . '/';
+        $root = \dirname(__DIR__) . '/';
 
-        // Frame 0 is the call to app(); walk out through the framework's helper
-        // files (route() -> app(), abort_if() -> abort() -> app(), ...) so the
-        // frame we judge is the code that invoked the outermost helper, and
-        // that frame's `function` is the helper the user actually wrote.
-        foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 6) as $frame) {
+        // Frame 0 is this call; frames whose file is this file's eval()'d code
+        // are helpers calling helpers (abort_if() -> abort() -> app(), ...), so
+        // the first frame outside is the code that wrote the outermost helper
+        // call and its `function` is the helper the user actually wrote.
+        foreach (\array_slice(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 6), 1) as $frame) {
             $file = $frame['file'] ?? null;
 
-            if ($file === null) {
-                continue;
-            }
-
-            if (str_contains($file, '/laravel/framework/') && str_ends_with($file, '/helpers.php')) {
+            if ($file === null || str_starts_with($file, __FILE__)) {
                 continue;
             }
 
@@ -110,7 +97,7 @@ namespace {
                 && ! str_starts_with($file, $root . 'config/')
                 && ! str_starts_with($file, $root . 'storage/framework/views/')
             ) {
-                throw new LogicException(sprintf(
+                throw new LogicException(\sprintf(
                     'Global helper %s() called from %s:%d: inject the underlying contract instead.',
                     $frame['function'],
                     $file,
@@ -118,15 +105,24 @@ namespace {
                 ));
             }
 
-            break;
+            return;
         }
-
-        if ($abstract === null) {
-            return Container::getInstance();
-        }
-
-        return Container::getInstance()->make($abstract, $parameters);
     }
 
+    // The autoloader is not registered yet, so `&& class_exists(Faker...)`
+    // on fake() would be false here and leave the vendor copy unguarded.
+    // ponytail: re-parsed on every request (eval bypasses opcache); write the
+    // guarded source to storage/framework and require it if that ever profiles.
+    foreach ((array) glob(\dirname(__DIR__) . '/vendor/laravel/framework/src/Illuminate/*/helpers.php') as $helpers) {
+        // @mago-expect lint:no-eval
+        eval((string) preg_replace(
+            ['/^<\?php/', '/^(if \(! function_exists\(\'\w+\'\)) && .*(\) \{)$/m', '/^    \{$/m'],
+            ['', '$1$2', '    {' . "\n" . '        \LaravelOrbStack\guard_helper();'],
+            (string) file_get_contents((string) $helpers),
+        ));
+    }
+}
+
+namespace {
     return require __DIR__ . '/../vendor/autoload.php';
 }
