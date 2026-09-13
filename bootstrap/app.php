@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request as HttpRequest;
 use LaravelOrbStack\Common\Provider\AppServiceProvider;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\Provider\SamplesServiceProvider;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: [__DIR__ . '/../packages/Samples/Http/routes.php'],
+        api: [__DIR__ . '/../packages/Samples/Http/api.php'],
     )
     ->withProviders([
         AppServiceProvider::class,
@@ -36,6 +38,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->map(
             MemoNotFound::class,
             static fn (MemoNotFound $e): NotFoundHttpException => new NotFoundHttpException($e->getMessage(), $e),
+        );
+        // Under /api, validation and not-found render as JSON even when the client
+        // forgot Accept: application/json; a redirect back to a form is never right there.
+        $exceptions->shouldRenderJsonWhen(
+            static fn (HttpRequest $request): bool => $request->is('api/*') || $request->expectsJson(),
         );
     })
     ->create();
