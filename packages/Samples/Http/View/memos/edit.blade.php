@@ -1,4 +1,4 @@
-@extends('samples::memos.layout')
+@extends('samples::layout')
 
 @section('title', '編集: ' . $memo->title)
 

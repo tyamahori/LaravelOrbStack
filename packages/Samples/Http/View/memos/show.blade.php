@@ -1,15 +1,19 @@
-@extends('samples::memos.layout')
+@extends('samples::layout')
 
 @section('title', $memo->title)
 
 @section('content')
   <section>
     <h1>{{ $memo->title }}</h1>
-    <dl>
-      <dt>ID</dt>
-      <dd><code>{{ $memo->id->value }}</code></dd>
-      <dt>公開日時</dt>
-      <dd><time datetime="{{ $memo->publishedAt->format(DATE_ATOM) }}">{{ $memo->publishedAt->format('Y-m-d H:i:s') }}</time></dd>
+    <dl class="meta">
+      <div>
+        <dt>公開</dt>
+        <dd><time datetime="{{ $memo->publishedAt->format(DATE_ATOM) }}">{{ $memo->publishedAt->format('Y-m-d H:i:s') }}</time></dd>
+      </div>
+      <div>
+        <dt>ID</dt>
+        <dd><code>{{ $memo->id->value }}</code></dd>
+      </div>
     </dl>
     <pre class="body">{{ $memo->body }}</pre>
   </section>
@@ -21,6 +25,6 @@
       @method('DELETE')
       <button type="submit" class="danger">削除する</button>
     </form>
-    <a href="{{ route('memos.index') }}">メモ一覧へ戻る</a>
+    <a href="{{ route('memos.index') }}">一覧へ戻る</a>
   </section>
 @endsection
