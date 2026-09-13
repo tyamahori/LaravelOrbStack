@@ -9,7 +9,9 @@
         "ext-pdo": "*",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0.2",
-        "league/flysystem-aws-s3-v3": "^3.35.3"
+        "league/flysystem-aws-s3-v3": "^3.35.3",
+        "psr/clock": "^1.0",
+        "symfony/clock": "^8.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.4.3",
