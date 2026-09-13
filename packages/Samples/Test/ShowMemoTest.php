@@ -17,9 +17,9 @@ final class ShowMemoTest extends TestCase
     #[Test]
     public function 公開したメモはリポジトリと索引とキャッシュに入る(): void
     {
-        $repository = new InMemoryMemoStore();
-        $index = new InMemoryMemoStore();
-        $cache = new InMemoryMemoStore();
+        $repository = new FakeMemoStore();
+        $index = new FakeMemoStore();
+        $cache = new FakeMemoStore();
         $clock = new MockClock('2026-09-13 06:15:30.123456');
 
         $memo = (new PublishMemo($clock, $repository, $index, $cache))('見出し', '本文');
@@ -33,8 +33,8 @@ final class ShowMemoTest extends TestCase
     #[Test]
     public function 索引は新しい順に並ぶ(): void
     {
-        $index = new InMemoryMemoStore();
-        $store = new InMemoryMemoStore();
+        $index = new FakeMemoStore();
+        $store = new FakeMemoStore();
         $clock = new MockClock('2026-09-13 06:15:30');
         $publish = new PublishMemo($clock, $store, $index, $store);
 
@@ -48,9 +48,9 @@ final class ShowMemoTest extends TestCase
     #[Test]
     public function キャッシュにないメモはリポジトリから読んでキャッシュに入れる(): void
     {
-        $repository = new InMemoryMemoStore();
-        $cache = new InMemoryMemoStore();
-        $memo = (new PublishMemo(new MockClock(), $repository, new InMemoryMemoStore(), new InMemoryMemoStore()))('見出し', '本文');
+        $repository = new FakeMemoStore();
+        $cache = new FakeMemoStore();
+        $memo = (new PublishMemo(new MockClock(), $repository, new FakeMemoStore(), new FakeMemoStore()))('見出し', '本文');
 
         $shown = (new ShowMemo($repository, $cache))($memo->id);
 
@@ -61,10 +61,10 @@ final class ShowMemoTest extends TestCase
     #[Test]
     public function キャッシュにあればリポジトリを読まない(): void
     {
-        $cache = new InMemoryMemoStore();
-        $memo = (new PublishMemo(new MockClock(), new InMemoryMemoStore(), new InMemoryMemoStore(), $cache))('見出し', '本文');
+        $cache = new FakeMemoStore();
+        $memo = (new PublishMemo(new MockClock(), new FakeMemoStore(), new FakeMemoStore(), $cache))('見出し', '本文');
 
-        $shown = (new ShowMemo(new InMemoryMemoStore(), $cache))($memo->id);
+        $shown = (new ShowMemo(new FakeMemoStore(), $cache))($memo->id);
 
         self::assertSame($memo, $shown);
     }
@@ -74,6 +74,6 @@ final class ShowMemoTest extends TestCase
     {
         $this->expectException(MemoNotFound::class);
 
-        (new ShowMemo(new InMemoryMemoStore(), new InMemoryMemoStore()))(new MemoId('20260913-061530-000001'));
+        (new ShowMemo(new FakeMemoStore(), new FakeMemoStore()))(new MemoId('20260913-061530-000001'));
     }
 }

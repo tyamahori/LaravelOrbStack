@@ -17,7 +17,7 @@
 | `Http/` | Controller、FormRequest、レスポンス整形 |
 | `Console/` | Artisan コマンド |
 | `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
-| `Test/` | そのパッケージのテスト(`*Test.php`)。`tests/` にはテスト基盤だけを置く |
+| `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤だけを置く |
 
 パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Shared/`)がそれを実装して `app/Providers/AppServiceProvider.php` で束ねます。`packages/Shared/` は 3 つ以上のパッケージが同じ値オブジェクトや port を使うようになった時点で作り、2 つ目までは各パッケージに置いたままにします。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
 

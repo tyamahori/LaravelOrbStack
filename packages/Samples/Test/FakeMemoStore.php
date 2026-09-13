@@ -15,7 +15,7 @@ use Override;
 /**
  * Array-backed fake for all three ports; one class because they share the shape.
  */
-final class InMemoryMemoStore implements MemoRepository, MemoIndex, MemoCache
+final class FakeMemoStore implements MemoRepository, MemoIndex, MemoCache
 {
     /**
      * @var array<string, Memo>
