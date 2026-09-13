@@ -17,14 +17,14 @@
 | `Http/` | Controller、FormRequest、レスポンス整形。ルート定義は `Http/routes.php`、Blade は `Http/View/`(ビュー名は `<feature>::` 名前空間付き) |
 | `Console/` | Artisan コマンド |
 | `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
-| `Provider/` | ServiceProvider(`<Feature>ServiceProvider.php`)。port と実装の `bind`、ビュー名前空間、Artisan コマンドの登録を担い、`bootstrap/app.php` の `withProviders` に列挙する。`Http/routes.php` は同じファイルの `withRouting(web: [...])` に列挙する(名前索引とルートキャッシュをフレームワークの RouteServiceProvider に任せるため) |
+| `Provider/` | ServiceProvider(`<Feature>ServiceProvider.php`)。port と実装の `bind`、ビュー名前空間(`loadViewsFrom`)、Artisan コマンド(`commands()`)の登録を担い、`bootstrap/app.php` の `withProviders([...], withBootstrapProviders: false)` に列挙する(`bootstrap/providers.php` は置かない)。`Http/routes.php` は同じファイルの `withRouting(web: [...])` に列挙する。プロバイダの `boot()` で `$router->group()` すると RouteServiceProvider が登録されず名前索引(`refreshNameLookups`)が更新されないので、`route('name')` が解決できない(テストで検出済み) |
 | `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤だけを置く |
 
 パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Common/`)がそれを実装して A の `Provider/` で束ねます。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
 
 `packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージに置いたままにします。パッケージを消すときは、そのディレクトリと `bootstrap/app.php` の `withProviders` の行を消せば結線が残りません。
 
-`app/` には新しいクラスを足しません。`app/Models/User.php` は移設前の例外で、認証機能をパッケージ化するときに `packages/<Feature>/Persistence/` へ移します。
+リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`、実行時ガードの `autoload.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間は `composer.json` から外してあります)。ルート定義は `packages/<Feature>/Http/routes.php`、Blade は `packages/<Feature>/Http/View/`、全体設定は `packages/Common/` に置きます。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
 
 ## パッケージの中では依存を内側に向ける
 
@@ -75,10 +75,12 @@ Laravel を薄く使うとは、フレームワークに触れる層を `Http/`�
 | ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、`bootstrap/autoload.php` の実行時ガード | 強制済み |
 | nullable は `T\|null`(`?T` 禁止) | ECS `NullableTypeDeclarationFixer`(ネイティブ型、自動修正)、`libConfig/PhpStan/NoShorthandNullablePhpdocRule.php`(PHPDoc) | 強制済み |
 | PHPStan level max + strict rules | `libConfig/phpstan.neon` | 強制済み |
-| レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`app/Models/` は `Persistence/` と同じ規則、`Provider/` は全層に依存できる |
+| レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`Provider/` は全層に依存できる |
 | PSR-4 と大文字小文字 | `composer psrCheck`、PHPStan `class.nameCase` | 強制済み |
 
 検査は Composer のラッパーで走らせます。`composer stanCheck -- --no-progress --error-format=raw`、`ecsCheck`、`rectorCheck`、`magoCheck`、`deptracCheck`、`phpunit`(`APP_KEY` が必要)。フォーマッタは ECS だけで、Mago は lint 専用です。`vendor/bin/phpunit` を直接叩くと実行時ガードが読み込まれず `packages/Samples/Test/` のガード系テストが落ちます。ローカルで `SampleControllerTest` が落ちるのは `libConfig/phpunit.xml` が Redis を要求する既知の状態で、コンテナ内と CI では通ります。
+
+Larastan は `Command::argument()` と `option()` の戻り型を signature から推論します。`is_string($this->argument('file'))` のような型ガードは書かず、推論が外れるときは signature の書き方を直します。クラスやディレクトリを移したあとは `composer dump-autoload -q` を実行してから検査を回します。
 
 ## 新しいコードを書く前に答える六つの問い
 
