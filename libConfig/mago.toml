@@ -1,7 +1,7 @@
 php-version = "8.5"
 
 [source]
-paths = ["app", "bootstrap/app.php", "bootstrap/autoload.php", "config", "database", "packages", "public", "routes", "tests"]
+paths = ["bootstrap/app.php", "bootstrap/autoload.php", "config", "database", "packages", "public", "tests"]
 includes = ["vendor"]
 excludes = [".tempCache/**", "libConfig/**", "storage/**", "bootstrap/cache/**"]
 

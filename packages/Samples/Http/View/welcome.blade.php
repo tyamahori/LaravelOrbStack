@@ -140,7 +140,7 @@
       <dt>ファサードとグローバルヘルパを使わない</dt>
       <dd>アプリケーションコードは<code>app()</code>や<code>config()</code>、<code>Route::</code>のような静的な入口を持たず、必要な契約(<code>Illuminate\Contracts\*</code>)をコンストラクタやメソッド引数で受け取ります。このページを返すコントローラも<code>Application</code>と<code>View\Factory</code>を引数で受け取り、Bladeには値だけを渡しています。規約は自作PHPStanルールで静的に、<code>bootstrap/autoload.php</code>の実行時ガードで動的に、二重に強制します。</dd>
       <dt>アプリケーションコードとテストを隣に置く</dt>
-      <dd>機能は<code>packages/&lt;Package&gt;/</code>に、そのテストは<code>packages/&lt;Package&gt;/Test/</code>に置きます。<code>app/</code>にはLaravelが要求する最小限しか置かず、Deptracで層の依存方向を固定します。</dd>
+      <dd>機能は<code>packages/&lt;Package&gt;/</code>に、そのテストは<code>packages/&lt;Package&gt;/Test/</code>に置きます。<code>app/</code>は持たず、Deptracで層の依存方向を固定します。</dd>
       <dt>ツールの設定を一か所に集める</dt>
       <dd>PHPStan、ECS、Rector、Mago、Deptrac、PHPUnitの設定はすべて<code>libConfig/</code>にあります。実行はTaskがコンテナ内で行うので、ホストにPHPを入れなくても同じ結果になります。</dd>
       <dt>ボイラープレートを増やさない</dt>

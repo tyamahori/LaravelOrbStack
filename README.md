@@ -123,7 +123,7 @@ Devbox シェル内では `devbox run composer` で Composer install を実行�
 
 | 層 | 仕組み | 対象 |
 |:--|:--|:--|
-| 静的解析 | `libConfig/PhpStan/NoFacadeRule.php`、`libConfig/PhpStan/NoGlobalHelperRule.php` | PHPStan の解析対象パス(`app/`、`packages/`、`database/`、`tests/` など)。`vendor/laravel/framework` の `helpers.php` に定義された関数はすべて対象 |
+| 静的解析 | `libConfig/PhpStan/NoFacadeRule.php`、`libConfig/PhpStan/NoGlobalHelperRule.php` | PHPStan の解析対象パス(`packages/`、`database/`、`tests/` など)。`vendor/laravel/framework` の `helpers.php` に定義された関数はすべて対象 |
 | 実行時 | `bootstrap/autoload.php` が `vendor/laravel/framework` の各 `helpers.php` をガード呼び出し入りで先に評価し、`Illuminate\Support\Facades\Facade` も同様にフレームワークより先に定義する。`vendor/` と `config/` 以外からの呼び出しで `LogicException` を投げる | `public/index.php`、`artisan`、`composer phpunit` の 3 エントリポイント。`helpers.php` の全関数(`collect()`、`now()`、`e()` などコンテナを触らないものも含む)。コンパイル済み Blade も含む |
 
 `config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部からのヘルパ・ファサード呼び出しは制限しません。実行時ガードのファサード判定は `__callStatic` で行うため、`swap()` や `shouldReceive()` のように基底クラスに実在する静的メソッドは静的解析のみが対象です。
@@ -160,7 +160,6 @@ nullable な型は `?Memo` ではなく `Memo|null` と書きます。ネイテ�
 │   ├── local/
 │   └── flyio/
 ├── .github/workflows/        # CI(テスト、イメージビルド、Renovate)
-├── app/                      # 移設前の Eloquent モデル(Models/User.php)だけ
 ├── bootstrap/                # app.php(Application::configure、プロバイダ列挙、例外変換)/ autoload.php(グローバルヘルパとファサードの実行時ガード)
 ├── config/                   # Laravel 設定
 ├── database/                 # schema.sql (psqldef) / seeder

@@ -34,7 +34,6 @@
     "autoload": {
         "psr-4": {
             "LaravelOrbStack\\": "packages/",
-            "App\\": "app/",
             "Database\\Seeders\\": "database/seeders/"
         }
     },

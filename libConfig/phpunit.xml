@@ -29,7 +29,6 @@
     </php>
     <source>
         <include>
-            <directory suffix=".php">../app</directory>
             <directory suffix=".php">../packages</directory>
         </include>
     </source>

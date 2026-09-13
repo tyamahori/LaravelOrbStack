@@ -2,12 +2,10 @@ parameters:
   level: max
   paths:
     - ../packages
-    - ../app
     - ../config
     - ../database
     - ../public
     - ../tests
-    - ../routes
   excludePaths:
     - ../vendor
     - ../.tempCache

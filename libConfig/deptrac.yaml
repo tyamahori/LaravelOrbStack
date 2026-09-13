@@ -2,7 +2,6 @@ deptrac:
   cache_file: .tempCache/.deptrac.cache
   paths:
     - ../packages
-    - ../app
   exclude_files:
     - '#(?i)(?:^|/)tests?(?:/|$)#'
   layers:
@@ -32,9 +31,6 @@ deptrac:
       collectors:
         - type: classLike
           value: ^LaravelOrbStack\\[^\\]+\\Persistence\\
-        # app/Models/User.php: pre-packaging exception (AGENTS.md); same rules as Persistence
-        - type: classLike
-          value: ^App\\Models\\
     - name: Wiring
       collectors:
         - type: classLike
@@ -50,7 +46,7 @@ deptrac:
     - name: Vendor
       collectors:
         - type: classLike
-          value: ^(?!(LaravelOrbStack|App|Illuminate|Symfony|Carbon|Laravel|Database)\\)(?!PDO)[A-Za-z_]
+          value: ^(?!(LaravelOrbStack|Illuminate|Symfony|Carbon|Laravel|Database)\\)(?!PDO)[A-Za-z_]
   ruleset:
     Unplaced: []
     Domain:

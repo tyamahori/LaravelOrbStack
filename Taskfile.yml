@@ -223,7 +223,6 @@ tasks:
           CLI_ARGS: install
     sources:
       - ./packages/**/*.php
-      - ./app/**/*.php
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
@@ -242,7 +241,6 @@ tasks:
           CLI_ARGS: install
     sources:
       - ./packages/**/*.php
-      - ./app/**/*.php
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
@@ -263,7 +261,6 @@ tasks:
           CLI_ARGS: install
     sources:
       - ./packages/**/*.php
-      - ./app/**/*.php
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
@@ -286,7 +283,6 @@ tasks:
           CLI_ARGS: install
     sources:
       - ./packages/**/*.php
-      - ./app/**/*.php
       - ./libConfig/deptrac.yaml
       - ./composer.lock
     cmds:
@@ -304,7 +300,6 @@ tasks:
           CLI_ARGS: install
     sources:
       - ./packages/**/*.php
-      - ./app/**/*.php
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
@@ -339,7 +334,6 @@ tasks:
           CLI_ARGS: install
     sources:
       - ./packages/**/*.php
-      - ./app/**/*.php
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
@@ -361,7 +355,6 @@ tasks:
           CLI_ARGS: install
     sources:
       - ./packages/**/*.php
-      - ./app/**/*.php
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
@@ -383,7 +376,6 @@ tasks:
           CLI_ARGS: install
     sources:
       - ./packages/**/*.php
-      - ./app/**/*.php
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
@@ -412,7 +404,6 @@ tasks:
           CLI_ARGS: install
     sources:
       - ./packages/**/*.php
-      - ./app/**/*.php
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php

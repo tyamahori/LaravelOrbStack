@@ -7,16 +7,13 @@ use Rector\Config\RectorConfig;
 return RectorConfig::configure()
     ->withPaths([
         'packages',
-        'app',
         'config',
         'database',
         'public',
         'tests',
-        'routes',
     ])
     ->withSkip([
         'vendor',
-        'routes',
     ])
     ->withCache(cacheDirectory: './.tempCache/.rector')
     // No version argument: the target is read from composer.json `require.php`.
