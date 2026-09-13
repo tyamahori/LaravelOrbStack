@@ -19,9 +19,9 @@
 | `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
 | `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤だけを置く |
 
-パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Shared/`)がそれを実装して `app/Providers/AppServiceProvider.php` で束ねます。`packages/Shared/` は 3 つ以上のパッケージが同じ値オブジェクトや port を使うようになった時点で作り、2 つ目までは各パッケージに置いたままにします。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
+パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Shared/`)がそれを実装して A のプロバイダで束ねます。`packages/Shared/` は 3 つ以上のパッケージが同じ値オブジェクトや port を使うようになった時点で作り、2 つ目までは各パッケージに置いたままにします。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
 
-`app/` はフレームワークの結線(Provider)専用です。新しい Eloquent モデルやビジネスロジックを `app/` に足さないでください。`app/Models/User.php` は移設前の例外で、認証機能をパッケージ化するときに `packages/<Feature>/Persistence/` へ移します。
+`app/` はフレームワークの結線(Provider)専用で、プロバイダは 2 種類に分けます。`app/Providers/AppServiceProvider.php` にはアプリ全体の設定(時計、日付クラス、Eloquent の strict モード)だけを置き、パッケージの port と実装の `bind` は `app/Providers/<Feature>ServiceProvider.php` に置いて `bootstrap/providers.php` に登録します(`SamplesServiceProvider` がこの形)。パッケージを消すときはそのプロバイダと登録行を消せば結線が残りません。新しい Eloquent モデルやビジネスロジックを `app/` に足さないでください。`app/Models/User.php` は移設前の例外で、認証機能をパッケージ化するときに `packages/<Feature>/Persistence/` へ移します。
 
 ## パッケージの中では依存を内側に向ける
 

@@ -9,35 +9,24 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\DateFactory;
 use Illuminate\Support\ServiceProvider;
-use LaravelOrbStack\Samples\Domain\MemoCache;
-use LaravelOrbStack\Samples\Domain\MemoIndex;
-use LaravelOrbStack\Samples\Domain\MemoRepository;
-use LaravelOrbStack\Samples\Persistence\EloquentMemoIndex;
-use LaravelOrbStack\Samples\Persistence\IlluminateMemoCache;
-use LaravelOrbStack\Samples\Persistence\S3MemoRepository;
 use Override;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\Clock\NativeClock;
 
+/**
+ * Application-wide wiring only. Bindings for a package's ports live in that
+ * package's provider (app/Providers/<Feature>ServiceProvider.php).
+ */
 final class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     #[Override]
     public function register(): void
     {
         DateFactory::use(CarbonImmutable::class);
 
         $this->app->bind(ClockInterface::class, NativeClock::class);
-        $this->app->bind(MemoRepository::class, S3MemoRepository::class);
-        $this->app->bind(MemoIndex::class, EloquentMemoIndex::class);
-        $this->app->bind(MemoCache::class, IlluminateMemoCache::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(Repository $config): void
     {
         Model::shouldBeStrict(match (true) {
