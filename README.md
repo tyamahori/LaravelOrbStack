@@ -130,6 +130,8 @@ Devbox シェル内では `devbox run composer` で Composer install を実行�
 
 PHPUnit は `composer phpunit`(または `task phpunit`)で実行してください。`vendor/bin/phpunit` を直接叩くとガードが読み込まれず、`packages/Samples/Test/GlobalHelperGuardTest.php` と `FacadeGuardTest.php` が失敗します。
 
+nullable な型は `?Memo` ではなく `Memo|null` と書きます。ネイティブ型は ECS の `NullableTypeDeclarationFixer`(`syntax: union`)が `--fix` で書き換え、PHPDoc は `libConfig/PhpStan/NoShorthandNullablePhpdocRule.php` が `composer stanCheck` で検出します(php-cs-fixer に PHPDoc の `?T` を直す fixer がないため)。
+
 ## サンプル実装
 
 `packages/Samples/` は AGENTS.md の配置規則に沿った参照実装です。メモを公開すると本文を S3(RustFS)の `memos/<id>.json` に保存し、一覧用の見出しと公開日時を PostgreSQL の `memos` テーブル(`database/schema.sql`)に記録します。読み出しは Redis のキャッシュを経由し、ブラウザで最後に公開したメモの ID はセッションに残します。同じ UseCase を Web と Artisan の両方から呼びます。

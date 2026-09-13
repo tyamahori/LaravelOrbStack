@@ -38,7 +38,7 @@ final readonly class S3MemoRepository implements MemoRepository
     }
 
     #[Override]
-    public function find(MemoId $id): ?Memo
+    public function find(MemoId $id): Memo|null
     {
         $path = $this->path($id);
         if (! $this->disk->exists($path)) {

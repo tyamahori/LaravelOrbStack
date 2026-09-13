@@ -41,13 +41,13 @@ final class FakeMemoStore implements MemoRepository, MemoIndex, MemoCache
     }
 
     #[Override]
-    public function find(MemoId $id): ?Memo
+    public function find(MemoId $id): Memo|null
     {
         return $this->memos[$id->value] ?? null;
     }
 
     #[Override]
-    public function get(MemoId $id): ?Memo
+    public function get(MemoId $id): Memo|null
     {
         return $this->find($id);
     }

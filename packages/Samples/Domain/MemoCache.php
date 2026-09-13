@@ -12,5 +12,5 @@ interface MemoCache
 {
     public function remember(Memo $memo): void;
 
-    public function get(MemoId $id): ?Memo;
+    public function get(MemoId $id): Memo|null;
 }

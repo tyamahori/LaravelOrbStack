@@ -50,6 +50,7 @@ Artisan コマンド(`Console/`)は薄く保ち、引数の解釈と出力整形
 | 規則 | 仕組み | 状態 |
 |:--|:--|:--|
 | ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、`bootstrap/autoload.php` の実行時ガード | 強制済み |
+| nullable は `T\|null`(`?T` 禁止) | ECS `NullableTypeDeclarationFixer`(ネイティブ型、自動修正)、`libConfig/PhpStan/NoShorthandNullablePhpdocRule.php`(PHPDoc) | 強制済み |
 | PHPStan level max + strict rules | `libConfig/phpstan.neon` | 強制済み |
 | レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`app/Models/` は `Persistence/` と同じ規則、`app/Providers/` は全層に依存できる |
 | PSR-4 と大文字小文字 | `composer psrCheck`、PHPStan `class.nameCase` | 強制済み |

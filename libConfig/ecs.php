@@ -53,6 +53,7 @@ use PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveIssetsFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\ExplicitIndirectVariableFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
+use PhpCsFixer\Fixer\LanguageConstruct\NullableTypeDeclarationFixer;
 use PhpCsFixer\Fixer\ListNotation\ListSyntaxFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\CleanNamespaceFixer;
@@ -256,6 +257,10 @@ return ECSConfig::configure()
     ->withConfiguredRule(
         PhpUnitStrictFixer::class,
         ['assertions' => []],
+    )
+    ->withConfiguredRule(
+        NullableTypeDeclarationFixer::class,
+        ['syntax' => 'union'],
     )
     ->withRules([
         StrictParamFixer::class,

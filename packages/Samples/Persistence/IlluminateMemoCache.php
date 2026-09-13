@@ -30,7 +30,7 @@ final readonly class IlluminateMemoCache implements MemoCache
     }
 
     #[Override]
-    public function get(MemoId $id): ?Memo
+    public function get(MemoId $id): Memo|null
     {
         $memo = $this->cache->get($this->key($id));
 

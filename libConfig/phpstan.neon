@@ -52,3 +52,6 @@ services:
   -
     class: LibConfig\PhpStan\NoGlobalHelperRule
     tags: [phpstan.rules.rule]
+  -
+    class: LibConfig\PhpStan\NoShorthandNullablePhpdocRule
+    tags: [phpstan.rules.rule]

@@ -11,5 +11,5 @@ interface MemoRepository
 {
     public function save(Memo $memo): void;
 
-    public function find(MemoId $id): ?Memo;
+    public function find(MemoId $id): Memo|null;
 }
