@@ -75,7 +75,7 @@
             "./vendor/bin/rector process --dry-run -c ./libConfig/rector.php"
         ],
         "deptracCheck": [
-            "./vendor/bin/deptrac --config-file=./libConfig/deptrac.yaml --no-progress"
+            "./vendor/bin/deptrac --config-file=./libConfig/deptrac.yaml --no-progress --report-uncovered --fail-on-uncovered"
         ],
         "phpunit": [
             "@php -d auto_prepend_file=bootstrap/autoload.php ./vendor/bin/phpunit -c ./libConfig/phpunit.xml"

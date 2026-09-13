@@ -6,15 +6,82 @@ deptrac:
   exclude_files:
     - '#(?i)(?:^|/)tests?(?:/|$)#'
   layers:
-    - name: Controller
+    # packages/<Feature>/<Layer>/ — see AGENTS.md. A class placed directly under the feature
+    # namespace lands in Unplaced, which may depend on nothing, so its first dependency fails.
+    - name: Unplaced
       collectors:
         - type: classLike
-          value: ^(LaravelOrbStack|App)\\.*Controller.*
-    - name: Service
+          value: ^LaravelOrbStack\\[^\\]+\\[^\\]+$
+    - name: Domain
       collectors:
         - type: classLike
-          value: ^(LaravelOrbStack|App)\\.*Service.*
+          value: ^LaravelOrbStack\\[^\\]+\\Domain\\
+    - name: UseCase
+      collectors:
+        - type: classLike
+          value: ^LaravelOrbStack\\[^\\]+\\UseCase\\
+    - name: Http
+      collectors:
+        - type: classLike
+          value: ^LaravelOrbStack\\[^\\]+\\Http\\
+    - name: Console
+      collectors:
+        - type: classLike
+          value: ^LaravelOrbStack\\[^\\]+\\Console\\
+    - name: Persistence
+      collectors:
+        - type: classLike
+          value: ^LaravelOrbStack\\[^\\]+\\Persistence\\
+        # app/Models/User.php: pre-packaging exception (AGENTS.md); same rules as Persistence
+        - type: classLike
+          value: ^App\\Models\\
+    - name: Wiring
+      collectors:
+        - type: classLike
+          value: ^App\\Providers\\
+    - name: Framework
+      collectors:
+        - type: classLike
+          value: ^(Illuminate|Symfony|Carbon|Laravel|Database)\\
+        - type: classLike
+          value: ^PDO
+    # Everything else (PSR interfaces, other vendor packages). Kept separate from Framework
+    # so Domain/UseCase can use psr/clock without being allowed Illuminate.
+    - name: Vendor
+      collectors:
+        - type: classLike
+          value: ^(?!(LaravelOrbStack|App|Illuminate|Symfony|Carbon|Laravel|Database)\\)(?!PDO)[A-Za-z_]
   ruleset:
-    Controller:
-      - Service
-    Service:
+    Unplaced: []
+    Domain:
+      - Vendor
+    UseCase:
+      - Domain
+      - Vendor
+    Http:
+      - UseCase
+      - Domain
+      - Framework
+      - Vendor
+    Console:
+      - UseCase
+      - Domain
+      - Framework
+      - Vendor
+    Persistence:
+      - Domain
+      - Framework
+      - Vendor
+    Wiring:
+      - Domain
+      - UseCase
+      - Http
+      - Console
+      - Persistence
+      - Framework
+      - Vendor
+    Framework:
+      - Framework
+      - Vendor
+    Vendor:
+      - Vendor

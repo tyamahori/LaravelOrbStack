@@ -149,7 +149,7 @@ PHPUnit は `composer phpunit`(または `task phpunit`)で実行してくださ
 ├── database/                 # schema.sql (psqldef) / seeder
 ├── libConfig/                # PHPStan / ECS / Rector / PHPUnit / Deptrac / Mago 設定
 │   └── PhpStan/              # 自作 PHPStan ルール
-├── packages/                 # アプリケーションコードとテスト(<Package>/Test/*Test.php)
+├── packages/                 # アプリケーションコード(<Feature>/{Domain,UseCase,Http,Console,Persistence}/)とテスト(<Feature>/Test/*Test.php)。配置規則は AGENTS.md
 ├── routes/                   # Laravel ルート定義
 ├── tests/                    # PHPUnit の TestCase と拡張(テスト本体は packages/ 配下)
 ├── Taskfile.yml              # Task コマンド定義

@@ -301,7 +301,7 @@ tasks:
           RUNNING_SERVICE: php-app
           CLI_SERVICE: php-cli
           COMMAND_TO_RUN: |
-            ./vendor/bin/deptrac --config-file=./libConfig/deptrac.yaml --no-progress
+            composer deptracCheck
 
   mago:
     deps:
