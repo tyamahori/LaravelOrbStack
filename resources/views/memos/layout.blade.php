@@ -41,6 +41,10 @@
     dt { font-weight: 700; }
     dd { margin: 0; color: var(--ink-soft); }
     .empty { color: var(--ink-soft); }
+    .actions { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+    .actions form { display: contents; }
+    .actions button { margin: 0; padding: 0.45rem 1rem; }
+    button.danger { background: #8a2b1c; }
   </style>
 </head>
 <body>

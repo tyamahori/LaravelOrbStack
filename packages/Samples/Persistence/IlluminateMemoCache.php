@@ -37,6 +37,12 @@ final readonly class IlluminateMemoCache implements MemoCache
         return $memo instanceof Memo ? $memo : null;
     }
 
+    #[Override]
+    public function forget(MemoId $id): void
+    {
+        $this->cache->forget($this->key($id));
+    }
+
     private function key(MemoId $id): string
     {
         return 'samples.memo.' . $id->value;

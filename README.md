@@ -134,14 +134,16 @@ nullable な型は `?Memo` ではなく `Memo|null` と書きます。ネイテ�
 
 ## サンプル実装
 
-`packages/Samples/` は AGENTS.md の配置規則に沿った参照実装です。メモを公開すると本文を S3(RustFS)の `memos/<id>.json` に保存し、一覧用の見出しと公開日時を PostgreSQL の `memos` テーブル(`database/schema.sql`)に記録します。読み出しは Redis のキャッシュを経由し、ブラウザで最後に公開したメモの ID はセッションに残します。同じ UseCase を Web と Artisan の両方から呼びます。
+`packages/Samples/` は AGENTS.md の配置規則に沿った参照実装です。メモを公開すると本文を S3(RustFS)の `memos/<id>.json` に保存し、一覧用の見出しと公開日時を PostgreSQL の `memos` テーブル(`database/schema.sql`)に記録します。読み出しは Redis のキャッシュを経由し、ブラウザで最後に公開したメモの ID はセッションに残します。編集は ID と公開日時を保ったまま 3 つの保存先を書き換え、削除は 3 つすべてから消します。同じ UseCase を Web と Artisan の両方から呼びます。
 
-| 入口 | 場所 |
-|:--|:--|
-| Web | <https://frankenphp.local/memos>(一覧と公開フォーム)、`/memos/<id>`(表示) |
-| Artisan | `task artisan -- memo:publish <file> [--title=] [--json]`、`task artisan -- memo:show <id> [--json]` |
+| 操作 | Web | Artisan |
+|:--|:--|:--|
+| 一覧・公開 | <https://frankenphp.local/memos> | `task artisan -- memo:publish <file> [--title=] [--json]` |
+| 表示 | `/memos/<id>` | `task artisan -- memo:show <id> [--json]` |
+| 編集 | `/memos/<id>/edit`(`PUT /memos/<id>`) | `task artisan -- memo:edit <id> <file> [--title=] [--json]` |
+| 削除 | 表示ページの「削除する」(`DELETE /memos/<id>`) | `task artisan -- memo:delete <id>` |
 
-`memo:publish` は公開したメモの ID だけを標準出力に書くので、`memo:show` にそのまま渡せます。`--json` を付けると 1 行 1 レコードの JSON Lines になり、`file` に `-` を渡すと標準入力から本文を読みます。診断は標準エラーに出し、入力不備は終了コード 2、メモが見つからないときは 1 です。
+`memo:publish` と `memo:edit` はメモの ID だけを標準出力に書くので、`memo:show` や `memo:delete` にそのまま渡せます。`--json` を付けると 1 行 1 レコードの JSON Lines になり、`file` に `-` を渡すと標準入力から本文を読みます。`memo:delete` は成功時に何も出力しません。診断は標準エラーに出し、入力不備は終了コード 2、メモが見つからないときは 1 です。
 
 `Domain/` と `UseCase/` のテストはフレームワークなしで動き、`Http/` と `Console/` のテストは Compose の RustFS、Redis、PostgreSQL に接続します(ローカルでは `task up` と `task schema:apply` のあとに `task phpunit`)。
 

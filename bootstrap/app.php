@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use LaravelOrbStack\Samples\Console\DeleteMemoCommand;
+use LaravelOrbStack\Samples\Console\EditMemoCommand;
 use LaravelOrbStack\Samples\Console\PublishMemoCommand;
 use LaravelOrbStack\Samples\Console\ShowMemoCommand;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
@@ -18,6 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withCommands([
         PublishMemoCommand::class,
         ShowMemoCommand::class,
+        EditMemoCommand::class,
+        DeleteMemoCommand::class,
     ])
     ->withEvents(discover: false)
     ->withMiddleware(static function (Middleware $middleware): void {

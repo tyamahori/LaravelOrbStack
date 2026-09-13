@@ -8,28 +8,29 @@ use LaravelOrbStack\Samples\Domain\Memo;
 use LaravelOrbStack\Samples\Domain\MemoCache;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoIndex;
+use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\Domain\MemoRepository;
-use Psr\Clock\ClockInterface;
 
-final readonly class PublishMemo
+final readonly class DeleteMemo
 {
     public function __construct(
-        private ClockInterface $clock,
         private MemoRepository $memos,
         private MemoIndex $index,
         private MemoCache $cache,
     ) {
     }
 
-    public function __invoke(string $title, string $body): Memo
+    /**
+     * @throws MemoNotFound
+     */
+    public function __invoke(MemoId $id): void
     {
-        $now = $this->clock->now();
-        $memo = new Memo(MemoId::at($now), $title, $body, $now);
+        if (! $this->memos->find($id) instanceof Memo) {
+            throw MemoNotFound::id($id);
+        }
 
-        $this->memos->save($memo);
-        $this->index->put($memo);
-        $this->cache->remember($memo);
-
-        return $memo;
+        $this->memos->delete($id);
+        $this->index->remove($id);
+        $this->cache->forget($id);
     }
 }

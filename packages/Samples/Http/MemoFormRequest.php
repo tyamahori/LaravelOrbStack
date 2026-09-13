@@ -7,7 +7,7 @@ namespace LaravelOrbStack\Samples\Http;
 use Illuminate\Foundation\Http\FormRequest;
 use LaravelOrbStack\Samples\Domain\Memo;
 
-final class PublishMemoRequest extends FormRequest
+final class MemoFormRequest extends FormRequest
 {
     /**
      * @return array<string, list<string>>

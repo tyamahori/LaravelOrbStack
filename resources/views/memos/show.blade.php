@@ -14,7 +14,13 @@
     <pre class="body">{{ $memo->body }}</pre>
   </section>
 
-  <section>
-    <p><a href="{{ route('memos.index') }}">メモ一覧へ戻る</a></p>
+  <section class="actions">
+    <a href="{{ route('memos.edit', ['id' => $memo->id->value]) }}">編集する</a>
+    <form method="post" action="{{ route('memos.destroy', ['id' => $memo->id->value]) }}" onsubmit="return confirm('このメモを削除しますか?')">
+      @csrf
+      @method('DELETE')
+      <button type="submit" class="danger">削除する</button>
+    </form>
+    <a href="{{ route('memos.index') }}">メモ一覧へ戻る</a>
   </section>
 @endsection

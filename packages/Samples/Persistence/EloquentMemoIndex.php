@@ -13,13 +13,18 @@ use Override;
 final readonly class EloquentMemoIndex implements MemoIndex
 {
     #[Override]
-    public function add(Memo $memo): void
+    public function put(Memo $memo): void
     {
-        MemoRecord::query()->create([
-            'id' => $memo->id->value,
+        MemoRecord::query()->updateOrCreate(['id' => $memo->id->value], [
             'title' => $memo->title,
             'published_at' => $memo->publishedAt,
         ]);
+    }
+
+    #[Override]
+    public function remove(MemoId $id): void
+    {
+        MemoRecord::query()->whereKey($id->value)->delete();
     }
 
     /**

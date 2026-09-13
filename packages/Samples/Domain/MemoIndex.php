@@ -10,7 +10,15 @@ namespace LaravelOrbStack\Samples\Domain;
  */
 interface MemoIndex
 {
-    public function add(Memo $memo): void;
+    /**
+     * Creates or overwrites the heading.
+     */
+    public function put(Memo $memo): void;
+
+    /**
+     * No-op when the heading does not exist.
+     */
+    public function remove(MemoId $id): void;
 
     /**
      * Newest first.

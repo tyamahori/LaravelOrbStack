@@ -9,7 +9,15 @@ namespace LaravelOrbStack\Samples\Domain;
  */
 interface MemoRepository
 {
+    /**
+     * Creates or overwrites.
+     */
     public function save(Memo $memo): void;
 
     public function find(MemoId $id): Memo|null;
+
+    /**
+     * No-op when the memo does not exist.
+     */
+    public function delete(MemoId $id): void;
 }

@@ -28,6 +28,14 @@ final readonly class Memo
         }
     }
 
+    /**
+     * Same id and publish time; only the content changes.
+     */
+    public function edit(string $title, string $body): self
+    {
+        return new self($this->id, $title, $body, $this->publishedAt);
+    }
+
     public function heading(): MemoHeading
     {
         return new MemoHeading($this->id, $this->title, $this->publishedAt);

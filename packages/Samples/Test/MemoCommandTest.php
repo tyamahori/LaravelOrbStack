@@ -96,4 +96,28 @@ final class MemoCommandTest extends TestCase
         self::assertSame(Command::FAILURE, $this->artisan->call('memo:show', ['id' => self::ID]));
         self::assertSame('メモが見つかりません: ' . self::ID . "\n", $this->artisan->output());
     }
+
+    #[Test]
+    public function 編集したメモをshowで読み削除すると見つからなくなる(): void
+    {
+        $this->artisan->call('memo:publish', ['file' => $this->file, '--title' => '前']);
+        file_put_contents($this->file, "後の本文\n");
+
+        self::assertSame(Command::SUCCESS, $this->artisan->call('memo:edit', ['id' => self::ID, 'file' => $this->file, '--title' => '後']));
+        self::assertSame(self::ID . "\n", $this->artisan->output());
+        $this->artisan->call('memo:show', ['id' => self::ID]);
+        self::assertSame("後\n\n後の本文\n\n", $this->artisan->output());
+
+        self::assertSame(Command::SUCCESS, $this->artisan->call('memo:delete', ['id' => self::ID]));
+        self::assertSame('', $this->artisan->output());
+        self::assertSame(Command::FAILURE, $this->artisan->call('memo:show', ['id' => self::ID]));
+        self::assertSame(Command::FAILURE, $this->artisan->call('memo:delete', ['id' => self::ID]));
+    }
+
+    #[Test]
+    public function 存在しないメモの編集は終了コード1で何も保存しない(): void
+    {
+        self::assertSame(Command::FAILURE, $this->artisan->call('memo:edit', ['id' => self::ID, 'file' => $this->file]));
+        self::assertFalse($this->app->make(Disks::class)->disk('s3')->exists('memos/' . self::ID . '.json'));
+    }
 }

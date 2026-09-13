@@ -29,7 +29,7 @@ final class FakeMemoStore implements MemoRepository, MemoIndex, MemoCache
     }
 
     #[Override]
-    public function add(Memo $memo): void
+    public function put(Memo $memo): void
     {
         $this->save($memo);
     }
@@ -50,6 +50,24 @@ final class FakeMemoStore implements MemoRepository, MemoIndex, MemoCache
     public function get(MemoId $id): Memo|null
     {
         return $this->find($id);
+    }
+
+    #[Override]
+    public function delete(MemoId $id): void
+    {
+        unset($this->memos[$id->value]);
+    }
+
+    #[Override]
+    public function remove(MemoId $id): void
+    {
+        $this->delete($id);
+    }
+
+    #[Override]
+    public function forget(MemoId $id): void
+    {
+        $this->delete($id);
     }
 
     #[Override]
