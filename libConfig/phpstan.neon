@@ -35,7 +35,7 @@ parameters:
   configDirectories:
     - ../config
   viewDirectories:
-    - ../packages/Samples/Http/View
+    - ../packages/Samples/Http/Web/View
   ignoreErrors:
     # config/*.php run before the container exists; env() and *_path() are the only way in.
     -

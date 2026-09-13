@@ -43,6 +43,6 @@ final class SamplesServiceProvider extends ServiceProvider
 
     public function boot(ViewFactory $view): void
     {
-        $view->addNamespace('samples', __DIR__ . '/../Http/View');
+        $view->addNamespace('samples', __DIR__ . '/../Http/Web/View');
     }
 }

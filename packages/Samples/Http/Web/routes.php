@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Routing\Router;
 use LaravelOrbStack\Samples\Domain\MemoId;
-use LaravelOrbStack\Samples\Http\HomeController;
-use LaravelOrbStack\Samples\Http\MemoController;
+use LaravelOrbStack\Samples\Http\Web\HomeController;
+use LaravelOrbStack\Samples\Http\Web\MemoController;
 
 /**
  * Listed in bootstrap/app.php withRouting(web: ...), so the "web" middleware group applies.

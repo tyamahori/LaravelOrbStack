@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LaravelOrbStack\Samples\Http;
+namespace LaravelOrbStack\Samples\Http\Api;
 
 use LaravelOrbStack\Samples\Domain\Memo;
 use LaravelOrbStack\Samples\Domain\MemoHeading;

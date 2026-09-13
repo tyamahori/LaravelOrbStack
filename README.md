@@ -144,7 +144,7 @@ nullable な型は `?Memo` ではなく `Memo|null` と書きます。ネイテ�
 | 編集 | `/memos/<id>/edit`(`PUT /memos/<id>`) | `PUT /api/memos/<id>` | `task artisan -- memo:edit <id> <file> [--title=] [--json]` |
 | 削除 | 表示ページの「削除する」(`DELETE /memos/<id>`) | `DELETE /api/memos/<id>` → 204 | `task artisan -- memo:delete <id>` |
 
-API は `packages/Samples/Http/api.php` に定義し、`bootstrap/app.php` の `withRouting(api: ...)` で `/api` 配下に載せています(セッションも CSRF もない `api` ミドルウェアグループ)。入力は `{"title": "...", "body": "..."}` の JSON かフォーム、出力は `MemoJson` の形(`id`、`title`、`body`、`published_at`。一覧は `body` なし)です。`/api/*` では `Accept` ヘッダがなくても入力不備は 422、見つからないときは 404 の JSON で返します(`withExceptions` の `shouldRenderJsonWhen`)。
+API は `packages/Samples/Http/Api/routes.php` に定義し、`bootstrap/app.php` の `withRouting(api: ...)` で `/api` 配下に載せています(セッションも CSRF もない `api` ミドルウェアグループ)。Blade を返す側は `Http/Web/` で、両方が使う `MemoFormRequest` は `Http/` 直下です。入力は `{"title": "...", "body": "..."}` の JSON かフォーム、出力は `MemoJson` の形(`id`、`title`、`body`、`published_at`。一覧は `body` なし)です。`/api/*` では `Accept` ヘッダがなくても入力不備は 422、見つからないときは 404 の JSON で返します(`withExceptions` の `shouldRenderJsonWhen`)。
 
 `memo:publish` と `memo:edit` はメモの ID だけを標準出力に書くので、`memo:show` や `memo:delete` にそのまま渡せます。`--json` を付けると 1 行 1 レコードの JSON Lines になり、`file` に `-` を渡すと標準入力から本文を読みます。`memo:delete` は成功時に何も出力しません。診断は標準エラーに出し、入力不備は終了コード 2、メモが見つからないときは 1 です。
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LaravelOrbStack\Samples\Http;
+namespace LaravelOrbStack\Samples\Http\Web;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Session\Session;
@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoIndex;
+use LaravelOrbStack\Samples\Http\MemoFormRequest;
 use LaravelOrbStack\Samples\UseCase\DeleteMemo;
 use LaravelOrbStack\Samples\UseCase\EditMemo;
 use LaravelOrbStack\Samples\UseCase\PublishMemo;

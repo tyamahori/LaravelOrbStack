@@ -14,8 +14,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: [__DIR__ . '/../packages/Samples/Http/routes.php'],
-        api: [__DIR__ . '/../packages/Samples/Http/api.php'],
+        web: [__DIR__ . '/../packages/Samples/Http/Web/routes.php'],
+        api: [__DIR__ . '/../packages/Samples/Http/Api/routes.php'],
     )
     ->withProviders([
         AppServiceProvider::class,

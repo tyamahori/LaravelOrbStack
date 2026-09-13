@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Routing\Router;
 use LaravelOrbStack\Samples\Domain\MemoId;
-use LaravelOrbStack\Samples\Http\MemoApiController;
+use LaravelOrbStack\Samples\Http\Api\MemoApiController;
 
 /**
  * Listed in bootstrap/app.php withRouting(api: ...), so the "api" middleware

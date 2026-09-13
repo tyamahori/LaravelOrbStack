@@ -20,23 +20,23 @@
 
 アプリケーションコードは `packages/<Feature>/` に置きます。PSR-4 で `LaravelOrbStack\<Feature>` に対応し(`composer.json`)、`<Feature>` は `Ordering`、`Billing` のような業務上の能力の名前です。`Controllers`、`Services`、`Repositories` のような技術的な役割名でディレクトリを切ることはしません。役割で切ると一つの仕様変更が複数ディレクトリに散り、機能で切ると一つのディレクトリに収まります。
 
-パッケージの中は、ファイルが 1 つでも次の固定語彙のサブディレクトリに置きます(`packages/Samples/Http/HomeController.php` がこの形)。別の名前を発明しないでください。パッケージ直下に置いたクラスは Deptrac がどこにも依存できない層として扱うので、最初の `use` で検査に落ちます。
+パッケージの中は、ファイルが 1 つでも次の固定語彙のサブディレクトリに置きます(`packages/Samples/Http/Web/HomeController.php` がこの形)。別の名前を発明しないでください。パッケージ直下に置いたクラスは Deptrac がどこにも依存できない層として扱うので、最初の `use` で検査に落ちます。
 
 | ディレクトリ | 置くもの |
 |:--|:--|
 | `Domain/` | エンティティ、値オブジェクト、ドメイン例外、外側へ要求する interface(port) |
 | `UseCase/` | 1 つの操作を表すクラス。`RegisterUser` のような動詞+名詞で命名し、公開メソッドは `__invoke` 1 つ |
-| `Http/` | Controller、FormRequest、レスポンス整形。ルート定義は `Http/routes.php`、Blade は `Http/View/`(ビュー名は `<feature>::` 名前空間付き) |
+| `Http/` | 入口ごとに `Web/`(Blade を返す Controller、`routes.php`、Blade は `View/` でビュー名は `<feature>::` 名前空間付き)と `Api/`(JSON を返す Controller、`routes.php`、レスポンス整形)に分ける。両方が使う FormRequest は `Http/` 直下に置く |
 | `Console/` | Artisan コマンド |
 | `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
-| `Provider/` | ServiceProvider(`<Feature>ServiceProvider.php`)。port と実装の `bind`、ビュー名前空間(`loadViewsFrom`)、Artisan コマンド(`commands()`)の登録を担い、`bootstrap/app.php` の `withProviders([...], withBootstrapProviders: false)` に列挙する(`bootstrap/providers.php` は置かない)。`Http/routes.php` は同じファイルの `withRouting(web: [...])` に列挙する。プロバイダの `boot()` で `$router->group()` すると RouteServiceProvider が登録されず名前索引(`refreshNameLookups`)が更新されないので、`route('name')` が解決できない(テストで検出済み) |
+| `Provider/` | ServiceProvider(`<Feature>ServiceProvider.php`)。port と実装の `bind`、ビュー名前空間(`loadViewsFrom`)、Artisan コマンド(`commands()`)の登録を担い、`bootstrap/app.php` の `withProviders([...], withBootstrapProviders: false)` に列挙する(`bootstrap/providers.php` は置かない)。`Http/Web/routes.php` は同じファイルの `withRouting(web: [...])` に、`Http/Api/routes.php` は `withRouting(api: [...])` に列挙する。プロバイダの `boot()` で `$router->group()` すると RouteServiceProvider が登録されず名前索引(`refreshNameLookups`)が更新されないので、`route('name')` が解決できない(テストで検出済み) |
 | `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤だけを置く |
 
 パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Common/`)がそれを実装して A の `Provider/` で束ねます。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
 
 `packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージに置いたままにします。パッケージを消すときは、そのディレクトリと `bootstrap/app.php` の `withProviders` の行を消せば結線が残りません。
 
-リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`、実行時ガードの `autoload.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間は `composer.json` から外してあります)。ルート定義は `packages/<Feature>/Http/routes.php`、Blade は `packages/<Feature>/Http/View/`、全体設定は `packages/Common/` に置きます。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
+リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`、実行時ガードの `autoload.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間は `composer.json` から外してあります)。ルート定義は `packages/<Feature>/Http/{Web,Api}/routes.php`、Blade は `packages/<Feature>/Http/Web/View/`、全体設定は `packages/Common/` に置きます。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
 
 ## パッケージの中では依存を内側に向ける
 
