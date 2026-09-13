@@ -1,0 +1,67 @@
+# LaravelOrbStack の設計・実装ルール
+
+このファイルはエージェント(Claude Code、Codex、OMP)向けの正本で、`CLAUDE.md` はここへのシンボリックリンクです。環境構築・コマンド一覧・ヘルパ禁止の仕組みは `README.md` に書いてあり、ここでは重複させません。機械横断の作法(コミット、日本語、ツール選択)はグローバル指示に任せ、このリポジトリ固有の「どこに何を置き、何に依存してよいか」だけを決めます。
+
+設計の柱は三つです。**機能ごとにパッケージを切り(package by feature)、パッケージの中では依存を内側に向け(clean architecture)、部品は一つの仕事だけをして組み合わせる(Unix 哲学)**。以下はその三つを、このリポジトリのディレクトリと検査ツールに落としたものです。
+
+## 機能ごとにパッケージを切る
+
+アプリケーションコードは `packages/<Feature>/` に置きます。PSR-4 で `LaravelOrbStack\<Feature>` に対応し(`composer.json`)、`<Feature>` は `Ordering`、`Billing` のような業務上の能力の名前です。`Controllers`、`Services`、`Repositories` のような技術的な役割名でディレクトリを切ることはしません。役割で切ると一つの仕様変更が複数ディレクトリに散り、機能で切ると一つのディレクトリに収まります。
+
+パッケージの中は、ファイルが 1 つでも次の固定語彙のサブディレクトリに置きます(`packages/Samples/Http/HomeController.php` がこの形)。別の名前を発明しないでください。パッケージ直下に置いたクラスは Deptrac がどこにも依存できない層として扱うので、最初の `use` で検査に落ちます。
+
+| ディレクトリ | 置くもの |
+|:--|:--|
+| `Domain/` | エンティティ、値オブジェクト、ドメイン例外、外側へ要求する interface(port) |
+| `UseCase/` | 1 つの操作を表すクラス。`RegisterUser` のような動詞+名詞で命名し、公開メソッドは `__invoke` 1 つ |
+| `Http/` | Controller、FormRequest、レスポンス整形 |
+| `Console/` | Artisan コマンド |
+| `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
+| `Test/` | そのパッケージのテスト(`*Test.php`)。`tests/` にはテスト基盤だけを置く |
+
+パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Shared/`)がそれを実装して `app/Providers/AppServiceProvider.php` で束ねます。`packages/Shared/` は 3 つ以上のパッケージが同じ値オブジェクトや port を使うようになった時点で作り、2 つ目までは各パッケージに置いたままにします。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
+
+`app/` はフレームワークの結線(Provider)専用です。新しい Eloquent モデルやビジネスロジックを `app/` に足さないでください。`app/Models/User.php` は移設前の例外で、認証機能をパッケージ化するときに `packages/<Feature>/Persistence/` へ移します。
+
+## パッケージの中では依存を内側に向ける
+
+依存の向きは `Http/`・`Console/`・`Persistence/` → `UseCase/` → `Domain/` の一方向です。`Domain/` と `UseCase/` は `Illuminate\*`、`Symfony\*`、`Carbon\*`、PDO、ファイルシステムを import しません。これらは HTTP も DB も時計もなしで PHPUnit から直接 new して動くのが完成条件です。時刻は `Psr\Clock\ClockInterface` を、乱数や外部呼び出しは `Domain/` の port を注入して受け取ります。
+
+境界を越えるデータは `readonly` なプレーンオブジェクトか値オブジェクトです。Request、Eloquent モデル、Collection を UseCase の引数や戻り値にしないでください。
+
+信頼境界での検証は一度だけ行います。HTTP 入力は `Http/` の FormRequest でパースして型付きの値にし、内側では検証済みとして扱います。「常に成り立つこと」(空でない、範囲内、一意)は値オブジェクトのコンストラクタか DB 制約(`database/schema.sql`)で守り、利用側で再検証しません。
+
+失敗の扱いは一つの方針に揃えます。業務上あり得る結果(見つからない、重複、状態不正)は `Domain/` に定義した例外か戻り値で表し、Http 層がステータスへ変換します。プログラミング誤りとインフラ障害はそのまま伝播させ、途中で握りつぶしたり catch してログだけ出して続行したりしません。
+
+Laravel のファサードとグローバルヘルパは全面禁止で、`Illuminate\Contracts\*` をコンストラクタやメソッド引数で受け取ります。禁止の範囲、`config/` の例外、静的解析と実行時ガードの二段構えは `README.md` の「コーディング規約」を参照してください。`Illuminate\Contracts\*` を受け取ってよいのは `Http/`・`Console/`・`Persistence/` だけで、`UseCase/` は自分の `Domain/` の port だけを受け取ります。
+
+interface は、実装が今この場で 2 つある(本物とテスト用の代替、または本当に 2 実装)か、パッケージ境界を越える port である場合に限って作ります。実装 1 つの interface、製品 1 つの factory、変わらない値の設定項目は作りません。
+
+## 部品は一つの仕事だけをして組み合わせる
+
+クラスとメソッドは一つの仕事で止めます。説明に「〜して、かつ〜する」が出るなら二つに分けます。真偽値のフラグ引数で振る舞いを切り替えるより、二つの UseCase を用意して呼び分けるほうを選びます。大きな操作は小さな UseCase を順に呼ぶ合成で作り、既存の UseCase に分岐を足して育てません。
+
+Artisan コマンド(`Console/`)は薄く保ち、引数の解釈と出力整形だけを担って本体は UseCase に委ねます。入力は引数か標準入力、結果は標準出力、進捗と警告は標準エラー、成功時は黙って終了コード 0、失敗時は非 0 です。機械が読む出力は `--json` オプションで JSON Lines(1 行 1 レコード)にし、人向けの装飾を混ぜません。あるコマンドの出力が別のコマンドの入力として加工なしに渡せるかを設計時に確かめてください。
+
+`Taskfile.yml` と `composer.json` の scripts も同じ流儀です。新しいタスクは既存コマンドのパイプラインで書けないか先に試し、成功時は静かに、失敗時は診断を標準エラーに出して非 0 で終わるようにします。
+
+## 検査で強制していること
+
+| 規則 | 仕組み | 状態 |
+|:--|:--|:--|
+| ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、`bootstrap/autoload.php` の実行時ガード | 強制済み |
+| PHPStan level max + strict rules | `libConfig/phpstan.neon` | 強制済み |
+| レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`app/Models/` は `Persistence/` と同じ規則、`app/Providers/` は全層に依存できる |
+| PSR-4 と大文字小文字 | `composer psrCheck`、PHPStan `class.nameCase` | 強制済み |
+
+検査は Composer のラッパーで走らせます。`composer stanCheck -- --no-progress --error-format=raw`、`ecsCheck`、`rectorCheck`、`magoCheck`、`deptracCheck`、`phpunit`(`APP_KEY` が必要)。フォーマッタは ECS だけで、Mago は lint 専用です。`vendor/bin/phpunit` を直接叩くと実行時ガードが読み込まれず `packages/Samples/Test/` のガード系テストが落ちます。ローカルで `SampleControllerTest` が落ちるのは `libConfig/phpunit.xml` が Redis を要求する既知の状態で、コンテナ内と CI では通ります。
+
+## 新しいコードを書く前に答える五つの問い
+
+1. どの `packages/<Feature>/` に属するか。既存に入らない理由は何か。
+2. 呼び出し側が知る必要があるのは何か(interface)。隠せるのは何か。
+3. 信頼できない入力はどこから入り、どの型に変わるか。
+4. 常に成り立つべきことは何で、どの一箇所がそれを守るか。
+5. 失敗は呼び出し側にどう見えるか。
+
+一つでも空欄なら設計はまだ固まっていません。決定がコミットをまたいで残るもの(パッケージ境界、データモデル、外部サービスの選択)は `docs/adr/NNNN-kebab-title.md` に ADR として残します。現時点で ADR はなく、最初の 1 本を `0001` から始めます。
