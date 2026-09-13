@@ -22,7 +22,7 @@ final readonly class MemoController
 
     public function index(Session $session, MemoIndex $index, ViewFactory $view): View
     {
-        return $view->make('memos.index', [
+        return $view->make('samples::memos.index', [
             'headings' => $index->latest(),
             'lastPublishedId' => $session->get(self::SESSION_LAST_PUBLISHED),
         ]);
@@ -44,12 +44,12 @@ final readonly class MemoController
 
     public function show(string $id, ShowMemo $show, ViewFactory $view): View
     {
-        return $view->make('memos.show', ['memo' => $show(new MemoId($id))]);
+        return $view->make('samples::memos.show', ['memo' => $show(new MemoId($id))]);
     }
 
     public function edit(string $id, ShowMemo $show, ViewFactory $view): View
     {
-        return $view->make('memos.edit', ['memo' => $show(new MemoId($id))]);
+        return $view->make('samples::memos.edit', ['memo' => $show(new MemoId($id))]);
     }
 
     public function update(

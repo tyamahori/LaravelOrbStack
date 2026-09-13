@@ -1,4 +1,4 @@
-@extends('memos.layout')
+@extends('samples::memos.layout')
 
 @section('title', 'メモ')
 

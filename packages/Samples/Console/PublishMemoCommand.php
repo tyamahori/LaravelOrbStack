@@ -26,12 +26,11 @@ final class PublishMemoCommand extends Command
     {
         $file = $this->argument('file');
         $body = match (true) {
-            ! is_string($file) => false,
             $file === '-' => stream_get_contents(STDIN),
             is_readable($file) => file_get_contents($file),
             default => false,
         };
-        if (! is_string($file) || ! is_string($body)) {
+        if (! is_string($body)) {
             $this->getOutput()->getErrorStyle()->writeln('読み込めません: ' . json_encode($file, JSON_THROW_ON_ERROR));
 
             return self::INVALID;

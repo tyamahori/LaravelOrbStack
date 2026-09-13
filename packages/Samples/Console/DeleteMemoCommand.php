@@ -11,8 +11,6 @@ use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\UseCase\DeleteMemo;
 use Override;
 
-use function is_string;
-
 final class DeleteMemoCommand extends Command
 {
     #[Override]
@@ -24,10 +22,8 @@ final class DeleteMemoCommand extends Command
 
     public function handle(DeleteMemo $delete): int
     {
-        $raw = $this->argument('id');
-
         try {
-            $delete(new MemoId(is_string($raw) ? $raw : ''));
+            $delete(new MemoId($this->argument('id')));
         } catch (InvalidArgumentException $e) {
             $this->getOutput()->getErrorStyle()->writeln($e->getMessage());
 

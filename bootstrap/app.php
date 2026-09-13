@@ -5,24 +5,20 @@ declare(strict_types=1);
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use LaravelOrbStack\Samples\Console\DeleteMemoCommand;
-use LaravelOrbStack\Samples\Console\EditMemoCommand;
-use LaravelOrbStack\Samples\Console\PublishMemoCommand;
-use LaravelOrbStack\Samples\Console\ShowMemoCommand;
+use LaravelOrbStack\Common\Provider\AppServiceProvider;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
+use LaravelOrbStack\Samples\Provider\SamplesServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__ . '/../routes/web.php',
+        web: [__DIR__ . '/../packages/Samples/Http/routes.php'],
     )
-    ->withCommands([
-        PublishMemoCommand::class,
-        ShowMemoCommand::class,
-        EditMemoCommand::class,
-        DeleteMemoCommand::class,
-    ])
+    ->withProviders([
+        AppServiceProvider::class,
+        SamplesServiceProvider::class,
+    ], withBootstrapProviders: false)
     ->withEvents(discover: false)
     ->withMiddleware(static function (Middleware $middleware): void {
         $middleware->trustProxies(

@@ -15,7 +15,7 @@ final class HomeController
 {
     public function home(Factory $view): Renderable
     {
-        return $view->make('welcome', [
+        return $view->make('samples::welcome', [
             'sapi' => PHP_SAPI,
             'runtime' => match (PHP_SAPI) {
                 'frankenphp' => 'FrankenPHP',

@@ -227,8 +227,6 @@ tasks:
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
       - task: baseCommand
@@ -248,8 +246,6 @@ tasks:
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
       - ./tests/**/*.php
       - ./libConfig/ecs.php
       - ./composer.lock
@@ -271,8 +267,6 @@ tasks:
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
       - ./tests/**/*.php
       - ./libConfig/phpstan.neon
       - ./libConfig/PhpStan/*.php
@@ -314,8 +308,6 @@ tasks:
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
       - ./tests/**/*.php
       - ./libConfig/mago.toml
       - ./composer.lock
@@ -351,8 +343,6 @@ tasks:
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
       - ./tests/**/*.php
       - ./libConfig/rector.php
       - ./composer.lock
@@ -375,8 +365,6 @@ tasks:
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
       - ./tests/**/*.php
       - ./libConfig/ecs.php
       - ./composer.lock
@@ -399,8 +387,6 @@ tasks:
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
       - ./tests/**/*.php
       - ./libConfig/rector.php
       - ./composer.lock
@@ -430,8 +416,6 @@ tasks:
       - ./config/**/*.php
       - ./database/**/*.php
       - ./public/**/*.php
-      - ./resources/**/*.php
-      - ./routes/**/*.php
       - ./tests/**/*.php
     cmds:
       - task: baseCommand

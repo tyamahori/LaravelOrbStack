@@ -6,7 +6,6 @@ parameters:
     - ../config
     - ../database
     - ../public
-    - ../resources
     - ../tests
     - ../routes
   excludePaths:
@@ -38,7 +37,7 @@ parameters:
   configDirectories:
     - ../config
   viewDirectories:
-    - ../resources/views
+    - ../packages/Samples/Http/View
   ignoreErrors:
     # config/*.php run before the container exists; env() and *_path() are the only way in.
     -

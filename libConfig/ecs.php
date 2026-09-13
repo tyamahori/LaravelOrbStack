@@ -131,7 +131,6 @@ return ECSConfig::configure()
         "{$dirname}/database",
         "{$dirname}/packages",
         "{$dirname}/public",
-        "{$dirname}/resources",
         "{$dirname}/routes",
         "{$dirname}/tests",
     ])

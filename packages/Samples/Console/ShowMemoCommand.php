@@ -11,8 +11,6 @@ use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\UseCase\ShowMemo;
 use Override;
 
-use function is_string;
-
 final class ShowMemoCommand extends Command
 {
     #[Override]
@@ -28,7 +26,7 @@ final class ShowMemoCommand extends Command
         $raw = $this->argument('id');
 
         try {
-            $memo = $show(new MemoId(is_string($raw) ? $raw : ''));
+            $memo = $show(new MemoId($raw));
         } catch (InvalidArgumentException $e) {
             $this->getOutput()->getErrorStyle()->writeln($e->getMessage());
 

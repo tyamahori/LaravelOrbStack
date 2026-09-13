@@ -11,7 +11,6 @@ return RectorConfig::configure()
         'config',
         'database',
         'public',
-        'resources',
         'tests',
         'routes',
     ])

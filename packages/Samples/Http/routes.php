@@ -2,23 +2,16 @@
 
 declare(strict_types=1);
 
+use Illuminate\Routing\Router;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Http\HomeController;
 use LaravelOrbStack\Samples\Http\MemoController;
 
-/** @var Illuminate\Routing\Router $router */
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+/**
+ * Listed in bootstrap/app.php withRouting(web: ...), so the "web" middleware group applies.
+ *
+ * @var Router $router
+ */
 $router->get('/', [HomeController::class, 'home'])->name('welcome');
 
 $router->get('/memos', [MemoController::class, 'index'])->name('memos.index');

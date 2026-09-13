@@ -14,15 +14,15 @@
 |:--|:--|
 | `Domain/` | エンティティ、値オブジェクト、ドメイン例外、外側へ要求する interface(port) |
 | `UseCase/` | 1 つの操作を表すクラス。`RegisterUser` のような動詞+名詞で命名し、公開メソッドは `__invoke` 1 つ |
-| `Http/` | Controller、FormRequest、レスポンス整形 |
+| `Http/` | Controller、FormRequest、レスポンス整形。ルート定義は `Http/routes.php`、Blade は `Http/View/`(ビュー名は `<feature>::` 名前空間付き) |
 | `Console/` | Artisan コマンド |
 | `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
-| `Provider/` | そのパッケージの port と実装を `bind` する ServiceProvider(`<Feature>ServiceProvider.php`)。`bootstrap/providers.php` に登録する |
+| `Provider/` | ServiceProvider(`<Feature>ServiceProvider.php`)。port と実装の `bind`、ビュー名前空間、Artisan コマンドの登録を担い、`bootstrap/app.php` の `withProviders` に列挙する。`Http/routes.php` は同じファイルの `withRouting(web: [...])` に列挙する(名前索引とルートキャッシュをフレームワークの RouteServiceProvider に任せるため) |
 | `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤だけを置く |
 
 パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Common/`)がそれを実装して A の `Provider/` で束ねます。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
 
-`packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージに置いたままにします。パッケージを消すときは、そのディレクトリと `bootstrap/providers.php` の登録行を消せば結線が残りません。
+`packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージに置いたままにします。パッケージを消すときは、そのディレクトリと `bootstrap/app.php` の `withProviders` の行を消せば結線が残りません。
 
 `app/` には新しいクラスを足しません。`app/Models/User.php` は移設前の例外で、認証機能をパッケージ化するときに `packages/<Feature>/Persistence/` へ移します。
 
