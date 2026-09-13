@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LaravelOrbStack\Samples;
+namespace LaravelOrbStack\Samples\Http;
 
 use const PHP_SAPI;
 use const PHP_VERSION;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use LaravelOrbStack\Samples\HomeController;
+use LaravelOrbStack\Samples\Http\HomeController;
 
 /** @var Illuminate\Routing\Router $router */
 
