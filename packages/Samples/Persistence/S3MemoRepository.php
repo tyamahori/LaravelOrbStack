@@ -48,18 +48,6 @@ final readonly class S3MemoRepository implements MemoRepository
         return $this->decode((string) $this->disk->get($path));
     }
 
-    /**
-     * ponytail: one GET per memo; add a listing index object if the count grows.
-     */
-    #[Override]
-    public function all(): array
-    {
-        $paths = $this->disk->files(self::PREFIX);
-        rsort($paths, SORT_STRING);
-
-        return array_map(fn (string $path): Memo => $this->decode((string) $this->disk->get($path)), $paths);
-    }
-
     private function path(MemoId $id): string
     {
         return self::PREFIX . '/' . $id->value . '.json';

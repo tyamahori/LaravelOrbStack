@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\DateFactory;
 use Illuminate\Support\ServiceProvider;
 use LaravelOrbStack\Samples\Domain\MemoCache;
+use LaravelOrbStack\Samples\Domain\MemoIndex;
 use LaravelOrbStack\Samples\Domain\MemoRepository;
+use LaravelOrbStack\Samples\Persistence\EloquentMemoIndex;
 use LaravelOrbStack\Samples\Persistence\IlluminateMemoCache;
 use LaravelOrbStack\Samples\Persistence\S3MemoRepository;
 use Override;
@@ -29,6 +31,7 @@ final class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ClockInterface::class, NativeClock::class);
         $this->app->bind(MemoRepository::class, S3MemoRepository::class);
+        $this->app->bind(MemoIndex::class, EloquentMemoIndex::class);
         $this->app->bind(MemoCache::class, IlluminateMemoCache::class);
     }
 

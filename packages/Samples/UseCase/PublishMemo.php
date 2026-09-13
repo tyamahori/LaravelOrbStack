@@ -7,6 +7,7 @@ namespace LaravelOrbStack\Samples\UseCase;
 use LaravelOrbStack\Samples\Domain\Memo;
 use LaravelOrbStack\Samples\Domain\MemoCache;
 use LaravelOrbStack\Samples\Domain\MemoId;
+use LaravelOrbStack\Samples\Domain\MemoIndex;
 use LaravelOrbStack\Samples\Domain\MemoRepository;
 use Psr\Clock\ClockInterface;
 
@@ -15,6 +16,7 @@ final readonly class PublishMemo
     public function __construct(
         private ClockInterface $clock,
         private MemoRepository $memos,
+        private MemoIndex $index,
         private MemoCache $cache,
     ) {
     }
@@ -25,6 +27,7 @@ final readonly class PublishMemo
         $memo = new Memo(MemoId::at($now), $title, $body, $now);
 
         $this->memos->save($memo);
+        $this->index->add($memo);
         $this->cache->remember($memo);
 
         return $memo;

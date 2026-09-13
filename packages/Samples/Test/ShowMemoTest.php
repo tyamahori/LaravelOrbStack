@@ -15,17 +15,34 @@ use Symfony\Component\Clock\MockClock;
 final class ShowMemoTest extends TestCase
 {
     #[Test]
-    public function 公開したメモはリポジトリとキャッシュの両方に入る(): void
+    public function 公開したメモはリポジトリと索引とキャッシュに入る(): void
     {
         $repository = new InMemoryMemoStore();
+        $index = new InMemoryMemoStore();
         $cache = new InMemoryMemoStore();
         $clock = new MockClock('2026-09-13 06:15:30.123456');
 
-        $memo = (new PublishMemo($clock, $repository, $cache))('見出し', '本文');
+        $memo = (new PublishMemo($clock, $repository, $index, $cache))('見出し', '本文');
 
         self::assertSame('20260913-061530-123456', $memo->id->value);
         self::assertSame($memo, $repository->find($memo->id));
+        self::assertEquals([$memo->heading()], $index->latest());
         self::assertSame($memo, $cache->get($memo->id));
+    }
+
+    #[Test]
+    public function 索引は新しい順に並ぶ(): void
+    {
+        $index = new InMemoryMemoStore();
+        $store = new InMemoryMemoStore();
+        $clock = new MockClock('2026-09-13 06:15:30');
+        $publish = new PublishMemo($clock, $store, $index, $store);
+
+        $first = $publish('先', '本文');
+        $clock->sleep(1);
+        $second = $publish('後', '本文');
+
+        self::assertEquals([$second->heading(), $first->heading()], $index->latest());
     }
 
     #[Test]
@@ -33,7 +50,7 @@ final class ShowMemoTest extends TestCase
     {
         $repository = new InMemoryMemoStore();
         $cache = new InMemoryMemoStore();
-        $memo = (new PublishMemo(new MockClock(), $repository, new InMemoryMemoStore()))('見出し', '本文');
+        $memo = (new PublishMemo(new MockClock(), $repository, new InMemoryMemoStore(), new InMemoryMemoStore()))('見出し', '本文');
 
         $shown = (new ShowMemo($repository, $cache))($memo->id);
 
@@ -45,7 +62,7 @@ final class ShowMemoTest extends TestCase
     public function キャッシュにあればリポジトリを読まない(): void
     {
         $cache = new InMemoryMemoStore();
-        $memo = (new PublishMemo(new MockClock(), new InMemoryMemoStore(), $cache))('見出し', '本文');
+        $memo = (new PublishMemo(new MockClock(), new InMemoryMemoStore(), new InMemoryMemoStore(), $cache))('見出し', '本文');
 
         $shown = (new ShowMemo(new InMemoryMemoStore(), $cache))($memo->id);
 

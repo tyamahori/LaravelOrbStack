@@ -10,7 +10,7 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use LaravelOrbStack\Samples\Domain\MemoId;
-use LaravelOrbStack\Samples\Domain\MemoRepository;
+use LaravelOrbStack\Samples\Domain\MemoIndex;
 use LaravelOrbStack\Samples\UseCase\PublishMemo;
 use LaravelOrbStack\Samples\UseCase\ShowMemo;
 
@@ -18,10 +18,10 @@ final readonly class MemoController
 {
     private const string SESSION_LAST_PUBLISHED = 'samples.last_published_memo_id';
 
-    public function index(Session $session, MemoRepository $memos, ViewFactory $view): View
+    public function index(Session $session, MemoIndex $index, ViewFactory $view): View
     {
         return $view->make('memos.index', [
-            'memos' => $memos->all(),
+            'headings' => $index->latest(),
             'lastPublishedId' => $session->get(self::SESSION_LAST_PUBLISHED),
         ]);
     }

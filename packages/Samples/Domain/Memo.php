@@ -27,4 +27,9 @@ final readonly class Memo
             throw new InvalidArgumentException('本文が空です');
         }
     }
+
+    public function heading(): MemoHeading
+    {
+        return new MemoHeading($this->id, $this->title, $this->publishedAt);
+    }
 }

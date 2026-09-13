@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Filesystem\Factory as Disks;
+use LaravelOrbStack\Samples\Persistence\MemoRecord;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Clock\ClockInterface;
@@ -35,6 +36,7 @@ final class MemoCommandTest extends TestCase
         $this->app->instance(ClockInterface::class, new MockClock('2026-09-13 06:15:31.654321'));
         $this->app->make(Disks::class)->disk('s3')->delete('memos/' . self::ID . '.json');
         $this->app->make(Cache::class)->forget('samples.memo.' . self::ID);
+        MemoRecord::query()->whereKey(self::ID)->delete();
         $this->artisan = $this->app->make(Kernel::class);
 
         $this->file = (string) tempnam(sys_get_temp_dir(), 'memo');

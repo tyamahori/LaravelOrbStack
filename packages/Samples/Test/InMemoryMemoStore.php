@@ -6,14 +6,16 @@ namespace LaravelOrbStack\Samples\Test;
 
 use LaravelOrbStack\Samples\Domain\Memo;
 use LaravelOrbStack\Samples\Domain\MemoCache;
+use LaravelOrbStack\Samples\Domain\MemoHeading;
 use LaravelOrbStack\Samples\Domain\MemoId;
+use LaravelOrbStack\Samples\Domain\MemoIndex;
 use LaravelOrbStack\Samples\Domain\MemoRepository;
 use Override;
 
 /**
- * Array-backed fake for both ports; one class because they share the shape.
+ * Array-backed fake for all three ports; one class because they share the shape.
  */
-final class InMemoryMemoStore implements MemoRepository, MemoCache
+final class InMemoryMemoStore implements MemoRepository, MemoIndex, MemoCache
 {
     /**
      * @var array<string, Memo>
@@ -24,6 +26,12 @@ final class InMemoryMemoStore implements MemoRepository, MemoCache
     public function save(Memo $memo): void
     {
         $this->memos[$memo->id->value] = $memo;
+    }
+
+    #[Override]
+    public function add(Memo $memo): void
+    {
+        $this->save($memo);
     }
 
     #[Override]
@@ -45,11 +53,11 @@ final class InMemoryMemoStore implements MemoRepository, MemoCache
     }
 
     #[Override]
-    public function all(): array
+    public function latest(): array
     {
         $memos = $this->memos;
         krsort($memos, SORT_STRING);
 
-        return array_values($memos);
+        return array_values(array_map(static fn (Memo $memo): MemoHeading => $memo->heading(), $memos));
     }
 }

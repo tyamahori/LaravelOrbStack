@@ -49,3 +49,10 @@ CREATE TABLE personal_access_tokens (
 CREATE INDEX personal_access_tokens_tokenable_type_tokenable_id_index ON personal_access_tokens USING btree (tokenable_type, tokenable_id);
 
 ALTER TABLE personal_access_tokens ADD CONSTRAINT personal_access_tokens_token_unique UNIQUE (token);
+
+CREATE TABLE memos (
+    id character varying(22) NOT NULL,
+    title character varying(100) NOT NULL,
+    published_at timestamp(6) NOT NULL,
+    CONSTRAINT memos_pkey PRIMARY KEY ("id")
+);

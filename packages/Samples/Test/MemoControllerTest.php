@@ -8,6 +8,7 @@ use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Filesystem\Factory as Disks;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use LaravelOrbStack\Samples\Domain\Memo;
+use LaravelOrbStack\Samples\Persistence\MemoRecord;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Clock\ClockInterface;
@@ -15,8 +16,9 @@ use Symfony\Component\Clock\MockClock;
 use Tests\TestCase;
 
 /**
- * Runs against the compose stack (RustFS + Redis). The fixed clock makes
- * every run overwrite the same S3 key instead of piling up objects.
+ * Runs against the compose stack (RustFS + Redis + PostgreSQL). The fixed
+ * clock makes every run overwrite the same S3 key and DB row instead of
+ * piling up objects.
  */
 final class MemoControllerTest extends TestCase
 {
@@ -37,10 +39,11 @@ final class MemoControllerTest extends TestCase
         $this->url = $this->app->make(UrlGenerator::class);
         $this->app->make(Disks::class)->disk('s3')->delete(self::OBJECT);
         $this->app->make(Cache::class)->forget(self::CACHE_KEY);
+        MemoRecord::query()->whereKey(self::ID)->delete();
     }
 
     #[Test]
-    public function 公開するとS3とキャッシュに保存されセッションが最後のIDを覚える(): void
+    public function 公開するとS3と索引とキャッシュに保存されセッションが最後のIDを覚える(): void
     {
         $response = $this->post($this->url->route('memos.store'), ['title' => '見出し', 'body' => "本文\n2 行目"]);
 
@@ -48,8 +51,9 @@ final class MemoControllerTest extends TestCase
         $response->assertSessionHas('samples.last_published_memo_id', self::ID);
         self::assertTrue($this->app->make(Disks::class)->disk('s3')->exists(self::OBJECT));
         self::assertInstanceOf(Memo::class, $this->app->make(Cache::class)->get(self::CACHE_KEY));
+        self::assertSame('見出し', MemoRecord::query()->findOrFail(self::ID)->title);
 
-        $this->get($this->url->route('memos.index'))->assertOk()->assertSee(self::ID);
+        $this->get($this->url->route('memos.index'))->assertOk()->assertSeeInOrder([self::ID, '見出し']);
         $this->get($this->url->route('memos.show', ['id' => self::ID]))->assertOk()->assertSee('2 行目');
     }
 

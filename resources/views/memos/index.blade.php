@@ -5,7 +5,7 @@
 @section('content')
   <section>
     <h1>メモ</h1>
-    <p class="lead">公開したメモは S3(RustFS)に JSON として保存され、読み出しは Redis のキャッシュを経由します。最後に公開したメモの ID はセッションに覚えておきます。</p>
+    <p class="lead">公開したメモは S3(RustFS)に JSON として保存し、一覧用の見出しは PostgreSQL に記録します。読み出しは Redis のキャッシュを経由し、最後に公開したメモの ID はセッションに覚えておきます。</p>
     @if (is_string($lastPublishedId))
       <p>このブラウザで最後に公開したメモ: <a href="{{ route('memos.show', ['id' => $lastPublishedId]) }}"><code>{{ $lastPublishedId }}</code></a></p>
     @else
@@ -34,14 +34,14 @@
 
   <section>
     <h2>公開済み</h2>
-    @if ($memos === [])
+    @if ($headings === [])
       <p class="empty">まだメモはありません。</p>
     @else
       <ol class="memos">
-        @foreach ($memos as $memo)
+        @foreach ($headings as $heading)
           <li>
-            <time datetime="{{ $memo->publishedAt->format(DATE_ATOM) }}">{{ $memo->publishedAt->format('Y-m-d H:i:s') }}</time>
-            <a href="{{ route('memos.show', ['id' => $memo->id->value]) }}">{{ $memo->title }}</a>
+            <time datetime="{{ $heading->publishedAt->format(DATE_ATOM) }}">{{ $heading->publishedAt->format('Y-m-d H:i:s') }}</time>
+            <a href="{{ route('memos.show', ['id' => $heading->id->value]) }}">{{ $heading->title }}</a>
           </li>
         @endforeach
       </ol>
