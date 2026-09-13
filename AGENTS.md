@@ -26,8 +26,8 @@
 |:--|:--|
 | `Domain/` | エンティティ、値オブジェクト、ドメイン例外、外側へ要求する interface(port) |
 | `UseCase/` | 1 つの操作を表すクラス。`RegisterUser` のような動詞+名詞で命名し、公開メソッドは `__invoke` 1 つ |
-| `Http/` | 入口ごとに `Web/`(Blade を返す Controller、`routes.php`、Blade は `View/` でビュー名は `<feature>::` 名前空間付き)と `Api/`(JSON を返す Controller、`routes.php`、レスポンス整形)に分ける。両方が使う FormRequest は `Http/` 直下に置く |
-| `Console/` | Artisan コマンド |
+| `Http/` | Presentation 層の HTTP 入口。入口ごとに `Web/`(Blade を返す Controller、`routes.php`、Blade は `View/` でビュー名は `<feature>::` 名前空間付き)と `Api/`(JSON を返す Controller、`routes.php`、レスポンス整形)に分ける。両方が使う FormRequest は `Http/` 直下に置く |
+| `Console/` | Presentation 層の Artisan 入口。`Http/` と同じ層で、依存規則も同じ。ディレクトリを分けるのはパスから経路(HTTP か CLI か)が読めるようにするためだけ |
 | `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
 | `Provider/` | ServiceProvider(`<Feature>ServiceProvider.php`)。port と実装の `bind`、ビュー名前空間(`loadViewsFrom`)、Artisan コマンド(`commands()`)の登録を担い、`bootstrap/app.php` の `withProviders([...], withBootstrapProviders: false)` に列挙する(`bootstrap/providers.php` は置かない)。`Http/Web/routes.php` は同じファイルの `withRouting(web: [...])` に、`Http/Api/routes.php` は `withRouting(api: [...])` に列挙する。プロバイダの `boot()` で `$router->group()` すると RouteServiceProvider が登録されず名前索引(`refreshNameLookups`)が更新されないので、`route('name')` が解決できない(テストで検出済み) |
 | `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤だけを置く |
@@ -40,7 +40,7 @@
 
 ## パッケージの中では依存を内側に向ける
 
-依存の向きは `Http/`・`Console/`・`Persistence/` → `UseCase/` → `Domain/` の一方向です。`Domain/` と `UseCase/` は `Illuminate\*`、`Symfony\*`、`Carbon\*`、PDO、ファイルシステムを import しません。これらは HTTP も DB も時計もなしで PHPUnit から直接 new して動くのが完成条件です。時刻は `Psr\Clock\ClockInterface` を、乱数や外部呼び出しは `Domain/` の port を注入して受け取ります。
+依存の向きは Presentation(`Http/`・`Console/`)・`Persistence/` → `UseCase/` → `Domain/` の一方向です。`Domain/` と `UseCase/` は `Illuminate\*`、`Symfony\*`、`Carbon\*`、PDO、ファイルシステムを import しません。これらは HTTP も DB も時計もなしで PHPUnit から直接 new して動くのが完成条件です。時刻は `Psr\Clock\ClockInterface` を、乱数や外部呼び出しは `Domain/` の port を注入して受け取ります。
 
 境界を越えるデータは `readonly` なプレーンオブジェクトか値オブジェクトです。Request、Eloquent モデル、Collection を UseCase の引数や戻り値にしないでください。
 
@@ -87,7 +87,7 @@ Laravel を薄く使うとは、フレームワークに触れる層を `Http/`�
 | ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、`bootstrap/autoload.php` の実行時ガード | 強制済み |
 | nullable は `T\|null`(`?T` 禁止) | ECS `NullableTypeDeclarationFixer`(ネイティブ型、自動修正)、`libConfig/PhpStan/NoShorthandNullablePhpdocRule.php`(PHPDoc) | 強制済み |
 | PHPStan level max + strict rules | `libConfig/phpstan.neon` | 強制済み |
-| レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`Provider/` は全層に依存できる |
+| レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Http/` と `Console/` は一つの Presentation 層として扱う。`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`Provider/` は全層に依存できる |
 | PSR-4 と大文字小文字 | `composer psrCheck`、PHPStan `class.nameCase` | 強制済み |
 
 検査は Composer のラッパーで走らせます。`composer stanCheck -- --no-progress --error-format=raw`、`ecsCheck`、`rectorCheck`、`magoCheck`、`deptracCheck`、`phpunit`(`APP_KEY` が必要)。フォーマッタは ECS だけで、Mago は lint 専用です。`vendor/bin/phpunit` を直接叩くと実行時ガードが読み込まれず `packages/Samples/Test/` のガード系テストが落ちます。ローカルで `SampleControllerTest` が落ちるのは `libConfig/phpunit.xml` が Redis を要求する既知の状態で、コンテナ内と CI では通ります。

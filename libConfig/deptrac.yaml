@@ -19,12 +19,12 @@ deptrac:
       collectors:
         - type: classLike
           value: ^LaravelOrbStack\\[^\\]+\\UseCase\\
-    - name: Http
+    # Http/ and Console/ are the same layer: entry points that call UseCases. They stay
+    # separate directories only so a class's transport is visible from its path.
+    - name: Presentation
       collectors:
         - type: classLike
           value: ^LaravelOrbStack\\[^\\]+\\Http\\
-    - name: Console
-      collectors:
         - type: classLike
           value: ^LaravelOrbStack\\[^\\]+\\Console\\
     - name: Persistence
@@ -54,12 +54,7 @@ deptrac:
     UseCase:
       - Domain
       - Vendor
-    Http:
-      - UseCase
-      - Domain
-      - Framework
-      - Vendor
-    Console:
+    Presentation:
       - UseCase
       - Domain
       - Framework
@@ -71,8 +66,7 @@ deptrac:
     Wiring:
       - Domain
       - UseCase
-      - Http
-      - Console
+      - Presentation
       - Persistence
       - Framework
       - Vendor
