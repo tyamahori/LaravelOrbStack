@@ -17,11 +17,14 @@
 | `Http/` | Controller、FormRequest、レスポンス整形 |
 | `Console/` | Artisan コマンド |
 | `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
+| `Provider/` | そのパッケージの port と実装を `bind` する ServiceProvider(`<Feature>ServiceProvider.php`)。`bootstrap/providers.php` に登録する |
 | `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤だけを置く |
 
-パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Shared/`)がそれを実装して A のプロバイダで束ねます。`packages/Shared/` は 3 つ以上のパッケージが同じ値オブジェクトや port を使うようになった時点で作り、2 つ目までは各パッケージに置いたままにします。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
+パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Common/`)がそれを実装して A の `Provider/` で束ねます。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
 
-`app/` はフレームワークの結線(Provider)専用で、プロバイダは 2 種類に分けます。`app/Providers/AppServiceProvider.php` にはアプリ全体の設定(時計、日付クラス、Eloquent の strict モード)だけを置き、パッケージの port と実装の `bind` は `app/Providers/<Feature>ServiceProvider.php` に置いて `bootstrap/providers.php` に登録します(`SamplesServiceProvider` がこの形)。パッケージを消すときはそのプロバイダと登録行を消せば結線が残りません。新しい Eloquent モデルやビジネスロジックを `app/` に足さないでください。`app/Models/User.php` は移設前の例外で、認証機能をパッケージ化するときに `packages/<Feature>/Persistence/` へ移します。
+`packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージに置いたままにします。パッケージを消すときは、そのディレクトリと `bootstrap/providers.php` の登録行を消せば結線が残りません。
+
+`app/` には新しいクラスを足しません。`app/Models/User.php` は移設前の例外で、認証機能をパッケージ化するときに `packages/<Feature>/Persistence/` へ移します。
 
 ## パッケージの中では依存を内側に向ける
 
@@ -33,7 +36,7 @@
 
 失敗の扱いは一つの方針に揃えます。業務上あり得る結果(見つからない、重複、状態不正)は `Domain/` に定義した例外か戻り値で表し、Http 層がステータスへ変換します。プログラミング誤りとインフラ障害はそのまま伝播させ、途中で握りつぶしたり catch してログだけ出して続行したりしません。
 
-Laravel のファサードとグローバルヘルパは全面禁止で、`Illuminate\Contracts\*` をコンストラクタやメソッド引数で受け取ります。禁止の範囲、`config/` の例外、静的解析と実行時ガードの二段構えは `README.md` の「コーディング規約」を参照してください。`Illuminate\Contracts\*` を受け取ってよいのは `Http/`・`Console/`・`Persistence/` だけで、`UseCase/` は自分の `Domain/` の port だけを受け取ります。
+Laravel のファサードとグローバルヘルパは全面禁止で、`Illuminate\Contracts\*` をコンストラクタやメソッド引数で受け取ります。禁止の範囲、`config/` の例外、静的解析と実行時ガードの二段構えは `README.md` の「コーディング規約」を参照してください。`Illuminate\Contracts\*` を受け取ってよいのは `Http/`・`Console/`・`Persistence/`・`Provider/` だけで、`UseCase/` は自分の `Domain/` の port だけを受け取ります。
 
 interface は、実装が今この場で 2 つある(本物とテスト用の代替、または本当に 2 実装)か、パッケージ境界を越える port である場合に限って作ります。実装 1 つの interface、製品 1 つの factory、変わらない値の設定項目は作りません。
 
@@ -47,7 +50,7 @@ Artisan コマンド(`Console/`)は薄く保ち、引数の解釈と出力整形
 
 ## フレームワークは薄く、使うべきところでは使う
 
-Laravel を薄く使うとは、フレームワークに触れる層を `Http/`・`Console/`・`Persistence/`・`app/Providers/` に限ることであって、その層でフレームワークを避けることではありません。`Domain/` と `UseCase/` がフレームワークなしで動くのは前節の通りですが、外側の層で Laravel が既に解いている問題を自前で解き直すのは、薄さではなく二重実装です。
+Laravel を薄く使うとは、フレームワークに触れる層を `Http/`・`Console/`・`Persistence/`・`Provider/` に限ることであって、その層でフレームワークを避けることではありません。`Domain/` と `UseCase/` がフレームワークなしで動くのは前節の通りですが、外側の層で Laravel が既に解いている問題を自前で解き直すのは、薄さではなく二重実装です。
 
 外側の層では次のものをそのまま使います。HTTP 入力の検証は FormRequest、DB は Eloquent モデルとクエリビルダ、キャッシュ・セッション・ファイルシステム・時計は `Illuminate\Contracts\*` と `Psr\Clock\ClockInterface` の注入、依存の束ね方はコンテナの `bind`、ドメイン例外から HTTP ステータスへの変換は `bootstrap/app.php` の `withExceptions`、Artisan は `Illuminate\Console\Command` の signature と終了コード定数、Blade は `route()`・`old()`・`session()`・`@csrf`・`@method`。`packages/Samples/` がこの形で、Eloquent を包む Repository 基底クラスも、FormRequest の代わりの Validator ラッパも、独自の Response ビルダも持ちません。
 
@@ -72,7 +75,7 @@ Laravel を薄く使うとは、フレームワークに触れる層を `Http/`�
 | ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、`bootstrap/autoload.php` の実行時ガード | 強制済み |
 | nullable は `T\|null`(`?T` 禁止) | ECS `NullableTypeDeclarationFixer`(ネイティブ型、自動修正)、`libConfig/PhpStan/NoShorthandNullablePhpdocRule.php`(PHPDoc) | 強制済み |
 | PHPStan level max + strict rules | `libConfig/phpstan.neon` | 強制済み |
-| レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`app/Models/` は `Persistence/` と同じ規則、`app/Providers/` は全層に依存できる |
+| レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`app/Models/` は `Persistence/` と同じ規則、`Provider/` は全層に依存できる |
 | PSR-4 と大文字小文字 | `composer psrCheck`、PHPStan `class.nameCase` | 強制済み |
 
 検査は Composer のラッパーで走らせます。`composer stanCheck -- --no-progress --error-format=raw`、`ecsCheck`、`rectorCheck`、`magoCheck`、`deptracCheck`、`phpunit`(`APP_KEY` が必要)。フォーマッタは ECS だけで、Mago は lint 専用です。`vendor/bin/phpunit` を直接叩くと実行時ガードが読み込まれず `packages/Samples/Test/` のガード系テストが落ちます。ローカルで `SampleControllerTest` が落ちるのは `libConfig/phpunit.xml` が Redis を要求する既知の状態で、コンテナ内と CI では通ります。

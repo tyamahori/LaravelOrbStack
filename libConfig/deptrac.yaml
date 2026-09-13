@@ -38,7 +38,7 @@ deptrac:
     - name: Wiring
       collectors:
         - type: classLike
-          value: ^App\\Providers\\
+          value: ^LaravelOrbStack\\[^\\]+\\Provider\\
     - name: Framework
       collectors:
         - type: classLike

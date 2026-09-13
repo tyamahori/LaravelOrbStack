@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace LaravelOrbStack\Common\Provider;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Config\Repository;
@@ -15,7 +15,7 @@ use Symfony\Component\Clock\NativeClock;
 
 /**
  * Application-wide wiring only. Bindings for a package's ports live in that
- * package's provider (app/Providers/<Feature>ServiceProvider.php).
+ * package's provider (packages/<Feature>/Provider/).
  */
 final class AppServiceProvider extends ServiceProvider
 {

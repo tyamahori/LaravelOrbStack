@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace LaravelOrbStack\Samples\Provider;
 
 use Illuminate\Support\ServiceProvider;
 use LaravelOrbStack\Samples\Domain\MemoCache;

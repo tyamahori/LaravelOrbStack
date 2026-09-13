@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Providers\AppServiceProvider;
-use App\Providers\SamplesServiceProvider;
+use LaravelOrbStack\Common\Provider\AppServiceProvider;
+use LaravelOrbStack\Samples\Provider\SamplesServiceProvider;
 
 return [
     AppServiceProvider::class,
