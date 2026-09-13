@@ -130,6 +130,19 @@ Devbox シェル内では `devbox run composer` で Composer install を実行�
 
 PHPUnit は `composer phpunit`(または `task phpunit`)で実行してください。`vendor/bin/phpunit` を直接叩くとガードが読み込まれず、`packages/Samples/Test/GlobalHelperGuardTest.php` と `FacadeGuardTest.php` が失敗します。
 
+## サンプル実装
+
+`packages/Samples/` は AGENTS.md の配置規則に沿った参照実装です。メモを公開すると S3(RustFS)の `memos/<id>.json` に保存し、読み出しは Redis のキャッシュを経由し、ブラウザで最後に公開したメモの ID はセッションに残します。同じ UseCase を Web と Artisan の両方から呼びます。
+
+| 入口 | 場所 |
+|:--|:--|
+| Web | <https://frankenphp.local/memos>(一覧と公開フォーム)、`/memos/<id>`(表示) |
+| Artisan | `task artisan -- memo:publish <file> [--title=] [--json]`、`task artisan -- memo:show <id> [--json]` |
+
+`memo:publish` は公開したメモの ID だけを標準出力に書くので、`memo:show` にそのまま渡せます。`--json` を付けると 1 行 1 レコードの JSON Lines になり、`file` に `-` を渡すと標準入力から本文を読みます。診断は標準エラーに出し、入力不備は終了コード 2、メモが見つからないときは 1 です。
+
+`Domain/` と `UseCase/` のテストはフレームワークなしで動き、`Http/` と `Console/` のテストは Compose の RustFS と Redis に接続します(ローカルでは `task up` 後に `task phpunit`)。
+
 ## ディレクトリ
 
 ```text
