@@ -33,7 +33,9 @@ final readonly class S3MemoRepository implements MemoRepository
             'id' => $memo->id->value,
             'title' => $memo->title,
             'body' => $memo->body,
-            'published_at' => $memo->publishedAt->format(DateTimeImmutable::RFC3339_EXTENDED),
+            // Not RFC3339_EXTENDED: that keeps milliseconds only, and the id and
+            // the DB row carry microseconds.
+            'published_at' => $memo->publishedAt->format('Y-m-d\TH:i:s.uP'),
         ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE));
     }
 
@@ -46,6 +48,12 @@ final readonly class S3MemoRepository implements MemoRepository
         }
 
         return $this->decode((string) $this->disk->get($path));
+    }
+
+    #[Override]
+    public function delete(MemoId $id): void
+    {
+        $this->disk->delete($this->path($id));
     }
 
     private function path(MemoId $id): string
