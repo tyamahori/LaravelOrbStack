@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Http\HomeController;
+use LaravelOrbStack\Samples\Http\MemoController;
 
 /** @var Illuminate\Routing\Router $router */
 
@@ -18,3 +20,7 @@ use LaravelOrbStack\Samples\Http\HomeController;
 */
 
 $router->get('/', [HomeController::class, 'home'])->name('welcome');
+
+$router->get('/memos', [MemoController::class, 'index'])->name('memos.index');
+$router->post('/memos', [MemoController::class, 'store'])->name('memos.store');
+$router->get('/memos/{id}', [MemoController::class, 'show'])->name('memos.show')->where('id', MemoId::PATTERN);

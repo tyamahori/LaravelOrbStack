@@ -153,7 +153,8 @@
     <ul class="plain">
       <li>もう一方の実行環境でこのページを開き、同じ内容が返ることを確かめる</li>
       <li><code>task lintCode</code>で静的解析とフォーマッタを、<code>task phpunit</code>でテストを実行する</li>
-      <li><code>packages/</code>に最初のパッケージを作り、<code>routes/web.php</code>から繋ぐ</li>
+      <li><a href="{{ route('memos.index') }}">メモのサンプル</a>で S3 への保存、Redis キャッシュ、セッションの動作を確かめる</li>
+      <li><code>packages/Samples/</code>を手本に次のパッケージを作り、<code>routes/web.php</code>から繋ぐ</li>
     </ul>
     <p>手順と各コマンドの詳細はリポジトリの<a href="https://github.com/tyamahori/LaravelOrbStack">README</a>にあります。</p>
   </section>
