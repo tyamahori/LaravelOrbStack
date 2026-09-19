@@ -9,8 +9,6 @@ use InvalidArgumentException;
 use LaravelOrbStack\Samples\UseCase\PublishMemo;
 use Override;
 
-use function is_string;
-
 final class PublishMemoCommand extends Command
 {
     #[Override]
@@ -25,19 +23,14 @@ final class PublishMemoCommand extends Command
     public function handle(PublishMemo $publish): int
     {
         $file = $this->argument('file');
-        $body = match (true) {
-            $file === '-' => stream_get_contents(STDIN),
-            is_readable($file) => file_get_contents($file),
-            default => false,
-        };
-        if (! is_string($body)) {
+        $body = MemoBodyFile::read($file);
+        if ($body === null) {
             $this->getOutput()->getErrorStyle()->writeln('読み込めません: ' . json_encode($file, JSON_THROW_ON_ERROR));
 
             return self::INVALID;
         }
 
-        $title = $this->option('title');
-        $title = is_string($title) ? $title : pathinfo($file, PATHINFO_FILENAME);
+        $title = MemoBodyFile::title($this->option('title'), $file);
 
         try {
             $memo = $publish($title, $body);
