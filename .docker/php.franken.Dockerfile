@@ -1,15 +1,15 @@
 ARG PHP_VERSION
 ARG COMPOSER_VERSION
-FROM golang:1.27.1-bookworm@sha256:648f440f42a0958804efb24df176f806f9d353b41f1c0627f666428e40310f6b AS go
+FROM golang:1.27.1-bookworm@sha256:69a7b9788769bec032d238959b61854e9ae87f57be9029ec04e9885fabf99195 AS go
 FROM composer:${COMPOSER_VERSION} AS composer
-FROM mlocati/php-extension-installer:2.11.12@sha256:b6d3fa381b9ba5cf051117c1c601d6a523b590e534bf3d56eb4fbe352949c138 AS basephpextensioninstaller
+FROM mlocati/php-extension-installer:2.11.27@sha256:38772e61ab498b8acaed7dea4042fe82fafffd741114819687c1cdfd4ecfd0bb AS basephpextensioninstaller
 FROM dunglas/frankenphp:php${PHP_VERSION}-trixie AS frankenphp
 
 FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.53.1
 
 FROM go AS psqldef
-RUN go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.20
+RUN go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.23
 
 FROM frankenphp AS basebuild
 RUN apt-get update \
