@@ -15,6 +15,5 @@ final readonly class MemoHeading
         public MemoId $id,
         public string $title,
         public DateTimeImmutable $publishedAt,
-    ) {
-    }
+    ) {}
 }

@@ -20,8 +20,7 @@ final readonly class IlluminateMemoCache implements MemoCache
 
     public function __construct(
         private Repository $cache,
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function remember(Memo $memo): void

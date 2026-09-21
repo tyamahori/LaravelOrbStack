@@ -17,8 +17,7 @@ final readonly class DeleteMemo
         private MemoRepository $memos,
         private MemoIndex $index,
         private MemoCache $cache,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws MemoNotFound
