@@ -21,8 +21,7 @@ final readonly class EditMemo
         private MemoRepository $memos,
         private MemoIndex $index,
         private MemoCache $cache,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws MemoNotFound

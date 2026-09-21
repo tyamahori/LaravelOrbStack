@@ -18,8 +18,7 @@ final readonly class PublishMemo
         private MemoRepository $memos,
         private MemoIndex $index,
         private MemoCache $cache,
-    ) {
-    }
+    ) {}
 
     public function __invoke(string $title, string $body): Memo
     {

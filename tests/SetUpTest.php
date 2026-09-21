@@ -27,7 +27,7 @@ final class SetUpTest implements PhpunitExtension
 
     private function getStartedSubscriber(): StartedSubscriber
     {
-        return new class() implements StartedSubscriber
+        return new class implements StartedSubscriber
         {
             #[Override]
             public function notify(Started $event): void

@@ -111,7 +111,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug($appName, '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug($appName, '_') . '_database_'),
         ],
 
         'session' => [

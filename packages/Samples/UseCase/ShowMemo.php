@@ -19,8 +19,7 @@ final readonly class ShowMemo
     public function __construct(
         private MemoRepository $memos,
         private MemoCache $cache,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws MemoNotFound

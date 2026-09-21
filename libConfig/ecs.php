@@ -135,11 +135,15 @@ return ECSConfig::configure()
     ->withCache(
         "{$dirname}/.tempCache/.ecs",
     )
-    ->withPhpCsFixerSets(
-        psr2: true,
-        psr12Risky: true,
-        phpCsFixerRisky: true,
-        php85Migration: true,
+    ->withPreparedSets(
+        psr12: true,
+        // PER Coding Style 3.0: the native ECS replacement for the
+        // deprecated withPhpCsFixerSets(psr12Risky, phpCsFixerRisky) combo.
+        perCs: true,
+        // PHP-version migration stays with Rector (withPhpSets() in
+        // rector.php), which owns "PHP バージョンの正" per AGENTS.md; ECS
+        // 13.3 dropped withPhpCsFixerSets(php85Migration) with no
+        // withPreparedSets() equivalent.
     )
     ->withConfiguredRule(
         ArraySyntaxFixer::class,
