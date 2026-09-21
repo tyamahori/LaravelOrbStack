@@ -5,7 +5,7 @@ on:
 
 jobs:
   cache:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -39,7 +39,7 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-build-next-php
       cancel-in-progress: true
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     needs: cache
     steps:
       - name: Install Task
@@ -63,7 +63,7 @@ jobs:
         run: task pullCiImages
 
   lint:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     needs: cache
     steps:
       - name: Checkout
@@ -140,7 +140,7 @@ jobs:
         run: |
           composer deptracCheck
   test:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     needs: build
     steps:
       - name: Install Task
