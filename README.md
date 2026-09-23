@@ -124,7 +124,7 @@ Devbox シェル内では `devbox run composer` で Composer install を実行�
 | 層 | 仕組み | 対象 |
 |:--|:--|:--|
 | 静的解析 | `libConfig/PhpStan/NoFacadeRule.php`、`libConfig/PhpStan/NoGlobalHelperRule.php` | PHPStan の解析対象パス(`packages/`、`database/`、`tests/` など)。`vendor/laravel/framework` の `helpers.php` に定義された関数はすべて対象 |
-| 実行時 | `bootstrap/autoload.php` が `vendor/laravel/framework` の各 `helpers.php` にガード呼び出しを差し込み、`Illuminate\Support\Facades\Facade` を差し替えたものを `bootstrap/cache/guarded-framework.php` に生成して、フレームワークより先に読み込む(eval を使わないので opcache が効く。`composer install`/`update` か `autoload.php` の変更で再生成)。`vendor/` と `config/` 以外からの呼び出しで `LogicException` を投げる | `public/index.php`、`artisan`、`composer phpunit` の 3 エントリポイント。`helpers.php` の全関数(`collect()`、`now()`、`e()` などコンテナを触らないものも含む)。コンパイル済み Blade はファサードだけが対象で、ヘルパは Laravel 自身のエラーページも呼ぶため除外 |
+| 実行時 | `bootstrap/autoload.php` が Composer の `vendor/composer/installed.json` から `laravel/framework` の配置と `autoload.files` を引き、グローバル関数を宣言するファイル(各 `helpers.php`)の関数本体の先頭にガード呼び出しをトークン単位で差し込み、`Illuminate\Support\Facades\Facade` を差し替えたものと合わせて `bootstrap/cache/guarded-framework-<ハッシュ>.php` に生成し、フレームワークより先に読み込む(eval を使わないので opcache が効く。ハッシュは `installed.json` と `autoload.php` から取るので、`composer install`/`update` か `autoload.php` の変更で再生成)。`vendor/` と `config/` 以外からの呼び出しで `LogicException` を投げる | `public/index.php`、`artisan`、`composer phpunit` の 3 エントリポイント。`helpers.php` の全関数(`collect()`、`now()`、`e()` などコンテナを触らないものも含む)。コンパイル済み Blade はファサードだけが対象で、ヘルパは Laravel 自身のエラーページも呼ぶため除外 |
 
 `config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部からのヘルパ・ファサード呼び出しは制限しません。実行時ガードのファサード判定は `__callStatic` で行うため、`swap()` や `shouldReceive()` のように基底クラスに実在する静的メソッドは静的解析のみが対象です。
 
