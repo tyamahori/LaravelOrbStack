@@ -299,6 +299,8 @@ tasks:
         vars:
           CLI_ARGS: install
     sources:
+      - ./bootstrap/app.php
+      - ./libConfig/**/*.php
       - ./packages/**/*.php
       - ./config/**/*.php
       - ./database/**/*.php
@@ -312,7 +314,7 @@ tasks:
           RUNNING_SERVICE: php-app
           CLI_SERVICE: php-cli
           COMMAND_TO_RUN: |
-            ./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint
+            composer magoCheck
 
   phpunit:
     deps:
@@ -433,7 +435,7 @@ tasks:
           CLI_SERVICE: php-cli
           COMMAND_TO_RUN: |
             ./vendor/bin/rector process -c ./libConfig/rector.php {{ .CLI_ARGS }} &&
-            ./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint --fix {{ .CLI_ARGS }} &&
+            composer magoCheck -- --fix {{ .CLI_ARGS }} &&
             ./vendor/bin/ecs check -c ./libConfig/ecs.php --fix {{ .CLI_ARGS }} &&
             ./vendor/bin/phpstan analyse -c ./libConfig/phpstan.neon {{ .CLI_ARGS }} --memory-limit=1G
 

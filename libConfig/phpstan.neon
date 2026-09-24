@@ -1,16 +1,19 @@
 parameters:
   level: max
   paths:
+    - ../bootstrap/app.php
+    - ../libConfig
     - ../packages
     - ../config
     - ../database
     - ../public
     - ../tests
-  excludePaths:
-    - ../vendor
-    - ../.tempCache
-    - ../libConfig
   tmpDir: ../.tempCache/.stan
+  # ECS bundles php-cs-fixer and PHP_CodeSniffer under its own vendor/, outside
+  # the project autoloader; scan them so libConfig/ecs.php resolves its fixers.
+  scanDirectories:
+    - ../vendor/symplify/easy-coding-standard/vendor/friendsofphp/php-cs-fixer/src
+    - ../vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src
   strictRules:
     allRules: true
   checkBenevolentUnionTypes: true

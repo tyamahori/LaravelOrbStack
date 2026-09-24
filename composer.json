@@ -82,7 +82,7 @@
             "@php -d xdebug.mode=develop ./vendor/bin/phpunit -c ./libConfig/phpunit.xml"
         ],
         "magoCheck": [
-            "./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint"
+            "./vendor/bin/mago --workspace . --config ./libConfig/mago.toml --php-version=\"$(php -r 'echo PHP_VERSION;')\" lint"
         ],
         "psrCheck": [
             "@composer dump-autoload --optimize --strict-psr --no-scripts"

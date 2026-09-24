@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LibConfig\PhpStan;
 
 use Override;
+use PhpParser\Comment\Doc;
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
 use PHPStan\Analyser\Scope;
@@ -17,9 +18,10 @@ use function preg_match;
 use function sprintf;
 
 /**
- * Nullable types are written `T|null`, never `?T`. ECS rewrites native
- * declarations (NullableTypeDeclarationFixer), but no php-cs-fixer rule
- * touches `?T` inside PHPDoc, so this rule closes that gap.
+ * Nullable types are written `T|null`, never with a leading question mark.
+ * ECS rewrites native declarations (NullableTypeDeclarationFixer), but no
+ * php-cs-fixer rule touches that shorthand inside PHPDoc, so this rule closes
+ * that gap.
  *
  * @implements Rule<Stmt>
  */
@@ -48,7 +50,7 @@ final readonly class NoShorthandNullablePhpdocRule implements Rule
         }
 
         $doc = $node->getDocComment();
-        if ($doc === null || preg_match(self::PATTERN, $doc->getText()) !== 1) {
+        if (! $doc instanceof Doc || preg_match(self::PATTERN, $doc->getText()) !== 1) {
             return [];
         }
 

@@ -127,6 +127,7 @@ return ECSConfig::configure()
         "{$dirname}/bootstrap/app.php",
         "{$dirname}/config",
         "{$dirname}/database",
+        "{$dirname}/libConfig",
         "{$dirname}/packages",
         "{$dirname}/public",
         "{$dirname}/tests",
