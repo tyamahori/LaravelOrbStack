@@ -25,11 +25,15 @@ final class DeleteMemoCommand extends Command
         try {
             $delete(new MemoId($this->argument('id')));
         } catch (InvalidArgumentException $e) {
-            $this->getOutput()->getErrorStyle()->writeln($e->getMessage());
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln($e->getMessage());
 
             return self::INVALID;
         } catch (MemoNotFound $e) {
-            $this->getOutput()->getErrorStyle()->writeln($e->getMessage());
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln($e->getMessage());
 
             return self::FAILURE;
         }

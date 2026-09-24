@@ -12,7 +12,6 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
-
 use function sprintf;
 use function str_contains;
 use function str_ends_with;

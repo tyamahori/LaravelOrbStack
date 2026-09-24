@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests;
 
 use const DIRECTORY_SEPARATOR;
-
 use Illuminate\Support\Facades\Facade as LaravelFacade;
 use LogicException;
 use Override;
@@ -19,7 +18,6 @@ use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
 use RuntimeException;
-
 use function dirname;
 use function function_exists;
 use function in_array;
@@ -59,7 +57,7 @@ final class ForbiddenCallMonitor implements Extension
         xdebug_start_function_monitor($this->monitored());
 
         $facade->registerSubscriber(
-            new class implements FinishedSubscriber
+            new class() implements FinishedSubscriber
             {
                 #[Override]
                 public function notify(Finished $event): void

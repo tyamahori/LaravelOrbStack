@@ -15,7 +15,9 @@ final readonly class EloquentMemoIndex implements MemoIndex
     #[Override]
     public function put(Memo $memo): void
     {
-        MemoRecord::query()->updateOrCreate(['id' => $memo->id->value], [
+        MemoRecord::query()->updateOrCreate([
+            'id' => $memo->id->value,
+        ], [
             'title' => $memo->title,
             'published_at' => $memo->publishedAt,
         ]);

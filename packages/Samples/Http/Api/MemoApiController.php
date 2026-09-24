@@ -38,7 +38,9 @@ final readonly class MemoApiController
         $memo = $publish($request->title(), $request->body());
 
         return $response->json(MemoJson::memo($memo), Response::HTTP_CREATED, [
-            'Location' => $url->route('api.memos.show', ['id' => $memo->id->value]),
+            'Location' => $url->route('api.memos.show', [
+                'id' => $memo->id->value,
+            ]),
         ]);
     }
 

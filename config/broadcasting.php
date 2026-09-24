@@ -6,7 +6,6 @@ $env = env('PUSHER_APP_CLUSTER', 'mt1');
 assert(is_string($env), 'PUSHER_APP_CLUSTER must be a string');
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Broadcaster
@@ -34,7 +33,6 @@ return [
     */
 
     'connections' => [
-
         'pusher' => [
             'driver' => 'pusher',
             'key' => env('PUSHER_APP_KEY'),
@@ -69,7 +67,5 @@ return [
         'null' => [
             'driver' => 'null',
         ],
-
     ],
-
 ];

@@ -10,7 +10,6 @@ use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\UseCase\EditMemo;
 use Override;
-
 use function is_string;
 
 final class EditMemoCommand extends Command
@@ -35,7 +34,9 @@ final class EditMemoCommand extends Command
             default => false,
         };
         if (! is_string($body)) {
-            $this->getOutput()->getErrorStyle()->writeln('読み込めません: ' . json_encode($file, JSON_THROW_ON_ERROR));
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln('読み込めません: ' . json_encode($file, JSON_THROW_ON_ERROR));
 
             return self::INVALID;
         }
@@ -46,11 +47,15 @@ final class EditMemoCommand extends Command
         try {
             $memo = $edit(new MemoId($id), $title, $body);
         } catch (InvalidArgumentException $e) {
-            $this->getOutput()->getErrorStyle()->writeln($e->getMessage());
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln($e->getMessage());
 
             return self::INVALID;
         } catch (MemoNotFound $e) {
-            $this->getOutput()->getErrorStyle()->writeln($e->getMessage());
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln($e->getMessage());
 
             return self::FAILURE;
         }

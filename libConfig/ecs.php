@@ -117,6 +117,7 @@ use PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer;
+use Symplify\CodingStandard\Fixer\Annotation\RemovePropertyVariableNameDescriptionFixer;
 use Symplify\CodingStandard\Fixer\Spacing\SpaceAfterCommaHereNowDocFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -135,11 +136,19 @@ return ECSConfig::configure()
     ->withCache(
         "{$dirname}/.tempCache/.ecs",
     )
+    // This fixer is for property docblocks; on a route file's file-level
+    // `@var Router $router` it strips the name, and Rector then deletes the
+    // orphaned tag, leaving $router untyped.
+    ->withSkip([
+        RemovePropertyVariableNameDescriptionFixer::class => ["{$dirname}/packages/*/Http/*/routes.php"],
+    ])
     ->withPreparedSets(
         psr12: true,
         // PER Coding Style 3.0: the native ECS replacement for the
         // deprecated withPhpCsFixerSets(psr12Risky, phpCsFixerRisky) combo.
         perCs: true,
+        common: true,
+        cleanCode: true,
         // PHP-version migration stays with Rector (withPhpSets() in
         // rector.php), which owns "PHP バージョンの正" per AGENTS.md; ECS
         // 13.3 dropped withPhpCsFixerSets(php85Migration) with no
@@ -147,15 +156,21 @@ return ECSConfig::configure()
     )
     ->withConfiguredRule(
         ArraySyntaxFixer::class,
-        ['syntax' => 'short'],
+        [
+            'syntax' => 'short',
+        ],
     )
     ->withConfiguredRule(
         MethodArgumentSpaceFixer::class,
-        ['keep_multiple_spaces_after_comma' => true],
+        [
+            'keep_multiple_spaces_after_comma' => true,
+        ],
     )
     ->withConfiguredRule(
         NoExtraBlankLinesFixer::class,
-        ['tokens' => ['extra', 'use']]
+        [
+            'tokens' => ['extra', 'use'],
+        ]
     )
     ->withConfiguredRule(
         BlankLineBeforeStatementFixer::class,
@@ -215,11 +230,15 @@ return ECSConfig::configure()
     )
     ->withConfiguredRule(
         OrderedTypesFixer::class,
-        ['null_adjustment' => 'always_last'],
+        [
+            'null_adjustment' => 'always_last',
+        ],
     )
     ->withConfiguredRule(
         PhpdocTypesOrderFixer::class,
-        ['null_adjustment' => 'always_last'],
+        [
+            'null_adjustment' => 'always_last',
+        ],
     )
     ->withConfiguredRule(
         BracesPositionFixer::class,
@@ -253,15 +272,21 @@ return ECSConfig::configure()
     )
     ->withConfiguredRule(
         PhpUnitTestCaseStaticMethodCallsFixer::class,
-        ['call_type' => 'self']
+        [
+            'call_type' => 'self',
+        ]
     )
     ->withConfiguredRule(
         PhpUnitStrictFixer::class,
-        ['assertions' => []],
+        [
+            'assertions' => [],
+        ],
     )
     ->withConfiguredRule(
         NullableTypeDeclarationFixer::class,
-        ['syntax' => 'union'],
+        [
+            'syntax' => 'union',
+        ],
     )
     ->withRules([
         StrictParamFixer::class,

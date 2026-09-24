@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
+use Rector\PHPUnit\CodeQuality\Rector\ClassMethod\NoSetupWithParentCallOverrideRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -20,22 +22,40 @@ return RectorConfig::configure()
         'vendor',
         // Rector reads jetbrains/phpstorm-stubs, which lacks Xdebug 3.1's $clear.
         RemoveExtraParametersRector::class => ['tests/ForbiddenCallMonitor.php'],
+        // Both undo conventions other checks enforce: PHPStan's
+        // checkMissingOverrideMethodAttribute wants #[Override] on setUp(), and
+        // ECS PhpUnitTestCaseStaticMethodCallsFixer wants self::assert*().
+        NoSetupWithParentCallOverrideRector::class,
+        PreferPHPUnitThisCallRector::class,
     ])
     ->withCache(cacheDirectory: './.tempCache/.rector')
     // No version argument: the target is read from composer.json `require.php`.
     ->withPhpSets()
-    // The early-return and instanceof rules now live in codeQuality.
     // The one version-gated rule withPhpSets() leaves out that Rector has not
     // deprecated; it auto-fixes what PHPStan checkMissingOverrideMethodAttribute
     // reports. Rector 2.6 deprecated the pipe-operator, property-hook,
     // #[Deprecated] and JSON_THROW_ON_ERROR rules as unsafe or preference-only,
     // and has no rule for asymmetric visibility or clone-with.
     ->withRules([AddOverrideAttributeToOverriddenMethodsRector::class])
+    // Every prepared set that applies here. Left out: naming (renames domain
+    // words like $memos to type-derived $memoRepository; AGENTS.md leaves
+    // domain vocabulary to us), namedArgs (pure preference), carbon (converts
+    // to Carbon, which Domain/ must not use), and doctrine/symfony (not
+    // installed).
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
         codingStyle: true,
         typeDeclarations: true,
+        typeDeclarationDocblocks: true,
+        privatization: true,
+        instanceOf: true,
+        if: true,
+        earlyReturn: true,
+        rectorPreset: true,
+        phpunitCodeQuality: true,
+        phpunitNarrowAsserts: true,
+        phpunitMockToStub: true,
     )
     // Rector 2.6 removed PHPUnitSetList::PHPUNIT_110; the composer-based set
     // applies version-appropriate PHPUnit sets based on the installed package.

@@ -37,7 +37,7 @@ final class MemoRecord extends Model
     protected $dateFormat = 'Y-m-d H:i:s.u';
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     #[Override]
     protected $fillable = [

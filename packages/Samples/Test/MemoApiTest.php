@@ -50,10 +50,15 @@ final class MemoApiTest extends TestCase
     #[Test]
     public function 公開すると201とLocationが返り一覧と表示がJSONで読める(): void
     {
-        $response = $this->postJson($this->url->route('api.memos.store'), ['title' => '見出し', 'body' => "本文\n2 行目"]);
+        $response = $this->postJson($this->url->route('api.memos.store'), [
+            'title' => '見出し',
+            'body' => "本文\n2 行目",
+        ]);
 
         $response->assertCreated()
-            ->assertHeader('Location', $this->url->route('api.memos.show', ['id' => self::ID]))
+            ->assertHeader('Location', $this->url->route('api.memos.show', [
+                'id' => self::ID,
+            ]))
             ->assertExactJson([
                 'id' => self::ID,
                 'title' => '見出し',
@@ -61,37 +66,59 @@ final class MemoApiTest extends TestCase
                 'published_at' => '2026-09-13T07:15:30.123456+00:00',
             ]);
 
-        $this->getJson($this->url->route('api.memos.show', ['id' => self::ID]))
+        $this->getJson($this->url->route('api.memos.show', [
+            'id' => self::ID,
+        ]))
             ->assertOk()
             ->assertJsonPath('body', "本文\n2 行目");
         $this->getJson($this->url->route('api.memos.index'))
             ->assertOk()
-            ->assertJsonFragment(['id' => self::ID, 'title' => '見出し'])
+            ->assertJsonFragment([
+                'id' => self::ID,
+                'title' => '見出し',
+            ])
             ->assertJsonMissingPath('0.body');
     }
 
     #[Test]
     public function 更新と削除が往復しIDと公開日時は変わらない(): void
     {
-        $this->postJson($this->url->route('api.memos.store'), ['title' => '前', 'body' => '前の本文']);
+        $this->postJson($this->url->route('api.memos.store'), [
+            'title' => '前',
+            'body' => '前の本文',
+        ]);
 
-        $this->putJson($this->url->route('api.memos.update', ['id' => self::ID]), ['title' => '後', 'body' => '後の本文'])
+        $this->putJson($this->url->route('api.memos.update', [
+            'id' => self::ID,
+        ]), [
+            'title' => '後',
+            'body' => '後の本文',
+        ])
             ->assertOk()
             ->assertJsonPath('title', '後')
             ->assertJsonPath('published_at', '2026-09-13T07:15:30.123456+00:00');
 
-        $this->deleteJson($this->url->route('api.memos.destroy', ['id' => self::ID]))->assertNoContent();
+        $this->deleteJson($this->url->route('api.memos.destroy', [
+            'id' => self::ID,
+        ]))->assertNoContent();
         self::assertFalse($this->app->make(Disks::class)->disk('s3')->exists(self::OBJECT));
         self::assertNull(MemoRecord::query()->find(self::ID));
-        $this->getJson($this->url->route('api.memos.show', ['id' => self::ID]))->assertNotFound()->assertJsonStructure(['message']);
+        $this->getJson($this->url->route('api.memos.show', [
+            'id' => self::ID,
+        ]))->assertNotFound()
+            ->assertJsonStructure(['message']);
     }
 
     #[Test]
     public function acceptヘッダがなくても入力エラーは422のJSONで返る(): void
     {
-        $response = $this->post($this->url->route('api.memos.store'), ['title' => '', 'body' => '本文']);
+        $response = $this->post($this->url->route('api.memos.store'), [
+            'title' => '',
+            'body' => '本文',
+        ]);
 
-        $response->assertUnprocessable()->assertJsonValidationErrors('title');
+        $response->assertUnprocessable()
+            ->assertJsonValidationErrors('title');
         self::assertFalse($this->app->make(Disks::class)->disk('s3')->exists(self::OBJECT));
     }
 }

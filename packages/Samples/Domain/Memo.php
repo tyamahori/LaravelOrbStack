@@ -6,7 +6,6 @@ namespace LaravelOrbStack\Samples\Domain;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-
 use function sprintf;
 
 final readonly class Memo

@@ -28,11 +28,15 @@ final class ShowMemoCommand extends Command
         try {
             $memo = $show(new MemoId($raw));
         } catch (InvalidArgumentException $e) {
-            $this->getOutput()->getErrorStyle()->writeln($e->getMessage());
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln($e->getMessage());
 
             return self::INVALID;
         } catch (MemoNotFound $e) {
-            $this->getOutput()->getErrorStyle()->writeln($e->getMessage());
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln($e->getMessage());
 
             return self::FAILURE;
         }

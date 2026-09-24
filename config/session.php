@@ -8,7 +8,6 @@ $appName = env('APP_NAME', 'laravel');
 assert(is_string($appName), 'APP_NAME must be a string');
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Session Driver
@@ -202,5 +201,4 @@ return [
     */
 
     'same_site' => 'lax',
-
 ];

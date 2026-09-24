@@ -8,7 +8,6 @@ $appName = env('APP_NAME', 'laravel');
 assert(is_string($appName), 'APP_NAME must be a string');
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
@@ -39,7 +38,6 @@ return [
     */
 
     'connections' => [
-
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
@@ -78,7 +76,6 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
-
     ],
 
     /*
@@ -106,7 +103,6 @@ return [
     */
 
     'redis' => [
-
         'client' => env('REDIS_CLIENT', 'phpredis'),
 
         'options' => [
@@ -132,5 +128,4 @@ return [
             'database' => env('REDIS_CACHE_DB_CACHE', '1'),
         ],
     ],
-
 ];

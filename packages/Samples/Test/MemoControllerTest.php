@@ -53,67 +53,113 @@ final class MemoControllerTest extends TestCase
     #[Test]
     public function 公開するとS3と索引とキャッシュに保存されセッションが最後のIDを覚える(): void
     {
-        $response = $this->post($this->url->route('memos.store'), ['title' => '見出し', 'body' => "本文\n2 行目"]);
+        $response = $this->post($this->url->route('memos.store'), [
+            'title' => '見出し',
+            'body' => "本文\n2 行目",
+        ]);
 
-        $response->assertRedirect($this->url->route('memos.show', ['id' => self::ID]));
+        $response->assertRedirect($this->url->route('memos.show', [
+            'id' => self::ID,
+        ]));
         $response->assertSessionHas('samples.last_published_memo_id', self::ID);
         self::assertTrue($this->app->make(Disks::class)->disk('s3')->exists(self::OBJECT));
         self::assertInstanceOf(Memo::class, $this->app->make(Cache::class)->get(self::CACHE_KEY));
         self::assertSame('見出し', MemoRecord::query()->findOrFail(self::ID)->title);
 
-        $this->get($this->url->route('memos.index'))->assertOk()->assertSeeInOrder([self::ID, '見出し']);
-        $this->get($this->url->route('memos.show', ['id' => self::ID]))->assertOk()->assertSee('2 行目');
+        $this->get($this->url->route('memos.index'))
+            ->assertOk()
+            ->assertSeeInOrder([self::ID, '見出し']);
+        $this->get($this->url->route('memos.show', [
+            'id' => self::ID,
+        ]))->assertOk()
+            ->assertSee('2 行目');
     }
 
     #[Test]
     public function キャッシュにある間はS3から消えても表示でき消えると404になる(): void
     {
-        $this->post($this->url->route('memos.store'), ['title' => '見出し', 'body' => '本文']);
-        $show = $this->url->route('memos.show', ['id' => self::ID]);
+        $this->post($this->url->route('memos.store'), [
+            'title' => '見出し',
+            'body' => '本文',
+        ]);
+        $show = $this->url->route('memos.show', [
+            'id' => self::ID,
+        ]);
 
         $this->app->make(Disks::class)->disk('s3')->delete(self::OBJECT);
-        $this->get($show)->assertOk();
+        $this->get($show)
+            ->assertOk();
 
         $this->app->make(Cache::class)->forget(self::CACHE_KEY);
-        $this->get($show)->assertNotFound();
+        $this->get($show)
+            ->assertNotFound();
     }
 
     #[Test]
     public function 更新するとS3と索引とキャッシュが書き換わりIDと公開日時は変わらない(): void
     {
-        $this->post($this->url->route('memos.store'), ['title' => '前', 'body' => '前の本文']);
+        $this->post($this->url->route('memos.store'), [
+            'title' => '前',
+            'body' => '前の本文',
+        ]);
         $publishedAt = MemoRecord::query()->findOrFail(self::ID)->published_at;
 
-        $response = $this->put($this->url->route('memos.update', ['id' => self::ID]), ['title' => '後', 'body' => '後の本文']);
+        $response = $this->put($this->url->route('memos.update', [
+            'id' => self::ID,
+        ]), [
+            'title' => '後',
+            'body' => '後の本文',
+        ]);
 
-        $response->assertRedirect($this->url->route('memos.show', ['id' => self::ID]));
+        $response->assertRedirect($this->url->route('memos.show', [
+            'id' => self::ID,
+        ]));
 
         $record = MemoRecord::query()->findOrFail(self::ID);
         self::assertSame('後', $record->title);
         self::assertTrue($publishedAt->equalTo($record->published_at));
-        $this->get($this->url->route('memos.show', ['id' => self::ID]))->assertOk()->assertSee('後の本文')->assertDontSee('前の本文');
-        $this->get($this->url->route('memos.index'))->assertOk()->assertSee('後')->assertDontSee('前');
+        $this->get($this->url->route('memos.show', [
+            'id' => self::ID,
+        ]))->assertOk()
+            ->assertSee('後の本文')
+            ->assertDontSee('前の本文');
+        $this->get($this->url->route('memos.index'))
+            ->assertOk()
+            ->assertSee('後')
+            ->assertDontSee('前');
     }
 
     #[Test]
     public function 削除するとS3と索引とキャッシュから消え表示が404になる(): void
     {
-        $this->post($this->url->route('memos.store'), ['title' => '見出し', 'body' => '本文']);
+        $this->post($this->url->route('memos.store'), [
+            'title' => '見出し',
+            'body' => '本文',
+        ]);
 
-        $response = $this->delete($this->url->route('memos.destroy', ['id' => self::ID]));
+        $response = $this->delete($this->url->route('memos.destroy', [
+            'id' => self::ID,
+        ]));
 
         $response->assertRedirect($this->url->route('memos.index'));
         self::assertFalse($this->app->make(Disks::class)->disk('s3')->exists(self::OBJECT));
         self::assertNull($this->app->make(Cache::class)->get(self::CACHE_KEY));
         self::assertNull(MemoRecord::query()->find(self::ID));
-        $this->get($this->url->route('memos.show', ['id' => self::ID]))->assertNotFound();
-        $this->delete($this->url->route('memos.destroy', ['id' => self::ID]))->assertNotFound();
+        $this->get($this->url->route('memos.show', [
+            'id' => self::ID,
+        ]))->assertNotFound();
+        $this->delete($this->url->route('memos.destroy', [
+            'id' => self::ID,
+        ]))->assertNotFound();
     }
 
     #[Test]
     public function 見出しが空なら公開されず入力エラーが返る(): void
     {
-        $response = $this->post($this->url->route('memos.store'), ['title' => '', 'body' => '本文']);
+        $response = $this->post($this->url->route('memos.store'), [
+            'title' => '',
+            'body' => '本文',
+        ]);
 
         $response->assertSessionHasErrors('title');
         self::assertFalse($this->app->make(Disks::class)->disk('s3')->exists(self::OBJECT));
@@ -125,6 +171,7 @@ final class MemoControllerTest extends TestCase
     #[CoversNothing]
     public function 形式外のIDは経路に一致せず404になる(): void
     {
-        $this->get('/memos/not-an-id')->assertNotFound();
+        $this->get('/memos/not-an-id')
+            ->assertNotFound();
     }
 }

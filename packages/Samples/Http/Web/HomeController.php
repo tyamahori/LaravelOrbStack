@@ -6,7 +6,6 @@ namespace LaravelOrbStack\Samples\Http\Web;
 
 use const PHP_SAPI;
 use const PHP_VERSION;
-
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;

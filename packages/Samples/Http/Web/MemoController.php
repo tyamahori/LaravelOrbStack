@@ -40,7 +40,9 @@ final readonly class MemoController
         $session->put(self::SESSION_LAST_PUBLISHED, $memo->id->value);
 
         return $response
-            ->redirectToRoute('memos.show', ['id' => $memo->id->value])
+            ->redirectToRoute('memos.show', [
+                'id' => $memo->id->value,
+            ])
             ->with('status', 'メモを公開しました');
     }
 
@@ -49,7 +51,9 @@ final readonly class MemoController
      */
     public function show(string $id, ShowMemo $show, ViewFactory $view): View
     {
-        return $view->make('samples::memos.show', ['memo' => $show(new MemoId($id))]);
+        return $view->make('samples::memos.show', [
+            'memo' => $show(new MemoId($id)),
+        ]);
     }
 
     /**
@@ -57,7 +61,9 @@ final readonly class MemoController
      */
     public function edit(string $id, ShowMemo $show, ViewFactory $view): View
     {
-        return $view->make('samples::memos.edit', ['memo' => $show(new MemoId($id))]);
+        return $view->make('samples::memos.edit', [
+            'memo' => $show(new MemoId($id)),
+        ]);
     }
 
     /**
@@ -72,7 +78,9 @@ final readonly class MemoController
         $memo = $edit(new MemoId($id), $request->title(), $request->body());
 
         return $response
-            ->redirectToRoute('memos.show', ['id' => $memo->id->value])
+            ->redirectToRoute('memos.show', [
+                'id' => $memo->id->value,
+            ])
             ->with('status', 'メモを更新しました');
     }
 

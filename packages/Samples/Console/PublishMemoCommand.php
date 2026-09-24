@@ -8,7 +8,6 @@ use Illuminate\Console\Command;
 use InvalidArgumentException;
 use LaravelOrbStack\Samples\UseCase\PublishMemo;
 use Override;
-
 use function is_string;
 
 final class PublishMemoCommand extends Command
@@ -31,7 +30,9 @@ final class PublishMemoCommand extends Command
             default => false,
         };
         if (! is_string($body)) {
-            $this->getOutput()->getErrorStyle()->writeln('読み込めません: ' . json_encode($file, JSON_THROW_ON_ERROR));
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln('読み込めません: ' . json_encode($file, JSON_THROW_ON_ERROR));
 
             return self::INVALID;
         }
@@ -42,7 +43,9 @@ final class PublishMemoCommand extends Command
         try {
             $memo = $publish($title, $body);
         } catch (InvalidArgumentException $invalidArgumentException) {
-            $this->getOutput()->getErrorStyle()->writeln($invalidArgumentException->getMessage());
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln($invalidArgumentException->getMessage());
 
             return self::INVALID;
         }

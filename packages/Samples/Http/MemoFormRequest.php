@@ -22,11 +22,13 @@ final class MemoFormRequest extends FormRequest
 
     public function title(): string
     {
-        return $this->string('title')->toString();
+        return $this->string('title')
+            ->toString();
     }
 
     public function body(): string
     {
-        return $this->string('body')->toString();
+        return $this->string('body')
+            ->toString();
     }
 }
