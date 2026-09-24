@@ -8,9 +8,14 @@ use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Filesystem\Factory as Disks;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use LaravelOrbStack\Samples\Domain\Memo;
+use LaravelOrbStack\Samples\Http\MemoFormRequest;
+use LaravelOrbStack\Samples\Http\Web\MemoController;
 use LaravelOrbStack\Samples\Persistence\MemoRecord;
 use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesNamespace;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\Clock\MockClock;
 use Tests\TestCase;
@@ -20,6 +25,9 @@ use Tests\TestCase;
  * clock makes every run overwrite the same S3 key and DB row instead of
  * piling up objects.
  */
+#[CoversClass(MemoController::class)]
+#[CoversClass(MemoFormRequest::class)]
+#[UsesNamespace('LaravelOrbStack')]
 final class MemoControllerTest extends TestCase
 {
     private const string ID = '20260913-061530-123456';
@@ -111,7 +119,10 @@ final class MemoControllerTest extends TestCase
         self::assertFalse($this->app->make(Disks::class)->disk('s3')->exists(self::OBJECT));
     }
 
+    // Only the route constraint in Http/Web/routes.php runs, and route files
+    // are outside the coverage source.
     #[Test]
+    #[CoversNothing]
     public function 形式外のIDは経路に一致せず404になる(): void
     {
         $this->get('/memos/not-an-id')->assertNotFound();

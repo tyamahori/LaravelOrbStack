@@ -11,10 +11,14 @@ use LaravelOrbStack\Samples\UseCase\DeleteMemo;
 use LaravelOrbStack\Samples\UseCase\EditMemo;
 use LaravelOrbStack\Samples\UseCase\PublishMemo;
 use LaravelOrbStack\Samples\UseCase\ShowMemo;
+use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesNamespace;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\MockClock;
 
+#[CoversNamespace('LaravelOrbStack\Samples\UseCase')]
+#[UsesNamespace('LaravelOrbStack\Samples\Domain')]
 final class MemoLifecycleTest extends TestCase
 {
     #[Test]

@@ -8,9 +8,14 @@ use DateTimeImmutable;
 use InvalidArgumentException;
 use LaravelOrbStack\Samples\Domain\Memo;
 use LaravelOrbStack\Samples\Domain\MemoId;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesNamespace;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Memo::class)]
+#[CoversClass(MemoId::class)]
+#[UsesNamespace('LaravelOrbStack\Samples\Domain')]
 final class MemoTest extends TestCase
 {
     #[Test]

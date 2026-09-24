@@ -15,7 +15,9 @@ use LaravelOrbStack\Samples\Domain\MemoIndex;
 use LaravelOrbStack\Samples\Domain\MemoRepository;
 use LaravelOrbStack\Samples\Persistence\MemoRecord;
 use Override;
+use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesNamespace;
 use Tests\TestCase;
 
 /**
@@ -23,6 +25,8 @@ use Tests\TestCase;
  * (the microsecond loss in the S3 JSON only showed up here), so each
  * Persistence implementation gets one round trip against the compose stack.
  */
+#[CoversNamespace('LaravelOrbStack\Samples\Persistence')]
+#[UsesNamespace('LaravelOrbStack')]
 final class MemoPersistenceRoundTripTest extends TestCase
 {
     private const string ID = '20260913-061532-000007';

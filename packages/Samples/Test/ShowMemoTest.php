@@ -8,10 +8,15 @@ use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\UseCase\PublishMemo;
 use LaravelOrbStack\Samples\UseCase\ShowMemo;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesNamespace;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\MockClock;
 
+#[CoversClass(ShowMemo::class)]
+#[CoversClass(PublishMemo::class)]
+#[UsesNamespace('LaravelOrbStack\Samples\Domain')]
 final class ShowMemoTest extends TestCase
 {
     #[Test]

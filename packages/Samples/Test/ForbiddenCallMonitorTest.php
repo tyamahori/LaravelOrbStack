@@ -6,7 +6,9 @@ namespace LaravelOrbStack\Samples\Test;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Facade;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesNamespace;
 use Tests\ForbiddenCallMonitor;
 use Tests\TestCase;
 
@@ -15,6 +17,8 @@ use Tests\TestCase;
  * NoFacadeRule do not reject this file. violations() clears what it reads,
  * so these calls do not also fail the run.
  */
+#[CoversClass(ForbiddenCallMonitor::class)]
+#[UsesNamespace('LaravelOrbStack')]
 final class ForbiddenCallMonitorTest extends TestCase
 {
     #[Test]

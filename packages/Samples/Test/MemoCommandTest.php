@@ -10,7 +10,9 @@ use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Filesystem\Factory as Disks;
 use LaravelOrbStack\Samples\Persistence\MemoRecord;
 use Override;
+use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesNamespace;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\Clock\MockClock;
 use Tests\TestCase;
@@ -20,6 +22,8 @@ use Tests\TestCase;
  * Kernel::output() holds everything the last call wrote; the buffered
  * output has no separate stderr, so diagnostics land there too.
  */
+#[CoversNamespace('LaravelOrbStack\Samples\Console')]
+#[UsesNamespace('LaravelOrbStack')]
 final class MemoCommandTest extends TestCase
 {
     private const string ID = '20260913-061531-654321';

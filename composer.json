@@ -79,7 +79,7 @@
             "./vendor/bin/deptrac --config-file=./libConfig/deptrac.yaml --no-progress --report-uncovered --fail-on-uncovered"
         ],
         "phpunit": [
-            "@php -d xdebug.mode=develop ./vendor/bin/phpunit -c ./libConfig/phpunit.xml"
+            "@php -d xdebug.mode=develop,coverage ./vendor/bin/phpunit -c ./libConfig/phpunit.xml --coverage-text --only-summary-for-coverage-text"
         ],
         "magoCheck": [
             "./vendor/bin/mago --workspace . --config ./libConfig/mago.toml --php-version=\"$(php -r 'echo PHP_VERSION;')\" lint"

@@ -7,9 +7,13 @@ namespace LaravelOrbStack\Samples\Test;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Filesystem\Factory as Disks;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use LaravelOrbStack\Samples\Http\MemoFormRequest;
 use LaravelOrbStack\Samples\Persistence\MemoRecord;
 use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesNamespace;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\Clock\MockClock;
 use Tests\TestCase;
@@ -18,6 +22,9 @@ use Tests\TestCase;
  * Runs against the compose stack like MemoControllerTest. Uses a different
  * fixed clock so the two suites never share an S3 key or DB row.
  */
+#[CoversNamespace('LaravelOrbStack\Samples\Http\Api')]
+#[CoversClass(MemoFormRequest::class)]
+#[UsesNamespace('LaravelOrbStack')]
 final class MemoApiTest extends TestCase
 {
     private const string ID = '20260913-071530-123456';

@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="../vendor/phpunit/phpunit/phpunit.xsd"
     bootstrap="../vendor/autoload.php"
     colors="true"
     cacheDirectory="../.tempCache/.phpunit"
+    executionOrder="depends,random"
+    resolveDependencies="true"
+    failOnAllIssues="true"
+    failOnEmptyTestSuite="true"
+    displayDetailsOnAllIssues="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    beStrictAboutCoverageMetadata="true"
+    requireCoverageMetadata="true"
+    requireCoverageContribution="true"
+    requireSealedMockObjects="true"
 >
     <testsuites>
         <testsuite name="all">
@@ -17,6 +29,7 @@
         <bootstrap class="Tests\ForbiddenCallMonitor"/>
     </extensions>
     <php>
+        <ini name="error_reporting" value="-1"/>
         <server name="APP_ENV" value="testing"/>
         <server name="APP_KEY" value="base64:zcGC9RB0cplYgwAIAJ1vnNVHsHN+FXqTB3g6WtTfZTU="/>
         <server name="BCRYPT_ROUNDS" value="4"/>
@@ -28,9 +41,26 @@
         <server name="MODEL_SHOULD_BE_STRICT" value="true"/>
         <server name="DB_SCHEMA" value="test"/>
     </php>
-    <source>
+    <!-- ignoreSuppressionOf*: an @-silenced issue still counts, in vendor code
+         too. PHP warnings are the exception: vlucas/phpdotenv probes the
+         optional .env with @file_get_contents, and the container has none. -->
+    <source
+        ignoreSuppressionOfDeprecations="true"
+        ignoreSuppressionOfPhpDeprecations="true"
+        ignoreSuppressionOfErrors="true"
+        ignoreSuppressionOfNotices="true"
+        ignoreSuppressionOfPhpNotices="true"
+        ignoreSuppressionOfWarnings="true"
+    >
         <include>
             <directory suffix=".php">../packages</directory>
+            <!-- The only test-infrastructure class with its own test. -->
+            <file>../tests/ForbiddenCallMonitor.php</file>
         </include>
+        <exclude>
+            <directory>../packages/*/Test</directory>
+            <!-- Route files are wiring every booted test executes, like config/. -->
+            <directory suffix="routes.php">../packages</directory>
+        </exclude>
     </source>
 </phpunit>
