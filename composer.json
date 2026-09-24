@@ -85,6 +85,7 @@
             "./vendor/bin/mago --workspace . --config ./libConfig/mago.toml --php-version=\"$(php -r 'echo PHP_VERSION;')\" lint"
         ],
         "psrCheck": [
+            "@composer validate --strict --no-check-publish",
             "@composer dump-autoload --optimize --strict-psr --no-scripts"
         ],
         "lintCheck": [

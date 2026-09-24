@@ -4,6 +4,18 @@ deptrac:
     - ../packages
   exclude_files:
     - '#(?i)(?:^|/)tests?(?:/|$)#'
+  # Every dependency kind Deptrac can see, not just the class default: a bare
+  # `use`, a global function call, or a superglobal read also counts.
+  ignore_uncovered_internal_classes: false
+  analyser:
+    types:
+      - class
+      - class_superglobal
+      - file
+      - function
+      - function_call
+      - function_superglobal
+      - use
   layers:
     # packages/<Feature>/<Layer>/ — see AGENTS.md. A class placed directly under the feature
     # namespace lands in Unplaced, which may depend on nothing, so its first dependency fails.
