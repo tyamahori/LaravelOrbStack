@@ -9,6 +9,7 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use JsonException;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoIndex;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
@@ -30,6 +31,9 @@ final readonly class MemoController
         ]);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function store(
         MemoFormRequest $request,
         PublishMemo $publish,
@@ -47,6 +51,7 @@ final readonly class MemoController
     }
 
     /**
+     * @throws JsonException
      * @throws MemoNotFound
      */
     public function show(string $id, ShowMemo $show, ViewFactory $view): View
@@ -57,6 +62,7 @@ final readonly class MemoController
     }
 
     /**
+     * @throws JsonException
      * @throws MemoNotFound
      */
     public function edit(string $id, ShowMemo $show, ViewFactory $view): View
@@ -67,6 +73,7 @@ final readonly class MemoController
     }
 
     /**
+     * @throws JsonException
      * @throws MemoNotFound
      */
     public function update(
@@ -85,6 +92,7 @@ final readonly class MemoController
     }
 
     /**
+     * @throws JsonException
      * @throws MemoNotFound
      */
     public function destroy(string $id, DeleteMemo $delete, ResponseFactory $response): RedirectResponse

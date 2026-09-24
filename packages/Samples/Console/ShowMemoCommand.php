@@ -6,6 +6,7 @@ namespace LaravelOrbStack\Samples\Console;
 
 use Illuminate\Console\Command;
 use InvalidArgumentException;
+use JsonException;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\UseCase\ShowMemo;
@@ -27,13 +28,14 @@ final class ShowMemoCommand extends Command
 
         try {
             $memo = $show(new MemoId($raw));
+            $json = $this->option('json') === true ? MemoJsonLine::of($memo) : null;
         } catch (InvalidArgumentException $e) {
             $this->getOutput()
                 ->getErrorStyle()
                 ->writeln($e->getMessage());
 
             return self::INVALID;
-        } catch (MemoNotFound $e) {
+        } catch (JsonException|MemoNotFound $e) {
             $this->getOutput()
                 ->getErrorStyle()
                 ->writeln($e->getMessage());
@@ -41,8 +43,8 @@ final class ShowMemoCommand extends Command
             return self::FAILURE;
         }
 
-        if ($this->option('json') === true) {
-            $this->line(MemoJsonLine::of($memo));
+        if ($json !== null) {
+            $this->line($json);
 
             return self::SUCCESS;
         }

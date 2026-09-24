@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaravelOrbStack\Samples\Console;
 
 use DateTimeImmutable;
+use JsonException;
 use LaravelOrbStack\Samples\Domain\Memo;
 
 /**
@@ -13,6 +14,9 @@ use LaravelOrbStack\Samples\Domain\Memo;
  */
 final readonly class MemoJsonLine
 {
+    /**
+     * @throws JsonException
+     */
     public static function of(Memo $memo): string
     {
         return json_encode([

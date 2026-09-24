@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelOrbStack\Samples\UseCase;
 
+use JsonException;
 use LaravelOrbStack\Samples\Domain\Memo;
 use LaravelOrbStack\Samples\Domain\MemoCache;
 use LaravelOrbStack\Samples\Domain\MemoId;
@@ -20,6 +21,9 @@ final readonly class PublishMemo
         private MemoCache $cache,
     ) {}
 
+    /**
+     * @throws JsonException
+     */
     public function __invoke(string $title, string $body): Memo
     {
         $now = $this->clock->now();

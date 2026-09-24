@@ -47,11 +47,15 @@ parameters:
   rememberPossiblyImpureFunctionValues: false
   # AGENTS.md: business outcomes are Domain exceptions and callers must handle
   # them; programming errors and infrastructure failures just propagate. Only
-  # the former are checked, so every one has to appear in @throws.
+  # the former are checked, so every one has to appear in @throws. JsonException
+  # is the one exception to that rule: every json_encode/json_decode failure path
+  # must be declared up to the entry point that decides what the caller sees.
   exceptions:
     implicitThrows: false
     checkedExceptionRegexes:
       - '#^LaravelOrbStack\\[^\\]+\\Domain\\#'
+    checkedExceptionClasses:
+      - JsonException
     check:
       missingCheckedExceptionInThrows: true
       tooWideThrowType: true

@@ -6,6 +6,7 @@ namespace LaravelOrbStack\Samples\Console;
 
 use Illuminate\Console\Command;
 use InvalidArgumentException;
+use JsonException;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\UseCase\DeleteMemo;
@@ -30,7 +31,7 @@ final class DeleteMemoCommand extends Command
                 ->writeln($e->getMessage());
 
             return self::INVALID;
-        } catch (MemoNotFound $e) {
+        } catch (JsonException|MemoNotFound $e) {
             $this->getOutput()
                 ->getErrorStyle()
                 ->writeln($e->getMessage());

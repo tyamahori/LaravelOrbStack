@@ -8,6 +8,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use JsonException;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoIndex;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
@@ -29,6 +30,9 @@ final readonly class MemoApiController
         return $response->json(array_map(MemoJson::heading(...), $index->latest()));
     }
 
+    /**
+     * @throws JsonException
+     */
     public function store(
         MemoFormRequest $request,
         PublishMemo $publish,
@@ -45,6 +49,7 @@ final readonly class MemoApiController
     }
 
     /**
+     * @throws JsonException
      * @throws MemoNotFound
      */
     public function show(string $id, ShowMemo $show, ResponseFactory $response): JsonResponse
@@ -53,6 +58,7 @@ final readonly class MemoApiController
     }
 
     /**
+     * @throws JsonException
      * @throws MemoNotFound
      */
     public function update(
@@ -65,6 +71,7 @@ final readonly class MemoApiController
     }
 
     /**
+     * @throws JsonException
      * @throws MemoNotFound
      */
     public function destroy(string $id, DeleteMemo $delete, ResponseFactory $response): Response

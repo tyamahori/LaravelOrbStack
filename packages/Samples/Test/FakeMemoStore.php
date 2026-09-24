@@ -22,6 +22,11 @@ final class FakeMemoStore implements MemoRepository, MemoIndex, MemoCache
      */
     public array $memos = [];
 
+    /**
+     * Only S3MemoRepository encodes JSON.
+     *
+     * @throws void
+     */
     #[Override]
     public function save(Memo $memo): void
     {
@@ -40,6 +45,9 @@ final class FakeMemoStore implements MemoRepository, MemoIndex, MemoCache
         $this->save($memo);
     }
 
+    /**
+     * @throws void
+     */
     #[Override]
     public function find(MemoId $id): Memo|null
     {

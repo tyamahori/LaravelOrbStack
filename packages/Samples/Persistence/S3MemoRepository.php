@@ -7,6 +7,7 @@ namespace LaravelOrbStack\Samples\Persistence;
 use DateTimeImmutable;
 use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use JsonException;
 use LaravelOrbStack\Samples\Domain\Memo;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoRepository;
@@ -26,6 +27,9 @@ final readonly class S3MemoRepository implements MemoRepository
         $this->disk = $disks->disk('s3');
     }
 
+    /**
+     * @throws JsonException
+     */
     #[Override]
     public function save(Memo $memo): void
     {
@@ -39,6 +43,9 @@ final readonly class S3MemoRepository implements MemoRepository
         ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE));
     }
 
+    /**
+     * @throws JsonException
+     */
     #[Override]
     public function find(MemoId $id): Memo|null
     {
@@ -61,6 +68,9 @@ final readonly class S3MemoRepository implements MemoRepository
         return self::PREFIX . '/' . $id->value . '.json';
     }
 
+    /**
+     * @throws JsonException
+     */
     private function decode(string $json): Memo
     {
         /** @var array{id: string, title: string, body: string, published_at: string} $data */

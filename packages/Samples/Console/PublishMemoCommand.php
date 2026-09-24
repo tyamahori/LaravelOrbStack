@@ -6,6 +6,7 @@ namespace LaravelOrbStack\Samples\Console;
 
 use Illuminate\Console\Command;
 use InvalidArgumentException;
+use JsonException;
 use LaravelOrbStack\Samples\UseCase\PublishMemo;
 use Override;
 use function is_string;
@@ -32,7 +33,7 @@ final class PublishMemoCommand extends Command
         if (! is_string($body)) {
             $this->getOutput()
                 ->getErrorStyle()
-                ->writeln('読み込めません: ' . json_encode($file, JSON_THROW_ON_ERROR));
+                ->writeln('読み込めません: ' . $file);
 
             return self::INVALID;
         }
@@ -42,15 +43,22 @@ final class PublishMemoCommand extends Command
 
         try {
             $memo = $publish($title, $body);
+            $out = $this->option('json') === true ? MemoJsonLine::of($memo) : $memo->id->value;
         } catch (InvalidArgumentException $invalidArgumentException) {
             $this->getOutput()
                 ->getErrorStyle()
                 ->writeln($invalidArgumentException->getMessage());
 
             return self::INVALID;
+        } catch (JsonException $jsonException) {
+            $this->getOutput()
+                ->getErrorStyle()
+                ->writeln($jsonException->getMessage());
+
+            return self::FAILURE;
         }
 
-        $this->line($this->option('json') === true ? MemoJsonLine::of($memo) : $memo->id->value);
+        $this->line($out);
 
         return self::SUCCESS;
     }

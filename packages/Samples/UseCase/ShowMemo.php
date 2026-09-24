@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelOrbStack\Samples\UseCase;
 
+use JsonException;
 use LaravelOrbStack\Samples\Domain\Memo;
 use LaravelOrbStack\Samples\Domain\MemoCache;
 use LaravelOrbStack\Samples\Domain\MemoId;
@@ -22,6 +23,7 @@ final readonly class ShowMemo
     ) {}
 
     /**
+     * @throws JsonException
      * @throws MemoNotFound
      */
     public function __invoke(MemoId $id): Memo

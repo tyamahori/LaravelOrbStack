@@ -46,7 +46,7 @@
 
 信頼境界での検証は一度だけ行います。HTTP 入力は `Http/` の FormRequest でパースして型付きの値にし、内側では検証済みとして扱います。「常に成り立つこと」(空でない、範囲内、一意)は値オブジェクトのコンストラクタか DB 制約(`database/schema.sql`)で守り、利用側で再検証しません。
 
-失敗の扱いは一つの方針に揃えます。業務上あり得る結果(見つからない、重複、状態不正)は `Domain/` に定義した例外か戻り値で表し、Http 層がステータスへ変換します。プログラミング誤りとインフラ障害はそのまま伝播させ、途中で握りつぶしたり catch してログだけ出して続行したりしません。
+失敗の扱いは一つの方針に揃えます。業務上あり得る結果(見つからない、重複、状態不正)は `Domain/` に定義した例外か戻り値で表し、Http 層がステータスへ変換します。プログラミング誤りとインフラ障害はそのまま伝播させ、途中で握りつぶしたり catch してログだけ出して続行したりしません。ただし JSON の符号化・復号の失敗(`JsonException`)だけは、どこで起きうるかを追えるように検査例外として扱います。`json_encode`・`json_decode` を呼ぶメソッドから入口まで `@throws JsonException` を書き、Console では catch して標準エラーに出し終了コード 1 を返します。Http はフレームワークの既定のとおり 500 になります。
 
 Laravel のファサードとグローバルヘルパは全面禁止で、`Illuminate\Contracts\*` をコンストラクタやメソッド引数で受け取ります。禁止の範囲、`config/` の例外、静的解析とテスト実行時の検出の二段構えは `README.md` の「コーディング規約」を参照してください。`Illuminate\Contracts\*` を受け取ってよいのは `Http/`・`Console/`・`Persistence/`・`Provider/` だけで、`UseCase/` は自分の `Domain/` の port だけを受け取ります。
 
@@ -87,7 +87,7 @@ Laravel を薄く使うとは、フレームワークに触れる層を `Http/`�
 | ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、テスト実行時の `tests/ForbiddenCallMonitor.php`(Xdebug の関数モニタ) | 強制済み |
 | nullable は `T\|null`(`?T` 禁止) | ECS `NullableTypeDeclarationFixer`(ネイティブ型、自動修正)、`libConfig/PhpStan/NoShorthandNullablePhpdocRule.php`(PHPDoc) | 強制済み |
 | PHPStan level max + strict rules | `libConfig/phpstan.neon`(`bleedingEdge.neon` と、既定で無効な `check*`・`report*` をすべて有効化) | 強制済み |
-| `Domain/` の例外は検査例外 | `libConfig/phpstan.neon` の `exceptions`。`LaravelOrbStack\<Feature>\Domain\*` の例外を投げうるメソッドは `@throws` を書き、書いた型が広すぎても落ちる。それ以外の例外は未検査で伝播させる(失敗の扱いの方針どおり)。`Test/` は PHPUnit が受け止めるので対象外 | 強制済み |
+| `Domain/` の例外と `JsonException` は検査例外 | `libConfig/phpstan.neon` の `exceptions`。`LaravelOrbStack\<Feature>\Domain\*` の例外と `JsonException` を投げうるメソッドは `@throws` を書き、書いた型が広すぎても落ちる。それ以外の例外は未検査で伝播させる(失敗の扱いの方針どおり)。`Test/` は PHPUnit が受け止めるので対象外 | 強制済み |
 | レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き、`analyser.types` は `use` 文・関数呼び出し・スーパーグローバルまで全種) | 強制済み。層は namespace で判定し、`Http/` と `Console/` は一つの Presentation 層として扱う。`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`Provider/` は全層に依存できる |
 | PSR-4 と大文字小文字、`composer.json` の妥当性 | `composer psrCheck`(`validate --strict` と `dump-autoload --strict-psr`)、PHPStan `class.nameCase` | 強制済み |
 |書き換え規則と lint|Rector は適用できる prepared set をすべて有効化(`naming` は業務の語を型名に置き換えるので外す)、ECS は `psr12`・`perCs`・`common`・`cleanCode`、Mago は `minimum-fail-level = "note"`|強制済み。外した規則と理由は各設定ファイルのコメントにある|

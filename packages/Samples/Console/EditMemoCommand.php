@@ -6,6 +6,7 @@ namespace LaravelOrbStack\Samples\Console;
 
 use Illuminate\Console\Command;
 use InvalidArgumentException;
+use JsonException;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\UseCase\EditMemo;
@@ -36,7 +37,7 @@ final class EditMemoCommand extends Command
         if (! is_string($body)) {
             $this->getOutput()
                 ->getErrorStyle()
-                ->writeln('読み込めません: ' . json_encode($file, JSON_THROW_ON_ERROR));
+                ->writeln('読み込めません: ' . $file);
 
             return self::INVALID;
         }
@@ -46,13 +47,14 @@ final class EditMemoCommand extends Command
 
         try {
             $memo = $edit(new MemoId($id), $title, $body);
+            $out = $this->option('json') === true ? MemoJsonLine::of($memo) : $memo->id->value;
         } catch (InvalidArgumentException $e) {
             $this->getOutput()
                 ->getErrorStyle()
                 ->writeln($e->getMessage());
 
             return self::INVALID;
-        } catch (MemoNotFound $e) {
+        } catch (JsonException|MemoNotFound $e) {
             $this->getOutput()
                 ->getErrorStyle()
                 ->writeln($e->getMessage());
@@ -60,7 +62,7 @@ final class EditMemoCommand extends Command
             return self::FAILURE;
         }
 
-        $this->line($this->option('json') === true ? MemoJsonLine::of($memo) : $memo->id->value);
+        $this->line($out);
 
         return self::SUCCESS;
     }
