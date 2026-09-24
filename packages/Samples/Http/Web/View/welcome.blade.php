@@ -39,7 +39,7 @@
     <h2>どう書くか</h2>
     <dl class="notes">
       <dt>ファサードとグローバルヘルパを使わない</dt>
-      <dd>アプリケーションコードは<code>app()</code>や<code>config()</code>、<code>Route::</code>のような静的な入口を持たず、必要な契約(<code>Illuminate\Contracts\*</code>)をコンストラクタやメソッド引数で受け取ります。このページを返すコントローラも<code>Application</code>と<code>View\Factory</code>を引数で受け取り、Bladeには値だけを渡しています。規約は自作PHPStanルールで静的に、<code>bootstrap/autoload.php</code>の実行時ガードで動的に、二重に強制します。</dd>
+      <dd>アプリケーションコードは<code>app()</code>や<code>config()</code>、<code>Route::</code>のような静的な入口を持たず、必要な契約(<code>Illuminate\Contracts\*</code>)をコンストラクタやメソッド引数で受け取ります。このページを返すコントローラも<code>Application</code>と<code>View\Factory</code>を引数で受け取り、Bladeには値だけを渡しています。規約は自作PHPStanルールで静的に、テスト実行時にはXdebugの関数モニタで動的に、二重に強制します。</dd>
       <dt>機能ごとにパッケージを切る</dt>
       <dd>機能は<code>packages/&lt;Feature&gt;/</code>に、そのテストは<code>packages/&lt;Feature&gt;/Test/</code>に置きます。<code>app/</code>と<code>routes/</code>は持たず、Deptracで層の依存方向を固定します。</dd>
       <dt>ツールの設定を一か所に集める</dt>

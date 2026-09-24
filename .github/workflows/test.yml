@@ -207,6 +207,7 @@ jobs:
         with:
           php-version: ${{ env.PHP_VERSION }}
           tools: composer:${{ env.COMPOSER_VERSION }}
+          coverage: xdebug
       - name: Setup
         run: |
           bash -c "set -a; source .docker/local/php/.env.ci; set +a; docker compose -f .docker/compose.yaml -f .docker/compose.ci.yaml --profile '*' down --remove-orphans"

@@ -35,9 +35,7 @@
         "psr-4": {
             "LaravelOrbStack\\": "packages/",
             "Database\\Seeders\\": "database/seeders/"
-        },
-        "classmap": ["bootstrap/Facade.php"],
-        "exclude-from-classmap": ["vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php"]
+        }
     },
     "autoload-dev": {
         "psr-4": {
@@ -48,7 +46,6 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php bootstrap/guarded-framework.php",
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
@@ -82,7 +79,7 @@
             "./vendor/bin/deptrac --config-file=./libConfig/deptrac.yaml --no-progress --report-uncovered --fail-on-uncovered"
         ],
         "phpunit": [
-            "@php -d auto_prepend_file=bootstrap/autoload.php ./vendor/bin/phpunit -c ./libConfig/phpunit.xml"
+            "@php -d xdebug.mode=develop ./vendor/bin/phpunit -c ./libConfig/phpunit.xml"
         ],
         "magoCheck": [
             "./vendor/bin/mago --workspace . --config ./libConfig/mago.toml lint"

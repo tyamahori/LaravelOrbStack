@@ -36,7 +36,7 @@
 
 `packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージに置いたままにします。パッケージを消すときは、そのディレクトリと `bootstrap/app.php` の `withProviders` の行を消せば結線が残りません。
 
-リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`、実行時ガードの `autoload.php` と、それが読むファイルを post-autoload-dump で生成する `guarded-framework.php`、ファサード基底クラスの複製 `Facade.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間は `composer.json` から外してあります)。ルート定義は `packages/<Feature>/Http/{Web,Api}/routes.php`、Blade は `packages/<Feature>/Http/Web/View/`、全体設定は `packages/Common/` に置きます。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
+リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間は `composer.json` から外してあります)。ルート定義は `packages/<Feature>/Http/{Web,Api}/routes.php`、Blade は `packages/<Feature>/Http/Web/View/`、全体設定は `packages/Common/` に置きます。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
 
 ## パッケージの中では依存を内側に向ける
 
@@ -48,7 +48,7 @@
 
 失敗の扱いは一つの方針に揃えます。業務上あり得る結果(見つからない、重複、状態不正)は `Domain/` に定義した例外か戻り値で表し、Http 層がステータスへ変換します。プログラミング誤りとインフラ障害はそのまま伝播させ、途中で握りつぶしたり catch してログだけ出して続行したりしません。
 
-Laravel のファサードとグローバルヘルパは全面禁止で、`Illuminate\Contracts\*` をコンストラクタやメソッド引数で受け取ります。禁止の範囲、`config/` の例外、静的解析と実行時ガードの二段構えは `README.md` の「コーディング規約」を参照してください。`Illuminate\Contracts\*` を受け取ってよいのは `Http/`・`Console/`・`Persistence/`・`Provider/` だけで、`UseCase/` は自分の `Domain/` の port だけを受け取ります。
+Laravel のファサードとグローバルヘルパは全面禁止で、`Illuminate\Contracts\*` をコンストラクタやメソッド引数で受け取ります。禁止の範囲、`config/` の例外、静的解析とテスト実行時の検出の二段構えは `README.md` の「コーディング規約」を参照してください。`Illuminate\Contracts\*` を受け取ってよいのは `Http/`・`Console/`・`Persistence/`・`Provider/` だけで、`UseCase/` は自分の `Domain/` の port だけを受け取ります。
 
 interface は、実装が今この場で 2 つある(本物とテスト用の代替、または本当に 2 実装)か、パッケージ境界を越える port である場合に限って作ります。実装 1 つの interface、製品 1 つの factory、変わらない値の設定項目は作りません。
 
@@ -84,13 +84,13 @@ Laravel を薄く使うとは、フレームワークに触れる層を `Http/`�
 
 | 規則 | 仕組み | 状態 |
 |:--|:--|:--|
-| ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、`bootstrap/autoload.php` の実行時ガード | 強制済み |
+| ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、テスト実行時の `tests/ForbiddenCallMonitor.php`(Xdebug の関数モニタ) | 強制済み |
 | nullable は `T\|null`(`?T` 禁止) | ECS `NullableTypeDeclarationFixer`(ネイティブ型、自動修正)、`libConfig/PhpStan/NoShorthandNullablePhpdocRule.php`(PHPDoc) | 強制済み |
 | PHPStan level max + strict rules | `libConfig/phpstan.neon` | 強制済み |
 | レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Http/` と `Console/` は一つの Presentation 層として扱う。`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`Provider/` は全層に依存できる |
 | PSR-4 と大文字小文字 | `composer psrCheck`、PHPStan `class.nameCase` | 強制済み |
 
-検査は Composer のラッパーで走らせます。`composer stanCheck -- --no-progress --error-format=raw`、`ecsCheck`、`rectorCheck`、`magoCheck`、`deptracCheck`、`phpunit`(`APP_KEY` が必要)。フォーマッタは ECS だけで、Mago は lint 専用です。`vendor/bin/phpunit` を直接叩くと実行時ガードが読み込まれず `packages/Samples/Test/` のガード系テストが落ちます。ローカルで `SampleControllerTest` が落ちるのは `libConfig/phpunit.xml` が Redis を要求する既知の状態で、コンテナ内と CI では通ります。
+検査は Composer のラッパーで走らせます。`composer stanCheck -- --no-progress --error-format=raw`、`ecsCheck`、`rectorCheck`、`magoCheck`、`deptracCheck`、`phpunit`(`APP_KEY` が必要)。フォーマッタは ECS だけで、Mago は lint 専用です。`vendor/bin/phpunit` を直接叩くと `xdebug.mode=develop` が付かず、`tests/ForbiddenCallMonitor.php` の起動に失敗して実行全体が落ちます。ローカルで `SampleControllerTest` が落ちるのは `libConfig/phpunit.xml` が Redis を要求する既知の状態で、コンテナ内と CI では通ります。
 
 Larastan は `Command::argument()` と `option()` の戻り型を signature から推論します。`is_string($this->argument('file'))` のような型ガードは書かず、推論が外れるときは signature の書き方を直します。クラスやディレクトリを移したあとは `composer dump-autoload -q` を実行してから検査を回します。
 

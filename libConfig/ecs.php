@@ -125,8 +125,6 @@ $dirname = dirname(__FILE__, 2);
 return ECSConfig::configure()
     ->withPaths([
         "{$dirname}/bootstrap/app.php",
-        "{$dirname}/bootstrap/autoload.php",
-        "{$dirname}/bootstrap/guarded-framework.php",
         "{$dirname}/config",
         "{$dirname}/database",
         "{$dirname}/packages",

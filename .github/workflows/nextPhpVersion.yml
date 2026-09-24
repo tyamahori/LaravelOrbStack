@@ -171,6 +171,7 @@ jobs:
         with:
           php-version: ${{ env.PHP_VERSION }}
           tools: composer:${{ env.COMPOSER_VERSION }}
+          coverage: xdebug
       - name: Setup
         run: |
           cp .docker/local/php/.env.ci .env

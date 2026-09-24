@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -14,6 +15,8 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         'vendor',
+        // Rector reads jetbrains/phpstorm-stubs, which lacks Xdebug 3.1's $clear.
+        RemoveExtraParametersRector::class => ['tests/ForbiddenCallMonitor.php'],
     ])
     ->withCache(cacheDirectory: './.tempCache/.rector')
     // No version argument: the target is read from composer.json `require.php`.
