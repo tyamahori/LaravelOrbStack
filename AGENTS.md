@@ -86,11 +86,16 @@ Laravel を薄く使うとは、フレームワークに触れる層を `Http/`�
 |:--|:--|:--|
 | ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、テスト実行時の `tests/ForbiddenCallMonitor.php`(Xdebug の関数モニタ) | 強制済み |
 | nullable は `T\|null`(`?T` 禁止) | ECS `NullableTypeDeclarationFixer`(ネイティブ型、自動修正)、`libConfig/PhpStan/NoShorthandNullablePhpdocRule.php`(PHPDoc) | 強制済み |
-| PHPStan level max + strict rules | `libConfig/phpstan.neon` | 強制済み |
-| レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き) | 強制済み。層は namespace で判定し、`Http/` と `Console/` は一つの Presentation 層として扱う。`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`Provider/` は全層に依存できる |
-| PSR-4 と大文字小文字 | `composer psrCheck`、PHPStan `class.nameCase` | 強制済み |
+| PHPStan level max + strict rules | `libConfig/phpstan.neon`(`bleedingEdge.neon` と、既定で無効な `check*`・`report*` をすべて有効化) | 強制済み |
+| `Domain/` の例外は検査例外 | `libConfig/phpstan.neon` の `exceptions`。`LaravelOrbStack\<Feature>\Domain\*` の例外を投げうるメソッドは `@throws` を書き、書いた型が広すぎても落ちる。それ以外の例外は未検査で伝播させる(失敗の扱いの方針どおり)。`Test/` は PHPUnit が受け止めるので対象外 | 強制済み |
+| レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き、`analyser.types` は `use` 文・関数呼び出し・スーパーグローバルまで全種) | 強制済み。層は namespace で判定し、`Http/` と `Console/` は一つの Presentation 層として扱う。`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`Provider/` は全層に依存できる |
+| PSR-4 と大文字小文字、`composer.json` の妥当性 | `composer psrCheck`(`validate --strict` と `dump-autoload --strict-psr`)、PHPStan `class.nameCase` | 強制済み |
+|書き換え規則と lint|Rector は適用できる prepared set をすべて有効化(`naming` は業務の語を型名に置き換えるので外す)、ECS は `psr12`・`perCs`・`common`・`cleanCode`、Mago は `minimum-fail-level = "note"`|強制済み。外した規則と理由は各設定ファイルのコメントにある|
+|PHP 構文を `require.php` の版に追従|Rector `withPhpSets()`(版は `composer.json` から)と `AddOverrideAttributeToOverriddenMethodsRector`、Mago は `composer magoCheck` が実行中の PHP の版を `--php-version` で渡す|強制済み。パイプ演算子・プロパティフック・`#[Deprecated]` への変換は Rector 2.6 が非推奨にしたので入れず、非対称可視性と clone with は変換ルール自体がない|
+|テストの警告・非推奨・カバレッジ宣言|`libConfig/phpunit.xml` の `failOnAllIssues`、`beStrictAbout*`、`requireCoverageMetadata`、`requireCoverageContribution`、`executionOrder="depends,random"`。`tests/TestCase.php` は Laravel が握りつぶす非推奨を例外にする|強制済み。`vendor/` から出た非推奨や警告も数える。テストクラスには `#[CoversClass]` か `#[CoversNamespace]` が要り、宣言した先を 1 行も実行しないテストは落ちる|
+|検査対象|Rector・PHPStan・ECS・Mago はいずれも `bootstrap/app.php` と `libConfig/` を含む|強制済み|
 
-検査は Composer のラッパーで走らせます。`composer stanCheck -- --no-progress --error-format=raw`、`ecsCheck`、`rectorCheck`、`magoCheck`、`deptracCheck`、`phpunit`(`APP_KEY` が必要)。フォーマッタは ECS だけで、Mago は lint 専用です。`vendor/bin/phpunit` を直接叩くと `xdebug.mode=develop` が付かず、`tests/ForbiddenCallMonitor.php` の起動に失敗して実行全体が落ちます。ローカルで `SampleControllerTest` が落ちるのは `libConfig/phpunit.xml` が Redis を要求する既知の状態で、コンテナ内と CI では通ります。
+検査は Composer のラッパーで走らせます。`composer stanCheck -- --no-progress --error-format=raw`、`ecsCheck`、`rectorCheck`、`magoCheck`、`deptracCheck`、`phpunit`(`APP_KEY` が必要)。フォーマッタは ECS だけで、Mago は lint 専用です。`composer phpunit` は `xdebug.mode=develop,coverage` とカバレッジ出力を付けて起動します。`vendor/bin/phpunit` を直接叩くとどちらも付かず、`tests/ForbiddenCallMonitor.php` の起動とカバレッジ宣言の検査が成り立たないので実行全体が落ちます。ローカルで `SampleControllerTest` が落ちるのは `libConfig/phpunit.xml` が Redis を要求する既知の状態で、コンテナ内と CI では通ります。
 
 Larastan は `Command::argument()` と `option()` の戻り型を signature から推論します。`is_string($this->argument('file'))` のような型ガードは書かず、推論が外れるときは signature の書き方を直します。クラスやディレクトリを移したあとは `composer dump-autoload -q` を実行してから検査を回します。
 

@@ -113,7 +113,9 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 | `task phpunit` | PHPUnit を実行(`composer phpunit` 経由) |
 | `task ide-helper` | Laravel IDE Helper を生成 |
 
-Devbox シェル内では `devbox run composer` で Composer install を実行できます。Docker を起動せずにホストの PHP で全チェック(PSR-4 の厳格検査、Rector dry-run、PHPStan、ECS、Deptrac、Mago)をまとめて走らせるには `composer lintCheck` を使います。`composer psrCheck` は `dump-autoload --strict-psr` で、ファイル名とクラス名の大文字小文字のずれを macOS(case-insensitive)でも検出します。クラス参照側のずれは PHPStan の `class.nameCase` が拾います。
+Devbox シェル内では `devbox run composer` で Composer install を実行できます。Docker を起動せずにホストの PHP で全チェック(PSR-4 の厳格検査、Rector dry-run、PHPStan、ECS、Deptrac、Mago)をまとめて走らせるには `composer lintCheck` を使います。`composer psrCheck` は `composer validate --strict` のあとに `dump-autoload --strict-psr` を走らせ、ファイル名とクラス名の大文字小文字のずれを macOS(case-insensitive)でも検出します。クラス参照側のずれは PHPStan の `class.nameCase` が拾います。
+
+どの検査も、そのツールで選べるいちばん厳しい設定にしてあり、警告でも失敗します。外した規則とその理由は `libConfig/` の各設定ファイルにコメントで書いてあります。
 
 ## コーディング規約
 
@@ -128,9 +130,13 @@ Devbox シェル内では `devbox run composer` で Composer install を実行�
 
 `config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部とコンパイル済み Blade からの呼び出しは、テスト実行時の検出では制限しません。本番とローカルの Web・Artisan には検出を入れず、フレームワークも改変せずに動かします。本番で見つけて止めるより、止めることで起きる障害のほうが害が大きいためです。
 
-PHPUnit は `composer phpunit`(または `task phpunit`)で実行してください。`xdebug.mode=develop` を付けて起動します。`vendor/bin/phpunit` を直接叩くと Xdebug の関数モニタが動かないため、拡張の起動に失敗して実行全体が失敗します。CI も `shivammathur/setup-php` の `coverage: xdebug` で Xdebug を入れています。
+PHPUnit は `composer phpunit`(または `task phpunit`)で実行してください。`xdebug.mode=develop,coverage` を付けて起動し、カバレッジの要約も出します。`vendor/bin/phpunit` を直接叩くと Xdebug の関数モニタもカバレッジも動かないため、拡張の起動とカバレッジ宣言の検査が成り立たず、実行全体が失敗します。CI も `shivammathur/setup-php` の `coverage: xdebug` で Xdebug を入れています。
+
+テストクラスには `#[CoversClass]` か `#[CoversNamespace]` で検証対象を宣言し、ついでに実行するだけのコードは `#[UsesClass]` か `#[UsesNamespace]` に書きます。宣言した対象を 1 行も実行しないテスト、アサーションのないテスト、出力やグローバル状態を変えるテストは失敗します。実行順は毎回ランダムです。
 
 nullable な型は `?Memo` ではなく `Memo|null` と書きます。ネイティブ型は ECS の `NullableTypeDeclarationFixer`(`syntax: union`)が `--fix` で書き換え、PHPDoc は `libConfig/PhpStan/NoShorthandNullablePhpdocRule.php` が `composer stanCheck` で検出します(php-cs-fixer に PHPDoc の `?T` を直す fixer がないため)。
+
+PHP 構文は `composer.json` の `require.php` の版に合わせます。Rector は `withPhpSets()` がこの版を読み、Mago は `composer magoCheck`(`task mago` も経由)が実行中の PHP の版を `--php-version` で渡すので、`libConfig/mago.toml` には版を書きません。Rector・PHPStan・ECS・Mago の対象には `bootstrap/app.php` と `libConfig/` も入っています。PHPUnit は非推奨・警告・notice が 1 件でもあると失敗します(`failOnAllIssues`)。Laravel はテスト中の非推奨を既定で握りつぶすので、`tests/TestCase.php` で例外に戻しています。
 
 ## サンプル実装
 
