@@ -36,7 +36,7 @@
 
 `packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージに置いたままにします。パッケージを消すときは、そのディレクトリと `bootstrap/app.php` の `withProviders` の行を消せば結線が残りません。
 
-リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`、実行時ガードの `autoload.php` と、それが読むファイルを post-autoload-dump で生成する `guarded-framework.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間は `composer.json` から外してあります)。ルート定義は `packages/<Feature>/Http/{Web,Api}/routes.php`、Blade は `packages/<Feature>/Http/Web/View/`、全体設定は `packages/Common/` に置きます。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
+リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`、実行時ガードの `autoload.php` と、それが読むファイルを post-autoload-dump で生成する `guarded-framework.php`、ファサード基底クラスの複製 `Facade.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間は `composer.json` から外してあります)。ルート定義は `packages/<Feature>/Http/{Web,Api}/routes.php`、Blade は `packages/<Feature>/Http/Web/View/`、全体設定は `packages/Common/` に置きます。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
 
 ## パッケージの中では依存を内側に向ける
 

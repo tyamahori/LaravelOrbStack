@@ -35,7 +35,9 @@
         "psr-4": {
             "LaravelOrbStack\\": "packages/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "classmap": ["bootstrap/Facade.php"],
+        "exclude-from-classmap": ["vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php"]
     },
     "autoload-dev": {
         "psr-4": {

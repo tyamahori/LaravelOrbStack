@@ -124,9 +124,9 @@ Devbox シェル内では `devbox run composer` で Composer install を実行�
 | 層 | 仕組み | 対象 |
 |:--|:--|:--|
 | 静的解析 | `libConfig/PhpStan/NoFacadeRule.php`、`libConfig/PhpStan/NoGlobalHelperRule.php` | PHPStan の解析対象パス(`packages/`、`database/`、`tests/` など)。`vendor/laravel/framework` の `helpers.php` に定義された関数はすべて対象 |
-| 実行時 | Composer の `post-autoload-dump` で `bootstrap/guarded-framework.php` が `vendor/composer/installed.json` から `laravel/framework` の配置と `autoload.files` を引き、グローバル関数を宣言するファイル(各 `helpers.php`)の関数本体の先頭にガード呼び出しをトークン単位で差し込み、`Illuminate\Support\Facades\Facade` を差し替えたものと合わせて `bootstrap/cache/guarded-framework-<ハッシュ>.php` に生成する。`bootstrap/autoload.php` はそれをフレームワークより先に読み込むだけで、実行時には生成しない(eval を使わないので opcache が効く)。ハッシュは `installed.json` と生成スクリプトから取るので、生成スクリプトを変えたあとや `--no-scripts` での install のあとは `composer dump-autoload` が必要で、実行していなければ `RuntimeException` で止まる。`vendor/` と `config/` 以外からの呼び出しで `LogicException` を投げる | `public/index.php`、`artisan`、`composer phpunit` の 3 エントリポイント。`helpers.php` の全関数(`collect()`、`now()`、`e()` などコンテナを触らないものも含む)。コンパイル済み Blade はファサードだけが対象で、ヘルパは Laravel 自身のエラーページも呼ぶため除外 |
+| 実行時 | Composer の `post-autoload-dump` で `bootstrap/guarded-framework.php` が `vendor/composer/installed.json` から `laravel/framework` の配置と `autoload.files` を引き、グローバル関数を宣言するファイル(各 `helpers.php`)の関数本体の先頭にガード呼び出しをトークン単位で差し込み、`bootstrap/cache/guarded-framework-<ハッシュ>.php` に生成する。`bootstrap/autoload.php` はそれをフレームワークより先に読み込むだけで、実行時には生成しない(eval を使わないので opcache が効く)。ハッシュは `installed.json` と生成スクリプトから取るので、生成スクリプトを変えたあとや `--no-scripts` での install のあとは `composer dump-autoload` が必要で、実行していなければ `RuntimeException` で止まる。ファサードは `bootstrap/Facade.php`(`Illuminate\Support\Facades\Facade` の複製の `__callStatic` 先頭にガードを足したもの)を `composer.json` の `classmap` で読ませ、本物は `exclude-from-classmap` で外す。`vendor/` と `config/` 以外からの呼び出しで `LogicException` を投げる | `public/index.php`、`artisan`、`composer phpunit` の 3 エントリポイント。`helpers.php` の全関数(`collect()`、`now()`、`e()` などコンテナを触らないものも含む)。コンパイル済み Blade はファサードだけが対象で、ヘルパは Laravel 自身のエラーページも呼ぶため除外 |
 
-`config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部からのヘルパ・ファサード呼び出しは制限しません。実行時ガードのファサード判定は `__callStatic` で行うため、`swap()` や `shouldReceive()` のように基底クラスに実在する静的メソッドは静的解析のみが対象です。
+`config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部からのヘルパ・ファサード呼び出しは制限しません。実行時ガードのファサード判定は `__callStatic` で行うため、`swap()` や `shouldReceive()` のように基底クラスに実在する静的メソッドは静的解析のみが対象です。Laravel の更新で本物の `Facade.php` が変わると `FacadeGuardTest` が落ちるので、vendor から複製し直してガードのブロック(`// LaravelOrbStack guard: begin` から `end` まで)を差し戻してください。
 
 PHPUnit は `composer phpunit`(または `task phpunit`)で実行してください。`vendor/bin/phpunit` を直接叩くとガードが読み込まれず、`packages/Samples/Test/GlobalHelperGuardTest.php` と `FacadeGuardTest.php` が失敗します。
 
@@ -163,7 +163,7 @@ API は `packages/Samples/Http/Api/routes.php` に定義し、`bootstrap/app.php
 │   ├── local/
 │   └── flyio/
 ├── .github/workflows/        # CI(テスト、イメージビルド、Renovate)
-├── bootstrap/                # app.php(Application::configure、プロバイダ列挙、例外変換)/ autoload.php(グローバルヘルパとファサードの実行時ガード)/ guarded-framework.php(ガード付きファイルの生成。post-autoload-dump で実行)
+├── bootstrap/                # app.php(Application::configure、プロバイダ列挙、例外変換)/ autoload.php(グローバルヘルパとファサードの実行時ガード)/ guarded-framework.php(ガード付きファイルの生成。post-autoload-dump で実行)/ Facade.php(ガード付きファサード基底クラス。vendor の複製)
 ├── config/                   # Laravel 設定
 ├── database/                 # schema.sql (psqldef) / seeder
 ├── libConfig/                # PHPStan / ECS / Rector / PHPUnit / Deptrac / Mago 設定

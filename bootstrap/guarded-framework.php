@@ -12,26 +12,21 @@ declare(strict_types=1);
 | bootstrap/autoload.php requires ahead of vendor/autoload.php: every
 | autoload.files entry of the framework that declares global functions, with
 | a guard call opening each function body (the bodies stay the framework's,
-| so once() still hashes its real call site), and the facade base class
-| renamed VendorFacade, which the Facade in bootstrap/autoload.php extends.
+| so once() still hashes its real call site).
 | The hash covers installed.json and this file, so autoload.php can tell a
 | missing or stale run from a current one.
 |
 */
 
 namespace LaravelOrbStack {
-    use Composer\Autoload\ClassLoader;
-    use Illuminate\Support\Facades\Facade;
     use PhpToken;
     use RuntimeException;
 
     use function dirname;
     use function strlen;
 
-    /** The Composer package whose global functions and facade base class are guarded. */
+    /** The Composer package whose global functions are guarded. */
     const FRAMEWORK = 'laravel/framework';
-
-    const FACADE = Facade::class;
 
     /**
      * How far $lexeme moves the brace depth.
@@ -114,36 +109,6 @@ namespace LaravelOrbStack {
         return $guarded;
     }
 
-    /**
-     * $source (one namespaced class file) with class $name declared as $as,
-     * and its namespace braced so it can share a file.
-     */
-    function rename_class(string $source, string $name, string $as): string
-    {
-        $renamed = '';
-        $namespace = false;
-        $previous = null;
-
-        foreach (PhpToken::tokenize($source) as $token) {
-            $namespace = $namespace || $token->is(T_NAMESPACE);
-
-            $renamed .= match (true) {
-                $token->is(T_OPEN_TAG) => '',
-                $namespace && $token->text === ';' => ' {',
-                $previous?->id === T_CLASS && $token->text === $name => $as,
-                default => $token->text,
-            };
-
-            $namespace = $namespace && $token->text !== ';';
-
-            if (! $token->isIgnorable()) {
-                $previous = $token;
-            }
-        }
-
-        return $renamed . "}\n";
-    }
-
     $composer = dirname(__DIR__) . '/vendor/composer/';
     $installed = $composer . 'installed.json';
 
@@ -152,7 +117,7 @@ namespace LaravelOrbStack {
     // deleting them could race a request still requiring one.
     $file = __DIR__ . '/cache/guarded-framework-' . hash('xxh128', hash_file('xxh128', __FILE__) . hash_file('xxh128', $installed)) . '.php';
 
-    /** @var array{packages: list<array{name: string, install-path: string, autoload: array{files: list<string>, psr-4: array<string, string|list<string>>}}>} $metadata */
+    /** @var array{packages: list<array{name: string, install-path: string, autoload: array{files: list<string>}}>} $metadata */
     $metadata = json_decode((string) file_get_contents($installed), true, flags: JSON_THROW_ON_ERROR);
     $package = array_find($metadata['packages'], static fn (array $package): bool => $package['name'] === FRAMEWORK)
         ?? throw new RuntimeException(FRAMEWORK . ' is not installed');
@@ -167,20 +132,6 @@ namespace LaravelOrbStack {
             $guarded .= "namespace {\n" . guard_helpers($tokens) . "}\n";
         }
     }
-
-    // Composer's own PSR-4 lookup, without registering a loader.
-    require_once $composer . 'ClassLoader.php';
-    $loader = new ClassLoader();
-
-    foreach ($package['autoload']['psr-4'] as $prefix => $paths) {
-        $loader->addPsr4($prefix, array_map(static fn (string $path): string => $base . $path, (array) $paths));
-    }
-
-    $guarded .= rename_class(
-        (string) file_get_contents((string) $loader->findFile(FACADE)),
-        substr(strrchr(FACADE, '\\'), 1),
-        'VendorFacade',
-    );
 
     // A uniquely named temp file, completely written, then renamed: requests
     // served while Composer runs never see a partial file. Not tempnam(): it
