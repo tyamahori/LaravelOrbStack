@@ -29,6 +29,8 @@ final readonly class EloquentMemoIndex implements MemoIndex
 
     /**
      * Ids sort by publish time, so the primary key is the listing order.
+     *
+     * @return list<MemoHeading>
      */
     #[Override]
     public function latest(): array

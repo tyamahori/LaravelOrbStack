@@ -1,3 +1,6 @@
+includes:
+  - ../vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
 parameters:
   level: max
   paths:
@@ -25,6 +28,35 @@ parameters:
   reportPossiblyNonexistentGeneralArrayOffset: true
   reportPossiblyNonexistentConstantArrayOffset: true
   reportAnyTypeWideningInVarTag: true
+  checkTooWideThrowTypesInProtectedAndPublicMethods: true
+  checkTooWideParameterOutInProtectedAndPublicMethods: true
+  checkDynamicProperties: true
+  checkFunctionNameCase: true
+  checkInternalClassCaseSensitivity: true
+  reportMaybesInMethodSignatures: true
+  reportMaybesInPropertyPhpDocTypes: true
+  reportStaticMethodSignatures: true
+  reportWrongPhpDocTypeInVarTag: true
+  reportMagicMethods: true
+  reportMagicProperties: true
+  reportIgnoresWithoutComments: true
+  reportUnmatchedIgnoredErrors: true
+  polluteScopeWithLoopInitialAssignments: false
+  polluteScopeWithAlwaysIterableForeach: false
+  polluteScopeWithBlock: false
+  rememberPossiblyImpureFunctionValues: false
+  # AGENTS.md: business outcomes are Domain exceptions and callers must handle
+  # them; programming errors and infrastructure failures just propagate. Only
+  # the former are checked, so every one has to appear in @throws.
+  exceptions:
+    implicitThrows: false
+    checkedExceptionRegexes:
+      - '#^LaravelOrbStack\\[^\\]+\\Domain\\#'
+    check:
+      missingCheckedExceptionInThrows: true
+      tooWideThrowType: true
+      tooWideImplicitThrowType: true
+      throwTypeCovariance: true
   # Larastan
   checkOctaneCompatibility: true
   noUnnecessaryEnumerableToArrayCalls: true
@@ -44,6 +76,11 @@ parameters:
     -
       identifier: laravelOrbStack.noGlobalHelper
       path: ../config/*
+    # A test lets a Domain exception escape to assert it (expectException) or
+    # to fail; PHPUnit is the handler, and @throws on test methods says nothing.
+    -
+      identifier: missingType.checkedException
+      path: ../packages/*/Test/*
 
 services:
   -

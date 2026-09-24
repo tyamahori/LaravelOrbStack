@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoIndex;
+use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\Http\MemoFormRequest;
 use LaravelOrbStack\Samples\UseCase\DeleteMemo;
 use LaravelOrbStack\Samples\UseCase\EditMemo;
@@ -43,16 +44,25 @@ final readonly class MemoController
             ->with('status', 'メモを公開しました');
     }
 
+    /**
+     * @throws MemoNotFound
+     */
     public function show(string $id, ShowMemo $show, ViewFactory $view): View
     {
         return $view->make('samples::memos.show', ['memo' => $show(new MemoId($id))]);
     }
 
+    /**
+     * @throws MemoNotFound
+     */
     public function edit(string $id, ShowMemo $show, ViewFactory $view): View
     {
         return $view->make('samples::memos.edit', ['memo' => $show(new MemoId($id))]);
     }
 
+    /**
+     * @throws MemoNotFound
+     */
     public function update(
         string $id,
         MemoFormRequest $request,
@@ -66,6 +76,9 @@ final readonly class MemoController
             ->with('status', 'メモを更新しました');
     }
 
+    /**
+     * @throws MemoNotFound
+     */
     public function destroy(string $id, DeleteMemo $delete, ResponseFactory $response): RedirectResponse
     {
         $delete(new MemoId($id));

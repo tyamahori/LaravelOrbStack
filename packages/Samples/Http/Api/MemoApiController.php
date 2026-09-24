@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoIndex;
+use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\Http\MemoFormRequest;
 use LaravelOrbStack\Samples\UseCase\DeleteMemo;
 use LaravelOrbStack\Samples\UseCase\EditMemo;
@@ -41,11 +42,17 @@ final readonly class MemoApiController
         ]);
     }
 
+    /**
+     * @throws MemoNotFound
+     */
     public function show(string $id, ShowMemo $show, ResponseFactory $response): JsonResponse
     {
         return $response->json(MemoJson::memo($show(new MemoId($id))));
     }
 
+    /**
+     * @throws MemoNotFound
+     */
     public function update(
         string $id,
         MemoFormRequest $request,
@@ -55,6 +62,9 @@ final readonly class MemoApiController
         return $response->json(MemoJson::memo($edit(new MemoId($id), $request->title(), $request->body())));
     }
 
+    /**
+     * @throws MemoNotFound
+     */
     public function destroy(string $id, DeleteMemo $delete, ResponseFactory $response): Response
     {
         $delete(new MemoId($id));

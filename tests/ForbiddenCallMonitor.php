@@ -93,7 +93,7 @@ final class ForbiddenCallMonitor implements Extension
         // flag (Xdebug 3.1).
         // @mago-expect lint:no-debug-symbols
         /** @var list<array{function: string, filename: string, lineno: int}> $calls */
-        $calls = xdebug_get_monitored_functions(true); // @phpstan-ignore arguments.count
+        $calls = xdebug_get_monitored_functions(true); // @phpstan-ignore arguments.count (stub predates the clear flag)
 
         foreach ($calls as $call) {
             $file = $call['filename'];
