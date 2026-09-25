@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d25efbf2eca0a47a566cb5436d80d1b8",
+    "content-hash": "0c882bc4d5b02e0737bc20b0f6d8cb90",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6388,16 +6388,16 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v4.4.3",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruitcake/laravel-debugbar.git",
-                "reference": "caa08515a2eef6d8137653d3a1f3c3387cadf184"
+                "reference": "02274537e13944ad1990c521bd06d0fb3578ba17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruitcake/laravel-debugbar/zipball/caa08515a2eef6d8137653d3a1f3c3387cadf184",
-                "reference": "caa08515a2eef6d8137653d3a1f3c3387cadf184",
+                "url": "https://api.github.com/repos/fruitcake/laravel-debugbar/zipball/02274537e13944ad1990c521bd06d0fb3578ba17",
+                "reference": "02274537e13944ad1990c521bd06d0fb3578ba17",
                 "shasum": ""
             },
             "require": {
@@ -6410,7 +6410,7 @@
             },
             "require-dev": {
                 "larastan/larastan": "^3",
-                "laravel/ai": "^0.8",
+                "laravel/ai": "^0.8|^0.9|^0.10|^0.11|^1.0",
                 "laravel/octane": "^2",
                 "laravel/pennant": "^1",
                 "laravel/pint": "^1",
@@ -6472,7 +6472,7 @@
             ],
             "support": {
                 "issues": "https://github.com/fruitcake/laravel-debugbar/issues",
-                "source": "https://github.com/fruitcake/laravel-debugbar/tree/v4.4.3"
+                "source": "https://github.com/fruitcake/laravel-debugbar/tree/v4.4.4"
             },
             "funding": [
                 {
@@ -6484,7 +6484,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-01T13:46:43+00:00"
+            "time": "2026-09-24T10:05:29+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -6635,16 +6635,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "1.49.0",
+            "version": "1.50.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "bbdaf378e69114f5d9c580862c8533dd3f01c050"
+                "reference": "74c48ba74d708f38259c6325a4f12ff443fb19bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/bbdaf378e69114f5d9c580862c8533dd3f01c050",
-                "reference": "bbdaf378e69114f5d9c580862c8533dd3f01c050",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/74c48ba74d708f38259c6325a4f12ff443fb19bf",
+                "reference": "74c48ba74d708f38259c6325a4f12ff443fb19bf",
                 "shasum": ""
             },
             "require": {
@@ -6686,7 +6686,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.49.0"
+                "source": "https://github.com/carthage-software/mago/tree/1.50.0"
             },
             "funding": [
                 {
@@ -6694,7 +6694,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-16T05:38:39+00:00"
+            "time": "2026-09-21T11:41:07+00:00"
         },
         {
             "name": "composer/class-map-generator",
@@ -8331,16 +8331,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "14.3.3",
+            "version": "14.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "f8640c238e930b914d0098a1edbad6652e61a64a"
+                "reference": "96af7aaa1e15561a67b2fa5b98906b063ebec9c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/f8640c238e930b914d0098a1edbad6652e61a64a",
-                "reference": "f8640c238e930b914d0098a1edbad6652e61a64a",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/96af7aaa1e15561a67b2fa5b98906b063ebec9c2",
+                "reference": "96af7aaa1e15561a67b2fa5b98906b063ebec9c2",
                 "shasum": ""
             },
             "require": {
@@ -8348,7 +8348,7 @@
                 "ext-libxml": "*",
                 "ext-mbstring": "*",
                 "ext-xmlwriter": "*",
-                "nikic/php-parser": "^5.8.0",
+                "nikic/php-parser": "^5.9.0",
                 "php": ">=8.4",
                 "phpunit/php-text-template": "^6.0",
                 "sebastian/complexity": "^6.0",
@@ -8359,7 +8359,7 @@
                 "theseer/tokenizer": "^2.0.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.3.3"
+                "phpunit/phpunit": "^13.3.4"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -8397,7 +8397,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.3.3"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.3.5"
             },
             "funding": [
                 {
@@ -8417,7 +8417,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-10T13:08:32+00:00"
+            "time": "2026-09-25T08:28:49+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -8714,16 +8714,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.3.4",
+            "version": "13.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "d19d90cf860efb7e4d96cee8243e06a248578085"
+                "reference": "1b482b9a77774705a5c4a47ab7d60819d2589e90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d19d90cf860efb7e4d96cee8243e06a248578085",
-                "reference": "d19d90cf860efb7e4d96cee8243e06a248578085",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1b482b9a77774705a5c4a47ab7d60819d2589e90",
+                "reference": "1b482b9a77774705a5c4a47ab7d60819d2589e90",
                 "shasum": ""
             },
             "require": {
@@ -8737,7 +8737,7 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.4.1",
-                "phpunit/php-code-coverage": "^14.3.3",
+                "phpunit/php-code-coverage": "^14.3.5",
                 "phpunit/php-file-iterator": "^7.0.2",
                 "phpunit/php-invoker": "^7.0.0",
                 "phpunit/php-text-template": "^6.0.0",
@@ -8794,7 +8794,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.3.4"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.3.5"
             },
             "funding": [
                 {
@@ -8802,7 +8802,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-09-15T07:37:05+00:00"
+            "time": "2026-09-25T08:41:20+00:00"
         },
         {
             "name": "rector/rector",
