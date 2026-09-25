@@ -117,6 +117,22 @@ Devbox シェル内では `devbox run composer` で Composer install を実行�
 
 どの検査も、そのツールで選べるいちばん厳しい設定にしてあり、警告でも失敗します。外した規則とその理由は `libConfig/` の各設定ファイルにコメントで書いてあります。
 
+## Xdebug でのステップ実行
+
+Apache 系の PHP コンテナ(`php-app`)は Xdebug を `xdebug.mode=debug`、`xdebug.start_with_request=trigger` で読み込みます(`.docker/local/php/docker-php-ext-xdebug.ini`)。トリガーを付けた実行だけが、ホストの 9003 番(`host.docker.internal`)で待ち受ける IDE へ接続します。
+
+IDE 側では最初に一度だけ、Settings → PHP → Servers に `laravelorbstack` という名前のサーバーを追加し、Use path mappings でプロジェクトルートを `/var/www/html` に対応付けます。対応付けがないと、接続は届いても IDE がブレークポイントを Xdebug に送らないので、どこにも止まりません。
+
+IDE の Listen for PHP Debug Connections をオンにしてから、トリガーを付けて実行します。Artisan コマンドでは、トリガーとサーバー名を環境変数で渡します。
+
+```bash
+docker compose -f .docker/compose.yaml exec -e XDEBUG_TRIGGER=1 -e PHP_IDE_CONFIG=serverName=laravelorbstack php-app php artisan memo:show <id>
+```
+
+Web 経由では、`https://apachephp.local/?XDEBUG_TRIGGER=1` のようにクエリにトリガーを付けます。フォームの送信やリダイレクト先まで止めたいときは、同じ名前の Cookie を付けてください(ブラウザ拡張の Xdebug Helper でも付けられます)。サーバー名は Apache が `SetEnv PHP_IDE_CONFIG`(`.docker/local/php/000-default.conf`)で渡すので、CLI と同じ `laravelorbstack` の定義がそのまま使われます。この設定がないと、IDE は nginx が転送先に使うホスト名 `laravelorbstack.apache.local` でサーバー定義を探し、見つからずに接続を切ります。
+
+接続のやり取りは `storage/logs/xdebug.log` に残ります。止まらないときは、このログに `breakpoint_set` が出ているかを見てください。出ていなければ、原因は IDE 側のパス対応付けです。`composer phpunit` は `xdebug.mode=develop,coverage` で起動するので、テストの実行中はステップ実行できません。FrankenPHP コンテナ(`php-franken`)ではこの手順を確かめていません。
+
 ## コーディング規約
 
 アプリケーションコードでは Laravel のファサードとグローバルヘルパ(`app()`、`config()`、`route()`、`view()`、`now()`、`fake()` など)を使わず、コンストラクタやメソッド引数で契約(`Illuminate\Contracts\*`)を受け取ります。Blade は必要な値をコントローラから渡し、テンプレート内でヘルパを呼びません。

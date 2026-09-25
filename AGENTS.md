@@ -99,6 +99,8 @@ Laravel を薄く使うとは、フレームワークに触れる層を `Http/`�
 
 Larastan は `Command::argument()` と `option()` の戻り型を signature から推論します。`is_string($this->argument('file'))` のような型ガードは書かず、推論が外れるときは signature の書き方を直します。クラスやディレクトリを移したあとは `composer dump-autoload -q` を実行してから検査を回します。
 
+実行時の値や分岐を確かめたいときは、IDE の MCP(`xdebug_*`)から Xdebug のステップ実行を使えます。手順と前提(IDE のサーバー定義とパス対応付け)は `README.md` の「Xdebug でのステップ実行」にあります。トリガー付きの Artisan コマンドや HTTP リクエストはブレークポイントで止まるとブロックするので非同期で起動し、`xdebug_get_debugger_status` でセッションを拾います。IDE の設定はユーザーのものなので、エージェントは変更しません。
+
 ## 新しいコードを書く前に答える七つの問い
 
 1. どの `packages/<Feature>/` に属するか。既存に入らない理由は何か。
