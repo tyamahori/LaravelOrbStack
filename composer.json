@@ -14,9 +14,9 @@
         "symfony/clock": "^8.1"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^4.4.3",
+        "barryvdh/laravel-debugbar": "^4.4.4",
         "barryvdh/laravel-ide-helper": "^3.7.0",
-        "carthage-software/mago": "^1.49.0",
+        "carthage-software/mago": "^1.50.0",
         "deptrac/deptrac": "^4.7.2",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.12.2",
@@ -26,7 +26,7 @@
         "phpstan/phpstan-deprecation-rules": "^2.0.5",
         "phpstan/phpstan-phpunit": "^2.0.18",
         "phpstan/phpstan-strict-rules": "^2.0.12",
-        "phpunit/phpunit": "^13.3.4",
+        "phpunit/phpunit": "^13.3.5",
         "rector/rector": "^2.6.7",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^13.3.2"
