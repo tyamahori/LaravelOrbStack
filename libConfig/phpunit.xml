@@ -5,7 +5,7 @@
     bootstrap="../vendor/autoload.php"
     colors="true"
     cacheDirectory="../.tempCache/.phpunit"
-    executionOrder="depends,random"
+    executionOrder="random"
     resolveDependencies="true"
     failOnAllIssues="true"
     failOnEmptyTestSuite="true"
