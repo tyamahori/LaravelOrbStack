@@ -52,7 +52,7 @@ services:
       default:
         aliases:
           - laravelorbstack.cache.local
-    image: redis:8.4.6-alpine3.22@sha256:a6d269b93afa6cfd74d7834e831a99ed72d61c7532c2a8d5a28317c6a837e72b
+    image: redis:8.4.7-alpine3.22@sha256:0514fa59e3d84e2f3be66731c5401fc2a85b8ea71b49c0116c850f6a558076f4
     command:
       - redis-server
       - --appendonly
@@ -76,7 +76,7 @@ services:
       default:
         aliases:
           - laravelorbstack.session.local
-    image: redis:8.4.6-alpine3.22@sha256:a6d269b93afa6cfd74d7834e831a99ed72d61c7532c2a8d5a28317c6a837e72b
+    image: redis:8.4.7-alpine3.22@sha256:0514fa59e3d84e2f3be66731c5401fc2a85b8ea71b49c0116c850f6a558076f4
     command:
       - redis-server
       - --appendonly
@@ -100,7 +100,7 @@ services:
       default:
         aliases:
           - laravelorbstack.mail.local
-    image: axllent/mailpit:v1.31.2@sha256:74d609a42ec279aa63c6b4622a6fa9b5408d1ad5b1d76a1c4be40a265ce0863d
+    image: axllent/mailpit:v1.31.4@sha256:b68349e3a014b90c5610bfb26b2ae36f3892d7b8cf25ee140c6c71c98d2fcf48
     healthcheck:
       test:
         - CMD
@@ -139,7 +139,7 @@ services:
       <<: *healthcheck-settings
 
   setUpStorage:
-    image: amazon/aws-cli:2.36.49@sha256:f42bf088cb1456ba9e179ce71fdeb22cc46ff64ea1e3aeae8251ff81391f5bb1
+    image: amazon/aws-cli:2.37.9@sha256:92de75724b6a746951f0e8b915d86bbccd7cb55aff96cd0cb4f7017272160780
     depends_on:
       storage:
         condition: service_healthy
