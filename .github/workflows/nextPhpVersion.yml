@@ -35,33 +35,6 @@ jobs:
           path: vendor
           key: composer-cache-${{ runner.os }}-${{ runner.arch }}-next-php-${{ hashFiles('composer.lock') }}
 
-  build:
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-build-next-php
-      cancel-in-progress: true
-    runs-on: ubuntu-26.04-arm
-    needs: cache
-    steps:
-      - name: Install Task
-        uses: arduino/setup-task@c0bc642852239c2689f73f4ea6459c29405f3c52 # v3.0.0
-        with:
-          version: 3
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-#      - uses: dorny/paths-filter@v3
-#        id: changes
-#        with:
-#          filters:
-      - name: Check Docker Image Cache
-        # uses: ScribeMD/docker-cache@0.5.0
-        uses: AndreKurait/docker-cache@7a3887908bdb97935395833df69b060cfcca0f7f # 0.7.0
-        id: docker-cache
-        with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}
-      - if: steps.docker-cache.outputs.cache-hit != 'true'
-        name: Cache Docker Image
-        run: task pullCiImages
-
   lint:
     runs-on: ubuntu-26.04-arm
     needs: cache
@@ -141,7 +114,7 @@ jobs:
           composer deptracCheck
   test:
     runs-on: ubuntu-26.04-arm
-    needs: build
+    needs: cache
     steps:
       - name: Install Task
         uses: arduino/setup-task@c0bc642852239c2689f73f4ea6459c29405f3c52 # v3.0.0
@@ -149,11 +122,6 @@ jobs:
           version: 3
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Cache Docker images
-        # uses: ScribeMD/docker-cache@0.5.0
-        uses: AndreKurait/docker-cache@7a3887908bdb97935395833df69b060cfcca0f7f # 0.7.0
-        with:
-          key: docker-${{ runner.os }}-${{ hashFiles('./.docker/compose.ci.yaml') }}
       - name: Restore Composer packages
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
