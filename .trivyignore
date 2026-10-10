@@ -1,0 +1,3 @@
+# HEALTHCHECK: php コンテナの健全性を待つサービスはなく、Fly.io のヘルスチェックは
+# fly.toml の checks で定義するものなので Dockerfile には書かない。
+DS-0026

@@ -119,6 +119,9 @@ jobs:
       - name: Install dependencies
         run: |
           composer install --prefer-dist --no-progress
+      - name: Composer audit
+        run: |
+          composer audit --locked
       - name: PSR-4 autoload
         run: |
           composer psrCheck
@@ -179,6 +182,40 @@ jobs:
       - name: Mago
         run: |
           composer magoCheck
+  static-analysis:
+    runs-on: ubuntu-26.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # gitleaks が全履歴を走査する
+          fetch-depth: 0
+          persist-credentials: false
+      - name: actionlint
+        uses: docker://rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
+      - name: zizmor
+        uses: docker://ghcr.io/zizmorcore/zizmor:1.30.1@sha256:a2eb396d886c053073405c7a980f2139ba2248ec172243cfa3841e57196e8101
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          args: .github/workflows
+      - name: hadolint
+        uses: docker://hadolint/hadolint:v2.15.1@sha256:32dac94127fd60b7b7e3fbfc65e1383b9b5e25c9bfd7b8536de7a539fe68a12d
+        with:
+          args: hadolint .docker/php.apache.Dockerfile .docker/php.franken.Dockerfile
+      - name: Trivy config
+        uses: docker://aquasec/trivy:0.75.0@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa
+        with:
+          args: config --exit-code 1 .
+      - name: gitleaks
+        uses: docker://ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
+        env:
+          # Actions はコンテナの HOME を差し替えるので、イメージの safe.directory 設定が効かない
+          GIT_CONFIG_COUNT: 1
+          GIT_CONFIG_KEY_0: safe.directory
+          GIT_CONFIG_VALUE_0: /github/workspace
+        with:
+          args: git --redact --verbose .
   test:
     runs-on: ubuntu-26.04-arm
     needs: cache
