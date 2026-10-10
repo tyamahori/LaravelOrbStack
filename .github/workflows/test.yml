@@ -206,7 +206,7 @@ jobs:
       - name: Trivy config
         uses: docker://aquasec/trivy:0.75.0@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa
         with:
-          args: config --exit-code 1 .
+          args: config --exit-code 1 --ignorefile libConfig/trivyignore .
       - name: gitleaks
         uses: docker://ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
         env:
@@ -219,7 +219,7 @@ jobs:
       - name: SQLFluff
         uses: docker://sqlfluff/sqlfluff:4.4.0@sha256:6a9083e55b1f4ea437636bc8ca7b55aaa0766a3e43a6d3e5b37614cf97e4e6ac
         with:
-          args: lint database .docker
+          args: lint --config libConfig/sqlfluff.cfg database .docker
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:

@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "mdCheck": "markdownlint-cli2 && textlint README.md AGENTS.md docs"
+    "mdCheck": "markdownlint-cli2 --config libConfig/markdownlint-cli2.jsonc && textlint --config libConfig/textlintrc.json README.md AGENTS.md docs"
   },
   "devDependencies": {
     "markdownlint-cli2": "0.23.3",

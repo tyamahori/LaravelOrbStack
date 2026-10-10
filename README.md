@@ -119,7 +119,7 @@ Devbox シェル内では `devbox run composer` で Composer install を実行�
 
 どの検査も、そのツールで選べるいちばん厳しい設定にしてあり、警告でも失敗します。外した規則とその理由は `libConfig/` の各設定ファイルにコメントで書いてあります。
 
-PHP 以外は CI の `static-analysis` ジョブで検査します。ワークフローは actionlint と zizmor、Dockerfile は hadolint と Trivy(`trivy config`)、秘密情報の混入は gitleaks が全履歴を、`database/` の SQL は SQLFluff(`.sqlfluff`)が、README・AGENTS.md・`docs/` は markdownlint-cli2 と textlint(`.markdownlint-cli2.jsonc`、`.textlintrc.json`)が見ます。依存パッケージの既知の脆弱性は `lint` ジョブの `composer audit --locked` で検出します。ツールの版はワークフローと `package.json` に固定してあり、Renovate が更新します。Markdown の検査は、Node.js があれば `npm ci` のあと `npm run mdCheck` で手元でも実行できます。textlint では文長(`sentence-length`)と漢数字(`arabic-kanji-numbers`)の規則を外しています。前者はインラインコードも文字数に数えてしまい、後者の自動修正は「2 つ」のように数字と単位の間を空ける書き方と合わないためです。
+PHP 以外は CI の `static-analysis` ジョブで検査します。ワークフローは actionlint と zizmor、Dockerfile は hadolint と Trivy(`trivy config`)、秘密情報の混入は gitleaks が全履歴を、`database/` の SQL は SQLFluff が、README・AGENTS.md・`docs/` は markdownlint-cli2 と textlint が見ます。設定ファイルは PHP のツールと同じく `libConfig/` に置き、CI と `npm run mdCheck` が `--config` などで明示的に渡します。例外は三つで、どれも設定を決まった場所でしか探さない呼ばれ方をするためです。actionlint の `.github/actionlint.yaml`(編集時のフックやエディタが引数なしで呼ぶ)と Renovate の `.github/renovate.json` は `.github/` に残します。hadolint は設定ファイルを持たず、外す規則を Dockerfile の `# hadolint ignore=` に書きます。グローバルの pre-commit フックがリポジトリ直下で引数なしに hadolint を呼ぶからです。依存パッケージの既知の脆弱性は `lint` ジョブの `composer audit --locked` で検出します。ツールの版はワークフローと `package.json` に固定してあり、Renovate が更新します。Markdown の検査は、Node.js があれば `npm ci` のあと `npm run mdCheck` で手元でも実行できます。textlint では文長(`sentence-length`)と漢数字(`arabic-kanji-numbers`)の規則を外しています。前者はインラインコードも文字数に数えてしまい、後者の自動修正は「2 つ」のように数字と単位の間を空ける書き方と合わないためです。
 
 ## Xdebug でのステップ実行
 

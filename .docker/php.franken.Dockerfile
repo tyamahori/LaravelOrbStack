@@ -14,6 +14,8 @@ FROM go AS psqldef
 RUN go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.26
 
 FROM frankenphp AS basebuild
+# DL3008: Debian security updates replace a pinned apt version and break the build; the base image is pinned by digest instead.
+# hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get install -yq --no-install-recommends git postgresql-client unzip \
     && apt-get clean \
@@ -42,6 +44,7 @@ FROM basebuild AS local
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
+# hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get install -yq --no-install-recommends dnsutils iproute2 iputils-ping less openssh-client vim \
     && apt-get clean \
