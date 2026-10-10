@@ -1,6 +1,6 @@
 ARG PHP_VERSION
 ARG COMPOSER_VERSION
-FROM golang:1.27.1-bookworm@sha256:69a7b9788769bec032d238959b61854e9ae87f57be9029ec04e9885fabf99195 AS go
+FROM golang:1.27.2-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61 AS go
 FROM composer:${COMPOSER_VERSION} AS composer
 FROM mlocati/php-extension-installer:2.12.0@sha256:1afade3e29cfc97362cf5885e5ac333bf2faab1146cb28ebbb59b17e68f87e88 AS basephpextensioninstaller
 FROM php:${PHP_VERSION}-apache AS apachephp
