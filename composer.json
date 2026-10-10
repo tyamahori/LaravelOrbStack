@@ -88,8 +88,12 @@
             "@composer validate --strict --no-check-publish",
             "@composer dump-autoload --optimize --strict-psr --no-scripts"
         ],
+        "structureCheck": [
+            "@php ./libConfig/structureCheck.php"
+        ],
         "lintCheck": [
             "@psrCheck",
+            "@structureCheck",
             "@rectorCheck",
             "@stanCheck",
             "@ecsCheck",
