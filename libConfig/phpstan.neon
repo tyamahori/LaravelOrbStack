@@ -96,3 +96,12 @@ services:
   -
     class: LibConfig\PhpStan\NoShorthandNullablePhpdocRule
     tags: [phpstan.rules.rule]
+  -
+    class: LibConfig\PhpStan\PackageBoundaryRule
+    tags: [phpstan.rules.rule]
+  -
+    class: LibConfig\PhpStan\UseCaseShapeRule
+    tags: [phpstan.rules.rule]
+  -
+    class: LibConfig\PhpStan\ExplicitEloquentModelRule
+    tags: [phpstan.rules.rule]

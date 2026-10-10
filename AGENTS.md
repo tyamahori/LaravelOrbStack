@@ -32,7 +32,7 @@
 | `Provider/` | ServiceProvider(`<Feature>ServiceProvider.php`)。port と実装の `bind`、ビュー名前空間(`loadViewsFrom`)、Artisan コマンド(`commands()`)の登録を担い、`bootstrap/app.php` の `withProviders([...], withBootstrapProviders: false)` に列挙する(`bootstrap/providers.php` は置かない)。`Http/Web/routes.php` は同じファイルの `withRouting(web: [...])` に、`Http/Api/routes.php` は `withRouting(api: [...])` に列挙する。プロバイダの `boot()` で `$router->group()` すると RouteServiceProvider が登録されず名前索引(`refreshNameLookups`)が更新されないので、`route('name')` が解決できない(テストで検出済み) |
 | `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤だけを置く |
 
-パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Common/`)がそれを実装して A の `Provider/` で束ねます。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため機械検査できず、レビューで守ります。
+パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Common/`)がそれを実装して A の `Provider/` で束ねます。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため Deptrac では表せず、`libConfig/PhpStan/PackageBoundaryRule.php` で検査します。
 
 `packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージに置いたままにします。パッケージを消すときは、そのディレクトリと `bootstrap/app.php` の `withProviders` の行を消せば結線が残りません。
 
@@ -89,6 +89,9 @@ Laravel を薄く使うとは、フレームワークに触れる層を `Http/`�
 | PHPStan level max + strict rules | `libConfig/phpstan.neon`(`bleedingEdge.neon` と、既定で無効な `check*`・`report*` をすべて有効化) | 強制済み |
 | `Domain/` の例外と `JsonException` は検査例外 | `libConfig/phpstan.neon` の `exceptions`。`LaravelOrbStack\<Feature>\Domain\*` の例外と `JsonException` を投げうるメソッドは `@throws` を書き、書いた型が広すぎても落ちる。それ以外の例外は未検査で伝播させる(失敗の扱いの方針どおり)。`Test/` は PHPUnit が受け止めるので対象外 | 強制済み |
 | レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き、`analyser.types` は `use` 文・関数呼び出し・スーパーグローバルまで全種) | 強制済み。層は namespace で判定し、`Http/` と `Console/` は一つの Presentation 層として扱う。`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`Provider/` は全層に依存できる |
+|パッケージ間の参照|`libConfig/PhpStan/PackageBoundaryRule.php`。参照元のパッケージと層はファイルパスで判定するので `routes.php` も対象|強制済み。他パッケージへの参照は相手の `Domain/` だけ、自パッケージの `Provider/` は束ねるために実装クラスも参照できる。`Common/` からはどの機能パッケージも参照できない|
+|UseCase の形|`libConfig/PhpStan/UseCaseShapeRule.php`|強制済み。`UseCase/` にはクラスだけを置き、公開メソッドは `__construct` と `__invoke` に限る|
+|Eloquent モデルの置き場所と暗黙の振る舞い|`libConfig/PhpStan/ExplicitEloquentModelRule.php`|強制済み。`Model` の子クラスは `Persistence/` に置き、`boot`・`booted`・`booting`、`#[ObservedBy]`・`#[ScopedBy]`、`$dispatchesEvents`・`$observables`、アクセサとミューテータ(`get*Attribute`・`set*Attribute`・`Attribute` を返すメソッド)を落とす。`casts()` は対象外|
 | PSR-4 と大文字小文字、`composer.json` の妥当性 | `composer psrCheck`(`validate --strict` と `dump-autoload --strict-psr`)、PHPStan `class.nameCase` | 強制済み |
 |書き換え規則と lint|Rector は適用できる prepared set をすべて有効化(`naming` は業務の語を型名に置き換えるので外す)、ECS は `psr12`・`perCs`・`common`・`cleanCode`、Mago は `minimum-fail-level = "note"`|強制済み。外した規則と理由は各設定ファイルのコメントにある|
 |PHP 構文を `require.php` の版に追従|Rector `withPhpSets()`(版は `composer.json` から)と `AddOverrideAttributeToOverriddenMethodsRector`、Mago は `composer magoCheck` が実行中の PHP の版を `--php-version` で渡す|強制済み。パイプ演算子・プロパティフック・`#[Deprecated]` への変換は Rector 2.6 が非推奨にしたので入れず、非対称可視性と clone with は変換ルール自体がない|
