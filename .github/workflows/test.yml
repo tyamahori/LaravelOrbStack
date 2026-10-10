@@ -216,6 +216,10 @@ jobs:
           GIT_CONFIG_VALUE_0: /github/workspace
         with:
           args: git --redact --verbose .
+      - name: SQLFluff
+        uses: docker://sqlfluff/sqlfluff:4.4.0@sha256:6a9083e55b1f4ea437636bc8ca7b55aaa0766a3e43a6d3e5b37614cf97e4e6ac
+        with:
+          args: lint database .docker
   test:
     runs-on: ubuntu-26.04-arm
     needs: cache

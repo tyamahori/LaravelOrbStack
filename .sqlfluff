@@ -1,0 +1,6 @@
+[sqlfluff]
+dialect = postgres
+# database/schema.sql は composer schema:export(psqldef)の出力をそのまま正にするので、
+# psqldef の書式(主キーの引用符付き識別子、1 行の CREATE INDEX)と衝突する規則を外す。
+# RF04 は Laravel 標準テーブルの列名(name、password、connection)を落とすので外す。
+exclude_rules = RF04, RF06, LT05
