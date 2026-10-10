@@ -50,15 +50,21 @@ jobs:
         include:
           - runtime: Apache
             dockerfile: .docker/php.apache.Dockerfile
+            phpDigestKey: phpApacheDigest
           - runtime: FrankenPHP
             dockerfile: .docker/php.franken.Dockerfile
+            phpDigestKey: frankenphpDigest
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Get PHP and Composer versions
         run: |
-          echo "PHP_VERSION=$(jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json)" >> "$GITHUB_ENV"
-          echo "COMPOSER_VERSION=$(jq -r '.config.composerVersion' composer.json)" >> "$GITHUB_ENV"
+          {
+            echo "PHP_VERSION=$(jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json)"
+            echo "COMPOSER_VERSION=$(jq -r '.config.composerVersion' composer.json)"
+            echo "COMPOSER_DIGEST=$(jq -r '.config.composerDigest' composer.json)"
+            echo "PHP_DIGEST=$(jq -r '.config.${{ matrix.phpDigestKey }}' composer.json)"
+          } >> "$GITHUB_ENV"
       - name: Build ${{ matrix.runtime }} flyio target
         run: |
           docker build \
@@ -66,6 +72,8 @@ jobs:
             --target flyio \
             --build-arg PHP_VERSION=${{ env.PHP_VERSION }} \
             --build-arg COMPOSER_VERSION=${{ env.COMPOSER_VERSION }} \
+            --build-arg COMPOSER_DIGEST=${{ env.COMPOSER_DIGEST }} \
+            --build-arg PHP_DIGEST=${{ env.PHP_DIGEST }} \
             --build-arg USER_ID=1000 \
             --build-arg GROUP_ID=1000 \
             --build-arg USER_NAME=laravel \

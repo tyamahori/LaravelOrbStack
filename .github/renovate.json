@@ -95,6 +95,19 @@
             "matchManagers": [
                 "github-actions"
             ]
+        },
+        {
+            "description": "PHP base image tags follow require.php; Renovate only refreshes their digests",
+            "matchDepNames": [
+                "php-apache-image",
+                "frankenphp-image"
+            ],
+            "matchUpdateTypes": [
+                "major",
+                "minor",
+                "patch"
+            ],
+            "enabled": false
         }
     ],
     "customManagers": [
@@ -115,11 +128,43 @@
                 "/^composer\\.json$/"
             ],
             "matchStrings": [
-                "\"composerVersion\": \"(?<currentValue>[0-9.]+)\""
+                "\"composerVersion\": \"(?<currentValue>[0-9.]+)\",\\s*\"composerDigest\": \"(?<currentDigest>sha256:[a-f0-9]+)\""
             ],
             "depNameTemplate": "composer",
             "datasourceTemplate": "docker",
             "versioningTemplate": "semver"
+        },
+        {
+            "customType": "regex",
+            "description": "Digest of php:<require.php>-apache; the tag follows require.php, so only the digest is updated here",
+            "managerFilePatterns": [
+                "/^composer\\.json$/"
+            ],
+            "matchStringsStrategy": "combination",
+            "matchStrings": [
+                "\"php\": \"(?<phpMinor>[0-9]+\\.[0-9]+)\\.\\*\"",
+                "\"phpApacheDigest\": \"(?<currentDigest>sha256:[a-f0-9]+)\""
+            ],
+            "depNameTemplate": "php-apache-image",
+            "packageNameTemplate": "php",
+            "currentValueTemplate": "{{{phpMinor}}}-apache",
+            "datasourceTemplate": "docker"
+        },
+        {
+            "customType": "regex",
+            "description": "Digest of dunglas/frankenphp:php<require.php>-trixie; the tag follows require.php, so only the digest is updated here",
+            "managerFilePatterns": [
+                "/^composer\\.json$/"
+            ],
+            "matchStringsStrategy": "combination",
+            "matchStrings": [
+                "\"php\": \"(?<phpMinor>[0-9]+\\.[0-9]+)\\.\\*\"",
+                "\"frankenphpDigest\": \"(?<currentDigest>sha256:[a-f0-9]+)\""
+            ],
+            "depNameTemplate": "frankenphp-image",
+            "packageNameTemplate": "dunglas/frankenphp",
+            "currentValueTemplate": "php{{{phpMinor}}}-trixie",
+            "datasourceTemplate": "docker"
         }
     ]
 }
