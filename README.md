@@ -47,14 +47,14 @@ task init
 OrbStack のドメイン連携により、起動後は次の URL でアクセスできます。ホストへの port 公開は行っておらず、ホストからのアクセスはすべて OrbStack のドメイン解決経由です。
 
 | 実行環境 | URL |
-|:--|:--|
+| :-- | :-- |
 | Apache | <https://apachephp.local/> |
 | FrankenPHP | <https://frankenphp.local/> |
 
 補助サービスへは `<サービス名>.laravelorbstack.orb.local` でコンテナの port に直接アクセスできます。
 
 | サービス | アクセス先 |
-|:--|:--|
+| :-- | :-- |
 | PostgreSQL | `postgresql.laravelorbstack.orb.local:5432` |
 | Redis(キャッシュ) | `cache.laravelorbstack.orb.local:6379` |
 | Redis(セッション) | `session.laravelorbstack.orb.local:6379` |
@@ -68,7 +68,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 ### 起動と停止
 
 | コマンド | 内容 |
-|:--|:--|
+| :-- | :-- |
 | `task init` | 全削除後にビルド、起動、S3 バケット作成、Composer install、スキーマ適用（psqldef）、IDE Helper 生成を実行 |
 | `task start` | ボリューム削除後に再構築、起動、スキーマ適用（psqldef）を実行 |
 | `task up` | アプリ用プロファイルのコンテナを起動 |
@@ -79,7 +79,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 ### Docker イメージ
 
 | コマンド | 内容 |
-|:--|:--|
+| :-- | :-- |
 | `task buildBaseImages` | Apache / FrankenPHP のベースイメージをビルド |
 | `task buildLocalPhps` | ローカル開発用 PHP イメージをビルド |
 | `task buildImages` | ローカル PHP イメージをビルドし、補助サービスのイメージを pull |
@@ -88,7 +88,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 ### コンテナ操作
 
 | コマンド | 内容 |
-|:--|:--|
+| :-- | :-- |
 | `task exec:apache` | Apache コンテナに入る |
 | `task exec:franken` | FrankenPHP コンテナに入る |
 | `task run:cmd -- <command>` | PHP 実行環境内で任意コマンドを実行 |
@@ -102,7 +102,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 ### 品質チェックとテスト
 
 | コマンド | 内容 |
-|:--|:--|
+| :-- | :-- |
 | `task lintCode` | Rector と ECS を適用(自動修正)してから PHPStan、Deptrac、Mago を順に実行 |
 | `task stan` | PHPStan を実行 |
 | `task deptrac` | Deptrac でレイヤー依存を検査 |
@@ -118,6 +118,8 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 Devbox シェル内では `devbox run composer` で Composer install を実行できます。Docker を起動せずにホストの PHP で全チェック(PSR-4 の厳格検査、パッケージ構成の検査、Rector dry-run、PHPStan、ECS、Deptrac、Mago)をまとめて走らせるには `composer lintCheck` を使います。`composer psrCheck` は `composer validate --strict` のあとに `dump-autoload --strict-psr` を走らせ、ファイル名とクラス名の大文字小文字のずれを macOS(case-insensitive)でも検出します。クラス参照側のずれは PHPStan の `class.nameCase` が拾います。`composer structureCheck` は AGENTS.md の配置規則のうちファイル構成だけで決まるもの(パッケージの固定語彙、`bootstrap/app.php` への登録漏れ、`.claude/skills/` のリンク)を検査します。
 
 どの検査も、そのツールで選べるいちばん厳しい設定にしてあり、警告でも失敗します。外した規則とその理由は `libConfig/` の各設定ファイルにコメントで書いてあります。
+
+PHP 以外は CI の `static-analysis` ジョブで検査します。ワークフローは actionlint と zizmor、Dockerfile は hadolint と Trivy(`trivy config`)、秘密情報の混入は gitleaks が全履歴を、`database/` の SQL は SQLFluff(`.sqlfluff`)が、README・AGENTS.md・`docs/` は markdownlint-cli2 と textlint(`.markdownlint-cli2.jsonc`、`.textlintrc.json`)が見ます。依存パッケージの既知の脆弱性は `lint` ジョブの `composer audit --locked` で検出します。ツールの版はワークフローと `package.json` に固定してあり、Renovate が更新します。Markdown の検査は、Node.js があれば `npm ci` のあと `npm run mdCheck` で手元でも実行できます。textlint では文長(`sentence-length`)と漢数字(`arabic-kanji-numbers`)の規則を外しています。前者はインラインコードも文字数に数えてしまい、後者の自動修正は「2 つ」のように数字と単位の間を空ける書き方と合わないためです。
 
 ## Xdebug でのステップ実行
 
@@ -142,11 +144,11 @@ Web 経由では、`https://apachephp.local/?XDEBUG_TRIGGER=1` のようにク�
 この規約は 2 段階で強制しています。
 
 | 層 | 仕組み | 対象 |
-|:--|:--|:--|
+| :-- | :-- | :-- |
 | 静的解析 | `libConfig/PhpStan/NoFacadeRule.php`、`libConfig/PhpStan/NoGlobalHelperRule.php` | PHPStan の解析対象パス(`packages/`、`database/`、`tests/` など)。`vendor/laravel/framework` の `helpers.php` に定義された関数はすべて対象 |
 | テスト実行時 | `tests/ForbiddenCallMonitor.php`(PHPUnit 拡張、`libConfig/phpunit.xml` で登録)。Xdebug の関数モニタ(`xdebug.mode=develop`)で `laravel/framework` が宣言する全関数と `Illuminate\Support\Facades\Facade` の public static メソッドを記録し、各テストの終了時に `vendor/`・`config/`・コンパイル済み Blade 以外から呼ばれたものがあれば PHPUnit の警告にして実行を失敗させる | テストが実行したコードだけ。`__callStatic` 経由の呼び出しに加え、`swap()` や `shouldReceive()` のように基底クラスに実在する静的メソッドも対象 |
 
-`config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部とコンパイル済み Blade からの呼び出しは、テスト実行時の検出では制限しません。本番とローカルの Web・Artisan には検出を入れず、フレームワークも改変せずに動かします。本番で見つけて止めるより、止めることで起きる障害のほうが害が大きいためです。
+`config/*.php` はコンテナ生成前に評価されるため両方の層で例外です。`env()` や `storage_path()` はそのまま使えます。フレームワーク内部とコンパイル済み Blade からの呼び出しは、テスト実行時の検出では制限しません。本番とローカルの Web・Artisan には検出を入れず、フレームワークも改変せずに動かします。本番で見つけて止めるより、止めることで起きる障害の害のほうが大きいためです。
 
 PHPUnit は `composer phpunit`(または `task phpunit`)で実行してください。`xdebug.mode=develop,coverage` を付けて起動し、カバレッジの要約も出します。`vendor/bin/phpunit` を直接叩くと Xdebug の関数モニタもカバレッジも動かないため、拡張の起動とカバレッジ宣言の検査が成り立たず、実行全体が失敗します。CI も `shivammathur/setup-php` の `coverage: xdebug` で Xdebug を入れています。
 
@@ -161,7 +163,7 @@ PHP 構文は `composer.json` の `require.php` の版に合わせます。Recto
 `packages/Samples/` は AGENTS.md の配置規則に沿った参照実装です。メモを公開すると本文を S3(RustFS)の `memos/<id>.json` に保存し、一覧用の見出しと公開日時を PostgreSQL の `memos` テーブル(`database/schema.sql`)に記録します。読み出しは Redis のキャッシュを経由し、ブラウザで最後に公開したメモの ID はセッションに残します。編集は ID と公開日時を保ったまま 3 つの保存先を書き換え、削除は 3 つすべてから消します。同じ UseCase を Web、JSON API、Artisan の 3 つから呼びます。
 
 | 操作 | Web | JSON API | Artisan |
-|:--|:--|:--|:--|
+| :-- | :-- | :-- | :-- |
 | 一覧 | <https://frankenphp.local/memos> | `GET /api/memos` | |
 | 公開 | 一覧ページのフォーム | `POST /api/memos` → 201 + `Location` | `task artisan -- memo:publish <file> [--title=] [--json]` |
 | 表示 | `/memos/<id>` | `GET /api/memos/<id>` | `task artisan -- memo:show <id> [--json]` |
@@ -204,7 +206,7 @@ API は `packages/Samples/Http/Api/routes.php` に定義し、`bootstrap/app.php
 Compose 内では次の補助サービスを利用します。
 
 | サービス | 用途 |
-|:--|:--|
+| :-- | :-- |
 | `php-app` | Apache mod_php 実行環境(`apachephp.local` の実体) |
 | `php-franken` | FrankenPHP 実行環境(`frankenphp.local` の実体) |
 | `php-cli` | ワンショットコマンド実行用 PHP コンテナ |
@@ -230,20 +232,20 @@ task sshFlyIo
 
 ## トラブルシューティング
 
-コンテナを作り直す場合:
+コンテナを作り直すには、次を実行します。
 
 ```bash
 task cleanUpComposeProject
 task init
 ```
 
-Composer 依存関係を作り直す場合:
+Composer 依存関係を作り直すには、次を実行します。
 
 ```bash
 task composerRefresh
 ```
 
-コンテナ状態とログを確認する場合:
+コンテナ状態とログは、次で確認します。
 
 ```bash
 task ps

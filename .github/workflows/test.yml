@@ -220,6 +220,15 @@ jobs:
         uses: docker://sqlfluff/sqlfluff:4.4.0@sha256:6a9083e55b1f4ea437636bc8ca7b55aaa0766a3e43a6d3e5b37614cf97e4e6ac
         with:
           args: lint database .docker
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          cache: npm
+      - name: Install Markdown linters
+        run: npm ci
+      - name: Markdown
+        run: npm run mdCheck
   test:
     runs-on: ubuntu-26.04-arm
     needs: cache

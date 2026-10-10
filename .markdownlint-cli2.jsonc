@@ -1,0 +1,9 @@
+{
+  "config": {
+    // 日本語の段落は 1 段落 1 行で書くので、行長の規則は外す
+    "MD013": false,
+    "MD060": { "style": "compact" }
+  },
+  // .agents/skills/ は tyamahori/dotfiles からのコピーなので対象外
+  "globs": ["README.md", "AGENTS.md", "docs/**/*.md"]
+}

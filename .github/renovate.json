@@ -9,7 +9,8 @@
         "docker-compose",
         "devbox",
         "custom.regex",
-        "github-actions"
+        "github-actions",
+        "npm"
     ],
     "extends": [
         "config:best-practices",

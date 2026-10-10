@@ -23,7 +23,7 @@
 パッケージの中は、ファイルが 1 つでも次の固定語彙のサブディレクトリに置きます(`packages/Samples/Http/Web/HomeController.php` がこの形)。別の名前を発明しないでください。パッケージ直下に置いたクラスは Deptrac がどこにも依存できない層として扱うので、最初の `use` で検査に落ちます。
 
 | ディレクトリ | 置くもの |
-|:--|:--|
+| :-- | :-- |
 | `Domain/` | エンティティ、値オブジェクト、ドメイン例外、外側へ要求する interface(port) |
 | `UseCase/` | 1 つの操作を表すクラス。`RegisterUser` のような動詞+名詞で命名し、公開メソッドは `__invoke` 1 つ |
 | `Http/` | Presentation 層の HTTP 入口。入口ごとに `Web/`(Blade を返す Controller、`routes.php`、Blade は `View/` でビュー名は `<feature>::` 名前空間付き)と `Api/`(JSON を返す Controller、`routes.php`、レスポンス整形)に分ける。両方が使う FormRequest は `Http/` 直下に置く |
@@ -34,9 +34,9 @@
 
 パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Common/`)がそれを実装して A の `Provider/` で束ねます。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため Deptrac では表せず、`libConfig/PhpStan/PackageBoundaryRule.php` で検査します。
 
-`packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージに置いたままにします。パッケージを消すときは、そのディレクトリと `bootstrap/app.php` の `withProviders` の行を消せば結線が残りません。
+`packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージで持ちます。パッケージを消すときは、そのディレクトリと `bootstrap/app.php` の `withProviders` の行を消せば結線が残りません。
 
-リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間は `composer.json` から外してあります)。ルート定義は `packages/<Feature>/Http/{Web,Api}/routes.php`、Blade は `packages/<Feature>/Http/Web/View/`、全体設定は `packages/Common/` に置きます。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
+リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間を `composer.json` から外してあります)。ルート定義、Blade、全体設定の置き場所は、それぞれ `packages/<Feature>/Http/{Web,Api}/routes.php`、`packages/<Feature>/Http/Web/View/`、`packages/Common/` です。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
 
 ## パッケージの中では依存を内側に向ける
 
@@ -83,21 +83,22 @@ Laravel を薄く使うとは、フレームワークに触れる層を `Http/`�
 ## 検査で強制していること
 
 | 規則 | 仕組み | 状態 |
-|:--|:--|:--|
+| :-- | :-- | :-- |
 | ファサード・グローバルヘルパ禁止 | `libConfig/PhpStan/NoFacadeRule.php`、`NoGlobalHelperRule.php`、テスト実行時の `tests/ForbiddenCallMonitor.php`(Xdebug の関数モニタ) | 強制済み |
 | nullable は `T\|null`(`?T` 禁止) | ECS `NullableTypeDeclarationFixer`(ネイティブ型、自動修正)、`libConfig/PhpStan/NoShorthandNullablePhpdocRule.php`(PHPDoc) | 強制済み |
 | PHPStan level max + strict rules | `libConfig/phpstan.neon`(`bleedingEdge.neon` と、既定で無効な `check*`・`report*` をすべて有効化) | 強制済み |
 | `Domain/` の例外と `JsonException` は検査例外 | `libConfig/phpstan.neon` の `exceptions`。`LaravelOrbStack\<Feature>\Domain\*` の例外と `JsonException` を投げうるメソッドは `@throws` を書き、書いた型が広すぎても落ちる。それ以外の例外は未検査で伝播させる(失敗の扱いの方針どおり)。`Test/` は PHPUnit が受け止めるので対象外 | 強制済み |
 | レイヤー依存とディレクトリ配置 | `libConfig/deptrac.yaml`(`composer deptracCheck` は `--fail-on-uncovered` 付き、`analyser.types` は `use` 文・関数呼び出し・スーパーグローバルまで全種) | 強制済み。層は namespace で判定し、`Http/` と `Console/` は一つの Presentation 層として扱う。`Domain/`・`UseCase/` から `Illuminate\*`・`Symfony\*`・`Carbon\*`・PDO への依存、パッケージ直下のクラスの依存、`Persistence/` から `UseCase/` への依存を落とす。`Provider/` は全層に依存できる |
-|パッケージ間の参照|`libConfig/PhpStan/PackageBoundaryRule.php`。参照元のパッケージと層はファイルパスで判定するので `routes.php` も対象|強制済み。他パッケージへの参照は相手の `Domain/` だけ、自パッケージの `Provider/` は束ねるために実装クラスも参照できる。`Common/` からはどの機能パッケージも参照できない|
-|UseCase の形|`libConfig/PhpStan/UseCaseShapeRule.php`|強制済み。`UseCase/` にはクラスだけを置き、公開メソッドは `__construct` と `__invoke` に限る|
-|Eloquent モデルの置き場所と暗黙の振る舞い|`libConfig/PhpStan/ExplicitEloquentModelRule.php`|強制済み。`Model` の子クラスは `Persistence/` に置き、`boot`・`booted`・`booting`、`#[ObservedBy]`・`#[ScopedBy]`、`$dispatchesEvents`・`$observables`、アクセサとミューテータ(`get*Attribute`・`set*Attribute`・`Attribute` を返すメソッド)を落とす。`casts()` は対象外|
-|パッケージの固定語彙と結線、skill の置き場所|`libConfig/structureCheck.php`(`composer structureCheck`)|強制済み。`app/`・`routes/`・`resources/`・`packages/Shared/`・`bootstrap/providers.php` の存在、固定語彙の外のファイル(`Test/` は `*Test.php` と `Fake*.php` だけ)、`bootstrap/app.php` に載っていない `Provider/` と `routes.php`、`.claude/skills/` のリンク切れと AGENTS.md に名前のない skill を落とす|
+| パッケージ間の参照 | `libConfig/PhpStan/PackageBoundaryRule.php`。参照元のパッケージと層はファイルパスで判定するので `routes.php` も対象 | 強制済み。他パッケージへの参照は相手の `Domain/` だけ、自パッケージの `Provider/` は束ねるために実装クラスも参照できる。`Common/` からはどの機能パッケージも参照できない |
+| UseCase の形 | `libConfig/PhpStan/UseCaseShapeRule.php` | 強制済み。`UseCase/` にはクラスだけを置き、公開メソッドは `__construct` と `__invoke` に限る |
+| Eloquent モデルの置き場所と暗黙の振る舞い | `libConfig/PhpStan/ExplicitEloquentModelRule.php` | 強制済み。`Model` の子クラスは `Persistence/` に置き、`boot`・`booted`・`booting`、`#[ObservedBy]`・`#[ScopedBy]`、`$dispatchesEvents`・`$observables`、アクセサとミューテータ(`get*Attribute`・`set*Attribute`・`Attribute` を返すメソッド)を落とす。`casts()` は対象外 |
+| パッケージの固定語彙と結線、skill の置き場所 | `libConfig/structureCheck.php`(`composer structureCheck`) | 強制済み。`app/`・`routes/`・`resources/`・`packages/Shared/`・`bootstrap/providers.php` の存在、固定語彙の外のファイル(`Test/` は `*Test.php` と `Fake*.php` だけ)、`bootstrap/app.php` に載っていない `Provider/` と `routes.php`、`.claude/skills/` のリンク切れと AGENTS.md に名前のない skill を落とす |
 | PSR-4 と大文字小文字、`composer.json` の妥当性 | `composer psrCheck`(`validate --strict` と `dump-autoload --strict-psr`)、PHPStan `class.nameCase` | 強制済み |
-|書き換え規則と lint|Rector は適用できる prepared set をすべて有効化(`naming` は業務の語を型名に置き換えるので外す)、ECS は `psr12`・`perCs`・`common`・`cleanCode`、Mago は `minimum-fail-level = "note"`|強制済み。外した規則と理由は各設定ファイルのコメントにある|
-|PHP 構文を `require.php` の版に追従|Rector `withPhpSets()`(版は `composer.json` から)と `AddOverrideAttributeToOverriddenMethodsRector`、Mago は `composer magoCheck` が実行中の PHP の版を `--php-version` で渡す|強制済み。パイプ演算子・プロパティフック・`#[Deprecated]` への変換は Rector 2.6 が非推奨にしたので入れず、非対称可視性と clone with は変換ルール自体がない|
-|テストの警告・非推奨・カバレッジ宣言|`libConfig/phpunit.xml` の `failOnAllIssues`、`beStrictAbout*`、`requireCoverageMetadata`、`requireCoverageContribution`、`executionOrder="random"` と `resolveDependencies="true"`。`tests/TestCase.php` は Laravel が握りつぶす非推奨を例外にする|強制済み。`vendor/` から出た非推奨や警告も数える。テストクラスには `#[CoversClass]` か `#[CoversNamespace]` が要り、宣言した先を 1 行も実行しないテストは落ちる|
-|検査対象|Rector・PHPStan・ECS・Mago はいずれも `bootstrap/app.php` と `libConfig/` を含む|強制済み|
+| 書き換え規則と lint | Rector は適用できる prepared set をすべて有効化(`naming` は業務の語を型名に置き換えるので外す)、ECS は `psr12`・`perCs`・`common`・`cleanCode`、Mago は `minimum-fail-level = "note"` | 強制済み。外した規則と理由は各設定ファイルのコメントにある |
+| PHP 構文を `require.php` の版に追従 | Rector `withPhpSets()`(版は `composer.json` から)と `AddOverrideAttributeToOverriddenMethodsRector`、Mago は `composer magoCheck` が実行中の PHP の版を `--php-version` で渡す | 強制済み。パイプ演算子・プロパティフック・`#[Deprecated]` への変換は Rector 2.6 が非推奨にしたので入れず、非対称可視性と clone with は変換ルール自体がない |
+| テストの警告・非推奨・カバレッジ宣言 | `libConfig/phpunit.xml` の `failOnAllIssues`、`beStrictAbout*`、`requireCoverageMetadata`、`requireCoverageContribution`、`executionOrder="random"` と `resolveDependencies="true"`。`tests/TestCase.php` は Laravel が握りつぶす非推奨を例外にする | 強制済み。`vendor/` から出た非推奨や警告も数える。テストクラスには `#[CoversClass]` か `#[CoversNamespace]` が要り、宣言した先を 1 行も実行しないテストは落ちる |
+| 検査対象 | Rector・PHPStan・ECS・Mago はいずれも `bootstrap/app.php` と `libConfig/` を含む | 強制済み |
+| PHP 以外の検査 | CI の `static-analysis` ジョブ(actionlint・zizmor・hadolint・`trivy config`・gitleaks・SQLFluff・markdownlint-cli2・textlint)、`lint` ジョブの `composer audit --locked`。手元では `npm run mdCheck` で Markdown だけ確かめられる | 強制済み。README・AGENTS.md・`docs/` の Markdown が対象で、`.agents/skills/` は dotfiles からのコピーなので外す |
 
 検査は Composer のラッパーで走らせます。`composer stanCheck -- --no-progress --error-format=raw`、`ecsCheck`、`rectorCheck`、`magoCheck`、`deptracCheck`、`structureCheck`、`phpunit`(`APP_KEY` が必要)。フォーマッタは ECS だけで、Mago は lint 専用です。`composer phpunit` は `xdebug.mode=develop,coverage` とカバレッジ出力を付けて起動します。`vendor/bin/phpunit` を直接叩くとどちらも付かず、`tests/ForbiddenCallMonitor.php` の起動とカバレッジ宣言の検査が成り立たないので実行全体が落ちます。ローカルで `SampleControllerTest` が落ちるのは `libConfig/phpunit.xml` が Redis を要求する既知の状態で、コンテナ内と CI では通ります。
 
@@ -108,7 +109,7 @@ Larastan は `Command::argument()` と `option()` の戻り型を signature か�
 ## 新しいコードを書く前に答える七つの問い
 
 1. どの `packages/<Feature>/` に属するか。既存に入らない理由は何か。
-2. 呼び出し側が知る必要があるのは何か(interface)。隠せるのは何か。
+2. 呼び出し側は何を知る必要があるか(interface)。隠せるのは何か。
 3. 信頼できない入力はどこから入り、どの型に変わるか。
 4. 常に成り立つべきことは何で、どの一箇所がそれを守るか。
 5. 失敗は呼び出し側にどう見えるか。

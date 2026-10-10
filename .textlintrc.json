@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "preset-ja-technical-writing": {
+      "sentence-length": false,
+      "arabic-kanji-numbers": false,
+      "no-doubled-joshi": {
+        "allow": ["も", "にも"]
+      }
+    }
+  }
+}
