@@ -45,4 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
             static fn (HttpRequest $request): bool => $request->is('api/*') || $request->expectsJson(),
         );
     })
-    ->create();
+    ->create()
+    // getNamespace() resolves the app namespace from the PSR-4 entry whose path is app_path();
+    // the default app/ does not exist here, so route:list and friends fail without this.
+    ->useAppPath(__DIR__ . '/../packages');
