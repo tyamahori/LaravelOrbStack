@@ -46,7 +46,7 @@ ARG GROUP_ID
 ARG USER_NAME
 # hadolint ignore=DL3008
 RUN apt-get update \
-    && apt-get install -yq --no-install-recommends dnsutils iproute2 iputils-ping less openssh-client vim \
+    && apt-get install -yq --no-install-recommends dnsutils iproute2 iputils-ping jq less openssh-client procps redis-tools vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd -o -g ${GROUP_ID} ${USER_NAME} \

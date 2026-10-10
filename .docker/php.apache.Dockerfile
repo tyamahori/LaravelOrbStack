@@ -51,8 +51,11 @@ RUN apt-get update \
       dnsutils \
       iproute2 \
       iputils-ping \
+      jq \
       less \
       openssh-client \
+      procps \
+      redis-tools \
       vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
