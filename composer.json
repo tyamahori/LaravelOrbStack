@@ -16,20 +16,20 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.4.4",
         "barryvdh/laravel-ide-helper": "^3.7.0",
-        "carthage-software/mago": "^1.51.2",
+        "carthage-software/mago": "^1.55.0",
         "deptrac/deptrac": "^4.7.2",
         "fakerphp/faker": "^1.24.1",
-        "larastan/larastan": "^3.12.2",
+        "larastan/larastan": "^3.13.0",
         "nunomaduro/collision": "^8.9.5",
         "php-standard-library/phpstan-extension": "^2.1.0",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-deprecation-rules": "^2.0.5",
-        "phpstan/phpstan-phpunit": "^2.0.21",
-        "phpstan/phpstan-strict-rules": "^2.0.12",
-        "phpunit/phpunit": "^13.4.0",
-        "rector/rector": "^2.6.7",
+        "phpstan/phpstan-phpunit": "^2.1.1",
+        "phpstan/phpstan-strict-rules": "^2.1.0",
+        "phpunit/phpunit": "^13.4.1",
+        "rector/rector": "^2.7.0",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^13.3.2"
+        "symplify/easy-coding-standard": "^13.3.4"
     },
     "autoload": {
         "psr-4": {
