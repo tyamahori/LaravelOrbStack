@@ -9,12 +9,17 @@ on:
       - main
       - '*'
 
+permissions:
+  contents: read
+
 jobs:
   cache:
     runs-on: ubuntu-26.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: Get PHP and Composer versions
         id: php-version
         run: |
@@ -57,23 +62,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: Get PHP and Composer versions
+        env:
+          PHP_DIGEST_KEY: ${{ matrix.phpDigestKey }}
         run: |
           {
             echo "PHP_VERSION=$(jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json)"
             echo "COMPOSER_VERSION=$(jq -r '.config.composerVersion' composer.json)"
             echo "COMPOSER_DIGEST=$(jq -r '.config.composerDigest' composer.json)"
-            echo "PHP_DIGEST=$(jq -r '.config.${{ matrix.phpDigestKey }}' composer.json)"
+            echo "PHP_DIGEST=$(jq -r --arg key "$PHP_DIGEST_KEY" '.config[$key]' composer.json)"
           } >> "$GITHUB_ENV"
       - name: Build ${{ matrix.runtime }} flyio target
+        env:
+          DOCKERFILE: ${{ matrix.dockerfile }}
         run: |
           docker build \
-            --file ${{ matrix.dockerfile }} \
+            --file "$DOCKERFILE" \
             --target flyio \
-            --build-arg PHP_VERSION=${{ env.PHP_VERSION }} \
-            --build-arg COMPOSER_VERSION=${{ env.COMPOSER_VERSION }} \
-            --build-arg COMPOSER_DIGEST=${{ env.COMPOSER_DIGEST }} \
-            --build-arg PHP_DIGEST=${{ env.PHP_DIGEST }} \
+            --build-arg PHP_VERSION="$PHP_VERSION" \
+            --build-arg COMPOSER_VERSION="$COMPOSER_VERSION" \
+            --build-arg COMPOSER_DIGEST="$COMPOSER_DIGEST" \
+            --build-arg PHP_DIGEST="$PHP_DIGEST" \
             --build-arg USER_ID=1000 \
             --build-arg GROUP_ID=1000 \
             --build-arg USER_NAME=laravel \
@@ -85,6 +96,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: Restore Composer packages
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -172,6 +185,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: Restore Composer packages
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:

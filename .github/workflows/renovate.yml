@@ -1,15 +1,29 @@
 on: workflow_dispatch
+permissions:
+  contents: read
 jobs:
   renovate:
     runs-on: ubuntu-26.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Renovate のドキュメントが GitHub App に求める権限だけをトークンに載せる
+      # https://docs.renovatebot.com/modules/platform/github/
       - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
         id: generate-token
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
+          permission-checks: write
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+          permission-statuses: write
+          permission-workflows: write
+          permission-administration: read
+          permission-vulnerability-alerts: read
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@230ce922b08968d0a4f6f70f295601daff09ef1d # v46.3.7
         with:

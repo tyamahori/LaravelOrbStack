@@ -33,6 +33,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: Get PHP and Composer versions
         run: |
@@ -84,10 +86,11 @@ jobs:
 
       # Export digest for manifest creation
       - name: Export digest
+        env:
+          DIGEST: ${{ steps.build-and-push-base.outputs.digest }}
         run: |
           mkdir -p /tmp/digests
-          digest="${{ steps.build-and-push-base.outputs.digest }}"
-          touch "/tmp/digests/${digest#sha256:}"
+          touch "/tmp/digests/${DIGEST#sha256:}"
 
       # Upload digest as artifact
       - name: Upload digest
@@ -111,6 +114,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       # Download all digests
       - name: Download digests
@@ -157,5 +162,7 @@ jobs:
 
       # Inspect the final multi-arch image
       - name: Inspect image
+        env:
+          VERSION: ${{ steps.meta.outputs.version }}
         run: |
-          docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
+          docker buildx imagetools inspect "${REGISTRY}/${IMAGE_NAME}:${VERSION}"
