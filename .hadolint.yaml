@@ -1,0 +1,3 @@
+# DL3008: Debian security updates replace the pinned apt version and break the build; base images are pinned by digest instead.
+ignored:
+  - DL3008

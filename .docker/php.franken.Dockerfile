@@ -13,7 +13,7 @@ RUN go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.26
 
 FROM frankenphp AS basebuild
 RUN apt-get update \
-    && apt-get install -yq git postgresql-client unzip \
+    && apt-get install -yq --no-install-recommends git postgresql-client unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /composer \
@@ -30,11 +30,11 @@ ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
 RUN apt-get update \
-    && apt-get install -yq dnsutils iproute2 iputils-ping vim \
+    && apt-get install -yq --no-install-recommends dnsutils iproute2 iputils-ping less openssh-client vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
-    && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
+    && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && install -d -o ${USER_NAME} -g ${USER_NAME} /composer /app /config/psysh /etc/caddy /data/caddy/pki \
     && install-php-extensions xdebug
 COPY --from=task /go/bin/task /usr/bin/task
@@ -46,7 +46,7 @@ ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
-      && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
+      && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
       && chown ${USER_NAME}:${USER_NAME} /composer \
       && chown ${USER_NAME}:${USER_NAME} /app \
       && chown ${USER_NAME}:${USER_NAME} /data/caddy \

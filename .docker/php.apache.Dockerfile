@@ -14,7 +14,7 @@ RUN go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.26
 FROM apachephp AS basebuild
 COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
 RUN apt-get update \
-    && apt-get install -yq git postgresql-client unzip \
+    && apt-get install -yq --no-install-recommends git postgresql-client unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /composer \
@@ -31,15 +31,17 @@ ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
 RUN apt-get update \
-    && apt-get install -yq \
+    && apt-get install -yq --no-install-recommends \
       dnsutils \
       iproute2 \
       iputils-ping \
+      less \
+      openssh-client \
       vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
-    && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
+    && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && install -d -o ${USER_NAME} -g ${USER_NAME} /config/psysh /composer /var/www/html \
     && install-php-extensions xdebug
 ENV APACHE_RUN_USER=${USER_NAME} \
@@ -54,7 +56,7 @@ ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
-    && useradd -om -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
+    && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /var/www/html \
     && chown ${USER_NAME}:${USER_NAME} /composer
 ENV APACHE_LOG_DIR=/var/log/apache2
