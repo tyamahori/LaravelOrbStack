@@ -20,3 +20,4 @@ yarn-error.log
 .task
 xdebug.log
 .tempCache
+__pycache__/
