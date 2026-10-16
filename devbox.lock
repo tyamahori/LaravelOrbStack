@@ -161,42 +161,42 @@
         }
       }
     },
-    "php@8.5.9": {
-      "last_modified": "2026-08-01T16:34:20Z",
+    "php@8.5.11": {
+      "last_modified": "2026-10-14T08:20:44Z",
       "plugin_version": "0.0.4",
-      "resolved": "github:NixOS/nixpkgs/a5cbcfe954791221bfffe2307f7d1a1bf61a871e#php85",
+      "resolved": "github:NixOS/nixpkgs/319e4cebef10cbb636c6ea392137b52ad105336a#php85",
       "source": "devbox-search",
-      "version": "8.5.9",
+      "version": "8.5.11",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/aq2b871asvyc1c9fak7zpw945bjwa4yx-php-with-extensions-8.5.9",
+              "path": "/nix/store/2fjbz1ncs0w7inz316h9cz0ag30vmiw6-php-with-extensions-8.5.11",
               "default": true
             }
           ],
-          "store_path": "/nix/store/aq2b871asvyc1c9fak7zpw945bjwa4yx-php-with-extensions-8.5.9"
+          "store_path": "/nix/store/2fjbz1ncs0w7inz316h9cz0ag30vmiw6-php-with-extensions-8.5.11"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/f3ffppblva9p3x8rm0z20lwsl2fdvxjp-php-with-extensions-8.5.9",
+              "path": "/nix/store/z7xjbsiyg3afhgyvf9r5cmsyc1jdj9qd-php-with-extensions-8.5.11",
               "default": true
             }
           ],
-          "store_path": "/nix/store/f3ffppblva9p3x8rm0z20lwsl2fdvxjp-php-with-extensions-8.5.9"
+          "store_path": "/nix/store/z7xjbsiyg3afhgyvf9r5cmsyc1jdj9qd-php-with-extensions-8.5.11"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/fnyn2d9jh1cc2ggzb6sc6k1n85yypibg-php-with-extensions-8.5.9",
+              "path": "/nix/store/zf5c34b1m0i5n1wjnl7p6mrllyfhjmhg-php-with-extensions-8.5.11",
               "default": true
             }
           ],
-          "store_path": "/nix/store/fnyn2d9jh1cc2ggzb6sc6k1n85yypibg-php-with-extensions-8.5.9"
+          "store_path": "/nix/store/zf5c34b1m0i5n1wjnl7p6mrllyfhjmhg-php-with-extensions-8.5.11"
         }
       }
     }
