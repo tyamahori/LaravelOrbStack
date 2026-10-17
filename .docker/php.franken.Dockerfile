@@ -4,7 +4,7 @@ ARG COMPOSER_VERSION
 ARG COMPOSER_DIGEST
 FROM golang:1.27.2-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61 AS go
 FROM composer:${COMPOSER_VERSION}@${COMPOSER_DIGEST} AS composer
-FROM mlocati/php-extension-installer:2.12.0@sha256:1afade3e29cfc97362cf5885e5ac333bf2faab1146cb28ebbb59b17e68f87e88 AS basephpextensioninstaller
+FROM mlocati/php-extension-installer:2.12.1@sha256:486d090fba21c04170262152c0ae63e7434d75e84fdd13450201c7fd54721b22 AS basephpextensioninstaller
 FROM dunglas/frankenphp:php${PHP_VERSION}-trixie@${PHP_DIGEST} AS frankenphp
 
 FROM go AS task
