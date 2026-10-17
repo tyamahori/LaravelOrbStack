@@ -194,7 +194,7 @@ jobs:
       - name: actionlint
         uses: docker://rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
       - name: zizmor
-        uses: docker://ghcr.io/zizmorcore/zizmor:1.30.1@sha256:a2eb396d886c053073405c7a980f2139ba2248ec172243cfa3841e57196e8101
+        uses: docker://ghcr.io/zizmorcore/zizmor:1.31.1@sha256:42d409dbb851d4c5d35a058cf042b828bea1e3f2884378c526eb0974780e18d9
         env:
           GH_TOKEN: ${{ github.token }}
         with:
@@ -204,7 +204,7 @@ jobs:
         with:
           args: hadolint .docker/php.apache.Dockerfile .docker/php.franken.Dockerfile
       - name: Trivy config
-        uses: docker://aquasec/trivy:0.75.0@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa
+        uses: docker://aquasec/trivy:0.76.0@sha256:2416d1f74045b57274df1a340eee6b510cacd73c66a6ccb8da092b117eb7d222
         with:
           args: config --exit-code 1 --ignorefile libConfig/trivyignore .
       - name: gitleaks
