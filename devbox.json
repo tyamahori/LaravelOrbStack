@@ -3,7 +3,7 @@
   "packages": [
     "flyctl",
     "go-task@3.53.1",
-    "php@8.5.9",
+    "php@8.5.11",
     "php85Extensions.redis@latest",
     "php85Extensions.xdebug@3.5.3"
   ],
