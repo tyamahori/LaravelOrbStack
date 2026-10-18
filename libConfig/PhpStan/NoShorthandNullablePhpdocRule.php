@@ -12,6 +12,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Node\VirtualNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+
 use function preg_match;
 use function sprintf;
 

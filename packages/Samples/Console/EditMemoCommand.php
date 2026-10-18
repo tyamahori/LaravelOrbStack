@@ -11,6 +11,7 @@ use LaravelOrbStack\Samples\Domain\MemoId;
 use LaravelOrbStack\Samples\Domain\MemoNotFound;
 use LaravelOrbStack\Samples\UseCase\EditMemo;
 use Override;
+
 use function is_string;
 
 final class EditMemoCommand extends Command

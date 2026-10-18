@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use const DIRECTORY_SEPARATOR;
+
 use Illuminate\Support\Facades\Facade as LaravelFacade;
 use LogicException;
 use Override;
@@ -18,6 +19,7 @@ use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
 use RuntimeException;
+
 use function dirname;
 use function function_exists;
 use function in_array;
