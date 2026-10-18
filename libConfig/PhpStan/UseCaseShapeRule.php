@@ -11,6 +11,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Node\InClassNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+
 use function in_array;
 use function preg_match;
 use function sprintf;

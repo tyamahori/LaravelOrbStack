@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27134b7cc5f996940a45807f5d61e372",
+    "content-hash": "4e8eda52f1a32423ed2d07ee09b1577f",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -3543,16 +3543,16 @@
         },
         {
             "name": "symfony/clock",
-            "version": "v8.1.0",
+            "version": "v8.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/clock.git",
-                "reference": "701ef4de9705d6c32292ebee5e8044094a09fbf6"
+                "reference": "945ea3b64d6da9c1c2c354fe5c07b27455df6442"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/clock/zipball/701ef4de9705d6c32292ebee5e8044094a09fbf6",
-                "reference": "701ef4de9705d6c32292ebee5e8044094a09fbf6",
+                "url": "https://api.github.com/repos/symfony/clock/zipball/945ea3b64d6da9c1c2c354fe5c07b27455df6442",
+                "reference": "945ea3b64d6da9c1c2c354fe5c07b27455df6442",
                 "shasum": ""
             },
             "require": {
@@ -3596,7 +3596,7 @@
                 "time"
             ],
             "support": {
-                "source": "https://github.com/symfony/clock/tree/v8.1.0"
+                "source": "https://github.com/symfony/clock/tree/v8.1.9"
             },
             "funding": [
                 {
@@ -3616,7 +3616,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-10-12T14:32:04+00:00"
         },
         {
             "name": "symfony/console",
@@ -6636,16 +6636,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "1.55.0",
+            "version": "1.57.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "2487de2818449cab3b7fde26be7b00d3a63f6a61"
+                "reference": "9656cd55d51d96bd6dc57f1f1e73c15f22cb7cc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/2487de2818449cab3b7fde26be7b00d3a63f6a61",
-                "reference": "2487de2818449cab3b7fde26be7b00d3a63f6a61",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/9656cd55d51d96bd6dc57f1f1e73c15f22cb7cc3",
+                "reference": "9656cd55d51d96bd6dc57f1f1e73c15f22cb7cc3",
                 "shasum": ""
             },
             "require": {
@@ -6687,7 +6687,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.55.0"
+                "source": "https://github.com/carthage-software/mago/tree/1.57.0"
             },
             "funding": [
                 {
@@ -6695,7 +6695,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-09T22:43:14+00:00"
+            "time": "2026-10-14T07:10:47+00:00"
         },
         {
             "name": "composer/class-map-generator",
@@ -8720,16 +8720,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.4.1",
+            "version": "13.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "ccde40327c501eebff192614b0dcf11806418901"
+                "reference": "2180c47c4229e5da117ff248753370443c074f10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ccde40327c501eebff192614b0dcf11806418901",
-                "reference": "ccde40327c501eebff192614b0dcf11806418901",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2180c47c4229e5da117ff248753370443c074f10",
+                "reference": "2180c47c4229e5da117ff248753370443c074f10",
                 "shasum": ""
             },
             "require": {
@@ -8800,7 +8800,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.4.1"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.4.3"
             },
             "funding": [
                 {
@@ -8808,7 +8808,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-10-05T05:51:21+00:00"
+            "time": "2026-10-16T05:56:47+00:00"
         },
         {
             "name": "rector/rector",
@@ -11653,16 +11653,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "13.3.5",
+            "version": "13.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecsphp/ecs.git",
-                "reference": "c75477d00fb6c14fa5c71a857f5af3d7f45d0094"
+                "reference": "3716728056141c461b9f16e1facf55eb2d776449"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/c75477d00fb6c14fa5c71a857f5af3d7f45d0094",
-                "reference": "c75477d00fb6c14fa5c71a857f5af3d7f45d0094",
+                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/3716728056141c461b9f16e1facf55eb2d776449",
+                "reference": "3716728056141c461b9f16e1facf55eb2d776449",
                 "shasum": ""
             },
             "require": {
@@ -11695,9 +11695,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ecsphp/ecs/issues",
-                "source": "https://github.com/ecsphp/ecs/tree/13.3.5"
+                "source": "https://github.com/ecsphp/ecs/tree/13.3.7"
             },
-            "time": "2026-10-10T13:28:36+00:00"
+            "time": "2026-10-14T21:46:31+00:00"
         },
         {
             "name": "theseer/tokenizer",
