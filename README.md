@@ -16,9 +16,9 @@ Laravel を OrbStack 上の Docker Compose 環境で動かすためのサンプ�
 - Task
 - Devbox
 
-PHP と Composer のバージョンは `composer.json` が正本です。PHP は `require.php`、Composer は `config.composerVersion` から Taskfile・Dockerfile(`--build-arg`)・GitHub Actions が読み取るので、上げるときはそこだけ変更します。Devbox の PHP は `devbox.json` で別途固定しています。
+PHP のマイナーと Composer のバージョンは `composer.json` が正本です。PHP は `require.php`、Composer は `config.composerVersion` から Taskfile・GitHub Actions が読み取り、Dockerfile には `--build-arg` で渡します。Devbox の PHP は `devbox.json` で別途固定しています。
 
-PHP 系 Dockerfile のベースイメージ(`composer`、`php:<PHP>-apache`、`dunglas/frankenphp:php<PHP>-trixie`)は、同じ `config` の `composerDigest`・`phpApacheDigest`・`frankenphpDigest` で digest 固定しています。digest はタグより優先されるので、Dockerfile の `basebuild` はイメージの PHP と Composer の版が `require.php`・`composerVersion` と一致しないとビルドを止めます。digest の更新は Renovate が行い、Composer は版と digest を同じ PR で上げます。PHP のマイナーを上げるときだけ、`docker buildx imagetools inspect php:<PHP>-apache --format '{{.Manifest.Digest}}'`(FrankenPHP も同様)で取った digest を同じ変更で書き換えます。
+PHP 系 Dockerfile のベースイメージ(`composer`、`php`、`dunglas/frankenphp`)と、PIE で入れる拡張(redis、xdebug)は、Dockerfile の中でパッチバージョンまで固定しています。イメージは digest も固定します。パッチ・digest・拡張の更新は Renovate が行い、Composer は `composer.json` と Dockerfile を同じ PR で上げます。Dockerfile の `basebuild` は、イメージの PHP のマイナーと Composer の版が `require.php`・`composerVersion` と一致しないとビルドを止めます。PHP のマイナーを上げるときは、`require.php` と両 Dockerfile の `FROM` を同じ変更で書き換えます。
 
 ## 前提条件
 

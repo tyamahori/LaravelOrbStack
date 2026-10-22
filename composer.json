@@ -114,10 +114,7 @@
             "phpstan/extension-installer": true
         },
         "nextPhp": "8.6",
-        "composerVersion": "2.10.3",
-        "composerDigest": "sha256:da624c2c705d54e2f5a9bb77a5dc6c7d091711433ebefd7035672e84c2010fee",
-        "phpApacheDigest": "sha256:974e3a920309308e1690ed607e6cc3061d6906f90cc8d30fe519daa48bccf101",
-        "frankenphpDigest": "sha256:8a7a935deb33959200628497b8201423c8b777d513a62ac1b69a91c624afdb3d"
+        "composerVersion": "2.10.3"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
