@@ -116,7 +116,7 @@
         "nextPhp": "8.6",
         "composerVersion": "2.10.3",
         "composerDigest": "sha256:da624c2c705d54e2f5a9bb77a5dc6c7d091711433ebefd7035672e84c2010fee",
-        "phpApacheDigest": "sha256:974e3a920309308e1690ed607e6cc3061d6906f90cc8d30fe519daa48bccf101",
+        "phpApacheDigest": "sha256:5fec3fb1f0322c20a01c8af35a09a96f3a83aa369650b0fed161e91cb84056ed",
         "frankenphpDigest": "sha256:8a7a935deb33959200628497b8201423c8b777d513a62ac1b69a91c624afdb3d"
     },
     "minimum-stability": "stable",
