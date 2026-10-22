@@ -89,14 +89,14 @@ ARG GROUP_ID
 ARG USER_NAME
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
-    && chown ${USER_NAME}:${USER_NAME} /var/www/html \
-    && chown ${USER_NAME}:${USER_NAME} /composer
+    && chown ${USER_NAME}:${USER_NAME} /var/www/html /composer
 ENV APACHE_LOG_DIR=/var/log/apache2
-COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
-COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/ports.conf /etc/apache2/ports.conf
-COPY --chown=${USER_NAME}:${USER_NAME} .docker/common/security.conf /etc/apache2/conf-available/security.conf
-COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
+# Server config stays root-owned: the app user only needs to read it.
+COPY .docker/flyio/php/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY .docker/flyio/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY .docker/flyio/php/ports.conf /etc/apache2/ports.conf
+COPY .docker/common/security.conf /etc/apache2/conf-available/security.conf
+COPY .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
 USER ${USER_NAME}
 # Dependencies before the source, so a code-only change reuses the vendor layer.
 COPY --chown=${USER_NAME}:${USER_NAME} composer.json composer.lock /var/www/html/

@@ -76,14 +76,11 @@ ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
-      && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
-      && chown ${USER_NAME}:${USER_NAME} /composer \
-      && chown ${USER_NAME}:${USER_NAME} /app \
-      && chown ${USER_NAME}:${USER_NAME} /data/caddy \
-      && chown ${USER_NAME}:${USER_NAME} /config/caddy \
-      && install -d -o ${USER_NAME} -g ${USER_NAME} /etc/caddy \
-      && install -d -o ${USER_NAME} -g ${USER_NAME} /config/psysh
-COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
+    && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
+    && chown ${USER_NAME}:${USER_NAME} /composer /app /data/caddy /config/caddy \
+    && install -d -o ${USER_NAME} -g ${USER_NAME} /etc/caddy /config/psysh
+# php.ini stays root-owned: the app user only needs to read it.
+COPY .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
 USER ${USER_NAME}
 # Dependencies before the source, so a code-only change reuses the vendor layer.
 COPY --chown=${USER_NAME}:${USER_NAME} composer.json composer.lock /app/
