@@ -5,6 +5,7 @@ ARG COMPOSER_DIGEST
 FROM golang:1.27.2-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61 AS go
 FROM composer:${COMPOSER_VERSION}@${COMPOSER_DIGEST} AS composer
 FROM mlocati/php-extension-installer:2.12.1@sha256:486d090fba21c04170262152c0ae63e7434d75e84fdd13450201c7fd54721b22 AS basephpextensioninstaller
+FROM ghcr.io/php/pie:1.5.3-bin@sha256:9d3e6d9dafa5ae8cf034489260e206a5aa1b488b29c0ddaea9149826d9e32f52 AS pie
 FROM dunglas/frankenphp:php${PHP_VERSION}-trixie@${PHP_DIGEST} AS frankenphp
 
 FROM go AS task
@@ -26,7 +27,18 @@ ENV COMPOSER_HOME=/composer \
     PATH=/composer/vendor/bin:$PATH \
     COMPOSER_ALLOW_SUPERUSER=1 \
     DEBCONF_NOWARNINGS=yes
-RUN install-php-extensions redis gd opcache intl zip bcmath pdo_pgsql pgsql
+RUN install-php-extensions gd opcache intl zip bcmath pdo_pgsql pgsql
+# PECL extensions come from PIE so the build does not depend on pecl.php.net.
+# lzf/zstd/lz4 keep the compression set install-php-extensions used to enable. PIE builds
+# from the GitHub archive, which lacks the bundled liblzf submodule, so link the system one.
+# hadolint ignore=DL3008
+RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
+    apt-get update \
+    && apt-get install -yq --no-install-recommends liblzf1 liblzf-dev libzstd-dev liblz4-dev \
+    && pie install --no-cache phpredis/phpredis:6.3.0 \
+      --enable-redis-lzf --with-liblzf=yes --enable-redis-zstd --enable-redis-lz4 --with-liblz4=yes \
+    && apt-get purge -y --auto-remove liblzf-dev libzstd-dev liblz4-dev \
+    && rm -rf /var/lib/apt/lists/*
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 # With a digest, Docker ignores the tag; fail here if the digest no longer matches the versions.
 ARG PHP_VERSION
@@ -51,8 +63,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
-    && install -d -o ${USER_NAME} -g ${USER_NAME} /composer /app /config/psysh /etc/caddy /data/caddy/pki \
-    && install-php-extensions xdebug
+    && install -d -o ${USER_NAME} -g ${USER_NAME} /composer /app /config/psysh /etc/caddy /data/caddy/pki
+RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
+    pie install --no-cache xdebug/xdebug:3.5.3
 COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 USER ${USER_NAME}
