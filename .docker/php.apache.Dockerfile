@@ -11,7 +11,10 @@ FROM go AS psqldef
 RUN go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.26
 
 FROM apachephp AS basebuild
-COPY --from=basephpextensioninstaller /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
+ENV COMPOSER_HOME=/composer \
+    PATH=/composer/vendor/bin:$PATH \
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    DEBCONF_NOWARNINGS=yes
 # DL3008: Debian security updates replace a pinned apt version and break the build; the base image is pinned by digest instead.
 # hadolint ignore=DL3008
 RUN apt-get update \
@@ -20,11 +23,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /composer \
     && a2enmod rewrite headers ssl mpm_prefork && a2dismod status info
-ENV COMPOSER_HOME=/composer \
-    PATH=/composer/vendor/bin:$PATH \
-    COMPOSER_ALLOW_SUPERUSER=1 \
-    DEBCONF_NOWARNINGS=yes
-RUN install-php-extensions gd opcache intl zip bcmath pdo_pgsql pgsql
+# The installers are bind-mounted so they never land in an image layer.
+RUN --mount=type=bind,from=basephpextensioninstaller,source=/usr/bin/install-php-extensions,target=/usr/local/bin/install-php-extensions \
+    install-php-extensions gd opcache intl zip bcmath pdo_pgsql pgsql
 # PECL extensions come from PIE so the build does not depend on pecl.php.net.
 # lzf/zstd/lz4 keep the compression set install-php-extensions used to enable. PIE builds
 # from the GitHub archive, which lacks the bundled liblzf submodule, so link the system one.
@@ -52,6 +53,9 @@ RUN : "${PHP_VERSION:?pass --build-arg PHP_VERSION}" "${COMPOSER_VERSION:?pass -
     esac
 
 FROM basebuild AS local
+# Before the user-specific ARGs, so xdebug's compile is cached independently of them.
+RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
+    pie install --no-cache xdebug/xdebug:3.5.3
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
@@ -72,8 +76,6 @@ RUN apt-get update \
     && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && install -d -o ${USER_NAME} -g ${USER_NAME} /config/psysh /composer /var/www/html
-RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
-    pie install --no-cache xdebug/xdebug:3.5.3
 ENV APACHE_RUN_USER=${USER_NAME} \
     APACHE_RUN_GROUP=${USER_NAME} \
     APACHE_LOG_DIR=/var/www/html/storage/logs
@@ -95,9 +97,11 @@ COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/mpm_prefork.conf /etc/a
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/ports.conf /etc/apache2/ports.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/common/security.conf /etc/apache2/conf-available/security.conf
 COPY --chown=${USER_NAME}:${USER_NAME} .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
-COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
 USER ${USER_NAME}
-RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist && \
-    composer dump-autoload && \
+# Dependencies before the source, so a code-only change reuses the vendor layer.
+COPY --chown=${USER_NAME}:${USER_NAME} composer.json composer.lock /var/www/html/
+RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist --no-autoloader
+COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
+RUN composer dump-autoload && \
     php artisan clear-compiled && \
     php artisan optimize:clear
