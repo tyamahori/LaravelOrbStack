@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e8eda52f1a32423ed2d07ee09b1577f",
+    "content-hash": "18d2cb3fb3fcfd57ce6f9195ff4322af",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6637,16 +6637,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "1.57.0",
+            "version": "1.58.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "9656cd55d51d96bd6dc57f1f1e73c15f22cb7cc3"
+                "reference": "59c3a1b56df9916cff773f1e49d89f929ceda790"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/9656cd55d51d96bd6dc57f1f1e73c15f22cb7cc3",
-                "reference": "9656cd55d51d96bd6dc57f1f1e73c15f22cb7cc3",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/59c3a1b56df9916cff773f1e49d89f929ceda790",
+                "reference": "59c3a1b56df9916cff773f1e49d89f929ceda790",
                 "shasum": ""
             },
             "require": {
@@ -6688,7 +6688,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.57.0"
+                "source": "https://github.com/carthage-software/mago/tree/1.58.2"
             },
             "funding": [
                 {
@@ -6696,7 +6696,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-14T07:10:47+00:00"
+            "time": "2026-10-19T20:25:38+00:00"
         },
         {
             "name": "composer/class-map-generator",
@@ -11663,16 +11663,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "13.3.7",
+            "version": "13.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecsphp/ecs.git",
-                "reference": "3716728056141c461b9f16e1facf55eb2d776449"
+                "reference": "0564c0b9b807f1740bf0f2cc965ab51551f4dc3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/3716728056141c461b9f16e1facf55eb2d776449",
-                "reference": "3716728056141c461b9f16e1facf55eb2d776449",
+                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/0564c0b9b807f1740bf0f2cc965ab51551f4dc3b",
+                "reference": "0564c0b9b807f1740bf0f2cc965ab51551f4dc3b",
                 "shasum": ""
             },
             "require": {
@@ -11705,9 +11705,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ecsphp/ecs/issues",
-                "source": "https://github.com/ecsphp/ecs/tree/13.3.7"
+                "source": "https://github.com/ecsphp/ecs/tree/13.3.8"
             },
-            "time": "2026-10-14T21:46:31+00:00"
+            "time": "2026-10-20T21:02:34+00:00"
         },
         {
             "name": "theseer/tokenizer",
