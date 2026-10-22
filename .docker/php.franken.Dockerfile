@@ -1,12 +1,8 @@
-ARG PHP_VERSION
-ARG PHP_DIGEST
-ARG COMPOSER_VERSION
-ARG COMPOSER_DIGEST
 FROM golang:1.27.2-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61 AS go
-FROM composer:${COMPOSER_VERSION}@${COMPOSER_DIGEST} AS composer
+FROM composer:2.10.3@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac AS composer
 FROM mlocati/php-extension-installer:2.12.1@sha256:486d090fba21c04170262152c0ae63e7434d75e84fdd13450201c7fd54721b22 AS basephpextensioninstaller
 FROM ghcr.io/php/pie:1.5.3-bin@sha256:9d3e6d9dafa5ae8cf034489260e206a5aa1b488b29c0ddaea9149826d9e32f52 AS pie
-FROM dunglas/frankenphp:php${PHP_VERSION}-trixie@${PHP_DIGEST} AS frankenphp
+FROM dunglas/frankenphp:1.13.0-php8.5.11-trixie@sha256:4a8eebee6b3bed92d01ffa6ec5b1bc2cb9c2ab7eeb546027a3f7e6a52937ebbb AS frankenphp
 
 FROM go AS task
 RUN go install github.com/go-task/task/v3/cmd/task@v3.54.0
@@ -40,16 +36,18 @@ RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
     && apt-get purge -y --auto-remove liblzf-dev libzstd-dev liblz4-dev \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-# With a digest, Docker ignores the tag; fail here if the digest no longer matches the versions.
+# The FROM lines pin exact versions; composer.json's require.php and config.composerVersion
+# (passed as build args) stay the source of truth for the PHP minor and the Composer version.
 ARG PHP_VERSION
 ARG COMPOSER_VERSION
-RUN case "$(php -r 'echo PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION;')" in \
+RUN : "${PHP_VERSION:?pass --build-arg PHP_VERSION}" "${COMPOSER_VERSION:?pass --build-arg COMPOSER_VERSION}" \
+    && case "$(php -r 'echo PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION;')" in \
         "${PHP_VERSION}") ;; \
-        *) echo "frankenphpDigest in composer.json is not PHP ${PHP_VERSION}" >&2; exit 1 ;; \
+        *) echo "the frankenphp image in this Dockerfile is not PHP ${PHP_VERSION} (require.php)" >&2; exit 1 ;; \
     esac \
     && case "$(composer --version)" in \
         "Composer version ${COMPOSER_VERSION} "*) ;; \
-        *) echo "composerDigest in composer.json is not Composer ${COMPOSER_VERSION}" >&2; exit 1 ;; \
+        *) echo "the composer image in this Dockerfile is not Composer ${COMPOSER_VERSION} (config.composerVersion)" >&2; exit 1 ;; \
     esac
 
 FROM basebuild AS local
