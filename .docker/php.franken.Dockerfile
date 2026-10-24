@@ -27,8 +27,11 @@ RUN apt-get update \
     && mkdir /composer \
     && setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp
 # The installers are bind-mounted so they never land in an image layer.
+# opcache is always built in since PHP 8.5. gd (with its AVIF codecs) and the non-PDO pgsql
+# are left out because nothing calls them; add them back here when code does. intl stays:
+# Laravel's Number (artisan db:show, Str::plural with a count, ordinal validation messages) needs it.
 RUN --mount=type=bind,from=basephpextensioninstaller,source=/usr/bin/install-php-extensions,target=/usr/local/bin/install-php-extensions \
-    install-php-extensions gd opcache intl zip bcmath pdo_pgsql pgsql
+    install-php-extensions intl zip bcmath pdo_pgsql
 # PECL extensions come from PIE so the build does not depend on pecl.php.net.
 # lzf/zstd/lz4 keep the compression set install-php-extensions used to enable. PIE builds
 # from the GitHub archive, which lacks the bundled liblzf submodule, so link the system one.
