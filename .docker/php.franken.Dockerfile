@@ -24,8 +24,9 @@ RUN apt-get update \
     && apt-get install -yq --no-install-recommends git postgresql-client unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && mkdir /composer \
-    && setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp
+    && mkdir /composer
+# No setcap here: the base image already grants cap_net_bind_service to frankenphp, and
+# re-running it copies the 54MB binary into a new layer.
 # The installers are bind-mounted so they never land in an image layer.
 # opcache is always built in since PHP 8.5. gd (with its AVIF codecs) and the non-PDO pgsql
 # are left out because nothing calls them; add them back here when code does. intl stays:
