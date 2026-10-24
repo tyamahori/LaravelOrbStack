@@ -22,6 +22,8 @@ PHP 系 Dockerfile のベースイメージ(`composer`、`php`、`dunglas/franke
 
 ベースイメージやツールを取り込む補助ステージを除くと、Dockerfile のステージは六つです。`baseruntime` は実行に要る PHP と拡張だけを持ち、`basecomposer` はそこに Composer を足し、`basebuild` はさらに git・unzip・postgresql-client を足し、`local` は開発用の道具と xdebug を足します。本番用の `flyio` は、`flyiobuild`(`basecomposer` の上で `composer install` と `dump-autoload` を行う中間ステージ)で組み立てたアプリを `baseruntime` に載せ替えます。そのため本番イメージにはビルド用の道具も Composer のキャッシュも入らず、`fly ssh console` から Composer は使えません。
 
+`flyiobuild` は、SDK 付属の `removeUnusedServices` で AWS SDK のクライアントを削ります。残るのは S3 と、認証などで使うため SDK が消さないサービス(Kms、SSO、SSOOIDC、Sts、Signin)だけです。ローカルの `vendor/` は削りません。本番で SQS や SES のような別の AWS サービスを使い始めるときは、そのサービス名を両 Dockerfile の `extra.aws/aws-sdk-php` へ足してください。足さないと、ローカルとテストは通っても本番でクラスが見つからずに落ちます。
+
 ## 前提条件
 
 - macOS

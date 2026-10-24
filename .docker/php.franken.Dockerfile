@@ -88,6 +88,12 @@ FROM basecomposer AS flyiobuild
 COPY composer.json composer.lock /app/
 RUN --mount=type=cache,target=/composer/cache \
     composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist --no-autoloader
+# The AWS SDK ships ~400 service clients (70MB); the app only uses S3 through flysystem, and the
+# SDK's own pruner keeps the credential services (Sts, SSO, ...) it needs. Configured here, not in
+# composer.json, so the local vendor stays complete; COPY . below restores the original composer.json.
+RUN composer config extra.aws/aws-sdk-php --json '["S3"]' \
+    && composer config scripts.prune-aws 'Aws\Script\Composer\Composer::removeUnusedServices' \
+    && composer run-script prune-aws
 COPY . /app/
 # post-autoload-dump runs package:discover, so bootstrap/cache/packages.php ships prebuilt.
 RUN composer dump-autoload
