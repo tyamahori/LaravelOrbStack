@@ -13,19 +13,10 @@ FROM go AS psqldef
 RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOFLAGS=-ldflags=-s go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.26
 
-FROM apachephp AS basebuild
-ENV COMPOSER_HOME=/composer \
-    PATH=/composer/vendor/bin:$PATH \
-    COMPOSER_ALLOW_SUPERUSER=1 \
-    DEBCONF_NOWARNINGS=yes
-# DL3008: Debian security updates replace a pinned apt version and break the build; the base image is pinned by digest instead.
-# hadolint ignore=DL3008
-RUN apt-get update \
-    && apt-get install -yq --no-install-recommends git postgresql-client unzip \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && mkdir /composer \
-    && a2enmod rewrite headers ssl mpm_prefork && a2dismod status info
+# What the app needs to run. flyio ships on this, so build tools stay out of it.
+FROM apachephp AS baseruntime
+ENV DEBCONF_NOWARNINGS=yes
+RUN a2enmod rewrite headers ssl mpm_prefork && a2dismod status info
 # The installers are bind-mounted so they never land in an image layer.
 # opcache is always built in since PHP 8.5. gd (with its AVIF codecs) and the non-PDO pgsql
 # are left out because nothing calls them; add them back here when code does. intl stays:
@@ -43,6 +34,13 @@ RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
       --enable-redis-lzf --with-liblzf=yes --enable-redis-zstd --enable-redis-lz4 --with-liblz4=yes \
     && apt-get purge -y --auto-remove liblzf-dev libzstd-dev liblz4-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Composer and the version guard, without the apt tools: flyiobuild needs nothing more, since
+# every locked package installs from a dist zip that ext-zip extracts.
+FROM baseruntime AS basecomposer
+ENV COMPOSER_HOME=/composer \
+    PATH=/composer/vendor/bin:$PATH \
+    COMPOSER_ALLOW_SUPERUSER=1
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 # The FROM lines pin exact versions; composer.json's require.php and config.composerVersion
 # (passed as build args) stay the source of truth for the PHP minor and the Composer version.
@@ -56,15 +54,20 @@ RUN : "${PHP_VERSION:?pass --build-arg PHP_VERSION}" "${COMPOSER_VERSION:?pass -
     && case "$(composer --version)" in \
         "Composer version ${COMPOSER_VERSION} "*) ;; \
         *) echo "the composer image in this Dockerfile is not Composer ${COMPOSER_VERSION} (config.composerVersion)" >&2; exit 1 ;; \
-    esac
+    esac \
+    && mkdir /composer
+
+FROM basecomposer AS basebuild
+# DL3008: Debian security updates replace a pinned apt version and break the build; the base image is pinned by digest instead.
+# hadolint ignore=DL3008
+RUN apt-get update \
+    && apt-get install -yq --no-install-recommends git postgresql-client unzip \
+    && rm -rf /var/lib/apt/lists/*
 
 FROM basebuild AS local
-# Before the user-specific ARGs, so xdebug's compile is cached independently of them.
+# Before the user-specific ARGs, so xdebug's compile and the tool install are cached independently of them.
 RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
     pie install --no-cache xdebug/xdebug:3.5.3
-ARG USER_ID
-ARG GROUP_ID
-ARG USER_NAME
 # hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get install -yq --no-install-recommends \
@@ -77,9 +80,11 @@ RUN apt-get update \
       procps \
       redis-tools \
       vim \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && groupadd -o -g ${GROUP_ID} ${USER_NAME} \
+    && rm -rf /var/lib/apt/lists/*
+ARG USER_ID
+ARG GROUP_ID
+ARG USER_NAME
+RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
     && install -d -o ${USER_NAME} -g ${USER_NAME} /config/psysh /composer /var/www/html
 ENV APACHE_RUN_USER=${USER_NAME} \
@@ -89,13 +94,22 @@ COPY --from=task /go/bin/task /usr/bin/task
 COPY --from=psqldef /go/bin/psqldef /usr/bin/psqldef
 USER ${USER_NAME}
 
-FROM basebuild AS flyio
+FROM basecomposer AS flyiobuild
+# Dependencies before the source, so a code-only change reuses the vendor layer.
+COPY composer.json composer.lock /var/www/html/
+RUN --mount=type=cache,target=/composer/cache \
+    composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist --no-autoloader
+COPY . /var/www/html/
+# post-autoload-dump runs package:discover, so bootstrap/cache/packages.php ships prebuilt.
+RUN composer dump-autoload
+
+FROM baseruntime AS flyio
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
 RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && useradd -lom -u ${USER_ID} -g ${GROUP_ID} ${USER_NAME} \
-    && chown ${USER_NAME}:${USER_NAME} /var/www/html /composer
+    && chown ${USER_NAME}:${USER_NAME} /var/www/html
 # Server config stays root-owned: the app user only needs to read it.
 COPY .docker/flyio/php/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY .docker/flyio/php/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
@@ -103,10 +117,4 @@ COPY .docker/flyio/php/ports.conf /etc/apache2/ports.conf
 COPY .docker/common/security.conf /etc/apache2/conf-available/security.conf
 COPY .docker/flyio/php/php.ini /usr/local/etc/php/php.ini
 USER ${USER_NAME}
-# Dependencies before the source, so a code-only change reuses the vendor layer.
-COPY --chown=${USER_NAME}:${USER_NAME} composer.json composer.lock /var/www/html/
-RUN composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist --no-autoloader
-COPY --chown=${USER_NAME}:${USER_NAME} . /var/www/html/
-RUN composer dump-autoload && \
-    php artisan clear-compiled && \
-    php artisan optimize:clear
+COPY --from=flyiobuild --chown=${USER_NAME}:${USER_NAME} /var/www/html /var/www/html
