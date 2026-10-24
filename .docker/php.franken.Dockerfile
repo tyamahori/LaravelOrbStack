@@ -35,6 +35,10 @@ RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
       --enable-redis-lzf --with-liblzf=yes --enable-redis-zstd --enable-redis-lz4 --with-liblz4=yes \
     && apt-get purge -y --auto-remove liblzf-dev libzstd-dev liblz4-dev \
     && rm -rf /var/lib/apt/lists/*
+# Caddyfile.d is imported after the site block, so a snippet defined there is unknown to
+# CADDY_SERVER_EXTRA_DIRECTIVES; import the file by path instead.
+COPY .docker/common/security.caddy /etc/caddy/security.caddy
+ENV CADDY_SERVER_EXTRA_DIRECTIVES="import /etc/caddy/security.caddy"
 
 # Composer and the version guard, without the apt tools: flyiobuild needs nothing more, since
 # every locked package installs from a dist zip that ext-zip extracts.
