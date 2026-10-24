@@ -1,0 +1,12 @@
+# FrankenPHP counterpart of security.conf, imported into the base image's site block
+# through CADDY_SERVER_EXTRA_DIRECTIVES. A header block that deletes headers is deferred,
+# so these also override what the app sets, like Apache's "Header always set".
+header {
+	-Server
+	-X-Powered-By
+	X-Content-Type-Options "nosniff"
+	Content-Security-Policy "frame-ancestors 'self';"
+	X-Frame-Options "SAMEORIGIN"
+	Referrer-Policy "strict-origin-when-cross-origin"
+	Strict-Transport-Security "max-age=31536000; includeSubDomains"
+}
