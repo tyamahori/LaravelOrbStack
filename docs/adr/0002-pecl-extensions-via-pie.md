@@ -11,13 +11,13 @@ pecl.php.net は PECL の非推奨と PIE(PHP Installer for Extensions)への移
 
 ## Decision
 
-redis と xdebug は PIE で入れる。PIE は `ghcr.io/php/pie:<版>-bin` をダイジェストで固定し、`RUN --mount=type=bind` でビルド時にだけマウントするので、最終イメージには残らない。gd、intl、zip、bcmath、pdo_pgsql、pgsql、opcache は引き続き IPE で入れる。
+redis と xdebug は PIE で入れる。PIE は `ghcr.io/php/pie:<版>-bin` をダイジェストで固定し、`RUN --mount=type=bind` でビルド時にだけマウントするので、最終イメージには残らない。intl、zip、bcmath、pdo_pgsql は引き続き IPE で入れる。決定当時は gd、pgsql、opcache も IPE で入れていたが、その後 gd と pgsql はどのコードも使っていないので外し、opcache は PHP 8.5 から組み込みなので一覧から消した。
 
 redis は、IPE が有効にしていた圧縮(lzf、zstd、lz4)をそのまま有効にする。PIE が取得する GitHub のアーカイブには、phpredis が同梱している liblzf(git submodule)が含まれない。そのため、Debian の `liblzf1` と `liblzf-dev` を入れて `--with-liblzf=yes` でリンクし、ビルドが終わったら `-dev` パッケージだけを消す。
 
 ## Alternatives
 
-PHP 同梱の拡張も PIE で入れて、IPE をやめる方法。PIE の対応一覧(`docs/supported-extensions.md`)には gd が載っていない。また IPE がやっている依存ライブラリ(ICU、libzip、libpq、画像ライブラリ)の導入と後片付けを Dockerfile で自前で書くことになる。同梱の拡張は pecl.php.net を使わないので、移す利点がない。
+PHP 同梱の拡張も PIE で入れて、IPE をやめる方法。決定当時に入れていた gd は、PIE の対応一覧(`docs/supported-extensions.md`)に載っていなかった。また IPE がやっている依存ライブラリ(ICU、libzip、libpq)の導入と後片付けを Dockerfile で自前で書くことになる。同梱の拡張は pecl.php.net を使わないので、移す利点がない。
 
 IPE のソース指定(`install-php-extensions phpredis/phpredis@<tag>`)で GitHub から取得する方法。新しい道具は増えないが、版を自分で固定して更新し続ける必要がある。IPE の issue では、phpredis をこの方法で入れて失敗した報告もある。
 

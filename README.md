@@ -18,7 +18,11 @@ Laravel を OrbStack 上の Docker Compose 環境で動かすためのサンプ�
 
 PHP のマイナーと Composer のバージョンは `composer.json` が正本です。PHP は `require.php`、Composer は `config.composerVersion` から Taskfile・GitHub Actions が読み取り、Dockerfile には `--build-arg` で渡します。Devbox の PHP は `devbox.json` で別途固定しています。
 
-PHP 系 Dockerfile のベースイメージ(`composer`、`php`、`dunglas/frankenphp`)と、PIE で入れる拡張(redis、xdebug)は、Dockerfile の中でパッチバージョンまで固定しています。イメージは digest も固定します。パッチ・digest・拡張の更新は Renovate が行い、Composer は `composer.json` と Dockerfile を同じ PR で上げます。Dockerfile の `basebuild` は、イメージの PHP のマイナーと Composer の版が `require.php`・`composerVersion` と一致しないとビルドを止めます。PHP のマイナーを上げるときは、`require.php` と両 Dockerfile の `FROM` を同じ変更で書き換えます。
+PHP 系 Dockerfile のベースイメージ(`composer`、`php`、`dunglas/frankenphp`)と、PIE で入れる拡張(redis、xdebug)は、Dockerfile の中でパッチバージョンまで固定しています。イメージは digest も固定します。パッチ・digest・拡張の更新は Renovate が行い、Composer は `composer.json` と Dockerfile を同じ PR で上げます。Dockerfile の `basecomposer` は、イメージの PHP のマイナーと Composer の版が `require.php`・`composerVersion` と一致しないとビルドを止めます。PHP のマイナーを上げるときは、`require.php` と両 Dockerfile の `FROM` を同じ変更で書き換えます。
+
+ベースイメージやツールを取り込む補助ステージを除くと、Dockerfile のステージは六つです。`baseruntime` は実行に要る PHP と拡張だけを持ち、`basecomposer` はそこに Composer を足し、`basebuild` はさらに git・unzip・postgresql-client を足し、`local` は開発用の道具と xdebug を足します。本番用の `flyio` は、`flyiobuild`(`basecomposer` の上で `composer install` と `dump-autoload` を行う中間ステージ)で組み立てたアプリを `baseruntime` に載せ替えます。そのため本番イメージにはビルド用の道具も Composer のキャッシュも入らず、`fly ssh console` から Composer は使えません。
+
+`flyiobuild` は、SDK 付属の `removeUnusedServices` で AWS SDK のクライアントを削ります。残るのは S3 と、認証などで使うため SDK が消さないサービス(Kms、SSO、SSOOIDC、Sts、Signin)だけです。ローカルの `vendor/` は削りません。本番で SQS や SES のような別の AWS サービスを使い始めるときは、そのサービス名を両 Dockerfile の `extra.aws/aws-sdk-php` へ足してください。足さないと、ローカルとテストは通っても本番でクラスが見つからずに落ちます。
 
 ## 前提条件
 
