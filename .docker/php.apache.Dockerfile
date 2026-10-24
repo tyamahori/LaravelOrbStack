@@ -2,7 +2,7 @@ FROM golang:1.27.3-alpine@sha256:b8c9b82affbbb82a020bbcf998dad2ba9516944ac7e8835
 FROM composer:2.10.3@sha256:da624c2c705d54e2f5a9bb77a5dc6c7d091711433ebefd7035672e84c2010fee AS composer
 FROM mlocati/php-extension-installer:2.12.3@sha256:ac4b252c153a9f6de5578ff2c417790aba836bb49855543144606033eceda253 AS basephpextensioninstaller
 FROM ghcr.io/php/pie:1.5.3-bin@sha256:9d3e6d9dafa5ae8cf034489260e206a5aa1b488b29c0ddaea9149826d9e32f52 AS pie
-FROM php:8.5.12-apache-trixie@sha256:e25ab14ef2cfec3bab9dd66c6cf871691146f428fbd72241b1a2c38fcacf92f5 AS apachephp
+FROM php:8.5.12-apache-trixie@sha256:7cd25eb48f9763dfeabe8fda3939897aca2001802fadeafa1b602f26c735ef96 AS apachephp
 
 # CGO off gives static binaries that run on the Debian-based PHP image; -s strips symbols and DWARF.
 FROM go AS task
@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache
 
 FROM go AS psqldef
 RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOFLAGS=-ldflags=-s go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.26
+    CGO_ENABLED=0 GOFLAGS=-ldflags=-s go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.27
 
 # What the app needs to run. flyio ships on this, so build tools stay out of it.
 FROM apachephp AS baseruntime
