@@ -16,7 +16,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.4.4",
         "barryvdh/laravel-ide-helper": "^3.7.0",
-        "carthage-software/mago": "^1.58.2",
+        "carthage-software/mago": "^1.59.0",
         "deptrac/deptrac": "^4.7.2",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.13.2",
@@ -26,10 +26,10 @@
         "phpstan/phpstan-deprecation-rules": "^2.0.5",
         "phpstan/phpstan-phpunit": "^2.1.1",
         "phpstan/phpstan-strict-rules": "^2.1.0",
-        "phpunit/phpunit": "^13.4.3",
-        "rector/rector": "^2.7.0",
+        "phpunit/phpunit": "^13.4.5",
+        "rector/rector": "^2.8.1",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^13.3.9"
+        "symplify/easy-coding-standard": "^13.3.11"
     },
     "autoload": {
         "psr-4": {
