@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 use Rector\PHPUnit\CodeQuality\Rector\ClassMethod\NoSetupWithParentCallOverrideRector;
 
@@ -31,12 +30,11 @@ return RectorConfig::configure()
     ->withCache(cacheDirectory: './.tempCache/.rector')
     // No version argument: the target is read from composer.json `require.php`.
     ->withPhpSets()
-    // The one version-gated rule withPhpSets() leaves out that Rector has not
-    // deprecated; it auto-fixes what PHPStan checkMissingOverrideMethodAttribute
-    // reports. Rector 2.6 deprecated the pipe-operator, property-hook,
-    // #[Deprecated] and JSON_THROW_ON_ERROR rules as unsafe or preference-only,
-    // and has no rule for asymmetric visibility or clone-with.
-    ->withRules([AddOverrideAttributeToOverriddenMethodsRector::class])
+    // No extra version-gated rules: Rector 2.6 deprecated the pipe-operator,
+    // property-hook, #[Deprecated] and JSON_THROW_ON_ERROR rules as unsafe or
+    // preference-only, and 2.8 deprecated AddOverrideAttributeToOverriddenMethodsRector;
+    // PHPStan checkMissingOverrideMethodAttribute still demands #[Override].
+    // There is no rule for asymmetric visibility or clone-with.
     // Every prepared set that applies here. Left out: naming (renames domain
     // words like $memos to type-derived $memoRepository; AGENTS.md leaves
     // domain vocabulary to us), namedArgs (pure preference), carbon (converts
