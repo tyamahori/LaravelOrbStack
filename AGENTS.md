@@ -30,7 +30,7 @@
 | `Console/` | Presentation 層の Artisan 入口。`Http/` と同じ層で、依存規則も同じ。ディレクトリを分けるのはパスから経路(HTTP か CLI か)が読めるようにするためだけ |
 | `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
 | `Provider/` | ServiceProvider(`<Feature>ServiceProvider.php`)。port と実装の `bind`、ビュー名前空間(`loadViewsFrom`)、Artisan コマンド(`commands()`)の登録を担い、`bootstrap/app.php` の `withProviders([...], withBootstrapProviders: false)` に列挙する(`bootstrap/providers.php` は置かない)。`Http/Web/routes.php` は同じファイルの `withRouting(web: [...])` に、`Http/Api/routes.php` は `withRouting(api: [...])` に列挙する。プロバイダの `boot()` で `$router->group()` すると RouteServiceProvider が登録されず名前索引(`refreshNameLookups`)が更新されないので、`route('name')` が解決できない(テストで検出済み) |
-| `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤と、起動中の環境に `.local` ドメインで外から当てる E2E(`tests/e2e.sh`)だけを置く |
+| `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤と、起動中の環境に `.local` ドメインで外から当てる E2E(HTTP の `tests/e2e.sh` と、Chromium の `tests/e2e.spec.mjs`)だけを置く |
 
 パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Common/`)がそれを実装して A の `Provider/` で束ねます。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため Deptrac では表せず、`libConfig/PhpStan/PackageBoundaryRule.php` で検査します。
 

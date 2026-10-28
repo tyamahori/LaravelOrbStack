@@ -226,7 +226,9 @@ tasks:
       - "{{ .BASE_COMMAND }} down -v"
 
   e2e:
-    cmd: tests/e2e.sh
+    cmds:
+      - tests/e2e.sh
+      - npm run -s e2eBrowser
 
   exec:apache:
     cmd: |
