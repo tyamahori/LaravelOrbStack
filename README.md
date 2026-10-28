@@ -1,6 +1,6 @@
 # LaravelOrbStack
 
-Laravel を OrbStack 上の Docker Compose 環境で動かすためのサンプルプロジェクトです。Apache mod_php と FrankenPHP の 2 系統の PHP 実行環境を同時に立ち上げ、PostgreSQL、Redis、Mailpit、S3 互換ストレージを含むローカル開発環境を構築します。
+Laravel を Docker Compose 環境で動かすためのサンプルプロジェクトです。OrbStack を主に想定し、Docker Desktop と Linux の Docker Engine でも同じ `.local` ドメインで動きます。Apache mod_php と FrankenPHP の 2 系統の PHP 実行環境を同時に立ち上げ、PostgreSQL、Redis、Mailpit、S3 互換ストレージを含むローカル開発環境を構築します。
 
 ## 構成
 
@@ -26,8 +26,8 @@ PHP 系 Dockerfile のベースイメージ(`composer`、`php`、`dunglas/franke
 
 ## 前提条件
 
-- macOS
-- [OrbStack](https://orbstack.dev/)
+- macOS または Linux
+- [OrbStack](https://orbstack.dev/)、Docker Desktop、Docker Engine のいずれか
 - [Task](https://taskfile.dev/)
 - [Devbox](https://www.jetify.com/devbox) 任意、推奨
 
@@ -48,12 +48,20 @@ task init
 
 ## アクセス先
 
-OrbStack のドメイン連携により、起動後は次の URL でアクセスできます。ホストへの port 公開は行っておらず、ホストからのアクセスはすべて OrbStack のドメイン解決経由です。
+OrbStack では、ドメイン連携により起動後は次の URL でアクセスできます。ホストへの port 公開は行っておらず、ホストからのアクセスはすべて OrbStack のドメイン解決経由です。
 
 | 実行環境 | URL |
 | :-- | :-- |
 | Apache | <https://apachephp.local/> |
 | FrankenPHP | <https://frankenphp.local/> |
+
+Docker Desktop と Linux の Docker Engine には OrbStack のドメイン連携がないので、Taskfile が `docker info` でエンジンを見分け、OrbStack 以外では `.docker/compose.ports.yaml` を重ねてロードバランサを `127.0.0.1:80` に公開します。ドメインは `/etc/hosts` で解決させるため、初回に一度だけ次を実行してください。macOS の `::1` の行は、`.local` を mDNS で引きにいって数秒待たされるのを避けるためのものです。
+
+```bash
+printf '127.0.0.1 apachephp.local frankenphp.local\n::1 apachephp.local frankenphp.local\n' | sudo tee -a /etc/hosts
+```
+
+こちらは HTTP だけで、URL は <http://apachephp.local/> と <http://frankenphp.local/> です。HTTPS は OrbStack が証明書を用意する場合に限ります。下の補助サービスの `*.orb.local` も OrbStack だけのものです。
 
 補助サービスへは `<サービス名>.laravelorbstack.orb.local` でコンテナの port に直接アクセスできます。
 

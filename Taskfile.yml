@@ -3,6 +3,11 @@ silent: false
 vars:
   COMPOSE_FILE_PATH: .docker/compose.yaml
   CI_COMPOSE_FILE_PATH: .docker/compose.ci.yaml
+  # OrbStack resolves the *.local domains from dev.orbstack.domains; any other engine
+  # (Docker Desktop, Docker Engine on Linux) gets the balancer published on 127.0.0.1:80.
+  # Empty inside the container, where task runs without a Docker CLI.
+  PORTS_COMPOSE_OPTION:
+    sh: docker info --format json 2>/dev/null | jq -r 'select(.OperatingSystem != "OrbStack") | "-f .docker/compose.ports.yaml"'
 
   PHP_APACHE_DOCKERFILE_PATH: .docker/php.apache.Dockerfile
   PHP_FRANKEN_DOCKERFILE_PATH: .docker/php.franken.Dockerfile
@@ -11,7 +16,7 @@ vars:
   COMPOSER_VERSION:
     sh: jq -r '.config.composerVersion' composer.json
 
-  BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }}
+  BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} {{ .PORTS_COMPOSE_OPTION }}
   CI_BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} -f {{ .CI_COMPOSE_FILE_PATH }}
 
   USER_NAME:
