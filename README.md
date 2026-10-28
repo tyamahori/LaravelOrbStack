@@ -87,21 +87,22 @@ Docker Desktop と Linux では、補助サービスへ Traefik 経由でアク�
 
 ## worktree ごとの環境
 
-`git worktree` で作ったチェックアウトごとに、別の環境を同時に立ち上げられます。worktree の直下に `.worktree-env`(Git の管理外)を置き、Compose のプロジェクト名を書きます。プロジェクト名は英小文字・数字・ハイフンだけにしてください。ドメインの一部にもなるためです。
+`git worktree` で作ったチェックアウトごとに、別の環境を同時に立ち上げられます。worktree で `task` を実行するだけで使えます。
 
 ```bash
 git worktree add ../LaravelOrbStack-feature-x -b feature-x
 cd ../LaravelOrbStack-feature-x
-echo 'PROJECT_NAME=feature-x' > .worktree-env
 task init
 ```
 
-Taskfile はこのファイルを読み、Compose のプロジェクト名(`-p`)と、ローカルでビルドする PHP イメージのタグ(`feature-x/php:apache-local` など)をそこから決めます。コンテナ、ネットワーク、ボリュームはプロジェクトごとに分かれるので、データベースやストレージの中身も別々です。`task init` や `task cleanUpComposeProject` が消すのも、その worktree のプロジェクトだけです。OrbStack でのアクセス先は次のとおりで、補助サービスは `<サービス名>.feature-x.orb.local` になります。`.worktree-env` のないチェックアウトは、これまでどおり `laravelorbstack` プロジェクトと上の URL で動きます。
+Taskfile は初回の実行でチェックアウトの直下へ `.worktree-env`(Git の管理外)を作り、Compose のプロジェクト名を書き込みます。main のチェックアウト(`git clone` した元のディレクトリ)は `laravelorbstack` です。`git worktree add` で足した worktree は `laravelorbstack-<ブランチ名>` になり、ブランチ名は英小文字・数字・ハイフンに直します(`feature/Foo` なら `laravelorbstack-feature-foo`)。ブランチのない detached HEAD のときは、Git が `.git/worktrees/` に振る worktree の識別名を使います。同じ名前のディレクトリが別の場所にあっても、Git が `review`、`review1` のように区別するためです。名前はドメインの一部にもなるので、63 文字で切ります。ファイルがあればそのまま使うので、後からブランチを切り替えても名前は変わりません。名前を変えたいときは、環境を `task down` で止めてから `PROJECT_NAME=` の行を書き換えてください。
+
+Taskfile はこの名前から、Compose のプロジェクト名(`-p`)と、ローカルでビルドする PHP イメージのタグ(`laravelorbstack-feature-x/php:apache-local` など)を決めます。コンテナ、ネットワーク、ボリュームはプロジェクトごとに分かれるので、データベースやストレージの中身も別々です。`task init` や `task cleanUpComposeProject` が消すのも、その worktree のプロジェクトだけです。OrbStack でのアクセス先は次のとおりで、補助サービスは `<サービス名>.laravelorbstack-feature-x.orb.local` になります。main のチェックアウトは、これまでどおり上の URL で動きます。
 
 | 実行環境 | URL |
 | :-- | :-- |
-| Apache | <https://apachephp.feature-x.local/> |
-| FrankenPHP | <https://frankenphp.feature-x.local/> |
+| Apache | <https://apachephp.laravelorbstack-feature-x.local/> |
+| FrankenPHP | <https://frankenphp.laravelorbstack-feature-x.local/> |
 
 `task e2e` も、その worktree のドメインに対して走ります。同時に起動できるのは OrbStack だけです。Docker Desktop と Linux では、Traefik のルーティング、証明書、`/etc/hosts` が既定のドメインにしかないので、worktree でも `apachephp.local` と `frankenphp.local` を使います。Traefik が `127.0.0.1` の 80、443、5432 番を占有するため、動かせるのは一度に一つの環境だけです。別の worktree を起動する前に、動いている環境を `task down` で止めてください。
 

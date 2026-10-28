@@ -1,10 +1,29 @@
 version: '3'
 silent: false
-# A worktree names its own Compose project here (README「worktree ごとの環境」); without the
-# file the checkout is the default laravelorbstack project.
-dotenv: ['.worktree-env']
 vars:
-  PROJECT: '{{ .PROJECT_NAME | default "laravelorbstack" }}'
+  # .worktree-env names this checkout's Compose project (README「worktree ごとの環境」). The
+  # first task run writes it: laravelorbstack for the main checkout, laravelorbstack-<branch>
+  # for a linked worktree. A detached worktree uses its id under .git/worktrees/, which git
+  # keeps unique (review, review1, ...) where directory names and commits may repeat. An
+  # existing file wins, so it stays put across branch switches and can be edited; inside the
+  # container, where the worktree's .git points at a host path, the file is only read.
+  PROJECT:
+    sh: |
+      if [ ! -f .worktree-env ] && common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null); then
+        gitdir=$(git rev-parse --absolute-git-dir)
+        if [ "$gitdir" = "$common" ]; then
+          name=laravelorbstack
+        else
+          ref=$(git branch --show-current)
+          slug=$(printf '%s' "${ref:-$(basename "$gitdir")}" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-')
+          # 63 characters: the name is a DNS label in apachephp.<name>.local.
+          # ponytail: branches equal after lowering and cutting share a name; edit the file then.
+          name=$(printf 'laravelorbstack-%s' "$slug" | cut -c1-63 | sed 's/-*$//')
+        fi
+        echo "PROJECT_NAME=$name" > .worktree-env
+      fi
+      name=$(sed -n 's/^PROJECT_NAME=//p' .worktree-env 2>/dev/null)
+      echo "${name:-laravelorbstack}"
   COMPOSE_FILE_PATH: .docker/compose.yaml
   CI_COMPOSE_FILE_PATH: .docker/compose.ci.yaml
   # OrbStack serves the *.local domains itself (compose.orb.yaml); any other engine (Docker
