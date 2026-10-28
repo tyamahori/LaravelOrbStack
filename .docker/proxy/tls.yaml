@@ -1,0 +1,18 @@
+tls:
+  certificates:
+    - certFile: /etc/traefik/certs/leaf.crt
+      keyFile: /etc/traefik/certs/leaf.key
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/traefik/certs/leaf.crt
+        keyFile: /etc/traefik/certs/leaf.key
+  options:
+    # libpq 17+ offers ALPN "postgresql"; without it here Traefik rejects the
+    # handshake with no_application_protocol on the postgres entrypoint.
+    default:
+      alpnProtocols:
+        - h2
+        - http/1.1
+        - acme-tls/1
+        - postgresql

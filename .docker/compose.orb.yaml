@@ -1,0 +1,8 @@
+# OrbStack resolves the *.local names and serves HTTPS for them itself; any other engine gets
+# compose.desktop.yaml instead. Taskfile picks one from `docker info`.
+name: laravelorbstack
+
+services:
+  balancer:
+    labels:
+      dev.orbstack.domains: frankenphp.local,apachephp.local

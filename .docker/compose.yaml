@@ -1,90 +1,41 @@
-name: laravelorbstack
 x-common-settings: &healthcheck-settings
   interval: 1s
   timeout: 30s
   retries: 30
-volumes:
-  postgresql:
-  cache:
-  session:
-  storage:
-  caddy-data:
-  caddy-config:
-
+name: laravelorbstack
 services:
-  postgresql:
+  balancer:
+    image: nginx:1.31.8@sha256:6e67f8eaac94fc456588d4ff6c470d984841f5b5dc4279863d5cbe6ec5a60def
+    depends_on:
+      php-app:
+        condition: service_started
+    volumes:
+      - type: bind
+        source: ./local/lb/nginx.orb.conf
+        target: /etc/nginx/conf.d/default.conf
     networks:
       default:
         aliases:
-          - laravelorbstack.pgsql.local
-    image: postgres:18.4-alpine3.22@sha256:774521500f4c22761b25a6bdb772a0a3c2e8dd32468210bdad9231c5752ea398
-    environment:
-      POSTGRES_DB: sample
-      POSTGRES_USER: sample
-      POSTGRES_PASSWORD: sample
-      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
-    volumes:
-      - type: volume
-        source: postgresql
-        target: /var/lib/postgresql
-      - type: bind
-        source: ./local/db/script.sql
-        target: /docker-entrypoint-initdb.d/script.sql
-    healthcheck:
-      test:
-        - CMD
-        - pg_isready
-        - -h
-        - laravelorbstack.pgsql.local
-        - -U
-        - sample
-        - -d
-        - sample
-        - -p
-        - "5432"
-      <<: *healthcheck-settings
+          - frankenphp.local
+          - apachephp.local
+    hostname: balancer
     profiles:
       - app
-      - cli
 
   cache:
-    networks:
-      default:
-        aliases:
-          - laravelorbstack.cache.local
     image: redis:8.4.7-alpine3.22@sha256:f9b3b74607c14a568cf0bda340432ca7ffd0682e3a53183412a8236974bdf69e
-    command:
-      - redis-server
-      - --appendonly
-      - "yes"
     volumes:
       - type: volume
         source: cache
         target: /data
-    healthcheck:
-      test:
-        - CMD
-        - redis-cli
-        - ping
-      <<: *healthcheck-settings
-    profiles:
-      - app
-      - cli
-
-  session:
     networks:
       default:
         aliases:
-          - laravelorbstack.session.local
-    image: redis:8.4.7-alpine3.22@sha256:f9b3b74607c14a568cf0bda340432ca7ffd0682e3a53183412a8236974bdf69e
+          - laravelorbstack.cache.local
     command:
       - redis-server
       - --appendonly
       - "yes"
-    volumes:
-      - type: volume
-        source: session
-        target: /data
     healthcheck:
       test:
         - CMD
@@ -96,11 +47,11 @@ services:
       - cli
 
   mail:
+    image: axllent/mailpit:v1.32.0@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498
     networks:
       default:
         aliases:
           - laravelorbstack.mail.local
-    image: axllent/mailpit:v1.32.0@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498
     healthcheck:
       test:
         - CMD
@@ -113,56 +64,19 @@ services:
       - app
       - cli
 
-  storage:
-    networks:
-      default:
-        aliases:
-          - laravelorbstack.storage.local
-          - sample.laravelorbstack.storage.local
-    image: rustfs/rustfs:1.0.0-alpha.80@sha256:224fbaa3512e5a299b2e096316a81226b9f5dc3cb1a7561c9660e80e179071bd
-    volumes:
-      - type: volume
-        source: storage
-        target: /data
-    environment:
-      RUSTFS_ADDRESS: 0.0.0.0:9000
-      RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:80
-      RUSTFS_ACCESS_KEY: sample
-      RUSTFS_SECRET_KEY: samplesample
-      RUSTFS_SERVER_DOMAINS: laravelorbstack.storage.local:9000
-    healthcheck:
-      test:
-        - CMD
-        - curl
-        - -f
-        - http://laravelorbstack.storage.local:9000/health
-      <<: *healthcheck-settings
-
-  setUpStorage:
-    image: amazon/aws-cli:2.38.5@sha256:c8156a0e74e13929a42d7e60f0d4e14e7d28d980cd21822505d4bff80e5460c1
+  php-app:
+    image: laravelorbstack/php:apache-local
     depends_on:
+      cache:
+        condition: service_healthy
+      mail:
+        condition: service_healthy
+      postgresql:
+        condition: service_healthy
+      session:
+        condition: service_healthy
       storage:
         condition: service_healthy
-    environment:
-      AWS_ACCESS_KEY_ID: sample
-      AWS_SECRET_ACCESS_KEY: samplesample
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_REGION: us-east-1
-    entrypoint:
-      - /bin/sh
-    command:
-      - -c
-      - aws --endpoint-url http://laravelorbstack.storage.local:9000 s3api create-bucket --bucket sample || true
-    profiles:
-      - bucket
-
-  php-app:
-    networks:
-      default:
-        aliases:
-          - laravelorbstack.apache.local
-    hostname: php-app
-    image: laravelorbstack/php:apache-local
     volumes:
       - type: bind
         source: ..
@@ -186,28 +100,63 @@ services:
     # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
     env_file:
       - path: local/php/.env.app
-    depends_on:
-      postgresql:
-        condition: service_healthy
-      cache:
-        condition: service_healthy
-      session:
-        condition: service_healthy
-      mail:
-        condition: service_healthy
-      storage:
-        condition: service_healthy
+    networks:
+      default:
+        aliases:
+          - laravelorbstack.apache.local
+    hostname: php-app
     profiles:
       - customImage
       - app
 
+  php-cli:
+    image: laravelorbstack/php:apache-local
+    depends_on:
+      cache:
+        condition: service_healthy
+      mail:
+        condition: service_healthy
+      postgresql:
+        condition: service_healthy
+      session:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: ..
+        target: /var/www/html
+      - type: bind
+        source: ./local/php/000-default.conf
+        target: /etc/apache2/sites-available/000-default.conf
+      - type: bind
+        source: ./local/php/mpm_prefork.conf
+        target: /etc/apache2/mods-available/mpm_prefork.conf
+      - type: bind
+        source: ./local/php/php.ini
+        target: /usr/local/etc/php/php.ini
+      - type: bind
+        source: ./local/php/docker-php-ext-xdebug.ini
+        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    env_file:
+      - path: local/php/.env.app
+    profiles:
+      - customImage
+      - cli
+
   php-franken:
-    networks:
-      default:
-        aliases:
-          - laravelorbstack.franken.local
-    hostname: php-franken
     image: laravelorbstack/php:franken-local
+    depends_on:
+      cache:
+        condition: service_healthy
+      mail:
+        condition: service_healthy
+      postgresql:
+        condition: service_healthy
+      session:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
     volumes:
       - type: bind
         source: ..
@@ -226,71 +175,120 @@ services:
         target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     env_file:
       - path: local/php/.env.franken
-    depends_on:
-      postgresql:
-        condition: service_healthy
-      cache:
-        condition: service_healthy
-      session:
-        condition: service_healthy
-      mail:
-        condition: service_healthy
-      storage:
-        condition: service_healthy
-    profiles:
-      - customImage
-      - app
-
-  php-cli:
-    env_file:
-      - path: local/php/.env.app
-    image: laravelorbstack/php:apache-local
-    volumes:
-      - type: bind
-        source: ..
-        target: /var/www/html
-      - type: bind
-        source: ./local/php/000-default.conf
-        target: /etc/apache2/sites-available/000-default.conf
-      - type: bind
-        source: ./local/php/mpm_prefork.conf
-        target: /etc/apache2/mods-available/mpm_prefork.conf
-      - type: bind
-        source: ./local/php/php.ini
-        target: /usr/local/etc/php/php.ini
-      - type: bind
-        source: ./local/php/docker-php-ext-xdebug.ini
-        target: /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    profiles:
-      - customImage
-      - cli
-    depends_on:
-      postgresql:
-        condition: service_healthy
-      cache:
-        condition: service_healthy
-      session:
-        condition: service_healthy
-      mail:
-        condition: service_healthy
-      storage:
-        condition: service_healthy
-  balancer:
     networks:
       default:
         aliases:
-          - frankenphp.local
-          - apachephp.local
-    hostname: balancer
-    image: nginx:1.31.8@sha256:6e67f8eaac94fc456588d4ff6c470d984841f5b5dc4279863d5cbe6ec5a60def
+          - laravelorbstack.franken.local
+    hostname: php-franken
+    profiles:
+      - customImage
+      - app
+  postgresql:
+    image: postgres:18.4-alpine3.22@sha256:774521500f4c22761b25a6bdb772a0a3c2e8dd32468210bdad9231c5752ea398
     volumes:
+      - type: volume
+        source: postgresql
+        target: /var/lib/postgresql
       - type: bind
-        source: ./local/lb/nginx.orb.conf
-        target: /etc/nginx/conf.d/default.conf
-    depends_on:
-      php-app:
-        condition: service_started
-    labels:
-      dev.orbstack.domains: frankenphp.local,apachephp.local
+        source: ./local/db/script.sql
+        target: /docker-entrypoint-initdb.d/script.sql
+    environment:
+      POSTGRES_DB: sample
+      POSTGRES_USER: sample
+      POSTGRES_PASSWORD: sample
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
+    networks:
+      default:
+        aliases:
+          - laravelorbstack.pgsql.local
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - -h
+        - laravelorbstack.pgsql.local
+        - -U
+        - sample
+        - -d
+        - sample
+        - -p
+        - "5432"
+      <<: *healthcheck-settings
     profiles:
       - app
+      - cli
+
+  session:
+    image: redis:8.4.7-alpine3.22@sha256:f9b3b74607c14a568cf0bda340432ca7ffd0682e3a53183412a8236974bdf69e
+    volumes:
+      - type: volume
+        source: session
+        target: /data
+    networks:
+      default:
+        aliases:
+          - laravelorbstack.session.local
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      <<: *healthcheck-settings
+    profiles:
+      - app
+      - cli
+
+  setUpStorage:
+    image: amazon/aws-cli:2.38.5@sha256:c8156a0e74e13929a42d7e60f0d4e14e7d28d980cd21822505d4bff80e5460c1
+    depends_on:
+      storage:
+        condition: service_healthy
+    environment:
+      AWS_ACCESS_KEY_ID: sample
+      AWS_SECRET_ACCESS_KEY: samplesample
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_REGION: us-east-1
+    command:
+      - -c
+      - aws --endpoint-url http://laravelorbstack.storage.local:9000 s3api create-bucket --bucket sample || true
+    entrypoint:
+      - /bin/sh
+    profiles:
+      - bucket
+
+  storage:
+    image: rustfs/rustfs:1.0.0-alpha.80@sha256:224fbaa3512e5a299b2e096316a81226b9f5dc3cb1a7561c9660e80e179071bd
+    volumes:
+      - type: volume
+        source: storage
+        target: /data
+    environment:
+      RUSTFS_ADDRESS: 0.0.0.0:9000
+      RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:80
+      RUSTFS_ACCESS_KEY: sample
+      RUSTFS_SECRET_KEY: samplesample
+      RUSTFS_SERVER_DOMAINS: laravelorbstack.storage.local:9000
+    networks:
+      default:
+        aliases:
+          - laravelorbstack.storage.local
+          - sample.laravelorbstack.storage.local
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://laravelorbstack.storage.local:9000/health
+      <<: *healthcheck-settings
+volumes:
+  postgresql:
+  cache:
+  session:
+  storage:
+  caddy-data:
+  caddy-config:
+
