@@ -18,8 +18,6 @@ services:
         aliases:
           - frankenphp.local
           - apachephp.local
-    labels:
-      dev.orbstack.domains: frankenphp.local,apachephp.local
     hostname: balancer
     profiles:
       - app

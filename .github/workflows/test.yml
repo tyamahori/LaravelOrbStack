@@ -282,10 +282,11 @@ jobs:
           composer phpunit
           '
   e2e:
-    # Docker Engine on Linux, the non-OrbStack path: Taskfile's compose.ports.yaml plus /etc/hosts.
+    # Docker Engine on Linux, the non-OrbStack path: Taskfile's compose.desktop.yaml (Traefik)
+    # with the certificate, /etc/hosts entries and CA trust from .docker/proxy/setup.sh.
     runs-on: ubuntu-26.04-arm
     env:
-      COMPOSE_FILE: .docker/compose.yaml:.docker/compose.ports.yaml
+      COMPOSE_FILE: .docker/compose.yaml:.docker/compose.desktop.yaml
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -299,6 +300,8 @@ jobs:
             echo "USER_ID=$(id -u)"
             echo "GROUP_ID=$(id -g)"
             echo "USER_NAME=$(id -un)"
+            echo "LARAVELORBSTACK_UID=$(id -u)"
+            echo "LARAVELORBSTACK_GID=$(id -g)"
           } >> "$GITHUB_ENV"
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
@@ -334,8 +337,8 @@ jobs:
             USER_NAME=${{ env.USER_NAME }}
           cache-from: type=gha,scope=e2e-franken
           cache-to: type=gha,scope=e2e-franken,mode=max
-      - name: Map the .local domains to the published balancer
-        run: echo '127.0.0.1 apachephp.local frankenphp.local' | sudo tee -a /etc/hosts
+      - name: Issue the certificate and map the .local domains to Traefik
+        run: .docker/proxy/setup.sh
       - name: Start the app profile
         # vendor/ and the schema come first, so neither PHP server ever boots without them.
         run: |

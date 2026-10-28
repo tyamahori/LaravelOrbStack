@@ -55,17 +55,7 @@ OrbStack では、ドメイン連携により起動後は次の URL でアクセ
 | Apache | <https://apachephp.local/> |
 | FrankenPHP | <https://frankenphp.local/> |
 
-Docker Desktop と Linux の Docker Engine には OrbStack のドメイン連携がないので、Taskfile が `docker info` でエンジンを見分け、OrbStack 以外では `.docker/compose.ports.yaml` を重ねてロードバランサを `127.0.0.1:80` に公開します。ドメインは `/etc/hosts` で解決させるため、初回に一度だけ次を実行してください。macOS の `::1` の行は、`.local` を mDNS で引きにいって数秒待たされるのを避けるためのものです。
-
-```bash
-printf '127.0.0.1 apachephp.local frankenphp.local\n::1 apachephp.local frankenphp.local\n' | sudo tee -a /etc/hosts
-```
-
-こちらは HTTP だけで、URL は <http://apachephp.local/> と <http://frankenphp.local/> です。HTTPS は OrbStack が証明書を用意する場合に限ります。下の補助サービスの `*.orb.local` も OrbStack だけのものです。
-
-どの環境でも、`task e2e`(`tests/e2e.sh`)が両ドメインに HTTP で API とページを通し、ドメインの解決からロードバランサ、PHP、PostgreSQL、RustFS までがつながっていることを確かめます。CI の `e2e` ジョブは同じスクリプトを Linux の Docker Engine で `compose.ports.yaml` と `/etc/hosts` を使って走らせます。
-
-補助サービスへは `<サービス名>.laravelorbstack.orb.local` でコンテナの port に直接アクセスできます。
+OrbStack では、補助サービスへ `<サービス名>.laravelorbstack.orb.local` でコンテナの port に直接アクセスできます。
 
 | サービス | アクセス先 |
 | :-- | :-- |
@@ -76,6 +66,24 @@ printf '127.0.0.1 apachephp.local frankenphp.local\n::1 apachephp.local frankenp
 | RustFS(S3 API) | `storage.laravelorbstack.orb.local:9000` |
 
 OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認できます。ドメインが解決しなくなった場合は該当コンテナを `docker restart` すると再登録されます。
+
+Docker Desktop と Linux の Docker Engine には OrbStack のドメイン連携がありません。Taskfile は `docker info` でエンジンを見分け、OrbStack では `.docker/compose.orb.yaml` を、それ以外では `.docker/compose.desktop.yaml` を重ねます。`compose.desktop.yaml` は Traefik を `127.0.0.1` の 80、443、5432 番で起動し、上と同じ URL を HTTP と HTTPS の両方で受けます。初回に一度だけ次を実行してください。
+
+```bash
+.docker/proxy/setup.sh
+```
+
+このスクリプトは、ローカル CA とサーバー証明書を `~/.local/state/laravelorbstack-proxy/` に作り、`/etc/hosts` にドメインを追記し、CA を OS の信頼ストアに登録します。登録先は macOS ではシステムキーチェーン、Linux では `update-ca-certificates` で、どちらも sudo のパスワードを聞かれます。CA には名前制約を付けてあり、`apachephp.local`、`frankenphp.local`、`*.laravelorbstack.local` 以外の証明書には署名できません。何度実行しても、足りない設定だけを補います。`/etc/hosts` には `::1` の行も入れます。macOS が `.local` の AAAA レコードを mDNS で引きにいき、数秒待たされるのを避けるためです。証明書を作り直すときは、このディレクトリと登録した CA を消してから再実行します。
+
+Docker Desktop と Linux では、補助サービスへ Traefik 経由でアクセスします。Redis は Traefik に載せていないので、ホストからは直接つなげません。
+
+| サービス | アクセス先 |
+| :-- | :-- |
+| PostgreSQL | `postgresql.laravelorbstack.local:5432`(Traefik が SNI で振り分けるので `sslmode=require` 以上が必要) |
+| Mailpit UI | <https://mail.laravelorbstack.local/> |
+| RustFS(S3 API) | `https://storage.laravelorbstack.local` |
+
+どの環境でも、`task e2e`(`tests/e2e.sh`)が両ドメインに HTTPS で API とページを通し、ドメインの解決と証明書の検証から、ロードバランサ、PHP、PostgreSQL、RustFS までがつながっていることを確かめます。CI の `e2e` ジョブは同じスクリプトを Linux の Docker Engine で走らせ、`compose.desktop.yaml` と `.docker/proxy/setup.sh` を使います。
 
 ## 主なコマンド
 
@@ -225,7 +233,9 @@ Compose 内では次の補助サービスを利用します。
 | `php-app` | Apache mod_php 実行環境(`apachephp.local` の実体) |
 | `php-franken` | FrankenPHP 実行環境(`frankenphp.local` の実体) |
 | `php-cli` | ワンショットコマンド実行用 PHP コンテナ |
-| `balancer` | リバースプロキシ。OrbStack ドメインを各実行環境へ振り分け |
+| `balancer` | リバースプロキシ。`.local` ドメインを各実行環境へ振り分け |
+| `traefik` | Docker Desktop と Linux だけで起動する TLS の入口(`compose.desktop.yaml`)。ホストの `127.0.0.1` で受けて `balancer`、`mail`、`storage`、`postgresql` へ渡す |
+| `docker-socket-proxy` | `traefik` に Docker API の読み取りだけを許す中継(Docker Desktop と Linux のみ) |
 | `postgresql` | PostgreSQL データベース |
 | `cache` | Redis キャッシュ |
 | `session` | Redis セッション |

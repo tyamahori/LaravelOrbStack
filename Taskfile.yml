@@ -3,11 +3,11 @@ silent: false
 vars:
   COMPOSE_FILE_PATH: .docker/compose.yaml
   CI_COMPOSE_FILE_PATH: .docker/compose.ci.yaml
-  # OrbStack resolves the *.local domains from dev.orbstack.domains; any other engine
-  # (Docker Desktop, Docker Engine on Linux) gets the balancer published on 127.0.0.1:80.
-  # Empty inside the container, where task runs without a Docker CLI.
-  PORTS_COMPOSE_OPTION:
-    sh: docker info --format json 2>/dev/null | jq -r 'select(.OperatingSystem != "OrbStack") | "-f .docker/compose.ports.yaml"'
+  # OrbStack serves the *.local domains itself (compose.orb.yaml); any other engine (Docker
+  # Desktop, Docker Engine on Linux) gets Traefik on 127.0.0.1 (compose.desktop.yaml, README
+  # 「アクセス先」). Empty inside the container, where task runs without a Docker CLI.
+  RUNTIME_COMPOSE_OPTION:
+    sh: docker info --format json 2>/dev/null | jq -r 'if .OperatingSystem == "OrbStack" then "-f .docker/compose.orb.yaml" else "-f .docker/compose.desktop.yaml" end'
 
   PHP_APACHE_DOCKERFILE_PATH: .docker/php.apache.Dockerfile
   PHP_FRANKEN_DOCKERFILE_PATH: .docker/php.franken.Dockerfile
@@ -16,7 +16,7 @@ vars:
   COMPOSER_VERSION:
     sh: jq -r '.config.composerVersion' composer.json
 
-  BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} {{ .PORTS_COMPOSE_OPTION }}
+  BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} {{ .RUNTIME_COMPOSE_OPTION }}
   CI_BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} -f {{ .CI_COMPOSE_FILE_PATH }}
 
   USER_NAME:
@@ -28,6 +28,13 @@ vars:
   SSH_PATH: .ssh
   APACHE_SERVICE: php-app
   FRANKEN_SERVICE: php-franken
+
+env:
+  # compose.desktop.yaml runs Traefik as the user who owns the certificate key.
+  LARAVELORBSTACK_UID:
+    sh: id -u
+  LARAVELORBSTACK_GID:
+    sh: id -g
 
 tasks:
   default:
