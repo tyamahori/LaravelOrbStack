@@ -2,10 +2,12 @@ version: '3'
 silent: false
 vars:
   # .worktree-env names this checkout's Compose project (README「worktree ごとの環境」). The
-  # first task run writes it: laravelorbstack for the main checkout, laravelorbstack-<branch>
-  # for a linked worktree. A detached worktree uses its id under .git/worktrees/, which git
-  # keeps unique (review, review1, ...) where directory names and commits may repeat. An
-  # existing file wins, so it stays put across branch switches and can be edited; inside the
+  # first task run writes it: laravelorbstack for the main checkout, and for a linked worktree
+  # laravelorbstack-<branch>-<hash>, where <hash> comes from the worktree's id under
+  # .git/worktrees/, which git keeps unique (review, review1, ...). Branches equal after
+  # lowering and cutting (feature/foo, feature-foo) and same-named directories still get
+  # distinct names; a detached worktree shows its id in place of the branch. An existing
+  # file wins, so it stays put across branch switches and can be edited; inside the
   # container, where the worktree's .git points at a host path, the file is only read.
   PROJECT:
     sh: |
@@ -14,11 +16,11 @@ vars:
         if [ "$gitdir" = "$common" ]; then
           name=laravelorbstack
         else
+          id=$(basename "$gitdir")
           ref=$(git branch --show-current)
-          slug=$(printf '%s' "${ref:-$(basename "$gitdir")}" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-')
-          # 63 characters: the name is a DNS label in apachephp.<name>.local.
-          # ponytail: branches equal after lowering and cutting share a name; edit the file then.
-          name=$(printf 'laravelorbstack-%s' "$slug" | cut -c1-63 | sed 's/-*$//')
+          # 16 + 40 + 1 + 6 = 63 characters: the name is a DNS label in apachephp.<name>.local.
+          slug=$(printf '%s' "${ref:-$id}" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | cut -c1-40 | sed 's/^-*//;s/-*$//')
+          name="laravelorbstack-${slug}-$(printf '%s' "$id" | git hash-object --stdin | cut -c1-6)"
         fi
         echo "PROJECT_NAME=$name" > .worktree-env
       fi
@@ -224,7 +226,9 @@ tasks:
       - "{{ .BASE_COMMAND }} down -v"
 
   e2e:
-    cmd: tests/e2e.sh
+    cmds:
+      - tests/e2e.sh
+      - npm run -s e2eBrowser
 
   exec:apache:
     cmd: |

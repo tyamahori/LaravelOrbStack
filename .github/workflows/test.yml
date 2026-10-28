@@ -337,6 +337,18 @@ jobs:
             USER_NAME=${{ env.USER_NAME }}
           cache-from: type=gha,scope=e2e-franken
           cache-to: type=gha,scope=e2e-franken,mode=max
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+          # This job writes the image build cache (cache-to above), so it restores no npm cache.
+          package-manager-cache: false
+      - name: Install Playwright and Chromium
+        # libnss3-tools gives setup.sh certutil, which puts the CA where Chromium on Linux looks.
+        run: |
+          npm ci
+          npx playwright install --with-deps --only-shell chromium
+          sudo apt-get install -y --no-install-recommends libnss3-tools
       - name: Issue the certificate and map the .local domains to Traefik
         run: .docker/proxy/setup.sh
       - name: Start the app profile
@@ -347,6 +359,8 @@ jobs:
           docker compose --profile app up -d --wait
       - name: E2E
         run: tests/e2e.sh
+      - name: Browser E2E
+        run: npm run e2eBrowser
       - name: Container logs
         if: failure()
         run: docker compose --profile '*' logs

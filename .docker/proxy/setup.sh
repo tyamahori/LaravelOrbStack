@@ -88,6 +88,17 @@ case "$(uname -s)" in
             sudo install -m 644 "${state}/ca.crt" "${anchor}"
             sudo update-ca-certificates >/dev/null
         fi
+        # Chrome and Chromium (Playwright's too) on Linux read trust from the user's NSS
+        # database, never from the system store above.
+        if command -v certutil >/dev/null; then
+            nssdb="sql:${HOME}/.pki/nssdb"
+            [ -e "${HOME}/.pki/nssdb/cert9.db" ] || { mkdir -p "${HOME}/.pki/nssdb" && certutil -d "${nssdb}" -N --empty-password; }
+            # Replace rather than skip: a regenerated CA keeps the nickname.
+            certutil -d "${nssdb}" -D -n laravelorbstack 2>/dev/null || true
+            certutil -d "${nssdb}" -A -t C,, -n laravelorbstack -i "${state}/ca.crt"
+        else
+            echo "proxy setup: no certutil (libnss3-tools); browsers will not trust ${state}/ca.crt" >&2
+        fi
         ;;
     *) fail "unsupported OS $(uname -s); trust ${state}/ca.crt by hand" ;;
 esac

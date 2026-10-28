@@ -73,7 +73,7 @@ Docker Desktop と Linux の Docker Engine には OrbStack のドメイン連携
 .docker/proxy/setup.sh
 ```
 
-このスクリプトは、ローカル CA とサーバー証明書を `~/.local/state/laravelorbstack-proxy/` に作り、`/etc/hosts` にドメインを追記し、CA を OS の信頼ストアに登録します。登録先は macOS ではシステムキーチェーン、Linux では `update-ca-certificates` で、どちらも sudo のパスワードを聞かれます。CA には名前制約を付けてあり、`apachephp.local`、`frankenphp.local`、`*.laravelorbstack.local` 以外の証明書には署名できません。何度実行しても、足りない設定だけを補います。`/etc/hosts` には `::1` の行も入れます。macOS が `.local` の AAAA レコードを mDNS で引きにいき、数秒待たされるのを避けるためです。証明書を作り直すときは、このディレクトリと登録した CA を消してから再実行します。
+このスクリプトは、ローカル CA とサーバー証明書を `~/.local/state/laravelorbstack-proxy/` に作り、`/etc/hosts` にドメインを追記し、CA を OS の信頼ストアに登録します。登録先は macOS ではシステムキーチェーン、Linux では `update-ca-certificates` で、どちらも sudo のパスワードを聞かれます。Linux の Chrome と Chromium はこの信頼ストアを見ないので、`certutil`(Debian 系なら `libnss3-tools`)があれば、ユーザーの NSS データベース(`~/.pki/nssdb`)にも登録します。CA には名前制約を付けてあり、`apachephp.local`、`frankenphp.local`、`*.laravelorbstack.local` 以外の証明書には署名できません。何度実行しても、足りない設定だけを補います。`/etc/hosts` には `::1` の行も入れます。macOS が `.local` の AAAA レコードを mDNS で引きにいき、数秒待たされるのを避けるためです。証明書を作り直すときは、このディレクトリと登録した CA を消してから再実行します。
 
 Docker Desktop と Linux では、補助サービスへ Traefik 経由でアクセスします。Redis は Traefik に載せていないので、ホストからは直接つなげません。
 
@@ -83,7 +83,18 @@ Docker Desktop と Linux では、補助サービスへ Traefik 経由でアク�
 | Mailpit UI | <https://mail.laravelorbstack.local/> |
 | RustFS(S3 API) | `https://storage.laravelorbstack.local` |
 
-どの環境でも、`task e2e`(`tests/e2e.sh`)が両ドメインに HTTPS で API とページを通し、ドメインの解決と証明書の検証から、ロードバランサ、PHP、PostgreSQL、RustFS までがつながっていることを確かめます。CI の `e2e` ジョブは同じスクリプトを Linux の Docker Engine で走らせ、`compose.desktop.yaml` と `.docker/proxy/setup.sh` を使います。
+どの環境でも、`task e2e` が二段の E2E を走らせます。まず `tests/e2e.sh` が両ドメインへ HTTPS で API とページを通し、ドメインの解決と証明書の検証から、ロードバランサ、PHP、PostgreSQL、RustFS までがつながっていることを確かめます。次に Playwright の Chromium(`tests/e2e.spec.mjs`)が両ドメインのトップページを開きます。ページを返した実行環境と、メモのサンプルへのリンクが同じドメインの HTTPS に留まることまで確かめます。CI の `e2e` ジョブは両方を Linux の Docker Engine で走らせ、`compose.desktop.yaml` と `.docker/proxy/setup.sh` を使います。
+
+### ブラウザでの E2E
+
+Chromium はホストで動くので、初回だけ Node の依存とブラウザを入れます。
+
+```bash
+npm ci
+npx playwright install --only-shell chromium
+```
+
+Chromium は開発者のブラウザと同じ経路で CA を信頼します。macOS ではキーチェーン(OrbStack の CA も `setup.sh` の CA もここにある)、Linux では上の NSS データベースです。Linux では `setup.sh` より先に `certutil` を入れてください(Debian 系なら `sudo apt-get install libnss3-tools`)。`certutil` がないと `setup.sh` は警告を出すだけで終わり、Chromium は証明書を信頼せずに `ERR_CERT_AUTHORITY_INVALID` で失敗します。後から入れた場合は `setup.sh` を再実行すれば登録されます。ブラウザの E2E だけを走らせるときは `npm run e2eBrowser` を使います。失敗したときのページの状態は `test-results/` に残ります。
 
 ## worktree ごとの環境
 
@@ -95,14 +106,14 @@ cd ../LaravelOrbStack-feature-x
 task init
 ```
 
-Taskfile は初回の実行でチェックアウトの直下へ `.worktree-env`(Git の管理外)を作り、Compose のプロジェクト名を書き込みます。main のチェックアウト(`git clone` した元のディレクトリ)は `laravelorbstack` です。`git worktree add` で足した worktree は `laravelorbstack-<ブランチ名>` になり、ブランチ名は英小文字・数字・ハイフンに直します(`feature/Foo` なら `laravelorbstack-feature-foo`)。ブランチのない detached HEAD のときは、Git が `.git/worktrees/` に振る worktree の識別名を使います。同じ名前のディレクトリが別の場所にあっても、Git が `review`、`review1` のように区別するためです。名前はドメインの一部にもなるので、63 文字で切ります。ファイルがあればそのまま使うので、後からブランチを切り替えても名前は変わりません。名前を変えたいときは、環境を `task down` で止めてから `PROJECT_NAME=` の行を書き換えてください。
+Taskfile は初回の実行でチェックアウトの直下へ `.worktree-env`(Git の管理外)を作り、Compose のプロジェクト名を書き込みます。main のチェックアウト(`git clone` した元のディレクトリ)は `laravelorbstack` です。`git worktree add` で足した worktree は `laravelorbstack-<ブランチ名>-<ハッシュ>` になります。ブランチ名は英小文字・数字・ハイフンに直して 40 文字で切り(`feature/Foo` なら `feature-foo`)、ブランチのない detached HEAD のときは代わりに worktree の識別名を使います。識別名は Git が `.git/worktrees/` の下に振る名前で、上の例なら `LaravelOrbStack-feature-x` です。ハッシュはこの識別名から作る 6 桁で、Git が識別名を `review`、`review1` のように重ならないよう振るので、直すと同じになるブランチ(`feature/foo` と `feature-foo`)や同じ名前のディレクトリでも、名前は別々になります。名前はドメインの一部にもなるので、全体で 63 文字に収めています。ファイルがあればそのまま使うので、後からブランチを切り替えても名前は変わりません。名前を変えたいときは、環境を `task down` で止めてから `PROJECT_NAME=` の行を書き換えてください。
 
-Taskfile はこの名前から、Compose のプロジェクト名(`-p`)と、ローカルでビルドする PHP イメージのタグ(`laravelorbstack-feature-x/php:apache-local` など)を決めます。コンテナ、ネットワーク、ボリュームはプロジェクトごとに分かれるので、データベースやストレージの中身も別々です。`task init` や `task cleanUpComposeProject` が消すのも、その worktree のプロジェクトだけです。OrbStack でのアクセス先は次のとおりで、補助サービスは `<サービス名>.laravelorbstack-feature-x.orb.local` になります。main のチェックアウトは、これまでどおり上の URL で動きます。
+Taskfile はこの名前から、Compose のプロジェクト名(`-p`)と、ローカルでビルドする PHP イメージのタグ(`laravelorbstack-feature-x-33c686/php:apache-local` など)を決めます。コンテナ、ネットワーク、ボリュームはプロジェクトごとに分かれるので、データベースやストレージの中身も別々です。`task init` や `task cleanUpComposeProject` が消すのも、その worktree のプロジェクトだけです。OrbStack でのアクセス先は次のとおりで、補助サービスは `<サービス名>.laravelorbstack-feature-x-33c686.orb.local` になります。main のチェックアウトは、これまでどおり上の URL で動きます。
 
 | 実行環境 | URL |
 | :-- | :-- |
-| Apache | <https://apachephp.laravelorbstack-feature-x.local/> |
-| FrankenPHP | <https://frankenphp.laravelorbstack-feature-x.local/> |
+| Apache | <https://apachephp.laravelorbstack-feature-x-33c686.local/> |
+| FrankenPHP | <https://frankenphp.laravelorbstack-feature-x-33c686.local/> |
 
 `task e2e` も、その worktree のドメインに対して走ります。同時に起動できるのは OrbStack だけです。Docker Desktop と Linux では、Traefik のルーティング、証明書、`/etc/hosts` が既定のドメインにしかないので、worktree でも `apachephp.local` と `frankenphp.local` を使います。Traefik が `127.0.0.1` の 80、443、5432 番を占有するため、動かせるのは一度に一つの環境だけです。別の worktree を起動する前に、動いている環境を `task down` で止めてください。
 
@@ -157,7 +168,7 @@ Taskfile はこの名前から、Compose のプロジェクト名(`-p`)と、ロ
 | `task onSavePHP` | 保存時向けに Rector / ECS / Mago の fix と PHPStan をまとめて実行 |
 | `task phpunit` | PHPUnit を実行(`composer phpunit` 経由) |
 | `task ide-helper` | Laravel IDE Helper を生成 |
-| `task e2e` | 起動中の環境に対し、`.local` ドメイン経由の E2E テスト(`tests/e2e.sh`)を実行 |
+| `task e2e` | 起動中の環境に対し、`.local` ドメイン経由の E2E テスト(`tests/e2e.sh` と、Chromium の `tests/e2e.spec.mjs`)を実行 |
 
 Devbox シェル内では `devbox run composer` で Composer install を実行できます。Docker を起動せずにホストの PHP で全チェック(PSR-4 の厳格検査、パッケージ構成の検査、Rector dry-run、PHPStan、ECS、Deptrac、Mago)をまとめて走らせるには `composer lintCheck` を使います。`composer psrCheck` は `composer validate --strict` のあとに `dump-autoload --strict-psr` を走らせ、ファイル名とクラス名の大文字小文字のずれを macOS(case-insensitive)でも検出します。クラス参照側のずれは PHPStan の `class.nameCase` が拾います。`composer structureCheck` は AGENTS.md の配置規則のうちファイル構成だけで決まるもの(パッケージの固定語彙、`bootstrap/app.php` への登録漏れ、`.claude/skills/` のリンク)を検査します。
 
