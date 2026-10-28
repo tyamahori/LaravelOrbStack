@@ -1,6 +1,10 @@
 version: '3'
 silent: false
+# A worktree names its own Compose project here (README「worktree ごとの環境」); without the
+# file the checkout is the default laravelorbstack project.
+dotenv: ['.worktree-env']
 vars:
+  PROJECT: '{{ .PROJECT_NAME | default "laravelorbstack" }}'
   COMPOSE_FILE_PATH: .docker/compose.yaml
   CI_COMPOSE_FILE_PATH: .docker/compose.ci.yaml
   # OrbStack serves the *.local domains itself (compose.orb.yaml); any other engine (Docker
@@ -8,6 +12,10 @@ vars:
   # 「アクセス先」). Empty inside the container, where task runs without a Docker CLI.
   RUNTIME_COMPOSE_OPTION:
     sh: docker info --format json 2>/dev/null | jq -r 'if .OperatingSystem == "OrbStack" then "-f .docker/compose.orb.yaml" else "-f .docker/compose.desktop.yaml" end'
+  # The default project keeps apachephp.local; a worktree on OrbStack gets
+  # apachephp.<project>.local so domains do not collide. compose.desktop.yaml's Traefik,
+  # certificate and /etc/hosts know only the default names, so other engines keep them.
+  DOMAIN: '{{ if and (ne .PROJECT "laravelorbstack") (contains "orb" .RUNTIME_COMPOSE_OPTION) }}{{ .PROJECT }}.local{{ else }}local{{ end }}'
 
   PHP_APACHE_DOCKERFILE_PATH: .docker/php.apache.Dockerfile
   PHP_FRANKEN_DOCKERFILE_PATH: .docker/php.franken.Dockerfile
@@ -16,7 +24,7 @@ vars:
   COMPOSER_VERSION:
     sh: jq -r '.config.composerVersion' composer.json
 
-  BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} {{ .RUNTIME_COMPOSE_OPTION }}
+  BASE_COMMAND: docker compose -p {{ .PROJECT }} -f {{ .COMPOSE_FILE_PATH }} {{ .RUNTIME_COMPOSE_OPTION }}
   CI_BASE_COMMAND: docker compose -f {{ .COMPOSE_FILE_PATH }} -f {{ .CI_COMPOSE_FILE_PATH }}
 
   USER_NAME:
@@ -30,6 +38,8 @@ vars:
   FRANKEN_SERVICE: php-franken
 
 env:
+  # compose.orb.yaml and tests/e2e.sh read this.
+  LARAVELORBSTACK_DOMAIN: '{{ .DOMAIN }}'
   # compose.desktop.yaml runs Traefik as the user who owns the certificate key.
   LARAVELORBSTACK_UID:
     sh: id -u
@@ -48,7 +58,7 @@ tasks:
   buildBaseApacheModPhp:
     cmd: |
       docker build \
-        -t laravelorbstack/php:apache-base \
+        -t {{ .PROJECT }}/php:apache-base \
         -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --target=basebuild \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \
@@ -57,7 +67,7 @@ tasks:
   buildBaseFrankenPhp:
     cmd: |
       docker build \
-        -t laravelorbstack/php:franken-base \
+        -t {{ .PROJECT }}/php:franken-base \
         -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --target=basebuild \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \
@@ -72,7 +82,7 @@ tasks:
       - task: buildBaseApacheModPhp
     cmd: |
       docker build \
-        -t laravelorbstack/php:apache-local \
+        -t {{ .PROJECT }}/php:apache-local \
         -f {{ .PHP_APACHE_DOCKERFILE_PATH }} \
         --target=local \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \
@@ -86,7 +96,7 @@ tasks:
       - task: buildBaseFrankenPhp
     cmd: |
       docker build \
-        -t laravelorbstack/php:franken-local \
+        -t {{ .PROJECT }}/php:franken-local \
         -f {{ .PHP_FRANKEN_DOCKERFILE_PATH }} \
         --target=local \
         --build-arg PHP_VERSION={{ .PHP_VERSION }} \

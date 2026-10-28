@@ -85,6 +85,26 @@ Docker Desktop と Linux では、補助サービスへ Traefik 経由でアク�
 
 どの環境でも、`task e2e`(`tests/e2e.sh`)が両ドメインに HTTPS で API とページを通し、ドメインの解決と証明書の検証から、ロードバランサ、PHP、PostgreSQL、RustFS までがつながっていることを確かめます。CI の `e2e` ジョブは同じスクリプトを Linux の Docker Engine で走らせ、`compose.desktop.yaml` と `.docker/proxy/setup.sh` を使います。
 
+## worktree ごとの環境
+
+`git worktree` で作ったチェックアウトごとに、別の環境を同時に立ち上げられます。worktree の直下に `.worktree-env`(Git の管理外)を置き、Compose のプロジェクト名を書きます。プロジェクト名は英小文字・数字・ハイフンだけにしてください。ドメインの一部にもなるためです。
+
+```bash
+git worktree add ../LaravelOrbStack-feature-x -b feature-x
+cd ../LaravelOrbStack-feature-x
+echo 'PROJECT_NAME=feature-x' > .worktree-env
+task init
+```
+
+Taskfile はこのファイルを読み、Compose のプロジェクト名(`-p`)と、ローカルでビルドする PHP イメージのタグ(`feature-x/php:apache-local` など)をそこから決めます。コンテナ、ネットワーク、ボリュームはプロジェクトごとに分かれるので、データベースやストレージの中身も別々です。`task init` や `task cleanUpComposeProject` が消すのも、その worktree のプロジェクトだけです。OrbStack でのアクセス先は次のとおりで、補助サービスは `<サービス名>.feature-x.orb.local` になります。`.worktree-env` のないチェックアウトは、これまでどおり `laravelorbstack` プロジェクトと上の URL で動きます。
+
+| 実行環境 | URL |
+| :-- | :-- |
+| Apache | <https://apachephp.feature-x.local/> |
+| FrankenPHP | <https://frankenphp.feature-x.local/> |
+
+`task e2e` も、その worktree のドメインに対して走ります。同時に起動できるのは OrbStack だけです。Docker Desktop と Linux では、Traefik のルーティング、証明書、`/etc/hosts` が既定のドメインにしかないので、worktree でも `apachephp.local` と `frankenphp.local` を使います。Traefik が `127.0.0.1` の 80、443、5432 番を占有するため、動かせるのは一度に一つの環境だけです。別の worktree を起動する前に、動いている環境を `task down` で止めてください。
+
 ## 主なコマンド
 
 ### 起動と停止
