@@ -7,6 +7,10 @@
     "php85Extensions.redis@latest",
     "php85Extensions.xdebug@3.5.3"
   ],
+  "env": {
+    "DEVELOPER_DIR": "",
+    "SDKROOT": ""
+  },
   "shell": {
     "init_hook": [
       "echo 'Welcome to devbox!' > /dev/null",
