@@ -63,6 +63,8 @@ printf '127.0.0.1 apachephp.local frankenphp.local\n::1 apachephp.local frankenp
 
 こちらは HTTP だけで、URL は <http://apachephp.local/> と <http://frankenphp.local/> です。HTTPS は OrbStack が証明書を用意する場合に限ります。下の補助サービスの `*.orb.local` も OrbStack だけのものです。
 
+どの環境でも、`task e2e`(`tests/e2e.sh`)が両ドメインに HTTP で API とページを通し、ドメインの解決からロードバランサ、PHP、PostgreSQL、RustFS までがつながっていることを確かめます。CI の `e2e` ジョブは同じスクリプトを Linux の Docker Engine で `compose.ports.yaml` と `/etc/hosts` を使って走らせます。
+
 補助サービスへは `<サービス名>.laravelorbstack.orb.local` でコンテナの port に直接アクセスできます。
 
 | サービス | アクセス先 |
@@ -126,6 +128,7 @@ OrbStack 側のローカルドメイン一覧は <https://orb.local/> で確認�
 | `task onSavePHP` | 保存時向けに Rector / ECS / Mago の fix と PHPStan をまとめて実行 |
 | `task phpunit` | PHPUnit を実行(`composer phpunit` 経由) |
 | `task ide-helper` | Laravel IDE Helper を生成 |
+| `task e2e` | 起動中の環境に対し、`.local` ドメイン経由の E2E テスト(`tests/e2e.sh`)を実行 |
 
 Devbox シェル内では `devbox run composer` で Composer install を実行できます。Docker を起動せずにホストの PHP で全チェック(PSR-4 の厳格検査、パッケージ構成の検査、Rector dry-run、PHPStan、ECS、Deptrac、Mago)をまとめて走らせるには `composer lintCheck` を使います。`composer psrCheck` は `composer validate --strict` のあとに `dump-autoload --strict-psr` を走らせ、ファイル名とクラス名の大文字小文字のずれを macOS(case-insensitive)でも検出します。クラス参照側のずれは PHPStan の `class.nameCase` が拾います。`composer structureCheck` は AGENTS.md の配置規則のうちファイル構成だけで決まるもの(パッケージの固定語彙、`bootstrap/app.php` への登録漏れ、`.claude/skills/` のリンク)を検査します。
 

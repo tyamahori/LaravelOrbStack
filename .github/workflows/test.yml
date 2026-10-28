@@ -281,3 +281,69 @@ jobs:
           set +a;
           composer phpunit
           '
+  e2e:
+    # Docker Engine on Linux, the non-OrbStack path: Taskfile's compose.ports.yaml plus /etc/hosts.
+    runs-on: ubuntu-26.04-arm
+    env:
+      COMPOSE_FILE: .docker/compose.yaml:.docker/compose.ports.yaml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Get PHP, Composer and user
+        run: |
+          {
+            echo "PHP_VERSION=$(jq -r 'first(.require.php | scan("[0-9]+\\.[0-9]+"))' composer.json)"
+            echo "COMPOSER_VERSION=$(jq -r '.config.composerVersion' composer.json)"
+            echo "USER_ID=$(id -u)"
+            echo "GROUP_ID=$(id -g)"
+            echo "USER_NAME=$(id -un)"
+          } >> "$GITHUB_ENV"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - name: Build Apache image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
+        with:
+          context: .
+          file: .docker/php.apache.Dockerfile
+          target: local
+          tags: laravelorbstack/php:apache-local
+          load: true
+          build-args: |
+            PHP_VERSION=${{ env.PHP_VERSION }}
+            COMPOSER_VERSION=${{ env.COMPOSER_VERSION }}
+            USER_ID=${{ env.USER_ID }}
+            GROUP_ID=${{ env.GROUP_ID }}
+            USER_NAME=${{ env.USER_NAME }}
+          cache-from: type=gha,scope=e2e-apache
+          cache-to: type=gha,scope=e2e-apache,mode=max
+      - name: Build FrankenPHP image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
+        with:
+          context: .
+          file: .docker/php.franken.Dockerfile
+          target: local
+          tags: laravelorbstack/php:franken-local
+          load: true
+          build-args: |
+            PHP_VERSION=${{ env.PHP_VERSION }}
+            COMPOSER_VERSION=${{ env.COMPOSER_VERSION }}
+            USER_ID=${{ env.USER_ID }}
+            GROUP_ID=${{ env.GROUP_ID }}
+            USER_NAME=${{ env.USER_NAME }}
+          cache-from: type=gha,scope=e2e-franken
+          cache-to: type=gha,scope=e2e-franken,mode=max
+      - name: Map the .local domains to the published balancer
+        run: echo '127.0.0.1 apachephp.local frankenphp.local' | sudo tee -a /etc/hosts
+      - name: Start the app profile
+        # vendor/ and the schema come first, so neither PHP server ever boots without them.
+        run: |
+          docker compose run --rm setUpStorage
+          docker compose run --rm php-cli sh -c 'composer install --prefer-dist --no-progress && composer schema:apply && php artisan db:seed'
+          docker compose --profile app up -d --wait
+      - name: E2E
+        run: tests/e2e.sh
+      - name: Container logs
+        if: failure()
+        run: docker compose --profile '*' logs

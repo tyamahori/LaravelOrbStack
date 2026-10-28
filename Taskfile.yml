@@ -187,6 +187,9 @@ tasks:
     cmds:
       - "{{ .BASE_COMMAND }} down -v"
 
+  e2e:
+    cmd: tests/e2e.sh
+
   exec:apache:
     cmd: |
       {{ .BASE_COMMAND }} exec -u {{ .CLI_ARGS | default .USER_NAME }} -it {{ .APACHE_SERVICE }} bash

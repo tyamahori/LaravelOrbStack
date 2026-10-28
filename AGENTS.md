@@ -30,13 +30,13 @@
 | `Console/` | Presentation 層の Artisan 入口。`Http/` と同じ層で、依存規則も同じ。ディレクトリを分けるのはパスから経路(HTTP か CLI か)が読めるようにするためだけ |
 | `Persistence/` | Eloquent モデル、port の実装(リポジトリ)、外部 API クライアント |
 | `Provider/` | ServiceProvider(`<Feature>ServiceProvider.php`)。port と実装の `bind`、ビュー名前空間(`loadViewsFrom`)、Artisan コマンド(`commands()`)の登録を担い、`bootstrap/app.php` の `withProviders([...], withBootstrapProviders: false)` に列挙する(`bootstrap/providers.php` は置かない)。`Http/Web/routes.php` は同じファイルの `withRouting(web: [...])` に、`Http/Api/routes.php` は `withRouting(api: [...])` に列挙する。プロバイダの `boot()` で `$router->group()` すると RouteServiceProvider が登録されず名前索引(`refreshNameLookups`)が更新されないので、`route('name')` が解決できない(テストで検出済み) |
-| `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤だけを置く |
+| `Test/` | そのパッケージのテスト(`*Test.php`)と、port のテスト用実装(`Fake*.php`、例 `FakeMemoStore`)。`tests/` にはテスト基盤と、起動中の環境に `.local` ドメインで外から当てる E2E(`tests/e2e.sh`)だけを置く |
 
 パッケージ間の参照は、相手の `Domain/` にある interface と値オブジェクトに限ります。他パッケージの UseCase、Http、Persistence のクラスを import したり注入したりしてはいけません。A が B の能力を必要とするなら、A が自分の `Domain/` に port を定義し、B 側(または `packages/Common/`)がそれを実装して A の `Provider/` で束ねます。この「相手の `Domain/` だけ」という制約は Deptrac の層がパッケージ横断で定義されているため Deptrac では表せず、`libConfig/PhpStan/PackageBoundaryRule.php` で検査します。
 
 `packages/Common/` はプロジェクト全体に効くものを置く唯一の場所で、業務機能ではありません。中身は他のパッケージと同じ固定語彙のサブディレクトリに分けます。アプリ全体の設定(時計、日付クラス、Eloquent の strict モード)は `Common/Provider/AppServiceProvider.php` に置き、特定パッケージの port を `bind` してはいけません。それは各パッケージの `Provider/` の仕事です(`packages/Samples/Provider/SamplesServiceProvider.php` がこの形)。3 つ以上のパッケージが同じ値オブジェクトや port を使うようになったら `Common/Domain/` へ移し、2 つ目までは各パッケージで持ちます。パッケージを消すときは、そのディレクトリと `bootstrap/app.php` の `withProviders` の行を消せば結線が残りません。
 
-リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間を `composer.json` から外してあります)。代わりに `bootstrap/app.php` の `useAppPath()` でアプリのパスを `packages/` に向け、`route:list` などが使うアプリの名前空間を `LaravelOrbStack\` として解決させています。ルート定義、Blade、全体設定の置き場所は、それぞれ `packages/<Feature>/Http/{Web,Api}/routes.php`、`packages/<Feature>/Http/Web/View/`、`packages/Common/` です。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
+リポジトリ直下に残すのは Laravel の入口契約と実行時の書き込み先だけです。`bootstrap/`(`public/index.php` と `artisan` が読む `app.php`)、`config/`(コンテナ生成前に評価される)、`public/`、`database/`(`schema.sql` と seeder)、`storage/`(Docker・Xdebug・Apache が参照する書き込み先)、`tests/`(テスト基盤と E2E のみ)です。`app/`、`routes/`、`resources/`、`packages/Shared/` は作りません(`App\` 名前空間を `composer.json` から外してあります)。代わりに `bootstrap/app.php` の `useAppPath()` でアプリのパスを `packages/` に向け、`route:list` などが使うアプリの名前空間を `LaravelOrbStack\` として解決させています。ルート定義、Blade、全体設定の置き場所は、それぞれ `packages/<Feature>/Http/{Web,Api}/routes.php`、`packages/<Feature>/Http/Web/View/`、`packages/Common/` です。`git mv` で中身を移したあとの空ディレクトリは Git に残らないので、そのまま削除します。
 
 ## パッケージの中では依存を内側に向ける
 
