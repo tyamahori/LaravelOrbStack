@@ -21,3 +21,4 @@ yarn-error.log
 xdebug.log
 .tempCache
 __pycache__/
+/.worktree-env

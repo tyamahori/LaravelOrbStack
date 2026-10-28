@@ -128,7 +128,7 @@ services:
       - --providers.docker=true
       - --providers.docker.endpoint=tcp://docker-socket-proxy:2375
       - --providers.docker.exposedbydefault=false
-      - --providers.docker.network=laravelorbstack_default
+      - --providers.docker.network=${COMPOSE_PROJECT_NAME}_default
       - --providers.file.filename=/etc/traefik/dynamic/tls.yaml
     healthcheck:
       test:

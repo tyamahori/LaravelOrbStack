@@ -21,7 +21,8 @@ request() {
     printf '%s' "${response%$'\n'*}"
 }
 
-for domain in apachephp.local frankenphp.local; do
+# Taskfile sets LARAVELORBSTACK_DOMAIN to <project>.local in a worktree (README「worktree ごとの環境」).
+for domain in apachephp.${LARAVELORBSTACK_DOMAIN:-local} frankenphp.${LARAVELORBSTACK_DOMAIN:-local}; do
     base="https://${domain}"
     # The PHP server may still be booting right after `up`; curl retries 5xx and refused
     # connections for up to a minute.
