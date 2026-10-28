@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# E2E through the *.local domains: host → balancer (nginx) → Apache / FrankenPHP →
-# PostgreSQL (memo index), Redis (memo cache) and RustFS (memo documents). Fails when a
-# domain does not resolve, the balancer routes it nowhere, the app builds URLs from the
-# internal upstream name instead of the domain, or a memo does not round-trip a store.
-# Plain HTTP so the same check runs on OrbStack, Docker Desktop and Linux alike.
+# E2E through the *.local domains: host → TLS ingress (OrbStack, or Traefik from
+# compose.desktop.yaml) → balancer (nginx) → Apache / FrankenPHP → PostgreSQL (memo index),
+# Redis (memo cache) and RustFS (memo documents). Fails when a domain does not resolve, its
+# certificate is not trusted, the balancer routes it nowhere, the app builds URLs from the
+# internal upstream name or scheme instead of https://<domain>, or a memo does not round-trip.
 set -euo pipefail
 
 fail() {
@@ -22,7 +22,7 @@ request() {
 }
 
 for domain in apachephp.local frankenphp.local; do
-    base="http://${domain}"
+    base="https://${domain}"
     # The PHP server may still be booting right after `up`; curl retries 5xx and refused
     # connections for up to a minute.
     request 200 --retry 30 --retry-delay 1 --retry-max-time 60 --retry-connrefused "${base}/" >/dev/null
