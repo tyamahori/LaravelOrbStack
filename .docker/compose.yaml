@@ -5,7 +5,7 @@ x-common-settings: &healthcheck-settings
 name: laravelorbstack
 services:
   balancer:
-    image: nginx:1.31.8@sha256:6e67f8eaac94fc456588d4ff6c470d984841f5b5dc4279863d5cbe6ec5a60def
+    image: nginx:1.31.8@sha256:165ddde8751e75a1c907d24ef10d9f6deb08b57e0fe56caf67512486aff76d82
     depends_on:
       php-app:
         condition: service_started
@@ -23,7 +23,7 @@ services:
       - app
 
   cache:
-    image: redis:8.4.7-alpine3.22@sha256:f9b3b74607c14a568cf0bda340432ca7ffd0682e3a53183412a8236974bdf69e
+    image: redis:8.4.8-alpine3.22@sha256:44b295aedd412d52a9846f51573e906e0a9c7d83ba431f4134b1b338d45ba732
     volumes:
       - type: volume
         source: cache
@@ -47,7 +47,7 @@ services:
       - cli
 
   mail:
-    image: axllent/mailpit:v1.32.0@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498
+    image: axllent/mailpit:v1.33.0@sha256:9b3a463be15354c0f0eba91697d80e3e0d8a5623ef0e627cacc836bc17fd5231
     networks:
       default:
         aliases:
@@ -226,7 +226,7 @@ services:
       - cli
 
   session:
-    image: redis:8.4.7-alpine3.22@sha256:f9b3b74607c14a568cf0bda340432ca7ffd0682e3a53183412a8236974bdf69e
+    image: redis:8.4.8-alpine3.22@sha256:44b295aedd412d52a9846f51573e906e0a9c7d83ba431f4134b1b338d45ba732
     volumes:
       - type: volume
         source: session
@@ -250,7 +250,7 @@ services:
       - cli
 
   setUpStorage:
-    image: amazon/aws-cli:2.38.5@sha256:c8156a0e74e13929a42d7e60f0d4e14e7d28d980cd21822505d4bff80e5460c1
+    image: amazon/aws-cli:2.39.6@sha256:eccdb3ec77e159d43ca6a750a70738c546883138be7f094498294a1477ec7e42
     depends_on:
       storage:
         condition: service_healthy
