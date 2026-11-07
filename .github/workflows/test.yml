@@ -186,7 +186,7 @@ jobs:
       - name: actionlint
         uses: docker://rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
       - name: zizmor
-        uses: docker://ghcr.io/zizmorcore/zizmor:1.31.1@sha256:42d409dbb851d4c5d35a058cf042b828bea1e3f2884378c526eb0974780e18d9
+        uses: docker://ghcr.io/zizmorcore/zizmor:1.32.0@sha256:3014cc8f68f663935f69b3c3e0e41f5ce102b268d97db13db0f62208747f860d
         env:
           GH_TOKEN: ${{ github.token }}
         with:
@@ -196,7 +196,7 @@ jobs:
         with:
           args: hadolint .docker/php.apache.Dockerfile .docker/php.franken.Dockerfile
       - name: Trivy config
-        uses: docker://aquasec/trivy:0.76.1@sha256:790fd66d1697395d8693d1acaa1ea702406a20f109b6fc7bac8db623eca6c06c
+        uses: docker://aquasec/trivy:0.76.2@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb
         with:
           args: config --exit-code 1 --ignorefile libConfig/trivyignore .
       - name: gitleaks
@@ -209,7 +209,7 @@ jobs:
         with:
           args: git --redact --verbose .
       - name: SQLFluff
-        uses: docker://sqlfluff/sqlfluff:4.4.0@sha256:6a9083e55b1f4ea437636bc8ca7b55aaa0766a3e43a6d3e5b37614cf97e4e6ac
+        uses: docker://sqlfluff/sqlfluff:4.5.0@sha256:8a408e8f236e922fc128e06d634c74f4c683394970c8ffc5d44100a341e3adf0
         with:
           args: lint --config libConfig/sqlfluff.cfg database .docker
       - name: Setup Node
