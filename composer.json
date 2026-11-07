@@ -114,7 +114,7 @@
             "phpstan/extension-installer": true
         },
         "nextPhp": "8.6",
-        "composerVersion": "2.10.3"
+        "composerVersion": "2.11.1"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
