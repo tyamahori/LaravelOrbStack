@@ -19,7 +19,9 @@
         ":automergePr",
         ":automergeRequireAllStatusChecks"
     ],
-    "dependencyDashboard": true,
+    "dependencyDashboard": {
+        "enabled": true
+    },
     "timezone": "Asia/Tokyo",
     "rangeStrategy": "bump",
     "automergeStrategy": "squash",
