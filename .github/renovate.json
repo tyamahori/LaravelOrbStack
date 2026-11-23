@@ -166,7 +166,7 @@
                 "/\\.Dockerfile$/"
             ],
             "matchStrings": [
-                "pie install (?:--\\S+ )*(?<depName>[a-z0-9-]+/[a-z0-9-]+):(?<currentValue>[0-9.]+)"
+                "pie install (?:--\\S+ )*(?<depName>[a-z0-9-]+/[a-z0-9-]+):(?<currentValue>[0-9.]+(?:(?:alpha|beta|RC)[0-9]+)?)"
             ],
             "datasourceTemplate": "packagist"
         }
