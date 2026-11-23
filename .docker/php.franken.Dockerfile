@@ -2,7 +2,7 @@ FROM golang:1.27.3-alpine@sha256:fa3d596898d9f126af7c01d14ee7597bab3f39cccf392ef
 FROM composer:2.11.2@sha256:50ea4d33fdcde1adb0f045547295faa1548b33872e5f789dae5b02ce2fb5de93 AS composer
 FROM mlocati/php-extension-installer:2.13.2@sha256:4fd45396c16685266d32bf147a24ecd5e81029d3820295895bf4a90131190ac9 AS basephpextensioninstaller
 FROM ghcr.io/php/pie:1.5.5-bin@sha256:3fca03c16df842d02b654dc382db3756058d9c128064f57cace14f8728779ce9 AS pie
-FROM dunglas/frankenphp:1.13.5-php8.5.12-trixie@sha256:7e73a27eb7712a5b4073b92f8f0dec91e9400138604b76cc791589faaa6a639c AS frankenphp
+FROM dunglas/frankenphp:1.13.6-php8.6.0-trixie@sha256:0ab8b98ca70c40d0c73938953c584e8212914f11ab617e3fbefabe92f07c67da AS frankenphp
 
 # CGO off gives static binaries that run on the Debian-based PHP image; -s strips symbols and DWARF.
 FROM go AS task
@@ -25,13 +25,14 @@ ENV DEBCONF_NOWARNINGS=yes
 RUN --mount=type=bind,from=basephpextensioninstaller,source=/usr/bin/install-php-extensions,target=/usr/local/bin/install-php-extensions \
     install-php-extensions intl zip bcmath pdo_pgsql
 # PECL extensions come from PIE so the build does not depend on pecl.php.net.
+# phpredis 6.3.0 does not compile against PHP 8.6; move this RC to 6.4.0 once it is released.
 # lzf/zstd/lz4 keep the compression set install-php-extensions used to enable. PIE builds
 # from the GitHub archive, which lacks the bundled liblzf submodule, so link the system one.
 # hadolint ignore=DL3008
 RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
     apt-get update \
     && apt-get install -yq --no-install-recommends liblzf1 liblzf-dev libzstd-dev liblz4-dev \
-    && pie install --no-cache phpredis/phpredis:6.3.0 \
+    && pie install --no-cache phpredis/phpredis:6.4.0RC1 \
       --enable-redis-lzf --with-liblzf=yes --enable-redis-zstd --enable-redis-lz4 --with-liblz4=yes \
     && apt-get purge -y --auto-remove liblzf-dev libzstd-dev liblz4-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -70,9 +71,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 FROM basebuild AS local
+# Xdebug 3.5 rejects PHP 8.6; move this alpha to 3.6.0 once it is released.
 # Before the user-specific ARGs, so xdebug's compile and the tool install are cached independently of them.
 RUN --mount=type=bind,from=pie,source=/pie,target=/usr/local/bin/pie \
-    pie install --no-cache xdebug/xdebug:3.5.3
+    pie install --no-cache xdebug/xdebug:3.6.0alpha1
 # hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get install -yq --no-install-recommends dnsutils iproute2 iputils-ping jq less openssh-client procps redis-tools vim \

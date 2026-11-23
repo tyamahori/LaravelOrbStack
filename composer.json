@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "8.5.*",
+        "php": "8.6.*",
         "ext-pdo": "*",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0.2",
@@ -113,7 +113,7 @@
         "allow-plugins": {
             "phpstan/extension-installer": true
         },
-        "nextPhp": "8.6",
+        "nextPhp": "8.7",
         "composerVersion": "2.11.2"
     },
     "minimum-stability": "stable",

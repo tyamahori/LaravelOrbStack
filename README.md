@@ -4,7 +4,7 @@ Laravel を Docker Compose 環境で動かすためのサンプルプロジェ�
 
 ## 構成
 
-- PHP 8.5
+- PHP 8.6
 - Laravel 13
 - Apache mod_php
 - FrankenPHP
