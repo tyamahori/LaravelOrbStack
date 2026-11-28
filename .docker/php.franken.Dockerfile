@@ -1,8 +1,8 @@
-FROM golang:1.27.3-alpine@sha256:fa3d596898d9f126af7c01d14ee7597bab3f39cccf392ef36b69fe77cd681f18 AS go
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS go
 FROM composer:2.11.2@sha256:50ea4d33fdcde1adb0f045547295faa1548b33872e5f789dae5b02ce2fb5de93 AS composer
-FROM mlocati/php-extension-installer:2.13.2@sha256:4fd45396c16685266d32bf147a24ecd5e81029d3820295895bf4a90131190ac9 AS basephpextensioninstaller
-FROM ghcr.io/php/pie:1.5.5-bin@sha256:3fca03c16df842d02b654dc382db3756058d9c128064f57cace14f8728779ce9 AS pie
-FROM dunglas/frankenphp:1.13.6-php8.6.0-trixie@sha256:0ab8b98ca70c40d0c73938953c584e8212914f11ab617e3fbefabe92f07c67da AS frankenphp
+FROM mlocati/php-extension-installer:2.13.4@sha256:584fcc217b94a10187367552f6571cd8680ee4bf22bd752f1087a7d55e35e7de AS basephpextensioninstaller
+FROM ghcr.io/php/pie:1.6.1-bin@sha256:2ca18ec63249ff2d8b9936afeea88ab2e9225041980c16b7ad99ce0fccb014a6 AS pie
+FROM dunglas/frankenphp:1.14.0-php8.6.0-trixie@sha256:36b5ff13ee2be31da01b095c2bdcd348040aed1b638148f4ca1ca97ff1ab927b AS frankenphp
 
 # CGO off gives static binaries that run on the Debian-based PHP image; -s strips symbols and DWARF.
 FROM go AS task
@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache
 
 FROM go AS psqldef
 RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOFLAGS=-ldflags=-s go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.29
+    CGO_ENABLED=0 GOFLAGS=-ldflags=-s go install github.com/sqldef/sqldef/v3/cmd/psqldef@v3.11.31
 
 # What the app needs to run. flyio ships on this, so build tools stay out of it.
 FROM frankenphp AS baseruntime
