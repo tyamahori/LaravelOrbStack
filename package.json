@@ -8,6 +8,6 @@
     "@playwright/test": "1.65.1",
     "markdownlint-cli2": "0.24.1",
     "textlint": "15.8.0",
-    "textlint-rule-preset-ja-technical-writing": "12.0.2"
+    "textlint-rule-preset-ja-technical-writing": "12.1.0"
   }
 }
